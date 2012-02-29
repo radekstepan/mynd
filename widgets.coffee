@@ -1,6 +1,8 @@
-window.Widgets = (service) ->
+class window.Widgets
 
-    CHART_OPTS =
+    constructor: (@service) ->
+
+    CHART_OPTS:
         fontName: "Sans-Serif"
         fontSize: 9
         width: 400
@@ -14,27 +16,27 @@ window.Widgets = (service) ->
     # --------- graph widget ---------
 
 
-    displayGraphWidgetConfig = (widgetId, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) ->
+    displayGraphWidgetConfig: (widgetId, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) =>
         target = $(target)
         target.find("div.data").hide()
         target.find("div.noresults").hide()
         target.find("div.wait").show()
-        extraAttr = getExtraValue(target)
+        extraAttr = @getExtraValue(target)
       
-        wsCall = ((token="") ->
+        wsCall = ((token="") =>
             request_data =
                 widget: widgetId
                 list: bagName
                 filter: extraAttr
                 token: token
 
-            $.getJSON service + "list/chart", request_data, (res) ->
+            $.getJSON @service + "list/chart", request_data, (res) =>
                 unless res.results.length is 0
                     viz = google.visualization
                     data = google.visualization.arrayToDataTable(res.results, false)
                     targetElem = target[0]
                     Chart = null
-                    options = $.extend({}, CHART_OPTS,
+                    options = $.extend({}, @CHART_OPTS,
                         title: res.title
                     )
 
@@ -78,11 +80,11 @@ window.Widgets = (service) ->
                                     seriesValue = getSeriesValue(series, seriesLabels, seriesValues)
                                     pathQueryWithConstraintValues = pathQuery.replace("%category", category)
                                     pathQueryWithConstraintValues = pathQueryWithConstraintValues.replace("%series", seriesValue)
-                                    window.open service + "query/results?query=" + pathQueryWithConstraintValues + "&format=html"
+                                    window.open @service + "query/results?query=" + pathQueryWithConstraintValues + "&format=html"
                                 else if item.row?
                                     category = res.results[item.row + 1][0]
                                     pathQuery = pathQuery.replace("%category", category)
-                                    window.open service + "query/results?query=" + pathQuery + "&format=html"
+                                    window.open @service + "query/results?query=" + pathQuery + "&format=html"
                                 i++
                     else
                         alert "Don't know how to draw " + res.chartType + "s yet!"
@@ -94,7 +96,7 @@ window.Widgets = (service) ->
                 target.find("div.notanalysed").text res.notAnalysed
         )()
 
-    getSeriesValue = (seriesLabel, seriesLabels, seriesValues) ->
+    getSeriesValue: (seriesLabel, seriesLabels, seriesValues) ->
         arraySeriesLabels = seriesLabels.split(",")
         arraySeriesValues = seriesValues.split(",")
         i = 0
@@ -107,7 +109,7 @@ window.Widgets = (service) ->
     # --------- enrichment widget ---------
 
 
-    displayEnrichmentWidgetConfig = (widgetId, label, bagName, target) ->
+    displayEnrichmentWidgetConfig: (widgetId, label, bagName, target) =>
         target = $(target)
         target.find("div.data").hide()
         target.find("div.noresults").hide()
@@ -117,8 +119,8 @@ window.Widgets = (service) ->
         max = target.find("div.max").value if target.find("div.max").length > 0
         
         extraAttr = getExtraValue(target)
-      
-        wsCall = ((tokenId="") ->
+
+        wsCall = ((tokenId="") =>
             request_data =
                 widget: widgetId
                 list: bagName
@@ -127,7 +129,7 @@ window.Widgets = (service) ->
                 filter: extraAttr
                 token: tokenId
 
-            $.getJSON service + "list/enrichment", request_data, (res) ->
+            $.getJSON @service + "list/enrichment", request_data, (res) ->
                 target.find("table.tablewidget thead").html ""
                 target.find("table.tablewidget tbody").html ""
                 
@@ -149,10 +151,10 @@ window.Widgets = (service) ->
                 calcNotAnalysed widgetId, res.notAnalysed
         )()
 
-    getExtraValue = (target) ->
+    getExtraValue: (target) ->
         extraAttr = target.find("select.select").value if target.find("select.select").length > 0
 
-    make_enrichment_row = (result, externalLink, externalLinkLabel) ->
+    make_enrichment_row: (result, externalLink, externalLinkLabel) ->
         $row = $("<tr>")
         $checkBox = $("<input />").attr(
             type: "checkbox"
@@ -194,18 +196,18 @@ window.Widgets = (service) ->
         $row.append $("<td>").append($count)
         $row
 
-    loadGraphWidget = (id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) ->
-        google.setOnLoadCallback ->
-            displayGraphWidgetConfig id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target
+    loadGraphWidget: (id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) =>
+        google.setOnLoadCallback =>
+            @displayGraphWidgetConfig id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target
 
-    loadEnrichmentWidget = (id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) ->
-        google.setOnLoadCallback ->
-            displayEnrichmentWidgetConfig id, label, bagName, target
+    loadEnrichmentWidget: (id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) =>
+        google.setOnLoadCallback =>
+            @displayEnrichmentWidgetConfig id, label, bagName, target
 
     # Load Google Visualization.
     google.load "visualization", "1.0",
         packages: [ "corechart" ]
 
     # Public methods.
-    loadGraph: loadGraphWidget
-    loadEnrichment: loadEnrichmentWidget    
+    loadGraph: (opts...) -> @loadGraphWidget(opts...)
+    loadEnrichment: (opts...) -> @loadEnrichmentWidget(opts...)

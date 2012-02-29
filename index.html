@@ -30,9 +30,10 @@
     <div class="container">
 
       <script type="text/javascript">
-        window.widgets = new window.Widgets("http://aragorn.flymine.org:8080/flymine/service/");
-        window.widgets.loadGraph('flyfish', 'Stage', 'Gene count', 'Expressed,Not Expressed', 'true,false', '1',
-          '#widget');        
+        (function() {
+          widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");
+          widgets.loadGraph('flyfish', 'Stage', 'Gene count', 'Expressed,Not Expressed', 'true,false', '1', '#widget');
+        })();
       </script>
 
       <div class="row">

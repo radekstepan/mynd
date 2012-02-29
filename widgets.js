@@ -1,8 +1,18 @@
 (function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __slice = Array.prototype.slice;
 
-  window.Widgets = function(service) {
-    var CHART_OPTS, displayEnrichmentWidgetConfig, displayGraphWidgetConfig, getExtraValue, getSeriesValue, loadEnrichmentWidget, loadGraphWidget, make_enrichment_row;
-    CHART_OPTS = {
+  window.Widgets = (function() {
+
+    function Widgets(service) {
+      this.service = service;
+      this.loadEnrichmentWidget = __bind(this.loadEnrichmentWidget, this);
+      this.loadGraphWidget = __bind(this.loadGraphWidget, this);
+      this.displayEnrichmentWidgetConfig = __bind(this.displayEnrichmentWidgetConfig, this);
+      this.displayGraphWidgetConfig = __bind(this.displayGraphWidgetConfig, this);
+    }
+
+    Widgets.prototype.CHART_OPTS = {
       fontName: "Sans-Serif",
       fontSize: 9,
       width: 400,
@@ -13,13 +23,15 @@
         top: 30
       }
     };
-    displayGraphWidgetConfig = function(widgetId, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {
-      var extraAttr, wsCall;
+
+    Widgets.prototype.displayGraphWidgetConfig = function(widgetId, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {
+      var extraAttr, wsCall,
+        _this = this;
       target = $(target);
       target.find("div.data").hide();
       target.find("div.noresults").hide();
       target.find("div.wait").show();
-      extraAttr = getExtraValue(target);
+      extraAttr = this.getExtraValue(target);
       return wsCall = (function(token) {
         var request_data;
         if (token == null) token = "";
@@ -29,14 +41,14 @@
           filter: extraAttr,
           token: token
         };
-        return $.getJSON(service + "list/chart", request_data, function(res) {
+        return $.getJSON(_this.service + "list/chart", request_data, function(res) {
           var Chart, data, options, pathQuery, targetElem, viz;
           if (res.results.length !== 0) {
             viz = google.visualization;
             data = google.visualization.arrayToDataTable(res.results, false);
             targetElem = target[0];
             Chart = null;
-            options = $.extend({}, CHART_OPTS, {
+            options = $.extend({}, _this.CHART_OPTS, {
               title: res.title
             });
             switch (res.chartType) {
@@ -93,11 +105,11 @@
                     seriesValue = getSeriesValue(series, seriesLabels, seriesValues);
                     pathQueryWithConstraintValues = pathQuery.replace("%category", category);
                     pathQueryWithConstraintValues = pathQueryWithConstraintValues.replace("%series", seriesValue);
-                    window.open(service + "query/results?query=" + pathQueryWithConstraintValues + "&format=html");
+                    window.open(this.service + "query/results?query=" + pathQueryWithConstraintValues + "&format=html");
                   } else if (item.row != null) {
                     category = res.results[item.row + 1][0];
                     pathQuery = pathQuery.replace("%category", category);
-                    window.open(service + "query/results?query=" + pathQuery + "&format=html");
+                    window.open(this.service + "query/results?query=" + pathQuery + "&format=html");
                   }
                   _results.push(i++);
                 }
@@ -115,7 +127,8 @@
         });
       })();
     };
-    getSeriesValue = function(seriesLabel, seriesLabels, seriesValues) {
+
+    Widgets.prototype.getSeriesValue = function(seriesLabel, seriesLabels, seriesValues) {
       var arraySeriesLabels, arraySeriesValues, i;
       arraySeriesLabels = seriesLabels.split(",");
       arraySeriesValues = seriesValues.split(",");
@@ -125,8 +138,10 @@
         i++;
       }
     };
-    displayEnrichmentWidgetConfig = function(widgetId, label, bagName, target) {
-      var errorCorrection, extraAttr, max, wsCall;
+
+    Widgets.prototype.displayEnrichmentWidgetConfig = function(widgetId, label, bagName, target) {
+      var errorCorrection, extraAttr, max, wsCall,
+        _this = this;
       target = $(target);
       target.find("div.data").hide();
       target.find("div.noresults").hide();
@@ -145,7 +160,7 @@
           filter: extraAttr,
           token: tokenId
         };
-        return $.getJSON(service + "list/enrichment", request_data, function(res) {
+        return $.getJSON(_this.service + "list/enrichment", request_data, function(res) {
           var $table, columns, externalLink, externalLinkLabel, i, results;
           target.find("table.tablewidget thead").html("");
           target.find("table.tablewidget tbody").html("");
@@ -173,13 +188,15 @@
         });
       })();
     };
-    getExtraValue = function(target) {
+
+    Widgets.prototype.getExtraValue = function(target) {
       var extraAttr;
       if (target.find("select.select").length > 0) {
         return extraAttr = target.find("select.select").value;
       }
     };
-    make_enrichment_row = function(result, externalLink, externalLinkLabel) {
+
+    Widgets.prototype.make_enrichment_row = function(result, externalLink, externalLinkLabel) {
       var $a, $checkBox, $count, $list, $matches, $row, $td, i, label;
       $row = $("<tr>");
       $checkBox = $("<input />").attr({
@@ -226,23 +243,39 @@
       $row.append($("<td>").append($count));
       return $row;
     };
-    loadGraphWidget = function(id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {
+
+    Widgets.prototype.loadGraphWidget = function(id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {
+      var _this = this;
       return google.setOnLoadCallback(function() {
-        return displayGraphWidgetConfig(id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target);
+        return _this.displayGraphWidgetConfig(id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target);
       });
     };
-    loadEnrichmentWidget = function(id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {
+
+    Widgets.prototype.loadEnrichmentWidget = function(id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {
+      var _this = this;
       return google.setOnLoadCallback(function() {
-        return displayEnrichmentWidgetConfig(id, label, bagName, target);
+        return _this.displayEnrichmentWidgetConfig(id, label, bagName, target);
       });
     };
+
     google.load("visualization", "1.0", {
       packages: ["corechart"]
     });
-    return {
-      loadGraph: loadGraphWidget,
-      loadEnrichment: loadEnrichmentWidget
+
+    Widgets.prototype.loadGraph = function() {
+      var opts;
+      opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      return this.loadGraphWidget.apply(this, opts);
     };
-  };
+
+    Widgets.prototype.loadEnrichment = function() {
+      var opts;
+      opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      return this.loadEnrichmentWidget.apply(this, opts);
+    };
+
+    return Widgets;
+
+  })();
 
 }).call(this);
