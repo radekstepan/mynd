@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Widget Client</title>
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <link href="bootstrap.css" rel="stylesheet">
+
+    <!-- dependencies -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+    <!-- widget.js -->
+    <script type="text/javascript" src="widgets.js"></script>
+  </head>
+
+  <body>
+    <!-- menu -->
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container" style="width: auto;">
+          <a class="brand" href="#">Widget Client</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <script type="text/javascript">
+        window.widgets = new window.Widgets("http://aragorn.flymine.org:8080/flymine/service/");
+        window.widgets.loadGraph('flyfish', 'Stage', 'Gene count', 'Expressed,Not Expressed', 'true,false', '1',
+          '#widget');        
+      </script>
+
+      <div class="row">
+        <div class="span5">
+          <h2>Example Widget</h2>
+          <p>BDGP expression patterns loaded from <span class="label">ws_widgets</span> FlyMine branch.</p>
+        </div>
+
+        <div id="widget" class="span7">
+          <h3>mRNA subcellular localisation (fly-FISH)</h3>
+          <p>Expression patterns of Drosophila mRNAs at the subcellular. Not analysed: <span class="notanalysed"></span></p>
+
+          <div class="data"></div>
+          <div class="noresults" style="display:none;">No results found.</div>
+          <div class="wait">Searching...</div>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>
