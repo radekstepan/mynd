@@ -15,42 +15,48 @@
     };
     displayGraphWidgetConfig = function(widgetId, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {
       var extraAttr, wsCall;
-      target = jQuery(target);
+      target = $(target);
       target.find("div.data").hide();
       target.find("div.noresults").hide();
       target.find("div.wait").show();
       extraAttr = getExtraValue(target);
-      wsCall = wsCall = function(token) {
+      return wsCall = (function(token) {
         var request_data;
+        if (token == null) token = null;
         request_data = {
           widget: widgetId,
           list: bagName,
           filter: extraAttr,
-          token: token
+          token: token || ""
         };
-        return jQuery.getJSON(service + "list/chart", request_data, function(res) {
+        return $.getJSON(service + "list/chart", request_data, function(res) {
           var Chart, data, options, pathQuery, targetElem, viz;
           if (res.results.length !== 0) {
             viz = google.visualization;
             data = google.visualization.arrayToDataTable(res.results, false);
             targetElem = target;
             Chart = null;
-            options = jQuery.extend({}, CHART_OPTS, {
+            options = $.extend({}, CHART_OPTS, {
               title: res.title
             });
-            if (res.chartType === "ColumnChart") {
-              Chart = viz.ColumnChart;
-            } else if (res.chartType === "BarChart") {
-              Chart = viz.BarChart;
-            } else if (res.chartType === "ScatterPlot") {
-              Chart = viz.ScatterChart;
-            } else if (res.chartType === "PieChart") {
-              Chart = viz.PieChart;
-            } else {
-              if (res.chartType === "XYLineChart") Chart = viz.LineChart;
+            switch (res.chartType) {
+              case "ColumnChart":
+                Chart = viz.ColumnChart;
+                break;
+              case "BarChart":
+                Chart = viz.BarChart;
+                break;
+              case "ScatterPlot":
+                Chart = viz.ScatterChart;
+                break;
+              case "PieChart":
+                Chart = viz.PieChart;
+                break;
+              case "XYLineChart":
+                Chart = viz.LineChart;
             }
             if (domainLabel) {
-              jQuery.extend(options, {
+              $.extend(options, {
                 hAxis: {
                   title: rangeLabel,
                   titleTextStyle: {
@@ -60,7 +66,7 @@
               });
             }
             if (rangeLabel) {
-              jQuery.extend(options, {
+              $.extend(options, {
                 vAxis: {
                   title: domainLabel,
                   titleTextStyle: {
@@ -107,8 +113,7 @@
           target.find("div.wait").hide();
           return target.find("div.notanalysed").text(res.notAnalysed);
         });
-      };
-      return "";
+      })(token);
     };
     getSeriesValue = function(seriesLabel, seriesLabels, seriesValues) {
       var arraySeriesLabels, arraySeriesValues, i;
@@ -122,83 +127,78 @@
     };
     displayEnrichmentWidgetConfig = function(widgetId, label, bagName, target) {
       var errorCorrection, extraAttr, max, wsCall;
-      target = jQuery(target);
+      target = $(target);
       target.find("div.data").hide();
       target.find("div.noresults").hide();
       target.find("div.wait").show();
-      errorCorrection = void 0;
-      if (target.find("div.errorcorrection").length > 0) {
-        errorCorrection = target.find("div.errorcorrection").value;
-      }
-      max = void 0;
+      errorCorrection = target.find("div.errorcorrection").valueif(target.find("div.errorcorrection").length > 0);
       if (target.find("div.max").length > 0) max = target.find("div.max").value;
       extraAttr = getExtraValue(target);
-      wsCall = wsCall = function(tokenId) {
-        var request_data;
-        request_data = {
-          widget: widgetId,
-          list: bagName,
-          correction: errorCorrection,
-          maxp: max,
-          filter: extraAttr,
-          token: tokenId
+      return wsCall = (function() {
+        return function(tokenId) {
+          var request_data;
+          if (tokenId == null) tokenId = "";
+          request_data = {
+            widget: widgetId,
+            list: bagName,
+            correction: errorCorrection,
+            maxp: max,
+            filter: extraAttr,
+            token: tokenId
+          };
+          return $.getJSON(service + "list/enrichment", request_data, function(res) {
+            var $table, columns, externalLink, externalLinkLabel, i, results;
+            target.find("table.tablewidget thead").html("");
+            target.find("table.tablewidget tbody").html("");
+            results = res.results;
+            if (results.length !== 0) {
+              columns = [label, "p-Value", "Matches"];
+              createTableHeader(widgetId, columns);
+              $table = target.find("table.tablewidget tbody");
+              i = 0;
+              if (target.find("div.externallink").length > 0) {
+                externalLink = target.find("div.externallink").value;
+              }
+              if (target.find("div.externallabel").length > 0) {
+                externalLinkLabel = target.find("div.externallabel").value;
+              }
+              for (i in results) {
+                $table.append(make_enrichment_row(results[i], externalLink, externalLinkLabel));
+              }
+              target.find("div.data").show();
+            } else {
+              target.find("div.noresults").show();
+            }
+            target.find("div.wait").hide();
+            return calcNotAnalysed(widgetId, res.notAnalysed);
+          });
         };
-        return jQuery.getJSON(service + "list/enrichment", request_data, function(res) {
-          var $table, columns, externalLink, externalLinkLabel, i, results;
-          target.find("table.tablewidget thead").html("");
-          target.find("table.tablewidget tbody").html("");
-          results = res.results;
-          if (results.length !== 0) {
-            columns = [label, "p-Value", "Matches"];
-            createTableHeader(widgetId, columns);
-            $table = target.find("table.tablewidget tbody");
-            i = 0;
-            externalLink = void 0;
-            if (target.find("div.externallink").length > 0) {
-              externalLink = target.find("div.externallink").value;
-            }
-            externalLinkLabel = void 0;
-            if (target.find("div.externallabel").length > 0) {
-              externalLinkLabel = target.find("div.externallabel").value;
-            }
-            for (i in results) {
-              $table.append(make_enrichment_row(results[i], externalLink, externalLinkLabel));
-            }
-            target.find("div.data").show();
-          } else {
-            target.find("div.noresults").show();
-          }
-          target.find("div.wait").hide();
-          return calcNotAnalysed(widgetId, res.notAnalysed);
-        });
-      };
-      return "";
+      })();
     };
     getExtraValue = function(target) {
       var extraAttr;
-      extraAttr = void 0;
       if (target.find("select.select").length > 0) {
-        extraAttr = target.find("select.select").value;
+        return extraAttr = target.find("select.select").value;
       }
-      return extraAttr;
     };
     make_enrichment_row = function(result, externalLink, externalLinkLabel) {
       var $a, $checkBox, $count, $list, $matches, $row, $td, i, label;
-      $row = jQuery("<tr>");
-      $checkBox = jQuery("<input />").attr({
+      $row = $("<tr>");
+      $checkBox = $("<input />").attr({
         type: "checkbox",
         id: "selected_" + result.item,
         value: result.item,
         name: "selected"
       });
-      $row.append(jQuery("<td>").append($checkBox));
+      $row.append($("<td>").append($checkBox));
       if (result.description) {
-        $td = jQuery("<td>").text(result.description + " ");
+        $td = $("<td>").text(result.description + " ");
         if (externalLink) {
-          label = void 0;
-          if (externalLinkLabel !== undefined) label = externalLinkLabel;
+          if (externalLinkLabel !== void 0) {
+            label = externalLinkLabel + result.item;
+          }
           label = label + result.item;
-          $a = jQuery("<a>").addClass("extlink").text("[" + label + "]");
+          $a = $("<a>").addClass("extlink").text("[" + label + "]");
           $a.attr({
             target: "_new",
             href: externalLink + result.item
@@ -207,25 +207,25 @@
         }
         $row.append($td);
       } else {
-        $row.append(jQuery("<td>").html("<em>no description</em>"));
+        $row.append($("<td>").html("<em>no description</em>"));
       }
-      $row.append(jQuery("<td>").text(result["p-value"]));
-      $count = jQuery("<span>").addClass("match-count").text(result.matches.length);
-      $matches = jQuery("<div>");
+      $row.append($("<td>").text(result["p-value"]));
+      $count = $("<span>").addClass("match-count").text(result.matches.length);
+      $matches = $("<div>");
       $matches.css({
         display: "none"
       });
-      $list = jQuery("<ul>");
+      $list = $("<ul>");
       i = 0;
       for (i in result.matches) {
-        $list.append(jQuery("<li>").text(result.matches[i]));
+        $list.append($("<li>").text(result.matches[i]));
       }
       $matches.append($list);
       $count.append($matches);
       $count.click(function() {
         return $matches.slideToggle();
       });
-      $row.append(jQuery("<td>").append($count));
+      $row.append($("<td>").append($count));
       return $row;
     };
     loadGraphWidget = function(id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {

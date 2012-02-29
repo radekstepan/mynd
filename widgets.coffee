@@ -15,26 +15,26 @@ window.Widgets = (service) ->
 
 
     displayGraphWidgetConfig = (widgetId, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) ->
-        target = jQuery(target)
+        target = $(target)
         target.find("div.data").hide()
         target.find("div.noresults").hide()
         target.find("div.wait").show()
         extraAttr = getExtraValue(target)
       
-        wsCall = do -> (token="") ->
+        wsCall = do (token=null) ->
             request_data =
                 widget: widgetId
                 list: bagName
                 filter: extraAttr
-                token: token
+                token: token or ""
 
-            jQuery.getJSON service + "list/chart", request_data, (res) ->
+            $.getJSON service + "list/chart", request_data, (res) ->
                 unless res.results.length is 0
                     viz = google.visualization
                     data = google.visualization.arrayToDataTable(res.results, false)
                     targetElem = target
                     Chart = null
-                    options = jQuery.extend({}, CHART_OPTS,
+                    options = $.extend({}, CHART_OPTS,
                         title: res.title
                     )
 
@@ -46,7 +46,7 @@ window.Widgets = (service) ->
                         when "XYLineChart" then Chart = viz.LineChart
                     
                     if domainLabel
-                        jQuery.extend(options,
+                        $.extend(options,
                             hAxis:
                                 title: rangeLabel
                                 titleTextStyle:
@@ -54,7 +54,7 @@ window.Widgets = (service) ->
                         )
                     
                     if rangeLabel
-                        jQuery.extend(options,
+                        $.extend(options,
                             vAxis:
                                 title: domainLabel
                                 titleTextStyle:
@@ -107,7 +107,7 @@ window.Widgets = (service) ->
 
 
     displayEnrichmentWidgetConfig = (widgetId, label, bagName, target) ->
-        target = jQuery(target)
+        target = $(target)
         target.find("div.data").hide()
         target.find("div.noresults").hide()
         target.find("div.wait").show()
@@ -126,7 +126,7 @@ window.Widgets = (service) ->
                 filter: extraAttr
                 token: tokenId
 
-            jQuery.getJSON service + "list/enrichment", request_data, (res) ->
+            $.getJSON service + "list/enrichment", request_data, (res) ->
                 target.find("table.tablewidget thead").html ""
                 target.find("table.tablewidget tbody").html ""
                 
@@ -148,25 +148,25 @@ window.Widgets = (service) ->
                 calcNotAnalysed widgetId, res.notAnalysed
 
     getExtraValue = (target) ->
-        extraAttr = target.find("select.select").value  if target.find("select.select").length > 0
+        extraAttr = target.find("select.select").value if target.find("select.select").length > 0
 
     make_enrichment_row = (result, externalLink, externalLinkLabel) ->
-        $row = jQuery("<tr>")
-        $checkBox = jQuery("<input />").attr(
+        $row = $("<tr>")
+        $checkBox = $("<input />").attr(
             type: "checkbox"
             id: "selected_" + result.item
             value: result.item
             name: "selected"
         )
         
-        $row.append jQuery("<td>").append($checkBox)
+        $row.append $("<td>").append($checkBox)
         if result.description
-            $td = jQuery("<td>").text(result.description + " ")
+            $td = $("<td>").text(result.description + " ")
         
             if externalLink
                 label = externalLinkLabel + result.item unless externalLinkLabel is undefined
                 label = label + result.item
-                $a = jQuery("<a>").addClass("extlink").text("[" + label + "]")
+                $a = $("<a>").addClass("extlink").text("[" + label + "]")
                 $a.attr
                     target: "_new"
                     href: externalLink + result.item
@@ -174,22 +174,22 @@ window.Widgets = (service) ->
                 $td.append $a
             $row.append $td
         else
-            $row.append jQuery("<td>").html("<em>no description</em>")
+            $row.append $("<td>").html("<em>no description</em>")
       
-        $row.append jQuery("<td>").text(result["p-value"])
-        $count = jQuery("<span>").addClass("match-count").text(result.matches.length)
-        $matches = jQuery("<div>")
+        $row.append $("<td>").text(result["p-value"])
+        $count = $("<span>").addClass("match-count").text(result.matches.length)
+        $matches = $("<div>")
         $matches.css display: "none"
-        $list = jQuery("<ul>")
+        $list = $("<ul>")
         i = 0
         for i of result.matches
-            $list.append jQuery("<li>").text(result.matches[i])
+            $list.append $("<li>").text(result.matches[i])
         $matches.append $list
         $count.append $matches
         $count.click ->
             $matches.slideToggle()
 
-        $row.append jQuery("<td>").append($count)
+        $row.append $("<td>").append($count)
         $row
 
     loadGraphWidget = (id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) ->
@@ -202,7 +202,7 @@ window.Widgets = (service) ->
 
     # Load Google Visualization.
     google.load "visualization", "1.0",
-      packages: [ "corechart" ]
+        packages: [ "corechart" ]
 
     # Public methods.
     loadGraph: loadGraphWidget
