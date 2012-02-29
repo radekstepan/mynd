@@ -21,18 +21,18 @@ window.Widgets = (service) ->
         target.find("div.wait").show()
         extraAttr = getExtraValue(target)
       
-        wsCall = do (token=null) ->
+        wsCall = ((token="") ->
             request_data =
                 widget: widgetId
                 list: bagName
                 filter: extraAttr
-                token: token or ""
+                token: token
 
             $.getJSON service + "list/chart", request_data, (res) ->
                 unless res.results.length is 0
                     viz = google.visualization
                     data = google.visualization.arrayToDataTable(res.results, false)
-                    targetElem = target
+                    targetElem = target[0]
                     Chart = null
                     options = $.extend({}, CHART_OPTS,
                         title: res.title
@@ -92,6 +92,7 @@ window.Widgets = (service) ->
                 
                 target.find("div.wait").hide()
                 target.find("div.notanalysed").text res.notAnalysed
+        )()
 
     getSeriesValue = (seriesLabel, seriesLabels, seriesValues) ->
         arraySeriesLabels = seriesLabels.split(",")
@@ -117,7 +118,7 @@ window.Widgets = (service) ->
         
         extraAttr = getExtraValue(target)
       
-        wsCall = do -> (tokenId="") ->
+        wsCall = ((tokenId="") ->
             request_data =
                 widget: widgetId
                 list: bagName
@@ -146,6 +147,7 @@ window.Widgets = (service) ->
                 
                 target.find("div.wait").hide()
                 calcNotAnalysed widgetId, res.notAnalysed
+        )()
 
     getExtraValue = (target) ->
         extraAttr = target.find("select.select").value if target.find("select.select").length > 0

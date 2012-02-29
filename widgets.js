@@ -22,19 +22,19 @@
       extraAttr = getExtraValue(target);
       return wsCall = (function(token) {
         var request_data;
-        if (token == null) token = null;
+        if (token == null) token = "";
         request_data = {
           widget: widgetId,
           list: bagName,
           filter: extraAttr,
-          token: token || ""
+          token: token
         };
         return $.getJSON(service + "list/chart", request_data, function(res) {
           var Chart, data, options, pathQuery, targetElem, viz;
           if (res.results.length !== 0) {
             viz = google.visualization;
             data = google.visualization.arrayToDataTable(res.results, false);
-            targetElem = target;
+            targetElem = target[0];
             Chart = null;
             options = $.extend({}, CHART_OPTS, {
               title: res.title
@@ -113,7 +113,7 @@
           target.find("div.wait").hide();
           return target.find("div.notanalysed").text(res.notAnalysed);
         });
-      })(token);
+      })();
     };
     getSeriesValue = function(seriesLabel, seriesLabels, seriesValues) {
       var arraySeriesLabels, arraySeriesValues, i;
@@ -134,45 +134,43 @@
       errorCorrection = target.find("div.errorcorrection").valueif(target.find("div.errorcorrection").length > 0);
       if (target.find("div.max").length > 0) max = target.find("div.max").value;
       extraAttr = getExtraValue(target);
-      return wsCall = (function() {
-        return function(tokenId) {
-          var request_data;
-          if (tokenId == null) tokenId = "";
-          request_data = {
-            widget: widgetId,
-            list: bagName,
-            correction: errorCorrection,
-            maxp: max,
-            filter: extraAttr,
-            token: tokenId
-          };
-          return $.getJSON(service + "list/enrichment", request_data, function(res) {
-            var $table, columns, externalLink, externalLinkLabel, i, results;
-            target.find("table.tablewidget thead").html("");
-            target.find("table.tablewidget tbody").html("");
-            results = res.results;
-            if (results.length !== 0) {
-              columns = [label, "p-Value", "Matches"];
-              createTableHeader(widgetId, columns);
-              $table = target.find("table.tablewidget tbody");
-              i = 0;
-              if (target.find("div.externallink").length > 0) {
-                externalLink = target.find("div.externallink").value;
-              }
-              if (target.find("div.externallabel").length > 0) {
-                externalLinkLabel = target.find("div.externallabel").value;
-              }
-              for (i in results) {
-                $table.append(make_enrichment_row(results[i], externalLink, externalLinkLabel));
-              }
-              target.find("div.data").show();
-            } else {
-              target.find("div.noresults").show();
-            }
-            target.find("div.wait").hide();
-            return calcNotAnalysed(widgetId, res.notAnalysed);
-          });
+      return wsCall = (function(tokenId) {
+        var request_data;
+        if (tokenId == null) tokenId = "";
+        request_data = {
+          widget: widgetId,
+          list: bagName,
+          correction: errorCorrection,
+          maxp: max,
+          filter: extraAttr,
+          token: tokenId
         };
+        return $.getJSON(service + "list/enrichment", request_data, function(res) {
+          var $table, columns, externalLink, externalLinkLabel, i, results;
+          target.find("table.tablewidget thead").html("");
+          target.find("table.tablewidget tbody").html("");
+          results = res.results;
+          if (results.length !== 0) {
+            columns = [label, "p-Value", "Matches"];
+            createTableHeader(widgetId, columns);
+            $table = target.find("table.tablewidget tbody");
+            i = 0;
+            if (target.find("div.externallink").length > 0) {
+              externalLink = target.find("div.externallink").value;
+            }
+            if (target.find("div.externallabel").length > 0) {
+              externalLinkLabel = target.find("div.externallabel").value;
+            }
+            for (i in results) {
+              $table.append(make_enrichment_row(results[i], externalLink, externalLinkLabel));
+            }
+            target.find("div.data").show();
+          } else {
+            target.find("div.noresults").show();
+          }
+          target.find("div.wait").hide();
+          return calcNotAnalysed(widgetId, res.notAnalysed);
+        });
       })();
     };
     getExtraValue = function(target) {
