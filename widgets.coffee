@@ -1,4 +1,4 @@
-class window.Widgets
+class InterMineWidget
 
     constructor: (@service) ->
 
@@ -12,9 +12,18 @@ class window.Widgets
         chartArea:
             top: 30
 
+    # Load Google Visualization.
+    google.load "visualization", "1.0",
+        packages: [ "corechart" ]
 
-    # --------- graph widget ---------
 
+    getExtraValue: (target) ->
+        extraAttr = target.find("select.select").value if target.find("select.select").length > 0
+
+# --------------------------------------------
+
+
+class GraphWidget extends InterMineWidget
 
     displayGraphWidgetConfig: (widgetId, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) =>
         target = $(target)
@@ -105,9 +114,15 @@ class window.Widgets
             return arraySeriesValues[i]  if seriesLabel is arraySeriesLabels[i]
             i++
 
+    load: (id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) =>
+        google.setOnLoadCallback =>
+            @displayGraphWidgetConfig id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target
 
-    # --------- enrichment widget ---------
 
+# --------------------------------------------
+
+
+class EnrichmentWidget extends InterMineWidget
 
     displayEnrichmentWidgetConfig: (widgetId, label, bagName, target) =>
         target = $(target)
@@ -151,9 +166,6 @@ class window.Widgets
                 calcNotAnalysed widgetId, res.notAnalysed
         )()
 
-    getExtraValue: (target) ->
-        extraAttr = target.find("select.select").value if target.find("select.select").length > 0
-
     make_enrichment_row: (result, externalLink, externalLinkLabel) ->
         $row = $("<tr>")
         $checkBox = $("<input />").attr(
@@ -196,18 +208,22 @@ class window.Widgets
         $row.append $("<td>").append($count)
         $row
 
-    loadGraphWidget: (id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) =>
-        google.setOnLoadCallback =>
-            @displayGraphWidgetConfig id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target
-
-    loadEnrichmentWidget: (id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) =>
+    load: (id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) =>
         google.setOnLoadCallback =>
             @displayEnrichmentWidgetConfig id, label, bagName, target
 
-    # Load Google Visualization.
-    google.load "visualization", "1.0",
-        packages: [ "corechart" ]
 
-    # Public methods.
-    loadGraph: (opts...) -> @loadGraphWidget(opts...)
-    loadEnrichment: (opts...) -> @loadEnrichmentWidget(opts...)
+# --------------------------------------------
+
+
+class window.Widgets
+
+    constructor: (@service) ->
+
+    loadGraph: (opts...) =>
+        graph = new GraphWidget(@service)
+        graph.load opts...
+    
+    loadEnrichment: (opts...) =>
+        enrichment = new EnrichmentWidget(@service)
+        enrichment.load opts...

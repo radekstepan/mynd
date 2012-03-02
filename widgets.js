@@ -1,18 +1,17 @@
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  var EnrichmentWidget, GraphWidget, InterMineWidget,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
     __slice = Array.prototype.slice;
 
-  window.Widgets = (function() {
+  InterMineWidget = (function() {
 
-    function Widgets(service) {
+    function InterMineWidget(service) {
       this.service = service;
-      this.loadEnrichmentWidget = __bind(this.loadEnrichmentWidget, this);
-      this.loadGraphWidget = __bind(this.loadGraphWidget, this);
-      this.displayEnrichmentWidgetConfig = __bind(this.displayEnrichmentWidgetConfig, this);
-      this.displayGraphWidgetConfig = __bind(this.displayGraphWidgetConfig, this);
     }
 
-    Widgets.prototype.CHART_OPTS = {
+    InterMineWidget.prototype.CHART_OPTS = {
       fontName: "Sans-Serif",
       fontSize: 9,
       width: 400,
@@ -24,7 +23,32 @@
       }
     };
 
-    Widgets.prototype.displayGraphWidgetConfig = function(widgetId, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {
+    google.load("visualization", "1.0", {
+      packages: ["corechart"]
+    });
+
+    InterMineWidget.prototype.getExtraValue = function(target) {
+      var extraAttr;
+      if (target.find("select.select").length > 0) {
+        return extraAttr = target.find("select.select").value;
+      }
+    };
+
+    return InterMineWidget;
+
+  })();
+
+  GraphWidget = (function(_super) {
+
+    __extends(GraphWidget, _super);
+
+    function GraphWidget() {
+      this.load = __bind(this.load, this);
+      this.displayGraphWidgetConfig = __bind(this.displayGraphWidgetConfig, this);
+      GraphWidget.__super__.constructor.apply(this, arguments);
+    }
+
+    GraphWidget.prototype.displayGraphWidgetConfig = function(widgetId, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {
       var extraAttr, wsCall,
         _this = this;
       target = $(target);
@@ -128,7 +152,7 @@
       })();
     };
 
-    Widgets.prototype.getSeriesValue = function(seriesLabel, seriesLabels, seriesValues) {
+    GraphWidget.prototype.getSeriesValue = function(seriesLabel, seriesLabels, seriesValues) {
       var arraySeriesLabels, arraySeriesValues, i;
       arraySeriesLabels = seriesLabels.split(",");
       arraySeriesValues = seriesValues.split(",");
@@ -139,7 +163,28 @@
       }
     };
 
-    Widgets.prototype.displayEnrichmentWidgetConfig = function(widgetId, label, bagName, target) {
+    GraphWidget.prototype.load = function(id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {
+      var _this = this;
+      return google.setOnLoadCallback(function() {
+        return _this.displayGraphWidgetConfig(id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target);
+      });
+    };
+
+    return GraphWidget;
+
+  })(InterMineWidget);
+
+  EnrichmentWidget = (function(_super) {
+
+    __extends(EnrichmentWidget, _super);
+
+    function EnrichmentWidget() {
+      this.load = __bind(this.load, this);
+      this.displayEnrichmentWidgetConfig = __bind(this.displayEnrichmentWidgetConfig, this);
+      EnrichmentWidget.__super__.constructor.apply(this, arguments);
+    }
+
+    EnrichmentWidget.prototype.displayEnrichmentWidgetConfig = function(widgetId, label, bagName, target) {
       var errorCorrection, extraAttr, max, wsCall,
         _this = this;
       target = $(target);
@@ -189,14 +234,7 @@
       })();
     };
 
-    Widgets.prototype.getExtraValue = function(target) {
-      var extraAttr;
-      if (target.find("select.select").length > 0) {
-        return extraAttr = target.find("select.select").value;
-      }
-    };
-
-    Widgets.prototype.make_enrichment_row = function(result, externalLink, externalLinkLabel) {
+    EnrichmentWidget.prototype.make_enrichment_row = function(result, externalLink, externalLinkLabel) {
       var $a, $checkBox, $count, $list, $matches, $row, $td, i, label;
       $row = $("<tr>");
       $checkBox = $("<input />").attr({
@@ -244,34 +282,37 @@
       return $row;
     };
 
-    Widgets.prototype.loadGraphWidget = function(id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {
-      var _this = this;
-      return google.setOnLoadCallback(function() {
-        return _this.displayGraphWidgetConfig(id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target);
-      });
-    };
-
-    Widgets.prototype.loadEnrichmentWidget = function(id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {
+    EnrichmentWidget.prototype.load = function(id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {
       var _this = this;
       return google.setOnLoadCallback(function() {
         return _this.displayEnrichmentWidgetConfig(id, label, bagName, target);
       });
     };
 
-    google.load("visualization", "1.0", {
-      packages: ["corechart"]
-    });
+    return EnrichmentWidget;
+
+  })(InterMineWidget);
+
+  window.Widgets = (function() {
+
+    function Widgets(service) {
+      this.service = service;
+      this.loadEnrichment = __bind(this.loadEnrichment, this);
+      this.loadGraph = __bind(this.loadGraph, this);
+    }
 
     Widgets.prototype.loadGraph = function() {
-      var opts;
+      var graph, opts;
       opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      return this.loadGraphWidget.apply(this, opts);
+      graph = new GraphWidget(this.service);
+      return graph.load.apply(graph, opts);
     };
 
     Widgets.prototype.loadEnrichment = function() {
-      var opts;
+      var enrichment, opts;
       opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      return this.loadEnrichmentWidget.apply(this, opts);
+      enrichment = new EnrichmentWidget(this.service);
+      return enrichment.load.apply(enrichment, opts);
     };
 
     return Widgets;
