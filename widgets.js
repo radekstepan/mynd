@@ -7,11 +7,9 @@
 
   InterMineWidget = (function() {
 
-    function InterMineWidget(service) {
-      this.service = service;
-    }
+    function InterMineWidget() {}
 
-    InterMineWidget.prototype.CHART_OPTS = {
+    InterMineWidget.prototype.chartOptions = {
       fontName: "Sans-Serif",
       fontSize: 9,
       width: 400,
@@ -20,17 +18,16 @@
       colors: ["#2F72FF", "#9FC0FF"],
       chartArea: {
         top: 30
-      }
-    };
-
-    google.load("visualization", "1.0", {
-      packages: ["corechart"]
-    });
-
-    InterMineWidget.prototype.getExtraValue = function(target) {
-      var extraAttr;
-      if (target.find("select.select").length > 0) {
-        return extraAttr = target.find("select.select").value;
+      },
+      hAxis: {
+        titleTextStyle: {
+          fontName: "Sans-Serif"
+        }
+      },
+      vAxis: {
+        titleTextStyle: {
+          fontName: "Sans-Serif"
+        }
       }
     };
 
@@ -42,131 +39,73 @@
 
     __extends(GraphWidget, _super);
 
-    function GraphWidget() {
-      this.load = __bind(this.load, this);
-      this.displayGraphWidgetConfig = __bind(this.displayGraphWidgetConfig, this);
-      GraphWidget.__super__.constructor.apply(this, arguments);
+    GraphWidget.prototype.templates = {
+      normal: "<h3><%= id %></h3>\n<p><%= description %></p>\n<% if (notAnalysed > 0) { %>\n    <p>Number of Genes in this list not analysed in this widget: <%= notAnalysed %></p>\n<% } %>\n<div class=\"widget\"></div>",
+      noresults: "<p>The widget has no results.</p>"
+    };
+
+    function GraphWidget(service, id, bagName, el, domainLabel, rangeLabel, series) {
+      var _this = this;
+      this.service = service;
+      this.id = id;
+      this.bagName = bagName;
+      this.el = el;
+      this.render = __bind(this.render, this);
+      this.options = {
+        "domainLabel": domainLabel,
+        "rangeLabel": rangeLabel,
+        "series": series
+      };
+      google.setOnLoadCallback(function() {
+        return _this.render();
+      });
     }
 
-    GraphWidget.prototype.displayGraphWidgetConfig = function(widgetId, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {
-      var extraAttr, wsCall,
-        _this = this;
-      target = $(target);
-      target.find("div.data").hide();
-      target.find("div.noresults").hide();
-      target.find("div.wait").show();
-      extraAttr = this.getExtraValue(target);
-      return wsCall = (function(token) {
-        var request_data;
-        if (token == null) token = "";
-        request_data = {
-          widget: widgetId,
-          list: bagName,
-          filter: extraAttr,
-          token: token
-        };
-        return $.getJSON(_this.service + "list/chart", request_data, function(res) {
-          var Chart, data, options, pathQuery, targetElem, viz;
-          if (res.results.length !== 0) {
-            viz = google.visualization;
-            data = google.visualization.arrayToDataTable(res.results, false);
-            targetElem = target[0];
-            Chart = null;
-            options = $.extend({}, _this.CHART_OPTS, {
-              title: res.title
-            });
-            switch (res.chartType) {
-              case "ColumnChart":
-                Chart = viz.ColumnChart;
-                break;
-              case "BarChart":
-                Chart = viz.BarChart;
-                break;
-              case "ScatterPlot":
-                Chart = viz.ScatterChart;
-                break;
-              case "PieChart":
-                Chart = viz.PieChart;
-                break;
-              case "XYLineChart":
-                Chart = viz.LineChart;
-            }
-            if (domainLabel) {
-              $.extend(options, {
-                hAxis: {
-                  title: rangeLabel,
-                  titleTextStyle: {
-                    fontName: "Sans-Serif"
-                  }
-                }
-              });
-            }
-            if (rangeLabel) {
-              $.extend(options, {
-                vAxis: {
-                  title: domainLabel,
-                  titleTextStyle: {
-                    fontName: "Sans-Serif"
-                  }
-                }
-              });
-            }
-            viz = void 0;
-            if (Chart) {
-              viz = new Chart(targetElem);
-              viz.draw(data, options);
-              pathQuery = res.pathQuery;
-              google.visualization.events.addListener(viz, "select", function() {
-                var category, i, item, pathQueryWithConstraintValues, selection, series, seriesValue, _results;
-                selection = viz.getSelection();
-                i = 0;
-                _results = [];
-                while (i < selection.length) {
-                  item = selection[i];
-                  if ((item.row != null) && (item.column != null)) {
-                    category = res.results[item.row + 1][0];
-                    series = res.results[0][item.column];
-                    seriesValue = getSeriesValue(series, seriesLabels, seriesValues);
-                    pathQueryWithConstraintValues = pathQuery.replace("%category", category);
-                    pathQueryWithConstraintValues = pathQueryWithConstraintValues.replace("%series", seriesValue);
-                    window.open(this.service + "query/results?query=" + pathQueryWithConstraintValues + "&format=html");
-                  } else if (item.row != null) {
-                    category = res.results[item.row + 1][0];
-                    pathQuery = pathQuery.replace("%category", category);
-                    window.open(this.service + "query/results?query=" + pathQuery + "&format=html");
-                  }
-                  _results.push(i++);
-                }
-                return _results;
-              });
-            } else {
-              alert("Don't know how to draw " + res.chartType + "s yet!");
-            }
-            target.find("div.data").show();
-          } else {
-            target.find("div.noresults").show();
-          }
-          target.find("div.wait").hide();
-          return target.find("div.notanalysed").text(res.notAnalysed);
-        });
-      })();
-    };
-
-    GraphWidget.prototype.getSeriesValue = function(seriesLabel, seriesLabels, seriesValues) {
-      var arraySeriesLabels, arraySeriesValues, i;
-      arraySeriesLabels = seriesLabels.split(",");
-      arraySeriesValues = seriesValues.split(",");
-      i = 0;
-      while (i < arraySeriesLabels.length) {
-        if (seriesLabel === arraySeriesLabels[i]) return arraySeriesValues[i];
-        i++;
-      }
-    };
-
-    GraphWidget.prototype.load = function(id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {
+    GraphWidget.prototype.render = function() {
       var _this = this;
-      return google.setOnLoadCallback(function() {
-        return _this.displayGraphWidgetConfig(id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target);
+      return $.getJSON(this.service + "list/chart", {
+        widget: this.id,
+        list: this.bagName,
+        filter: $(this.el).find("select.select").value || "",
+        token: ""
+      }, function(response) {
+        var chart;
+        if (response.results) {
+          $(_this.el).html(_.template(_this.templates.normal, {
+            "id": _this.id,
+            "description": response.description,
+            "notAnalysed": response.notAnalysed
+          }));
+          _this.chartOptions.title = response.title;
+          if (_this.options.domainLabel != null) {
+            _this.chartOptions.hAxis.title = _this.options.domainLabel;
+          }
+          if (_this.options.rangeLabel != null) {
+            _this.chartOptions.vAxis.title = _this.options.rangeLabel;
+          }
+          chart = new google.visualization[response.chartType]($(_this.el).find("div.widget")[0]);
+          chart.draw(google.visualization.arrayToDataTable(response.results, false), _this.chartOptions);
+          if (response.pathQuery != null) {
+            return google.visualization.events.addListener(chart, "select", function() {
+              var item, _i, _len, _ref, _results;
+              _ref = chart.getSelection();
+              _results = [];
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                item = _ref[_i];
+                if (item.row != null) {
+                  if (item.column != null) {} else {
+
+                  }
+                } else {
+                  _results.push(void 0);
+                }
+              }
+              return _results;
+            });
+          }
+        } else {
+          return $(_this.el).html(_.template(_this.templates.noresults));
+        }
       });
     };
 
@@ -185,7 +124,7 @@
     }
 
     EnrichmentWidget.prototype.displayEnrichmentWidgetConfig = function(widgetId, label, bagName, target) {
-      var errorCorrection, extraAttr, max, wsCall,
+      var errorCorrection, max, wsCall, _ref,
         _this = this;
       target = $(target);
       target.find("div.data").hide();
@@ -193,7 +132,9 @@
       target.find("div.wait").show();
       errorCorrection = target.find("div.errorcorrection").valueif(target.find("div.errorcorrection").length > 0);
       if (target.find("div.max").length > 0) max = target.find("div.max").value;
-      extraAttr = getExtraValue(target);
+      if (typeof extraAttr === "undefined" || extraAttr === null) {
+        extraAttr = (_ref = this.el.find("select.select")) != null ? _ref.value : void 0;
+      }
       return wsCall = (function(tokenId) {
         var request_data;
         if (tokenId == null) tokenId = "";
@@ -295,24 +236,34 @@
 
   window.Widgets = (function() {
 
+    google.load("visualization", "1.0", {
+      packages: ["corechart"]
+    });
+
     function Widgets(service) {
       this.service = service;
-      this.loadEnrichment = __bind(this.loadEnrichment, this);
-      this.loadGraph = __bind(this.loadGraph, this);
+      this.enrichment = __bind(this.enrichment, this);
+      this.graph = __bind(this.graph, this);
     }
 
-    Widgets.prototype.loadGraph = function() {
-      var graph, opts;
+    Widgets.prototype.graph = function() {
+      var opts;
       opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      graph = new GraphWidget(this.service);
-      return graph.load.apply(graph, opts);
+      return (function(func, args, ctor) {
+        ctor.prototype = func.prototype;
+        var child = new ctor, result = func.apply(child, args);
+        return typeof result === "object" ? result : child;
+      })(GraphWidget, [this.service].concat(__slice.call(opts)), function() {});
     };
 
-    Widgets.prototype.loadEnrichment = function() {
-      var enrichment, opts;
+    Widgets.prototype.enrichment = function() {
+      var opts;
       opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      enrichment = new EnrichmentWidget(this.service);
-      return enrichment.load.apply(enrichment, opts);
+      return (function(func, args, ctor) {
+        ctor.prototype = func.prototype;
+        var child = new ctor, result = func.apply(child, args);
+        return typeof result === "object" ? result : child;
+      })(EnrichmentWidget, [this.service].concat(__slice.call(opts)), function() {});
     };
 
     return Widgets;

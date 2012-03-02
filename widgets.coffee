@@ -1,8 +1,6 @@
 class InterMineWidget
 
-    constructor: (@service) ->
-
-    CHART_OPTS:
+    chartOptions:
         fontName: "Sans-Serif"
         fontSize: 9
         width: 400
@@ -11,112 +9,84 @@ class InterMineWidget
         colors: [ "#2F72FF", "#9FC0FF" ]
         chartArea:
             top: 30
+        hAxis:
+            titleTextStyle:
+                fontName: "Sans-Serif"
+        vAxis:
+            titleTextStyle:
+                fontName: "Sans-Serif"
 
-    # Load Google Visualization.
-    google.load "visualization", "1.0",
-        packages: [ "corechart" ]
-
-
-    getExtraValue: (target) ->
-        extraAttr = target.find("select.select").value if target.find("select.select").length > 0
 
 # --------------------------------------------
 
 
 class GraphWidget extends InterMineWidget
 
-    displayGraphWidgetConfig: (widgetId, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) =>
-        target = $(target)
-        target.find("div.data").hide()
-        target.find("div.noresults").hide()
-        target.find("div.wait").show()
-        extraAttr = @getExtraValue(target)
-      
-        wsCall = ((token="") =>
-            request_data =
-                widget: widgetId
-                list: bagName
-                filter: extraAttr
-                token: token
+    templates:
+        normal:
+            """
+                <h3><%= id %></h3>
+                <p><%= description %></p>
+                <% if (notAnalysed > 0) { %>
+                    <p>Number of Genes in this list not analysed in this widget: <%= notAnalysed %></p>
+                <% } %>
+                <div class="widget"></div>
+            """
+        noresults:
+            "<p>The widget has no results.</p>"
 
-            $.getJSON @service + "list/chart", request_data, (res) =>
-                unless res.results.length is 0
-                    viz = google.visualization
-                    data = google.visualization.arrayToDataTable(res.results, false)
-                    targetElem = target[0]
-                    Chart = null
-                    options = $.extend({}, @CHART_OPTS,
-                        title: res.title
-                    )
+    # Set the params on us and set Google load callback.
+    # `service`: http://aragorn.flymine.org:8080/flymine/service/
+    # `id`:      widgetId
+    # `bagName`: myBag
+    # `el`:      #target
+    constructor: (@service, @id, @bagName, @el, domainLabel, rangeLabel, series) ->
+        @options =
+            "domainLabel": domainLabel
+            "rangeLabel":  rangeLabel
+            "series":      series
 
-                    switch res.chartType
-                        when "ColumnChart" then Chart = viz.ColumnChart
-                        when "BarChart"  then Chart = viz.BarChart
-                        when "ScatterPlot" then Chart = viz.ScatterChart
-                        when "PieChart"  then Chart = viz.PieChart
-                        when "XYLineChart" then Chart = viz.LineChart
-                    
-                    if domainLabel
-                        $.extend(options,
-                            hAxis:
-                                title: rangeLabel
-                                titleTextStyle:
-                                    fontName: "Sans-Serif"
-                        )
-                    
-                    if rangeLabel
-                        $.extend(options,
-                            vAxis:
-                                title: domainLabel
-                                titleTextStyle:
-                                    fontName: "Sans-Serif"
-                        )
-                    
-                    viz = undefined
-                    if Chart
-                        viz = new Chart(targetElem)
-                        viz.draw(data, options)
-                        pathQuery = res.pathQuery
-                        google.visualization.events.addListener viz, "select", ->
-                            selection = viz.getSelection()
-                            i = 0
+        google.setOnLoadCallback => @render()
 
-                            while i < selection.length
-                                item = selection[i]
-                                if item.row? and item.column?
-                                    category = res.results[item.row + 1][0]
-                                    series = res.results[0][item.column]
-                                    seriesValue = getSeriesValue(series, seriesLabels, seriesValues)
-                                    pathQueryWithConstraintValues = pathQuery.replace("%category", category)
-                                    pathQueryWithConstraintValues = pathQueryWithConstraintValues.replace("%series", seriesValue)
-                                    window.open @service + "query/results?query=" + pathQueryWithConstraintValues + "&format=html"
-                                else if item.row?
-                                    category = res.results[item.row + 1][0]
-                                    pathQuery = pathQuery.replace("%category", category)
-                                    window.open @service + "query/results?query=" + pathQuery + "&format=html"
-                                i++
-                    else
-                        alert "Don't know how to draw " + res.chartType + "s yet!"
-                    target.find("div.data").show()
-                else
-                    target.find("div.noresults").show()
-                
-                target.find("div.wait").hide()
-                target.find("div.notanalysed").text res.notAnalysed
-        )()
+    # Visualize the displayer.
+    render: =>
+        # Get JSON response by calling the service.
+        $.getJSON @service + "list/chart",
+            widget: @id
+            list:   @bagName
+            filter: $(@el).find("select.select").value or ""
+            token:  "" # Only public lists for now.
+        , (response) =>
+            # We have results.
+            if response.results
+                # Render the widget template.
+                $(@el).html _.template @templates.normal,
+                    "id": @id
+                    "description": response.description
+                    "notAnalysed": response.notAnalysed
 
-    getSeriesValue: (seriesLabel, seriesLabels, seriesValues) ->
-        arraySeriesLabels = seriesLabels.split(",")
-        arraySeriesValues = seriesValues.split(",")
-        i = 0
+                # Set chart options.
+                @chartOptions.title = response.title
+                @chartOptions.hAxis.title = @options.domainLabel if @options.domainLabel?
+                @chartOptions.vAxis.title = @options.rangeLabel if @options.rangeLabel?
 
-        while i < arraySeriesLabels.length
-            return arraySeriesValues[i]  if seriesLabel is arraySeriesLabels[i]
-            i++
+                # Create the chart.
+                chart = new google.visualization[response.chartType]($(@el).find("div.widget")[0])
+                chart.draw(google.visualization.arrayToDataTable(response.results, false), @chartOptions)
 
-    load: (id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) =>
-        google.setOnLoadCallback =>
-            @displayGraphWidgetConfig id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target
+                # Add event listener on click the chart bar.
+                if response.pathQuery?
+                    google.visualization.events.addListener chart, "select", =>
+                        for item in chart.getSelection()
+                            if item.row?
+                                if item.column?
+                                    #pq = response.pathQuery.replace("%category", response.results[item.row + 1][0]).replace("%series", @options[response.results[0][item.column]])
+                                    #window.open @service + "query/results?query=" + pq + "&format=html"
+                                else
+                                    #pq = response.pathQuery.replace("%category", response.results[item.row + 1][0])
+                                    #window.open @service + "query/results?query=" + pq + "&format=html"
+            else
+                $(@el).html _.template @templates.noresults
 
 
 # --------------------------------------------
@@ -133,7 +103,7 @@ class EnrichmentWidget extends InterMineWidget
         errorCorrection = target.find("div.errorcorrection").valueif target.find("div.errorcorrection").length > 0
         max = target.find("div.max").value if target.find("div.max").length > 0
         
-        extraAttr = getExtraValue(target)
+        extraAttr ?= @el.find("select.select")?.value
 
         wsCall = ((tokenId="") =>
             request_data =
@@ -218,12 +188,14 @@ class EnrichmentWidget extends InterMineWidget
 
 class window.Widgets
 
+    # Load Google Visualization.
+    google.load "visualization", "1.0",
+        packages: [ "corechart" ]
+
     constructor: (@service) ->
 
-    loadGraph: (opts...) =>
-        graph = new GraphWidget(@service)
-        graph.load opts...
+    graph: (opts...) =>
+        new GraphWidget(@service, opts...)
     
-    loadEnrichment: (opts...) =>
-        enrichment = new EnrichmentWidget(@service)
-        enrichment.load opts...
+    enrichment: (opts...) =>
+        new EnrichmentWidget(@service, opts...)
