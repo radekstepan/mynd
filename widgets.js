@@ -66,7 +66,7 @@
       return $.getJSON(this.service + "list/chart", {
         widget: this.id,
         list: this.bagName,
-        filter: $(this.el).find("select.select").value || "",
+        filter: "",
         token: ""
       }, function(response) {
         var chart;
@@ -117,11 +117,33 @@
 
     __extends(EnrichmentWidget, _super);
 
-    function EnrichmentWidget() {
+    function EnrichmentWidget(service, id, bagName, el) {
+      var _this = this;
+      this.service = service;
+      this.id = id;
+      this.bagName = bagName;
+      this.el = el;
       this.load = __bind(this.load, this);
       this.displayEnrichmentWidgetConfig = __bind(this.displayEnrichmentWidgetConfig, this);
-      EnrichmentWidget.__super__.constructor.apply(this, arguments);
+      this.render = __bind(this.render, this);
+      google.setOnLoadCallback(function() {
+        return _this.render();
+      });
     }
+
+    EnrichmentWidget.prototype.render = function() {
+      var _this = this;
+      return $.getJSON(this.service + "list/enrichment", {
+        widget: this.id,
+        list: this.bagName,
+        correction: "Holm-Bonferroni",
+        maxp: 0.05,
+        filter: "All datasets",
+        token: ""
+      }, function(response) {
+        if (response.results) return console.log(response);
+      });
+    };
 
     EnrichmentWidget.prototype.displayEnrichmentWidgetConfig = function(widgetId, label, bagName, target) {
       var errorCorrection, max, wsCall, _ref,

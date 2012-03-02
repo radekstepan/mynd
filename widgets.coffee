@@ -54,7 +54,7 @@ class GraphWidget extends InterMineWidget
         $.getJSON @service + "list/chart",
             widget: @id
             list:   @bagName
-            filter: $(@el).find("select.select").value or ""
+            filter: ""
             token:  "" # Only public lists for now.
         , (response) =>
             # We have results.
@@ -93,6 +93,21 @@ class GraphWidget extends InterMineWidget
 
 
 class EnrichmentWidget extends InterMineWidget
+
+    constructor: (@service, @id, @bagName, @el) ->
+        google.setOnLoadCallback => @render()
+
+    render: =>
+        $.getJSON @service + "list/enrichment",
+            widget:     @id
+            list:       @bagName
+            correction: "Holm-Bonferroni"
+            maxp:       0.05
+            filter:     "All datasets"
+            token:      ""
+        , (response) =>
+            if response.results
+                console.log response
 
     displayEnrichmentWidgetConfig: (widgetId, label, bagName, target) =>
         target = $(target)

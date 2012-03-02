@@ -35,6 +35,7 @@
           widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");
           widgets.graph('flyfish', '1', '#widget-1', 'Stage', 'Gene count', {"Expressed": "true", "Not Expressed": "false"});
           widgets.graph('flyatlas', '1', '#widget-2', 'Tissue', 'Up (+) or Down (-) gene count', {"Up": "Up", "Down": "Down"});
+          widgets.enrichment('pathway_enrichment', '1', '#widget-3');
         })();
       </script>
 
@@ -49,6 +50,15 @@
         </div>
         <div class="span6">
           <div id="widget-2"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="span6">
+          <div id="widget-3"></div>
+        </div>
+        <div class="span6">
+          <div id="widget-4"></div>
         </div>
       </div>
 
