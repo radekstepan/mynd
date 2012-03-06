@@ -25,8 +25,12 @@ class GraphWidget extends InterMineWidget
     templates:
         normal:
             """
-                <h3><%= title %></h3>
-                <p><%= description %></p>
+                <% if (title) { %>
+                    <h3><%= title %></h3>
+                <% } %>
+                <% if (description) { %>
+                    <p><%= description %></p>
+                <% } %>
                 <% if (notAnalysed > 0) { %>
                     <p>Number of Genes in this list not analysed in this widget: <span class="label label-info"><%= notAnalysed %></span></p>
                 <% } %>
@@ -36,11 +40,13 @@ class GraphWidget extends InterMineWidget
             "<p>The widget has no results.</p>"
 
     # Set the params on us and set Google load callback.
-    # `service`: http://aragorn.flymine.org:8080/flymine/service/
-    # `id`:      widgetId
-    # `bagName`: myBag
-    # `el`:      #target
-    constructor: (@service, @id, @bagName, @el) -> google.setOnLoadCallback => @render()
+    # `service`:       http://aragorn.flymine.org:8080/flymine/service/
+    # `id`:            widgetId
+    # `bagName`:       myBag
+    # `el`:            #target
+    # `widgetOptions`: { "title": true/false, "description": true/false }
+    constructor: (@service, @id, @bagName, @el, @widgetOptions = { "title": true, "description": true }) ->
+        google.setOnLoadCallback => @render()
 
     # Visualize the displayer.
     render: =>
@@ -55,8 +61,8 @@ class GraphWidget extends InterMineWidget
             if response.results
                 # Render the widget template.
                 $(@el).html _.template @templates.normal,
-                    "title":       response.title
-                    "description": response.description
+                    "title":       if @widgetOptions.title then response.title else ""
+                    "description": if @widgetOptions.description then response.description else ""
                     "notAnalysed": response.notAnalysed
 
                 # Create the chart.
@@ -94,8 +100,12 @@ class EnrichmentWidget extends InterMineWidget
     templates:
         normal:
             """
-                <h3><%= title %></h3>
-                <p><%= description %></p>
+                <% if (title) { %>
+                    <h3><%= title %></h3>
+                <% } %>
+                <% if (description) { %>
+                    <p><%= description %></p>
+                <% } %>
                 <% if (notAnalysed > 0) { %>
                     <p>Number of Genes in this list not analysed in this widget: <span class="label label-info"><%= notAnalysed %></span></p>
                 <% } %>
@@ -158,11 +168,12 @@ class EnrichmentWidget extends InterMineWidget
             "<p>The widget has no results.</p>"
 
     # Set the params on us and render.
-    # `service`: http://aragorn.flymine.org:8080/flymine/service/
-    # `id`:      widgetId
-    # `bagName`: myBag
-    # `el`:      #target
-    constructor: (@service, @id, @bagName, @el) -> @render()
+    # `service`:       http://aragorn.flymine.org:8080/flymine/service/
+    # `id`:            widgetId
+    # `bagName`:       myBag
+    # `el`:            #target
+    # `widgetOptions`: { "title": true/false, "description": true/false }
+    constructor: (@service, @id, @bagName, @el, @widgetOptions = { "title": true, "description": true }) -> @render()
 
     # Visualize the displayer.
     render: =>
@@ -174,28 +185,27 @@ class EnrichmentWidget extends InterMineWidget
             filter:     @formOptions.dataSet
             token:      ""
         , (response) =>
+            # We have results.
             if response.results
-                # We have results.
-                if response.results
-                    # Render the widget template.
-                    $(@el).html _.template @templates.normal,
-                        "title":       response.title
-                        "description": response.description
-                        "notAnalysed": response.notAnalysed
+                # Render the widget template.
+                $(@el).html _.template @templates.normal,
+                    "title":       if @widgetOptions.title then response.title else ""
+                    "description": if @widgetOptions.description then response.description else ""
+                    "notAnalysed": response.notAnalysed
 
-                    $(@el).find("div.form").html _.template @templates.form,
-                        "options":          @formOptions
-                        "errorCorrections": @errorCorrections
-                        "pValues":          @pValues
-                    
-                    $(@el).find("div.widget").html _.template @templates.table,
-                        "label":       response.label
-                        "results":     response.results
+                $(@el).find("div.form").html _.template @templates.form,
+                    "options":          @formOptions
+                    "errorCorrections": @errorCorrections
+                    "pValues":          @pValues
+                
+                $(@el).find("div.widget").html _.template @templates.table,
+                    "label":       response.label
+                    "results":     response.results
 
-                    # Set behaviors.
-                    $(@el).find("form select").change @formClick
-                else
-                    $(@el).html _.template @templates.noresults
+                # Set behaviors.
+                $(@el).find("form select").change @formClick
+            else
+                $(@el).html _.template @templates.noresults
 
     # On form select option change, set the new options and re-render.
     formClick: (e) =>

@@ -40,16 +40,20 @@
     };
 
     GraphWidget.prototype.templates = {
-      normal: "<h3><%= title %></h3>\n<p><%= description %></p>\n<% if (notAnalysed > 0) { %>\n    <p>Number of Genes in this list not analysed in this widget: <span class=\"label label-info\"><%= notAnalysed %></span></p>\n<% } %>\n<div class=\"widget\"></div>",
+      normal: "<% if (title) { %>\n    <h3><%= title %></h3>\n<% } %>\n<% if (description) { %>\n    <p><%= description %></p>\n<% } %>\n<% if (notAnalysed > 0) { %>\n    <p>Number of Genes in this list not analysed in this widget: <span class=\"label label-info\"><%= notAnalysed %></span></p>\n<% } %>\n<div class=\"widget\"></div>",
       noresults: "<p>The widget has no results.</p>"
     };
 
-    function GraphWidget(service, id, bagName, el) {
+    function GraphWidget(service, id, bagName, el, widgetOptions) {
       var _this = this;
       this.service = service;
       this.id = id;
       this.bagName = bagName;
       this.el = el;
+      this.widgetOptions = widgetOptions != null ? widgetOptions : {
+        "title": true,
+        "description": true
+      };
       this.render = __bind(this.render, this);
       google.setOnLoadCallback(function() {
         return _this.render();
@@ -67,8 +71,8 @@
         var chart;
         if (response.results) {
           $(_this.el).html(_.template(_this.templates.normal, {
-            "title": response.title,
-            "description": response.description,
+            "title": _this.widgetOptions.title ? response.title : "",
+            "description": _this.widgetOptions.description ? response.description : "",
             "notAnalysed": response.notAnalysed
           }));
           chart = new google.visualization[response.chartType]($(_this.el).find("div.widget")[0]);
@@ -116,17 +120,21 @@
     EnrichmentWidget.prototype.pValues = [0.05, 0.10, 1.00];
 
     EnrichmentWidget.prototype.templates = {
-      normal: "<h3><%= title %></h3>\n<p><%= description %></p>\n<% if (notAnalysed > 0) { %>\n    <p>Number of Genes in this list not analysed in this widget: <span class=\"label label-info\"><%= notAnalysed %></span></p>\n<% } %>\n<div class=\"form\"></div>\n<div class=\"widget\"></div>",
+      normal: "<% if (title) { %>\n    <h3><%= title %></h3>\n<% } %>\n<% if (description) { %>\n    <p><%= description %></p>\n<% } %>\n<% if (notAnalysed > 0) { %>\n    <p>Number of Genes in this list not analysed in this widget: <span class=\"label label-info\"><%= notAnalysed %></span></p>\n<% } %>\n<div class=\"form\"></div>\n<div class=\"widget\"></div>",
       form: "<form>\n    <label>Multiple Hypothesis Test Correction</label>\n    <select name=\"errorCorrection\">\n        <% for (var i = 0; i < errorCorrections.length; i++) { %>\n            <% var correction = errorCorrections[i] %>\n            <option value=\"<%= correction %>\" <%= (options.errorCorrection == correction) ? 'selected=\"selected\"' : \"\" %>><%= correction %></option>\n        <% } %>\n    </select>\n\n    <label>Maximum value to display</label>\n    <select name=\"pValue\">\n        <% for (var i = 0; i < pValues.length; i++) { %>\n            <% var p = pValues[i] %>\n            <option value=\"<%= p %>\" <%= (options.pValue == p) ? 'selected=\"selected\"' : \"\" %>><%= p %></option>\n        <% } %>\n    </select>\n\n    <label>DataSet</label>\n    <select name=\"dataSet\">\n        <option value=\"All datasets\" selected=\"selected\">All datasets</option>\n    </select>\n</form>",
       table: "<table class=\"table table-striped\">\n    <thead>\n        <tr>\n            <th><%= label %></th>\n            <th>p-Value</th>\n            <th>Matches</th>\n        </tr>\n    </thead>\n    <tbody>\n        <% for (var i = 0; i < results.length; i++) { %>\n            <% var row = results[i] %>\n            <tr>\n                <td class=\"description\"><%= row[\"description\"] %></td>\n                <td class=\"pValue\"><%= row[\"p-value\"].toFixed(7) %></td>\n                <td class=\"matches\">\n                    <a class=\"count\"><%= row[\"matches\"].length %></a>\n                    <% for (var j = 0; j < row[\"matches\"].length; j++) { %>\n                        <%= row[\"matches\"][j] %><%= (j < row[\"matches\"].length - 1) ? \",\" : \"\" %>\n                    <% } %>\n                </td>\n            </tr>\n        <% } %>\n    </tbody>\n</table>",
       noresults: "<p>The widget has no results.</p>"
     };
 
-    function EnrichmentWidget(service, id, bagName, el) {
+    function EnrichmentWidget(service, id, bagName, el, widgetOptions) {
       this.service = service;
       this.id = id;
       this.bagName = bagName;
       this.el = el;
+      this.widgetOptions = widgetOptions != null ? widgetOptions : {
+        "title": true,
+        "description": true
+      };
       this.formClick = __bind(this.formClick, this);
       this.render = __bind(this.render, this);
       this.render();
@@ -143,25 +151,23 @@
         token: ""
       }, function(response) {
         if (response.results) {
-          if (response.results) {
-            $(_this.el).html(_.template(_this.templates.normal, {
-              "title": response.title,
-              "description": response.description,
-              "notAnalysed": response.notAnalysed
-            }));
-            $(_this.el).find("div.form").html(_.template(_this.templates.form, {
-              "options": _this.formOptions,
-              "errorCorrections": _this.errorCorrections,
-              "pValues": _this.pValues
-            }));
-            $(_this.el).find("div.widget").html(_.template(_this.templates.table, {
-              "label": response.label,
-              "results": response.results
-            }));
-            return $(_this.el).find("form select").change(_this.formClick);
-          } else {
-            return $(_this.el).html(_.template(_this.templates.noresults));
-          }
+          $(_this.el).html(_.template(_this.templates.normal, {
+            "title": _this.widgetOptions.title ? response.title : "",
+            "description": _this.widgetOptions.description ? response.description : "",
+            "notAnalysed": response.notAnalysed
+          }));
+          $(_this.el).find("div.form").html(_.template(_this.templates.form, {
+            "options": _this.formOptions,
+            "errorCorrections": _this.errorCorrections,
+            "pValues": _this.pValues
+          }));
+          $(_this.el).find("div.widget").html(_.template(_this.templates.table, {
+            "label": response.label,
+            "results": response.results
+          }));
+          return $(_this.el).find("form select").change(_this.formClick);
+        } else {
+          return $(_this.el).html(_.template(_this.templates.noresults));
         }
       });
     };
