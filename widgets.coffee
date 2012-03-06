@@ -1,5 +1,11 @@
 class InterMineWidget
 
+
+# --------------------------------------------
+
+
+class GraphWidget extends InterMineWidget
+
     chartOptions:
         fontName: "Sans-Serif"
         fontSize: 9
@@ -16,19 +22,13 @@ class InterMineWidget
             titleTextStyle:
                 fontName: "Sans-Serif"
 
-
-# --------------------------------------------
-
-
-class GraphWidget extends InterMineWidget
-
     templates:
         normal:
             """
-                <h3><%= id %></h3>
+                <h3><%= title %></h3>
                 <p><%= description %></p>
                 <% if (notAnalysed > 0) { %>
-                    <p>Number of Genes in this list not analysed in this widget: <%= notAnalysed %></p>
+                    <p>Number of Genes in this list not analysed in this widget: <span class="label label-info"><%= notAnalysed %></span></p>
                 <% } %>
                 <div class="widget"></div>
             """
@@ -40,13 +40,7 @@ class GraphWidget extends InterMineWidget
     # `id`:      widgetId
     # `bagName`: myBag
     # `el`:      #target
-    constructor: (@service, @id, @bagName, @el, domainLabel, rangeLabel, series) ->
-        @options =
-            "domainLabel": domainLabel
-            "rangeLabel":  rangeLabel
-            "series":      series
-
-        google.setOnLoadCallback => @render()
+    constructor: (@service, @id, @bagName, @el) -> google.setOnLoadCallback => @render()
 
     # Visualize the displayer.
     render: =>
@@ -61,14 +55,9 @@ class GraphWidget extends InterMineWidget
             if response.results
                 # Render the widget template.
                 $(@el).html _.template @templates.normal,
-                    "id": @id
+                    "title":       response.title
                     "description": response.description
                     "notAnalysed": response.notAnalysed
-
-                # Set chart options.
-                @chartOptions.title = response.title
-                @chartOptions.hAxis.title = @options.domainLabel if @options.domainLabel?
-                @chartOptions.vAxis.title = @options.rangeLabel if @options.rangeLabel?
 
                 # Create the chart.
                 chart = new google.visualization[response.chartType]($(@el).find("div.widget")[0])
@@ -94,108 +83,124 @@ class GraphWidget extends InterMineWidget
 
 class EnrichmentWidget extends InterMineWidget
 
-    constructor: (@service, @id, @bagName, @el) ->
-        google.setOnLoadCallback => @render()
+    formOptions:
+        errorCorrection: "Holm-Bonferroni"
+        pValue:          0.05
+        dataSet:         "All datasets"
 
+    errorCorrections: [ "Holm-Bonferroni", "Benjamini Hochberg", "Bonferroni", "None" ]
+    pValues: [ 0.05, 0.10, 1.00 ]
+
+    templates:
+        normal:
+            """
+                <h3><%= title %></h3>
+                <p><%= description %></p>
+                <% if (notAnalysed > 0) { %>
+                    <p>Number of Genes in this list not analysed in this widget: <span class="label label-info"><%= notAnalysed %></span></p>
+                <% } %>
+                <div class="form"></div>
+                <div class="widget"></div>
+            """
+        form:
+            """
+                <form>
+                    <label>Multiple Hypothesis Test Correction</label>
+                    <select name="errorCorrection">
+                        <% for (var i = 0; i < errorCorrections.length; i++) { %>
+                            <% var correction = errorCorrections[i] %>
+                            <option value="<%= correction %>" <%= (options.errorCorrection == correction) ? 'selected="selected"' : "" %>><%= correction %></option>
+                        <% } %>
+                    </select>
+
+                    <label>Maximum value to display</label>
+                    <select name="pValue">
+                        <% for (var i = 0; i < pValues.length; i++) { %>
+                            <% var p = pValues[i] %>
+                            <option value="<%= p %>" <%= (options.pValue == p) ? 'selected="selected"' : "" %>><%= p %></option>
+                        <% } %>
+                    </select>
+
+                    <label>DataSet</label>
+                    <select name="dataSet">
+                        <option value="All datasets" selected="selected">All datasets</option>
+                    </select>
+                </form>
+            """
+        table:
+            """
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th><%= label %></th>
+                            <th>p-Value</th>
+                            <th>Matches</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (var i = 0; i < results.length; i++) { %>
+                            <% var row = results[i] %>
+                            <tr>
+                                <td class="description"><%= row["description"] %></td>
+                                <td class="pValue"><%= row["p-value"].toFixed(7) %></td>
+                                <td class="matches">
+                                    <a class="count"><%= row["matches"].length %></a>
+                                    <% for (var j = 0; j < row["matches"].length; j++) { %>
+                                        <%= row["matches"][j] %><%= (j < row["matches"].length - 1) ? "," : "" %>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            """
+        noresults:
+            "<p>The widget has no results.</p>"
+
+    # Set the params on us and render.
+    # `service`: http://aragorn.flymine.org:8080/flymine/service/
+    # `id`:      widgetId
+    # `bagName`: myBag
+    # `el`:      #target
+    constructor: (@service, @id, @bagName, @el) -> @render()
+
+    # Visualize the displayer.
     render: =>
         $.getJSON @service + "list/enrichment",
             widget:     @id
             list:       @bagName
-            correction: "Holm-Bonferroni"
-            maxp:       0.05
-            filter:     "All datasets"
+            correction: @formOptions.errorCorrection
+            maxp:       @formOptions.pValue
+            filter:     @formOptions.dataSet
             token:      ""
         , (response) =>
             if response.results
-                console.log response
+                # We have results.
+                if response.results
+                    # Render the widget template.
+                    $(@el).html _.template @templates.normal,
+                        "title":       response.title
+                        "description": response.description
+                        "notAnalysed": response.notAnalysed
 
-    displayEnrichmentWidgetConfig: (widgetId, label, bagName, target) =>
-        target = $(target)
-        target.find("div.data").hide()
-        target.find("div.noresults").hide()
-        target.find("div.wait").show()
-    
-        errorCorrection = target.find("div.errorcorrection").valueif target.find("div.errorcorrection").length > 0
-        max = target.find("div.max").value if target.find("div.max").length > 0
-        
-        extraAttr ?= @el.find("select.select")?.value
+                    $(@el).find("div.form").html _.template @templates.form,
+                        "options":          @formOptions
+                        "errorCorrections": @errorCorrections
+                        "pValues":          @pValues
+                    
+                    $(@el).find("div.widget").html _.template @templates.table,
+                        "label":       response.label
+                        "results":     response.results
 
-        wsCall = ((tokenId="") =>
-            request_data =
-                widget: widgetId
-                list: bagName
-                correction: errorCorrection
-                maxp: max
-                filter: extraAttr
-                token: tokenId
-
-            $.getJSON @service + "list/enrichment", request_data, (res) ->
-                target.find("table.tablewidget thead").html ""
-                target.find("table.tablewidget tbody").html ""
-                
-                results = res.results
-                unless results.length is 0
-                    columns = [ label, "p-Value", "Matches" ]
-                    createTableHeader widgetId, columns
-                    $table = target.find("table.tablewidget tbody")
-                    i = 0
-                    externalLink = target.find("div.externallink").value  if target.find("div.externallink").length > 0
-                    externalLinkLabel = target.find("div.externallabel").value  if target.find("div.externallabel").length > 0
-                    for i of results
-                        $table.append make_enrichment_row(results[i], externalLink, externalLinkLabel)
-                    target.find("div.data").show()
+                    # Set behaviors.
+                    $(@el).find("form select").change @formClick
                 else
-                    target.find("div.noresults").show()
-                
-                target.find("div.wait").hide()
-                calcNotAnalysed widgetId, res.notAnalysed
-        )()
+                    $(@el).html _.template @templates.noresults
 
-    make_enrichment_row: (result, externalLink, externalLinkLabel) ->
-        $row = $("<tr>")
-        $checkBox = $("<input />").attr(
-            type: "checkbox"
-            id: "selected_" + result.item
-            value: result.item
-            name: "selected"
-        )
-        
-        $row.append $("<td>").append($checkBox)
-        if result.description
-            $td = $("<td>").text(result.description + " ")
-        
-            if externalLink
-                label = externalLinkLabel + result.item unless externalLinkLabel is undefined
-                label = label + result.item
-                $a = $("<a>").addClass("extlink").text("[" + label + "]")
-                $a.attr
-                    target: "_new"
-                    href: externalLink + result.item
-
-                $td.append $a
-            $row.append $td
-        else
-            $row.append $("<td>").html("<em>no description</em>")
-      
-        $row.append $("<td>").text(result["p-value"])
-        $count = $("<span>").addClass("match-count").text(result.matches.length)
-        $matches = $("<div>")
-        $matches.css display: "none"
-        $list = $("<ul>")
-        i = 0
-        for i of result.matches
-            $list.append $("<li>").text(result.matches[i])
-        $matches.append $list
-        $count.append $matches
-        $count.click ->
-            $matches.slideToggle()
-
-        $row.append $("<td>").append($count)
-        $row
-
-    load: (id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) =>
-        google.setOnLoadCallback =>
-            @displayEnrichmentWidgetConfig id, label, bagName, target
+    # On form select option change, set the new options and re-render.
+    formClick: (e) =>
+        @formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value")
+        @render()
 
 
 # --------------------------------------------

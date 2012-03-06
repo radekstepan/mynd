@@ -9,7 +9,15 @@
 
     function InterMineWidget() {}
 
-    InterMineWidget.prototype.chartOptions = {
+    return InterMineWidget;
+
+  })();
+
+  GraphWidget = (function(_super) {
+
+    __extends(GraphWidget, _super);
+
+    GraphWidget.prototype.chartOptions = {
       fontName: "Sans-Serif",
       fontSize: 9,
       width: 400,
@@ -31,31 +39,18 @@
       }
     };
 
-    return InterMineWidget;
-
-  })();
-
-  GraphWidget = (function(_super) {
-
-    __extends(GraphWidget, _super);
-
     GraphWidget.prototype.templates = {
-      normal: "<h3><%= id %></h3>\n<p><%= description %></p>\n<% if (notAnalysed > 0) { %>\n    <p>Number of Genes in this list not analysed in this widget: <%= notAnalysed %></p>\n<% } %>\n<div class=\"widget\"></div>",
+      normal: "<h3><%= title %></h3>\n<p><%= description %></p>\n<% if (notAnalysed > 0) { %>\n    <p>Number of Genes in this list not analysed in this widget: <span class=\"label label-info\"><%= notAnalysed %></span></p>\n<% } %>\n<div class=\"widget\"></div>",
       noresults: "<p>The widget has no results.</p>"
     };
 
-    function GraphWidget(service, id, bagName, el, domainLabel, rangeLabel, series) {
+    function GraphWidget(service, id, bagName, el) {
       var _this = this;
       this.service = service;
       this.id = id;
       this.bagName = bagName;
       this.el = el;
       this.render = __bind(this.render, this);
-      this.options = {
-        "domainLabel": domainLabel,
-        "rangeLabel": rangeLabel,
-        "series": series
-      };
       google.setOnLoadCallback(function() {
         return _this.render();
       });
@@ -72,17 +67,10 @@
         var chart;
         if (response.results) {
           $(_this.el).html(_.template(_this.templates.normal, {
-            "id": _this.id,
+            "title": response.title,
             "description": response.description,
             "notAnalysed": response.notAnalysed
           }));
-          _this.chartOptions.title = response.title;
-          if (_this.options.domainLabel != null) {
-            _this.chartOptions.hAxis.title = _this.options.domainLabel;
-          }
-          if (_this.options.rangeLabel != null) {
-            _this.chartOptions.vAxis.title = _this.options.rangeLabel;
-          }
           chart = new google.visualization[response.chartType]($(_this.el).find("div.widget")[0]);
           chart.draw(google.visualization.arrayToDataTable(response.results, false), _this.chartOptions);
           if (response.pathQuery != null) {
@@ -117,18 +105,31 @@
 
     __extends(EnrichmentWidget, _super);
 
+    EnrichmentWidget.prototype.formOptions = {
+      errorCorrection: "Holm-Bonferroni",
+      pValue: 0.05,
+      dataSet: "All datasets"
+    };
+
+    EnrichmentWidget.prototype.errorCorrections = ["Holm-Bonferroni", "Benjamini Hochberg", "Bonferroni", "None"];
+
+    EnrichmentWidget.prototype.pValues = [0.05, 0.10, 1.00];
+
+    EnrichmentWidget.prototype.templates = {
+      normal: "<h3><%= title %></h3>\n<p><%= description %></p>\n<% if (notAnalysed > 0) { %>\n    <p>Number of Genes in this list not analysed in this widget: <span class=\"label label-info\"><%= notAnalysed %></span></p>\n<% } %>\n<div class=\"form\"></div>\n<div class=\"widget\"></div>",
+      form: "<form>\n    <label>Multiple Hypothesis Test Correction</label>\n    <select name=\"errorCorrection\">\n        <% for (var i = 0; i < errorCorrections.length; i++) { %>\n            <% var correction = errorCorrections[i] %>\n            <option value=\"<%= correction %>\" <%= (options.errorCorrection == correction) ? 'selected=\"selected\"' : \"\" %>><%= correction %></option>\n        <% } %>\n    </select>\n\n    <label>Maximum value to display</label>\n    <select name=\"pValue\">\n        <% for (var i = 0; i < pValues.length; i++) { %>\n            <% var p = pValues[i] %>\n            <option value=\"<%= p %>\" <%= (options.pValue == p) ? 'selected=\"selected\"' : \"\" %>><%= p %></option>\n        <% } %>\n    </select>\n\n    <label>DataSet</label>\n    <select name=\"dataSet\">\n        <option value=\"All datasets\" selected=\"selected\">All datasets</option>\n    </select>\n</form>",
+      table: "<table class=\"table table-striped\">\n    <thead>\n        <tr>\n            <th><%= label %></th>\n            <th>p-Value</th>\n            <th>Matches</th>\n        </tr>\n    </thead>\n    <tbody>\n        <% for (var i = 0; i < results.length; i++) { %>\n            <% var row = results[i] %>\n            <tr>\n                <td class=\"description\"><%= row[\"description\"] %></td>\n                <td class=\"pValue\"><%= row[\"p-value\"].toFixed(7) %></td>\n                <td class=\"matches\">\n                    <a class=\"count\"><%= row[\"matches\"].length %></a>\n                    <% for (var j = 0; j < row[\"matches\"].length; j++) { %>\n                        <%= row[\"matches\"][j] %><%= (j < row[\"matches\"].length - 1) ? \",\" : \"\" %>\n                    <% } %>\n                </td>\n            </tr>\n        <% } %>\n    </tbody>\n</table>",
+      noresults: "<p>The widget has no results.</p>"
+    };
+
     function EnrichmentWidget(service, id, bagName, el) {
-      var _this = this;
       this.service = service;
       this.id = id;
       this.bagName = bagName;
       this.el = el;
-      this.load = __bind(this.load, this);
-      this.displayEnrichmentWidgetConfig = __bind(this.displayEnrichmentWidgetConfig, this);
+      this.formClick = __bind(this.formClick, this);
       this.render = __bind(this.render, this);
-      google.setOnLoadCallback(function() {
-        return _this.render();
-      });
+      this.render();
     }
 
     EnrichmentWidget.prototype.render = function() {
@@ -136,120 +137,38 @@
       return $.getJSON(this.service + "list/enrichment", {
         widget: this.id,
         list: this.bagName,
-        correction: "Holm-Bonferroni",
-        maxp: 0.05,
-        filter: "All datasets",
+        correction: this.formOptions.errorCorrection,
+        maxp: this.formOptions.pValue,
+        filter: this.formOptions.dataSet,
         token: ""
       }, function(response) {
-        if (response.results) return console.log(response);
-      });
-    };
-
-    EnrichmentWidget.prototype.displayEnrichmentWidgetConfig = function(widgetId, label, bagName, target) {
-      var errorCorrection, max, wsCall, _ref,
-        _this = this;
-      target = $(target);
-      target.find("div.data").hide();
-      target.find("div.noresults").hide();
-      target.find("div.wait").show();
-      errorCorrection = target.find("div.errorcorrection").valueif(target.find("div.errorcorrection").length > 0);
-      if (target.find("div.max").length > 0) max = target.find("div.max").value;
-      if (typeof extraAttr === "undefined" || extraAttr === null) {
-        extraAttr = (_ref = this.el.find("select.select")) != null ? _ref.value : void 0;
-      }
-      return wsCall = (function(tokenId) {
-        var request_data;
-        if (tokenId == null) tokenId = "";
-        request_data = {
-          widget: widgetId,
-          list: bagName,
-          correction: errorCorrection,
-          maxp: max,
-          filter: extraAttr,
-          token: tokenId
-        };
-        return $.getJSON(_this.service + "list/enrichment", request_data, function(res) {
-          var $table, columns, externalLink, externalLinkLabel, i, results;
-          target.find("table.tablewidget thead").html("");
-          target.find("table.tablewidget tbody").html("");
-          results = res.results;
-          if (results.length !== 0) {
-            columns = [label, "p-Value", "Matches"];
-            createTableHeader(widgetId, columns);
-            $table = target.find("table.tablewidget tbody");
-            i = 0;
-            if (target.find("div.externallink").length > 0) {
-              externalLink = target.find("div.externallink").value;
-            }
-            if (target.find("div.externallabel").length > 0) {
-              externalLinkLabel = target.find("div.externallabel").value;
-            }
-            for (i in results) {
-              $table.append(make_enrichment_row(results[i], externalLink, externalLinkLabel));
-            }
-            target.find("div.data").show();
+        if (response.results) {
+          if (response.results) {
+            $(_this.el).html(_.template(_this.templates.normal, {
+              "title": response.title,
+              "description": response.description,
+              "notAnalysed": response.notAnalysed
+            }));
+            $(_this.el).find("div.form").html(_.template(_this.templates.form, {
+              "options": _this.formOptions,
+              "errorCorrections": _this.errorCorrections,
+              "pValues": _this.pValues
+            }));
+            $(_this.el).find("div.widget").html(_.template(_this.templates.table, {
+              "label": response.label,
+              "results": response.results
+            }));
+            return $(_this.el).find("form select").change(_this.formClick);
           } else {
-            target.find("div.noresults").show();
+            return $(_this.el).html(_.template(_this.templates.noresults));
           }
-          target.find("div.wait").hide();
-          return calcNotAnalysed(widgetId, res.notAnalysed);
-        });
-      })();
-    };
-
-    EnrichmentWidget.prototype.make_enrichment_row = function(result, externalLink, externalLinkLabel) {
-      var $a, $checkBox, $count, $list, $matches, $row, $td, i, label;
-      $row = $("<tr>");
-      $checkBox = $("<input />").attr({
-        type: "checkbox",
-        id: "selected_" + result.item,
-        value: result.item,
-        name: "selected"
-      });
-      $row.append($("<td>").append($checkBox));
-      if (result.description) {
-        $td = $("<td>").text(result.description + " ");
-        if (externalLink) {
-          if (externalLinkLabel !== void 0) {
-            label = externalLinkLabel + result.item;
-          }
-          label = label + result.item;
-          $a = $("<a>").addClass("extlink").text("[" + label + "]");
-          $a.attr({
-            target: "_new",
-            href: externalLink + result.item
-          });
-          $td.append($a);
         }
-        $row.append($td);
-      } else {
-        $row.append($("<td>").html("<em>no description</em>"));
-      }
-      $row.append($("<td>").text(result["p-value"]));
-      $count = $("<span>").addClass("match-count").text(result.matches.length);
-      $matches = $("<div>");
-      $matches.css({
-        display: "none"
       });
-      $list = $("<ul>");
-      i = 0;
-      for (i in result.matches) {
-        $list.append($("<li>").text(result.matches[i]));
-      }
-      $matches.append($list);
-      $count.append($matches);
-      $count.click(function() {
-        return $matches.slideToggle();
-      });
-      $row.append($("<td>").append($count));
-      return $row;
     };
 
-    EnrichmentWidget.prototype.load = function(id, domainLabel, rangeLabel, seriesLabels, seriesValues, bagName, target) {
-      var _this = this;
-      return google.setOnLoadCallback(function() {
-        return _this.displayEnrichmentWidgetConfig(id, label, bagName, target);
-      });
+    EnrichmentWidget.prototype.formClick = function(e) {
+      this.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value");
+      return this.render();
     };
 
     return EnrichmentWidget;
