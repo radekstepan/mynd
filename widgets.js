@@ -183,19 +183,21 @@
 
   window.Widgets = (function() {
 
-    google.load("visualization", "1.0", {
-      packages: ["corechart"]
-    });
-
     function Widgets(service) {
       this.service = service;
       this.enrichment = __bind(this.enrichment, this);
       this.graph = __bind(this.graph, this);
+      if (!(window.jQuery != null)) throw "jQuery not loaded";
+      if (!(window._ != null)) throw "underscore.js not loaded";
+      if (!(window.google != null)) throw "Google API not loaded";
     }
 
     Widgets.prototype.graph = function() {
       var opts;
       opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      google.load("visualization", "1.0", {
+        packages: ["corechart"]
+      });
       return (function(func, args, ctor) {
         ctor.prototype = func.prototype;
         var child = new ctor, result = func.apply(child, args);

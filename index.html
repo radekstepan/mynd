@@ -30,16 +30,6 @@
 
     <div class="container">
 
-      <script type="text/javascript">
-        (function() {
-          widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");
-          widgets.graph('flyfish', '1', '#widget-1');
-          widgets.graph('flyatlas', '1', '#widget-2');
-          widgets.enrichment('pathway_enrichment', '1', '#widget-3');
-          widgets.enrichment('prot_dom_enrichment', '1', '#widget-4');
-        })();
-      </script>
-
       <div class="row">
         <h2>Example Widget</h2>
         <p>BDGP expression patterns loaded from <span class="label">ws_widgets</span> FlyMine branch.</p>
@@ -62,6 +52,16 @@
           <div id="widget-4"></div>
         </div>
       </div>
+
+      <script type="text/javascript">
+        (function() {
+          widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");
+          widgets.graph('flyfish', '1', '#widget-1');
+          widgets.graph('flyatlas', '1', '#widget-2');
+          widgets.enrichment('pathway_enrichment', '1', '#widget-3');
+          widgets.enrichment('prot_dom_enrichment', '1', '#widget-4');
+        })();
+      </script>
 
     </div>
   </body>

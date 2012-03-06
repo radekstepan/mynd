@@ -218,13 +218,16 @@ class EnrichmentWidget extends InterMineWidget
 
 class window.Widgets
 
-    # Load Google Visualization.
-    google.load "visualization", "1.0",
-        packages: [ "corechart" ]
-
     constructor: (@service) ->
+        if not window.jQuery? then throw "jQuery not loaded"
+        if not window._? then throw "underscore.js not loaded"
+        if not window.google? then throw "Google API not loaded"
 
     graph: (opts...) =>
+        # Load Google Visualization.
+        google.load "visualization", "1.0",
+            packages: [ "corechart" ]
+
         new GraphWidget(@service, opts...)
     
     enrichment: (opts...) =>
