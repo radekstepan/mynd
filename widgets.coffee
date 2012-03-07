@@ -147,22 +147,32 @@ class EnrichmentWidget extends InterMineWidget
                             <th>Matches</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <% for (var i = 0; i < results.length; i++) { %>
-                            <% var row = results[i] %>
-                            <tr>
-                                <td class="description"><%= row["description"] %></td>
-                                <td class="pValue"><%= row["p-value"].toFixed(7) %></td>
-                                <td class="matches">
-                                    <a class="count"><%= row["matches"].length %></a>
-                                    <% for (var j = 0; j < row["matches"].length; j++) { %>
-                                        <%= row["matches"][j] %><%= (j < row["matches"].length - 1) ? "," : "" %>
-                                    <% } %>
-                                </td>
-                            </tr>
-                        <% } %>
-                    </tbody>
+                    <tbody></tbody>
                 </table>
+            """
+        row:
+            """
+                <tr>
+                    <td class="description"><%= row["description"] %></td>
+                    <td class="pValue"><%= row["p-value"].toFixed(7) %></td>
+                    <td class="matches" style="position:relative">
+                        <span class="count label label-success" style="cursor:pointer"><%= row["matches"].length %></span>
+                    </td>
+                </tr>
+            """
+        matches:
+            """
+                <div class="popover" style="position:absolute;top:30px;left:0;z-index:1;display:block">
+                    <div class="popover-inner" style="width:300px">
+                        <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>
+                        <h3 class="popover-title"></h3>
+                        <div class="popover-content">
+                            <% for (var i = 0; i < matches.length; i++) { %>
+                                <a href="#"><%= matches[i] %></a><%= (i < matches.length -1) ? "," : "" %>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
             """
         noresults:
             "<p>The widget has no results.</p>"
@@ -198,9 +208,16 @@ class EnrichmentWidget extends InterMineWidget
                     "errorCorrections": @errorCorrections
                     "pValues":          @pValues
                 
-                $(@el).find("div.widget").html _.template @templates.table,
-                    "label":       response.label
-                    "results":     response.results
+                # Render the table.
+                $(@el).find("div.widget").html $ _.template @templates.table,
+                    "label": response.label
+                
+                # Table rows.
+                table = $(@el).find("div.widget table")
+                for row in response.results then do (row) =>
+                    table.append tr = $ _.template @templates.row,
+                        "row": row
+                    td = tr.find("td.matches .count").click => @matchesClick td, row["matches"]
 
                 # Set behaviors.
                 $(@el).find("form select").change @formClick
@@ -211,6 +228,12 @@ class EnrichmentWidget extends InterMineWidget
     formClick: (e) =>
         @formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value")
         @render()
+
+    # Show matches.
+    matchesClick: (target, matches) =>
+        target.after modal = $ _.template @templates.matches,
+            "matches": matches
+        modal.find("a.close").click -> modal.remove()
 
 
 # --------------------------------------------
