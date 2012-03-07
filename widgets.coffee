@@ -45,7 +45,7 @@ class GraphWidget extends InterMineWidget
     # `bagName`:       myBag
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false }
-    constructor: (@service, @id, @bagName, @el, @widgetOptions = { "title": true, "description": true }) ->
+    constructor: (@service, @id, @bagName, @el, @widgetOptions = { "title": true, "description": true, "selectCb": (pq) => console.log pq }) ->
         google.setOnLoadCallback => @render()
 
     # Visualize the displayer.
@@ -72,14 +72,13 @@ class GraphWidget extends InterMineWidget
                 # Add event listener on click the chart bar.
                 if response.pathQuery?
                     google.visualization.events.addListener chart, "select", =>
+                        pq = response.pathQuery
                         for item in chart.getSelection()
                             if item.row?
+                                pq = pq.replace("%category", response.results[item.row + 1][0])
                                 if item.column?
-                                    #pq = response.pathQuery.replace("%category", response.results[item.row + 1][0]).replace("%series", @options[response.results[0][item.column]])
-                                    #window.open @service + "query/results?query=" + pq + "&format=html"
-                                else
-                                    #pq = response.pathQuery.replace("%category", response.results[item.row + 1][0])
-                                    #window.open @service + "query/results?query=" + pq + "&format=html"
+                                    pq = pq.replace("%series", response.results[0][item.column])
+                                @widgetOptions.selectCb(pq)
             else
                 $(@el).html _.template @templates.noresults
 

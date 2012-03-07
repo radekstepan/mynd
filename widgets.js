@@ -52,7 +52,10 @@
       this.el = el;
       this.widgetOptions = widgetOptions != null ? widgetOptions : {
         "title": true,
-        "description": true
+        "description": true,
+        "selectCb": function(pq) {
+          return console.log(pq);
+        }
       };
       this.render = __bind(this.render, this);
       google.setOnLoadCallback(function() {
@@ -79,15 +82,18 @@
           chart.draw(google.visualization.arrayToDataTable(response.results, false), _this.chartOptions);
           if (response.pathQuery != null) {
             return google.visualization.events.addListener(chart, "select", function() {
-              var item, _i, _len, _ref, _results;
+              var item, pq, _i, _len, _ref, _results;
+              pq = response.pathQuery;
               _ref = chart.getSelection();
               _results = [];
               for (_i = 0, _len = _ref.length; _i < _len; _i++) {
                 item = _ref[_i];
                 if (item.row != null) {
-                  if (item.column != null) {} else {
-
+                  pq = pq.replace("%category", response.results[item.row + 1][0]);
+                  if (item.column != null) {
+                    pq = pq.replace("%series", response.results[0][item.column]);
                   }
+                  _results.push(_this.widgetOptions.selectCb(pq));
                 } else {
                   _results.push(void 0);
                 }
