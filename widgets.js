@@ -255,23 +255,24 @@
       var _this = this;
       if (type == null) type = "Gene";
       return $.getJSON("" + this.service + "widgets", function(response) {
-        var widget, _i, _len, _ref, _results;
+        var widget, widgetEl, _i, _len, _ref, _results;
         if (response.widgets) {
           _ref = response.widgets;
           _results = [];
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             widget = _ref[_i];
             if (!(__indexOf.call(widget.targets, type) >= 0)) continue;
+            widgetEl = widget.name.replace(/[^-a-zA-Z0-9,&\s]+/ig, '').replace(/-/gi, "_").replace(/\s/gi, "-").toLowerCase();
             $(el).append($('<div/>', {
-              id: widget.name,
+              id: widgetEl,
               "class": "span6"
             }));
             switch (widget.widgetType) {
               case "chart":
-                _results.push(new GraphWidget(_this.service, widget.name, bagName, "#" + widget.name, widgetOptions));
+                _results.push(new GraphWidget(_this.service, widget.name, bagName, "#" + el + " #" + widgetEl, widgetOptions));
                 break;
               case "enrichment":
-                _results.push(new EnrichmentWidget(_this.service, widget.name, bagName, "#" + widget.name, widgetOptions));
+                _results.push(new EnrichmentWidget(_this.service, widget.name, bagName, "#" + el + " #" + widgetEl, widgetOptions));
                 break;
               default:
                 _results.push(void 0);

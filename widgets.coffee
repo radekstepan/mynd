@@ -279,11 +279,13 @@ class window.Widgets
             if response.widgets
                 # For all that match our object type...
                 for widget in response.widgets when type in widget.targets
-                    # Create target element for individual Widget.
-                    $(el).append $('<div/>', id: widget.name, class: "span6")
+                    # Create target element for individual Widget (slugify just to make sure).
+                    widgetEl = widget.name.replace(/[^-a-zA-Z0-9,&\s]+/ig, '').replace(/-/gi, "_").replace(/\s/gi, "-").toLowerCase()
+                    $(el).append $('<div/>', id: widgetEl, class: "span6")
+                    
                     # What type is it?
                     switch widget.widgetType
                         when "chart"
-                            new GraphWidget(@service, widget.name, bagName, "##{widget.name}", widgetOptions)
+                            new GraphWidget(@service, widget.name, bagName, "##{el} ##{widgetEl}", widgetOptions)
                         when "enrichment"
-                            new EnrichmentWidget(@service, widget.name, bagName, "##{widget.name}", widgetOptions)
+                            new EnrichmentWidget(@service, widget.name, bagName, "##{el} ##{widgetEl}", widgetOptions)
