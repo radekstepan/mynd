@@ -51,7 +51,7 @@ class GraphWidget extends InterMineWidget
     # Visualize the displayer.
     render: =>
         # Get JSON response by calling the service.
-        $.getJSON @service + "list/chart",
+        $.getJSON "#{@service}list/chart",
             widget: @id
             list:   @bagName
             filter: ""
@@ -186,7 +186,7 @@ class EnrichmentWidget extends InterMineWidget
 
     # Visualize the displayer.
     render: =>
-        $.getJSON @service + "list/enrichment",
+        $.getJSON "#{@service}list/enrichment",
             widget:     @id
             list:       @bagName
             correction: @formOptions.errorCorrection
@@ -273,7 +273,7 @@ class window.Widgets
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
     all: (type = "Gene", bagName, el, widgetOptions) =>
-        $.getJSON @service + "widgets"
+        $.getJSON "#{@service}widgets"
         , (response) =>
             # We have results.
             if response.widgets

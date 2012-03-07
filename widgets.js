@@ -66,7 +66,7 @@
 
     GraphWidget.prototype.render = function() {
       var _this = this;
-      return $.getJSON(this.service + "list/chart", {
+      return $.getJSON("" + this.service + "list/chart", {
         widget: this.id,
         list: this.bagName,
         filter: "",
@@ -152,7 +152,7 @@
 
     EnrichmentWidget.prototype.render = function() {
       var _this = this;
-      return $.getJSON(this.service + "list/enrichment", {
+      return $.getJSON("" + this.service + "list/enrichment", {
         widget: this.id,
         list: this.bagName,
         correction: this.formOptions.errorCorrection,
@@ -254,7 +254,7 @@
     Widgets.prototype.all = function(type, bagName, el, widgetOptions) {
       var _this = this;
       if (type == null) type = "Gene";
-      return $.getJSON(this.service + "widgets", function(response) {
+      return $.getJSON("" + this.service + "widgets", function(response) {
         var widget, _i, _len, _ref, _results;
         if (response.widgets) {
           _ref = response.widgets;
