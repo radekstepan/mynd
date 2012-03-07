@@ -57,6 +57,8 @@
         </div>
       </div>
 
+      <div id="widgets-all" class="row"></div>
+
       <script type="text/javascript">
         (function() {
           widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");
@@ -64,6 +66,7 @@
           widgets.graph('flyatlas', '1', '#widget-2');
           widgets.enrichment('pathway_enrichment', '1', '#widget-3');
           widgets.enrichment('prot_dom_enrichment', '1', '#widget-4');
+          widgets.all('Gene', '1', '#widgets-all');
         })();
       </script>
 

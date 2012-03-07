@@ -3,7 +3,8 @@
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
-    __slice = Array.prototype.slice;
+    __slice = Array.prototype.slice,
+    __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   InterMineWidget = (function() {
 
@@ -219,6 +220,7 @@
 
     function Widgets(service) {
       this.service = service;
+      this.all = __bind(this.all, this);
       this.enrichment = __bind(this.enrichment, this);
       this.graph = __bind(this.graph, this);
       if (!(window.jQuery != null)) throw "jQuery not loaded";
@@ -247,6 +249,37 @@
         var child = new ctor, result = func.apply(child, args);
         return typeof result === "object" ? result : child;
       })(EnrichmentWidget, [this.service].concat(__slice.call(opts)), function() {});
+    };
+
+    Widgets.prototype.all = function(type, bagName, el, widgetOptions) {
+      var _this = this;
+      if (type == null) type = "Gene";
+      return $.getJSON(this.service + "widgets", function(response) {
+        var widget, _i, _len, _ref, _results;
+        if (response.widgets) {
+          _ref = response.widgets;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            widget = _ref[_i];
+            if (!(__indexOf.call(widget.targets, type) >= 0)) continue;
+            $(el).append($('<div/>', {
+              id: widget.name,
+              "class": "span6"
+            }));
+            switch (widget.widgetType) {
+              case "chart":
+                _results.push(new GraphWidget(_this.service, widget.name, bagName, "#" + widget.name, widgetOptions));
+                break;
+              case "enrichment":
+                _results.push(new EnrichmentWidget(_this.service, widget.name, bagName, "#" + widget.name, widgetOptions));
+                break;
+              default:
+                _results.push(void 0);
+            }
+          }
+          return _results;
+        }
+      });
     };
 
     return Widgets;

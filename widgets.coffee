@@ -240,11 +240,18 @@ class EnrichmentWidget extends InterMineWidget
 
 class window.Widgets
 
+    # New Widgets client.
+    # `service`: http://aragorn.flymine.org:8080/flymine/service/
     constructor: (@service) ->
         if not window.jQuery? then throw "jQuery not loaded"
         if not window._? then throw "underscore.js not loaded"
         if not window.google? then throw "Google API not loaded"
 
+    # Graph Widget.
+    # `id`:            widgetId
+    # `bagName`:       myBag
+    # `el`:            #target
+    # `widgetOptions`: { "title": true/false, "description": true/false }
     graph: (opts...) =>
         # Load Google Visualization.
         google.load "visualization", "1.0",
@@ -252,5 +259,31 @@ class window.Widgets
 
         new GraphWidget(@service, opts...)
     
+    # Enrichment Widget.
+    # `id`:            widgetId
+    # `bagName`:       myBag
+    # `el`:            #target
+    # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
     enrichment: (opts...) =>
         new EnrichmentWidget(@service, opts...)
+
+    # All available Widgets.
+    # `type`:          Gene, Protein
+    # `bagName`:       myBag
+    # `el`:            #target
+    # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
+    all: (type = "Gene", bagName, el, widgetOptions) =>
+        $.getJSON @service + "widgets"
+        , (response) =>
+            # We have results.
+            if response.widgets
+                # For all that match our object type...
+                for widget in response.widgets when type in widget.targets
+                    # Create target element for individual Widget.
+                    $(el).append $('<div/>', id: widget.name, class: "span6")
+                    # What type is it?
+                    switch widget.widgetType
+                        when "chart"
+                            new GraphWidget(@service, widget.name, bagName, "##{widget.name}", widgetOptions)
+                        when "enrichment"
+                            new EnrichmentWidget(@service, widget.name, bagName, "##{widget.name}", widgetOptions)
