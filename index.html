@@ -41,19 +41,19 @@
 
       <div class="row">
         <div class="span6">
-          <div id="widget-1"></div>
+          <article id="widget-1"></article>
         </div>
         <div class="span6">
-          <div id="widget-2"></div>
+          <article id="widget-2"></article>
         </div>
       </div>
 
       <div class="row">
         <div class="span6">
-          <div id="widget-3"></div>
+          <article id="widget-3"></article>
         </div>
         <div class="span6">
-          <div id="widget-4"></div>
+          <article id="widget-4"></article>
         </div>
       </div>
 
@@ -62,11 +62,10 @@
       <script type="text/javascript">
         (function() {
           widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");
-          widgets.graph('flyfish', '1', '#widget-1');
-          widgets.graph('flyatlas', '1', '#widget-2');
+          widgets.chart('flyfish', '1', '#widget-1');
+          widgets.chart('flyatlas', '1', '#widget-2');
           widgets.enrichment('pathway_enrichment', '1', '#widget-3');
           widgets.enrichment('prot_dom_enrichment', '1', '#widget-4');
-          widgets.all('Gene', '1', '#widgets-all');
         })();
       </script>
 

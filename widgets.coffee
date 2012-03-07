@@ -1,10 +1,17 @@
 class InterMineWidget
 
+    # Inject wrapper inside the target div that we have control over.
+    constructor: ->
+        $(@el).html $ '<div/>',
+            class: "inner"
+            style: "height:572px;overflow:hidden"
+        @el = "#{@el} div.inner"
+
 
 # --------------------------------------------
 
 
-class GraphWidget extends InterMineWidget
+class ChartWidget extends InterMineWidget
 
     chartOptions:
         fontName: "Sans-Serif"
@@ -25,16 +32,18 @@ class GraphWidget extends InterMineWidget
     templates:
         normal:
             """
-                <% if (title) { %>
-                    <h3><%= title %></h3>
-                <% } %>
-                <% if (description) { %>
-                    <p><%= description %></p>
-                <% } %>
-                <% if (notAnalysed > 0) { %>
-                    <p>Number of Genes in this list not analysed in this widget: <span class="label label-info"><%= notAnalysed %></span></p>
-                <% } %>
-                <div class="widget"></div>
+                <header>
+                    <% if (title) { %>
+                        <h3><%= title %></h3>
+                    <% } %>
+                    <% if (description) { %>
+                        <p><%= description %></p>
+                    <% } %>
+                    <% if (notAnalysed > 0) { %>
+                        <p>Number of Genes in this list not analysed in this widget: <span class="label label-info"><%= notAnalysed %></span></p>
+                    <% } %>
+                </header>
+                <div class="content"></div>
             """
         noresults:
             "<p>The widget has no results.</p>"
@@ -46,6 +55,7 @@ class GraphWidget extends InterMineWidget
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false }
     constructor: (@service, @id, @bagName, @el, @widgetOptions = { "title": true, "description": true, "selectCb": (pq) => console.log pq }) ->
+        super()
         google.setOnLoadCallback => @render()
 
     # Visualize the displayer.
@@ -66,7 +76,7 @@ class GraphWidget extends InterMineWidget
                     "notAnalysed": response.notAnalysed
 
                 # Create the chart.
-                chart = new google.visualization[response.chartType]($(@el).find("div.widget")[0])
+                chart = new google.visualization[response.chartType]($(@el).find("div.content")[0])
                 chart.draw(google.visualization.arrayToDataTable(response.results, false), @chartOptions)
 
                 # Add event listener on click the chart bar.
@@ -99,23 +109,25 @@ class EnrichmentWidget extends InterMineWidget
     templates:
         normal:
             """
-                <% if (title) { %>
-                    <h3><%= title %></h3>
-                <% } %>
-                <% if (description) { %>
-                    <p><%= description %></p>
-                <% } %>
-                <% if (notAnalysed > 0) { %>
-                    <p>Number of Genes in this list not analysed in this widget: <span class="label label-info"><%= notAnalysed %></span></p>
-                <% } %>
-                <div class="form"></div>
-                <div class="widget"></div>
+                <header>
+                    <% if (title) { %>
+                        <h3><%= title %></h3>
+                    <% } %>
+                    <% if (description) { %>
+                        <p><%= description %></p>
+                    <% } %>
+                    <% if (notAnalysed > 0) { %>
+                        <p>Number of Genes in this list not analysed in this widget: <span class="label label-info"><%= notAnalysed %></span></p>
+                    <% } %>
+                    <div class="form"></div>
+                </header>
+                <div class="content" style="overflow:auto;overflow-x:hidden;height:400px"></div>
             """
         form:
             """
                 <form>
                     <label>Multiple Hypothesis Test Correction</label>
-                    <select name="errorCorrection">
+                    <select name="errorCorrection" class="input-medium">
                         <% for (var i = 0; i < errorCorrections.length; i++) { %>
                             <% var correction = errorCorrections[i] %>
                             <option value="<%= correction %>" <%= (options.errorCorrection == correction) ? 'selected="selected"' : "" %>><%= correction %></option>
@@ -123,7 +135,7 @@ class EnrichmentWidget extends InterMineWidget
                     </select>
 
                     <label>Maximum value to display</label>
-                    <select name="pValue">
+                    <select name="pValue" class="input-small">
                         <% for (var i = 0; i < pValues.length; i++) { %>
                             <% var p = pValues[i] %>
                             <option value="<%= p %>" <%= (options.pValue == p) ? 'selected="selected"' : "" %>><%= p %></option>
@@ -131,7 +143,7 @@ class EnrichmentWidget extends InterMineWidget
                     </select>
 
                     <label>DataSet</label>
-                    <select name="dataSet">
+                    <select name="dataSet" class="input-medium">
                         <option value="All datasets" selected="selected">All datasets</option>
                     </select>
                 </form>
@@ -161,8 +173,8 @@ class EnrichmentWidget extends InterMineWidget
             """
         matches:
             """
-                <div class="popover" style="position:absolute;top:30px;left:0;z-index:1;display:block">
-                    <div class="popover-inner" style="width:300px">
+                <div class="popover" style="position:absolute;top:22px;right:0;z-index:1;display:block">
+                    <div class="popover-inner" style="width:300px;margin-left:-300px">
                         <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>
                         <h3 class="popover-title"></h3>
                         <div class="popover-content">
@@ -182,7 +194,9 @@ class EnrichmentWidget extends InterMineWidget
     # `bagName`:       myBag
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false }
-    constructor: (@service, @id, @bagName, @el, @widgetOptions = { "title": true, "description": true }) -> @render()
+    constructor: (@service, @id, @bagName, @el, @widgetOptions = { "title": true, "description": true }) ->
+        super()
+        @render()
 
     # Visualize the displayer.
     render: =>
@@ -207,12 +221,16 @@ class EnrichmentWidget extends InterMineWidget
                     "errorCorrections": @errorCorrections
                     "pValues":          @pValues
                 
+                # How tall should the table be?
+                height = $(@el).height() - $(@el).find('header').height() - 18
+
                 # Render the table.
-                $(@el).find("div.widget").html $ _.template @templates.table,
+                $(@el).find("div.content").html($ _.template @templates.table,
                     "label": response.label
+                ).css "height", "#{height}px"
                 
                 # Table rows.
-                table = $(@el).find("div.widget table")
+                table = $(@el).find("div.content table")
                 for row in response.results then do (row) =>
                     table.append tr = $ _.template @templates.row,
                         "row": row
@@ -247,17 +265,17 @@ class window.Widgets
         if not window._? then throw "underscore.js not loaded"
         if not window.google? then throw "Google API not loaded"
 
-    # Graph Widget.
+    # Chart Widget.
     # `id`:            widgetId
     # `bagName`:       myBag
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false }
-    graph: (opts...) =>
+    chart: (opts...) =>
         # Load Google Visualization.
         google.load "visualization", "1.0",
             packages: [ "corechart" ]
 
-        new GraphWidget(@service, opts...)
+        new ChartWidget(@service, opts...)
     
     # Enrichment Widget.
     # `id`:            widgetId
@@ -281,11 +299,11 @@ class window.Widgets
                 for widget in response.widgets when type in widget.targets
                     # Create target element for individual Widget (slugify just to make sure).
                     widgetEl = widget.name.replace(/[^-a-zA-Z0-9,&\s]+/ig, '').replace(/-/gi, "_").replace(/\s/gi, "-").toLowerCase()
-                    $(el).append $('<div/>', id: widgetEl, class: "span6")
+                    $(el).append $('<div/>', id: widgetEl, class: "widget span6")
                     
                     # What type is it?
                     switch widget.widgetType
                         when "chart"
-                            new GraphWidget(@service, widget.name, bagName, "##{el} ##{widgetEl}", widgetOptions)
+                            new ChartWidget(@service, widget.name, bagName, "##{el} ##{widgetEl}", widgetOptions)
                         when "enrichment"
                             new EnrichmentWidget(@service, widget.name, bagName, "##{el} ##{widgetEl}", widgetOptions)

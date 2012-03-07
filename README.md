@@ -14,8 +14,8 @@ Run `./compile.sh` to compile and watch the `widgets.coffee` file for changes.
 
 ### Load all Widgets:
 `widgets.all('Gene', 'myList', '#all-widgets');`
-### Load a specific Graph Widget:
-`widgets.graph('flyfish', 'myList', '#widget-1');`
+### Load a specific Chart Widget:
+`widgets.chart('flyfish', 'myList', '#widget-1');`
 ### Load a specific Enrichment Widget:
 `widgets.enrichment('pathway_enrichment', 'myList', '#widget-2');`
 
