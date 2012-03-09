@@ -11,6 +11,11 @@ class InterMineWidget
             style: "height:572px;overflow:hidden"
         @el = "#{@el} div.inner"
 
+    error: (err, template) =>
+        $(@el).html _.template template,
+            "title": err.statusText
+            "text":  err.responseText
+
 
 # --------------------------------------------
 
@@ -48,7 +53,7 @@ class ChartWidget extends InterMineWidget
                 </header>
                 <div class="content"></div>
             """
-        noresults:
+        error:
             """
                 <div class="alert alert-block">
                     <h4 class="alert-heading"><%= title %></h4>
@@ -103,10 +108,7 @@ class ChartWidget extends InterMineWidget
                                         pq = pq.replace("%series", response.results[0][item.column])
                                     @widgetOptions.selectCb(pq)
             
-            error: (err) =>
-                $(@el).html _.template @templates.noresults,
-                    "title": err.statusText
-                    "text":  err.responseText
+            error: (err) => @error(err, @templates.error)
 
 
 # --------------------------------------------
@@ -207,7 +209,7 @@ class EnrichmentWidget extends InterMineWidget
                     </div>
                 </div>
             """
-        noresults:
+        error:
             """
                 <div class="alert alert-block">
                     <h4 class="alert-heading"><%= title %></h4>
@@ -270,10 +272,7 @@ class EnrichmentWidget extends InterMineWidget
                     # Set behaviors.
                     $(@el).find("form select").change @formClick
             
-            error: (err) =>
-                $(@el).html _.template @templates.noresults,
-                    "title": err.statusText
-                    "text":  err.responseText
+            error: (err) => @error(err, @templates.error)
 
     # On form select option change, set the new options and re-render.
     formClick: (e) =>
