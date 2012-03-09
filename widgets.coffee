@@ -56,7 +56,7 @@ class ChartWidget extends InterMineWidget
     # `widgetOptions`: { "title": true/false, "description": true/false }
     constructor: (@service, @id, @bagName, @el, @widgetOptions = { "title": true, "description": true, "selectCb": (pq) => console.log pq }) ->
         super()
-        google.setOnLoadCallback => @render()
+        @render()
 
     # Visualize the displayer.
     render: =>
@@ -262,14 +262,47 @@ class EnrichmentWidget extends InterMineWidget
 # --------------------------------------------
 
 
+class Loader
+
+    getHead: -> document.getElementsByTagName('head')[0]
+
+    setCallback: (tag, callback) ->
+        tag.onload = callback
+        tag.onreadystatechange = ->
+            state = tag.readyState
+            if state is "complete" or state is "loaded"
+                tag.onreadystatechange = null
+                window.setTimeout callback, 0
+
+
+class JSLoader extends Loader
+
+    constructor: (path, callback) ->
+        script = document.createElement "script"
+        script.src = path;
+        script.type = "text/javascript"
+        @setCallback(script, callback) if callback
+        @getHead().appendChild(script)
+
+
+# --------------------------------------------
+
+
 class window.Widgets
+
+    resources:
+        js:
+            jQuery: "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+            _:      "http://documentcloud.github.com/underscore/underscore.js"
+            google: "https://www.google.com/jsapi"
 
     # New Widgets client.
     # `service`: http://aragorn.flymine.org:8080/flymine/service/
     constructor: (@service) ->
-        if not window.jQuery? then throw "jQuery not loaded"
-        if not window._? then throw "underscore.js not loaded"
-        if not window.google? then throw "Google API not loaded"
+        for library, path of @resources.js
+            if not window[library]?
+                @wait = (@wait ? 0) + 1
+                new JSLoader(path, => @wait -= 1)
 
     # Chart Widget.
     # `id`:            widgetId
@@ -277,11 +310,12 @@ class window.Widgets
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false }
     chart: (opts...) =>
-        # Load Google Visualization.
-        google.load "visualization", "1.0",
-            packages: [ "corechart" ]
-
-        new ChartWidget(@service, opts...)
+        if @wait then window.setTimeout((=> @chart(opts...)), 1000)
+        else
+            # Load Google Visualization.
+            google.load "visualization", "1.0",
+                packages: [ "corechart" ]
+                callback: => new ChartWidget(@service, opts...)
     
     # Enrichment Widget.
     # `id`:            widgetId
@@ -289,7 +323,7 @@ class window.Widgets
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
     enrichment: (opts...) =>
-        new EnrichmentWidget(@service, opts...)
+        if @wait then window.setTimeout((=> @enrichment(opts...)), 1000) else new EnrichmentWidget(@service, opts...)
 
     # All available Widgets.
     # `type`:          Gene, Protein

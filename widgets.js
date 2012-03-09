@@ -1,5 +1,5 @@
 (function() {
-  var ChartWidget, EnrichmentWidget, InterMineWidget,
+  var ChartWidget, EnrichmentWidget, InterMineWidget, JSLoader, Loader,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
@@ -66,9 +66,7 @@
       };
       this.render = __bind(this.render, this);
       ChartWidget.__super__.constructor.call(this);
-      google.setOnLoadCallback(function() {
-        return _this.render();
-      });
+      this.render();
     }
 
     ChartWidget.prototype.render = function() {
@@ -225,39 +223,113 @@
 
   })(InterMineWidget);
 
+  Loader = (function() {
+
+    function Loader() {}
+
+    Loader.prototype.getHead = function() {
+      return document.getElementsByTagName('head')[0];
+    };
+
+    Loader.prototype.setCallback = function(tag, callback) {
+      tag.onload = callback;
+      return tag.onreadystatechange = function() {
+        var state;
+        state = tag.readyState;
+        if (state === "complete" || state === "loaded") {
+          tag.onreadystatechange = null;
+          return window.setTimeout(callback, 0);
+        }
+      };
+    };
+
+    return Loader;
+
+  })();
+
+  JSLoader = (function(_super) {
+
+    __extends(JSLoader, _super);
+
+    function JSLoader(path, callback) {
+      var script;
+      script = document.createElement("script");
+      script.src = path;
+      script.type = "text/javascript";
+      if (callback) this.setCallback(script, callback);
+      this.getHead().appendChild(script);
+    }
+
+    return JSLoader;
+
+  })(Loader);
+
   window.Widgets = (function() {
 
+    Widgets.prototype.resources = {
+      js: {
+        jQuery: "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js",
+        _: "http://documentcloud.github.com/underscore/underscore.js",
+        google: "https://www.google.com/jsapi"
+      }
+    };
+
     function Widgets(service) {
+      var library, path, _ref, _ref2,
+        _this = this;
       this.service = service;
       this.all = __bind(this.all, this);
       this.enrichment = __bind(this.enrichment, this);
       this.chart = __bind(this.chart, this);
-      if (!(window.jQuery != null)) throw "jQuery not loaded";
-      if (!(window._ != null)) throw "underscore.js not loaded";
-      if (!(window.google != null)) throw "Google API not loaded";
+      _ref = this.resources.js;
+      for (library in _ref) {
+        path = _ref[library];
+        if (!(window[library] != null)) {
+          this.wait = ((_ref2 = this.wait) != null ? _ref2 : 0) + 1;
+          new JSLoader(path, function() {
+            return _this.wait -= 1;
+          });
+        }
+      }
     }
 
     Widgets.prototype.chart = function() {
-      var opts;
+      var opts,
+        _this = this;
       opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      google.load("visualization", "1.0", {
-        packages: ["corechart"]
-      });
-      return (function(func, args, ctor) {
-        ctor.prototype = func.prototype;
-        var child = new ctor, result = func.apply(child, args);
-        return typeof result === "object" ? result : child;
-      })(ChartWidget, [this.service].concat(__slice.call(opts)), function() {});
+      if (this.wait) {
+        return window.setTimeout((function() {
+          return _this.chart.apply(_this, opts);
+        }), 1000);
+      } else {
+        return google.load("visualization", "1.0", {
+          packages: ["corechart"],
+          callback: function() {
+            return (function(func, args, ctor) {
+              ctor.prototype = func.prototype;
+              var child = new ctor, result = func.apply(child, args);
+              return typeof result === "object" ? result : child;
+            })(ChartWidget, [_this.service].concat(__slice.call(opts)), function() {});
+          }
+        });
+      }
     };
 
     Widgets.prototype.enrichment = function() {
-      var opts;
+      var opts,
+        _this = this;
       opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      return (function(func, args, ctor) {
-        ctor.prototype = func.prototype;
-        var child = new ctor, result = func.apply(child, args);
-        return typeof result === "object" ? result : child;
-      })(EnrichmentWidget, [this.service].concat(__slice.call(opts)), function() {});
+      if (this.wait) {
+        return window.setTimeout((function() {
+          return _this.enrichment.apply(_this, opts);
+        }), 1000);
+      } else {
+        return (function(func, args, ctor) {
+          ctor.prototype = func.prototype;
+          var child = new ctor, result = func.apply(child, args);
+          return typeof result === "object" ? result : child;
+        })(EnrichmentWidget, [this.service].concat(__slice.call(opts)), function() {});
+      }
     };
 
     Widgets.prototype.all = function(type, bagName, el, widgetOptions) {
