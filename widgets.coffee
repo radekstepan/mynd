@@ -349,9 +349,11 @@ class window.Widgets
             if not window[library]?
                 @wait = (@wait ? 0) + 1
                 new JSLoader(path, =>
-                    if library is "jQuery" then root.$ = jQuery # We are jQuery.
+                    if library is "jQuery" then root.$ = window.jQuery # We are jQuery.
                     @wait -= 1
                 )
+            else
+                if library is "jQuery" then root.$ = window.jQuery # We are jQuery.
 
     # Chart Widget.
     # `id`:            widgetId
