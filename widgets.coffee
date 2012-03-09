@@ -370,19 +370,21 @@ class window.Widgets
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
     all: (type = "Gene", bagName, el, widgetOptions) =>
-        $.getJSON "#{@service}widgets"
-        , (response) =>
-            # We have results.
-            if response.widgets
-                # For all that match our object type...
-                for widget in response.widgets when type in widget.targets
-                    # Create target element for individual Widget (slugify just to make sure).
-                    widgetEl = widget.name.replace(/[^-a-zA-Z0-9,&\s]+/ig, '').replace(/-/gi, "_").replace(/\s/gi, "-").toLowerCase()
-                    $(el).append $('<div/>', id: widgetEl, class: "widget span6")
-                    
-                    # What type is it?
-                    switch widget.widgetType
-                        when "chart"
-                            new ChartWidget(@service, widget.name, bagName, "##{el} ##{widgetEl}", widgetOptions)
-                        when "enrichment"
-                            new EnrichmentWidget(@service, widget.name, bagName, "##{el} ##{widgetEl}", widgetOptions)
+        if @wait then window.setTimeout((=> @all(type, bagName, el, widgetOptions)), 1000)
+        else
+            $.getJSON "#{@service}widgets"
+            , (response) =>
+                # We have results.
+                if response.widgets
+                    # For all that match our object type...
+                    for widget in response.widgets when type in widget.targets
+                        # Create target element for individual Widget (slugify just to make sure).
+                        widgetEl = widget.name.replace(/[^-a-zA-Z0-9,&\s]+/ig, '').replace(/-/gi, "_").replace(/\s/gi, "-").toLowerCase()
+                        $(el).append $('<div/>', id: widgetEl, class: "widget span6")
+                        
+                        # What type is it?
+                        switch widget.widgetType
+                            when "chart"
+                                new ChartWidget(@service, widget.name, bagName, "##{el} ##{widgetEl}", widgetOptions)
+                            when "enrichment"
+                                new EnrichmentWidget(@service, widget.name, bagName, "##{el} ##{widgetEl}", widgetOptions)

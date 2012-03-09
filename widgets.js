@@ -370,33 +370,39 @@
     Widgets.prototype.all = function(type, bagName, el, widgetOptions) {
       var _this = this;
       if (type == null) type = "Gene";
-      return $.getJSON("" + this.service + "widgets", function(response) {
-        var widget, widgetEl, _i, _len, _ref, _results;
-        if (response.widgets) {
-          _ref = response.widgets;
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            widget = _ref[_i];
-            if (!(__indexOf.call(widget.targets, type) >= 0)) continue;
-            widgetEl = widget.name.replace(/[^-a-zA-Z0-9,&\s]+/ig, '').replace(/-/gi, "_").replace(/\s/gi, "-").toLowerCase();
-            $(el).append($('<div/>', {
-              id: widgetEl,
-              "class": "widget span6"
-            }));
-            switch (widget.widgetType) {
-              case "chart":
-                _results.push(new ChartWidget(_this.service, widget.name, bagName, "#" + el + " #" + widgetEl, widgetOptions));
-                break;
-              case "enrichment":
-                _results.push(new EnrichmentWidget(_this.service, widget.name, bagName, "#" + el + " #" + widgetEl, widgetOptions));
-                break;
-              default:
-                _results.push(void 0);
+      if (this.wait) {
+        return window.setTimeout((function() {
+          return _this.all(type, bagName, el, widgetOptions);
+        }), 1000);
+      } else {
+        return $.getJSON("" + this.service + "widgets", function(response) {
+          var widget, widgetEl, _i, _len, _ref, _results;
+          if (response.widgets) {
+            _ref = response.widgets;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              widget = _ref[_i];
+              if (!(__indexOf.call(widget.targets, type) >= 0)) continue;
+              widgetEl = widget.name.replace(/[^-a-zA-Z0-9,&\s]+/ig, '').replace(/-/gi, "_").replace(/\s/gi, "-").toLowerCase();
+              $(el).append($('<div/>', {
+                id: widgetEl,
+                "class": "widget span6"
+              }));
+              switch (widget.widgetType) {
+                case "chart":
+                  _results.push(new ChartWidget(_this.service, widget.name, bagName, "#" + el + " #" + widgetEl, widgetOptions));
+                  break;
+                case "enrichment":
+                  _results.push(new EnrichmentWidget(_this.service, widget.name, bagName, "#" + el + " #" + widgetEl, widgetOptions));
+                  break;
+                default:
+                  _results.push(void 0);
+              }
             }
+            return _results;
           }
-          return _results;
-        }
-      });
+        });
+      }
     };
 
     return Widgets;
