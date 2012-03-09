@@ -126,26 +126,32 @@ class EnrichmentWidget extends InterMineWidget
         form:
             """
                 <form>
-                    <label>Multiple Hypothesis Test Correction</label>
-                    <select name="errorCorrection" class="input-medium">
-                        <% for (var i = 0; i < errorCorrections.length; i++) { %>
-                            <% var correction = errorCorrections[i] %>
-                            <option value="<%= correction %>" <%= (options.errorCorrection == correction) ? 'selected="selected"' : "" %>><%= correction %></option>
-                        <% } %>
-                    </select>
+                    <div class="group" style="display:inline-block;margin-right:5px">
+                        <label>Test Correction</label>
+                        <select name="errorCorrection" class="span2">
+                            <% for (var i = 0; i < errorCorrections.length; i++) { %>
+                                <% var correction = errorCorrections[i] %>
+                                <option value="<%= correction %>" <%= (options.errorCorrection == correction) ? 'selected="selected"' : "" %>><%= correction %></option>
+                            <% } %>
+                        </select>
+                    </div>
 
-                    <label>Maximum value to display</label>
-                    <select name="pValue" class="input-small">
-                        <% for (var i = 0; i < pValues.length; i++) { %>
-                            <% var p = pValues[i] %>
-                            <option value="<%= p %>" <%= (options.pValue == p) ? 'selected="selected"' : "" %>><%= p %></option>
-                        <% } %>
-                    </select>
+                    <div class="group" style="display:inline-block;margin-right:5px">
+                        <label>Max p-value</label>
+                        <select name="pValue" class="span2">
+                            <% for (var i = 0; i < pValues.length; i++) { %>
+                                <% var p = pValues[i] %>
+                                <option value="<%= p %>" <%= (options.pValue == p) ? 'selected="selected"' : "" %>><%= p %></option>
+                            <% } %>
+                        </select>
+                    </div>
 
-                    <label>DataSet</label>
-                    <select name="dataSet" class="input-medium">
-                        <option value="All datasets" selected="selected">All datasets</option>
-                    </select>
+                    <div class="group" style="display:inline-block;margin-right:5px">
+                        <label>Dataset</label>
+                        <select name="dataSet" class="span2">
+                            <option value="All datasets" selected="selected">All datasets</option>
+                        </select>
+                    </div>
                 </form>
             """
         table:
