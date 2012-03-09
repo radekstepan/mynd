@@ -51,9 +51,10 @@
       noresults: "<div class=\"alert alert-block\">\n    <h4 class=\"alert-heading\"><%= title %></h4>\n    <p><%= text %></p>\n</div>"
     };
 
-    function ChartWidget(service, id, bagName, el, widgetOptions) {
+    function ChartWidget(service, token, id, bagName, el, widgetOptions) {
       var _this = this;
       this.service = service;
+      this.token = token;
       this.id = id;
       this.bagName = bagName;
       this.el = el;
@@ -78,7 +79,7 @@
           widget: this.id,
           list: this.bagName,
           filter: "",
-          token: ""
+          token: this.token
         },
         success: function(response) {
           var chart;
@@ -149,8 +150,9 @@
       noresults: "<div class=\"alert alert-block\">\n    <h4 class=\"alert-heading\"><%= title %></h4>\n    <p><%= text %></p>\n</div>"
     };
 
-    function EnrichmentWidget(service, id, bagName, el, widgetOptions) {
+    function EnrichmentWidget(service, token, id, bagName, el, widgetOptions) {
       this.service = service;
+      this.token = token;
       this.id = id;
       this.bagName = bagName;
       this.el = el;
@@ -175,7 +177,7 @@
           list: this.bagName,
           correction: this.formOptions.errorCorrection,
           maxp: this.formOptions.pValue,
-          token: ""
+          token: this.token
         },
         success: function(response) {
           var height, row, table, _fn, _i, _len, _ref;
@@ -309,10 +311,11 @@
       }
     };
 
-    function Widgets(service) {
+    function Widgets(service, token) {
       var library, path, _ref, _ref2,
         _this = this;
       this.service = service;
+      this.token = token != null ? token : "";
       this.all = __bind(this.all, this);
       this.enrichment = __bind(this.enrichment, this);
       this.chart = __bind(this.chart, this);
@@ -344,7 +347,7 @@
               ctor.prototype = func.prototype;
               var child = new ctor, result = func.apply(child, args);
               return typeof result === "object" ? result : child;
-            })(ChartWidget, [_this.service].concat(__slice.call(opts)), function() {});
+            })(ChartWidget, [_this.service, _this.token].concat(__slice.call(opts)), function() {});
           }
         });
       }
@@ -363,7 +366,7 @@
           ctor.prototype = func.prototype;
           var child = new ctor, result = func.apply(child, args);
           return typeof result === "object" ? result : child;
-        })(EnrichmentWidget, [this.service].concat(__slice.call(opts)), function() {});
+        })(EnrichmentWidget, [this.service, this.token].concat(__slice.call(opts)), function() {});
       }
     };
 
@@ -390,10 +393,10 @@
               }));
               switch (widget.widgetType) {
                 case "chart":
-                  _results.push(new ChartWidget(_this.service, widget.name, bagName, "#" + el + " #" + widgetEl, widgetOptions));
+                  _results.push(new ChartWidget(_this.service, _this.token, widget.name, bagName, "#" + el + " #" + widgetEl, widgetOptions));
                   break;
                 case "enrichment":
-                  _results.push(new EnrichmentWidget(_this.service, widget.name, bagName, "#" + el + " #" + widgetEl, widgetOptions));
+                  _results.push(new EnrichmentWidget(_this.service, _this.token, widget.name, bagName, "#" + el + " #" + widgetEl, widgetOptions));
                   break;
                 default:
                   _results.push(void 0);

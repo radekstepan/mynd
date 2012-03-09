@@ -55,11 +55,12 @@ class ChartWidget extends InterMineWidget
 
     # Set the params on us and set Google load callback.
     # `service`:       http://aragorn.flymine.org:8080/flymine/service/
+    # `token`:         token for accessing user's lists
     # `id`:            widgetId
     # `bagName`:       myBag
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false }
-    constructor: (@service, @id, @bagName, @el, @widgetOptions = { "title": true, "description": true, "selectCb": (pq) => console.log pq }) ->
+    constructor: (@service, @token, @id, @bagName, @el, @widgetOptions = { "title": true, "description": true, "selectCb": (pq) => console.log pq }) ->
         super()
         @render()
 
@@ -73,7 +74,7 @@ class ChartWidget extends InterMineWidget
                 widget: @id
                 list:   @bagName
                 filter: ""
-                token:  "" # Only public lists for now.
+                token:  @token
             
             success: (response) =>
                 # We have results.
@@ -213,11 +214,12 @@ class EnrichmentWidget extends InterMineWidget
 
     # Set the params on us and render.
     # `service`:       http://aragorn.flymine.org:8080/flymine/service/
+    # `token`:         token for accessing user's lists
     # `id`:            widgetId
     # `bagName`:       myBag
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false }
-    constructor: (@service, @id, @bagName, @el, @widgetOptions = { "title": true, "description": true }) ->
+    constructor: (@service, @token, @id, @bagName, @el, @widgetOptions = { "title": true, "description": true }) ->
         super()
         @render()
 
@@ -231,7 +233,7 @@ class EnrichmentWidget extends InterMineWidget
                 list:       @bagName
                 correction: @formOptions.errorCorrection
                 maxp:       @formOptions.pValue
-                token:      ""
+                token:      @token
             
             success: (response) =>
                 # We have results.
@@ -337,7 +339,8 @@ class window.Widgets
 
     # New Widgets client.
     # `service`: http://aragorn.flymine.org:8080/flymine/service/
-    constructor: (@service) ->
+    # `token`:   token for accessing user's lists
+    constructor: (@service, @token = "") ->
         for library, path of @resources.js
             if not window[library]?
                 @wait = (@wait ? 0) + 1
@@ -354,7 +357,7 @@ class window.Widgets
             # Load Google Visualization.
             google.load "visualization", "1.0",
                 packages: [ "corechart" ]
-                callback: => new ChartWidget(@service, opts...)
+                callback: => new ChartWidget(@service, @token, opts...)
     
     # Enrichment Widget.
     # `id`:            widgetId
@@ -362,7 +365,7 @@ class window.Widgets
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
     enrichment: (opts...) =>
-        if @wait then window.setTimeout((=> @enrichment(opts...)), 1000) else new EnrichmentWidget(@service, opts...)
+        if @wait then window.setTimeout((=> @enrichment(opts...)), 1000) else new EnrichmentWidget(@service, @token, opts...)
 
     # All available Widgets.
     # `type`:          Gene, Protein
@@ -385,6 +388,6 @@ class window.Widgets
                         # What type is it?
                         switch widget.widgetType
                             when "chart"
-                                new ChartWidget(@service, widget.name, bagName, "##{el} ##{widgetEl}", widgetOptions)
+                                new ChartWidget(@service, @token, widget.name, bagName, "##{el} ##{widgetEl}", widgetOptions)
                             when "enrichment"
-                                new EnrichmentWidget(@service, widget.name, bagName, "##{el} ##{widgetEl}", widgetOptions)
+                                new EnrichmentWidget(@service, @token, widget.name, bagName, "##{el} ##{widgetEl}", widgetOptions)
