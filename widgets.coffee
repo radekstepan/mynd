@@ -209,6 +209,12 @@ class EnrichmentWidget extends InterMineWidget
                     </div>
                 </div>
             """
+        noresults:
+            """
+                <div class="alert alert-info">
+                    <p>The Widget has no results.</p>
+                </div>
+            """
         error:
             """
                 <div class="alert alert-block">
@@ -254,20 +260,25 @@ class EnrichmentWidget extends InterMineWidget
                         "errorCorrections": @errorCorrections
                         "pValues":          @pValues
                     
-                    # How tall should the table be?
-                    height = $(@el).height() - $(@el).find('header').height() - 18
+                    # Results?
+                    if response.results.length > 0
+                        # How tall should the table be?
+                        height = $(@el).height() - $(@el).find('header').height() - 18
 
-                    # Render the table.
-                    $(@el).find("div.content").html($ _.template @templates.table,
-                        "label": response.label
-                    ).css "height", "#{height}px"
-                    
-                    # Table rows.
-                    table = $(@el).find("div.content table")
-                    for row in response.results then do (row) =>
-                        table.append tr = $ _.template @templates.row,
-                            "row": row
-                        td = tr.find("td.matches .count").click => @matchesClick td, row["matches"]
+                        # Render the table.
+                        $(@el).find("div.content").html($ _.template @templates.table,
+                            "label": response.label
+                        ).css "height", "#{height}px"
+                        
+                        # Table rows.
+                        table = $(@el).find("div.content table")
+                        for row in response.results then do (row) =>
+                            table.append tr = $ _.template @templates.row,
+                                "row": row
+                            td = tr.find("td.matches .count").click => @matchesClick td, row["matches"]
+                    else
+                        # Render no results
+                        $(@el).find("div.content").html $ _.template @templates.noresults
 
                     # Set behaviors.
                     $(@el).find("form select").change @formClick

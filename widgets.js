@@ -153,6 +153,7 @@
       table: "<table class=\"table table-striped\">\n    <thead>\n        <tr>\n            <th><%= label %></th>\n            <th>p-Value</th>\n            <th>Matches</th>\n        </tr>\n    </thead>\n    <tbody></tbody>\n</table>",
       row: "<tr>\n    <td class=\"description\"><%= row[\"description\"] %></td>\n    <td class=\"pValue\"><%= row[\"p-value\"].toFixed(7) %></td>\n    <td class=\"matches\" style=\"position:relative\">\n        <span class=\"count label label-success\" style=\"cursor:pointer\"><%= row[\"matches\"].length %></span>\n    </td>\n</tr>",
       matches: "<div class=\"popover\" style=\"position:absolute;top:22px;right:0;z-index:1;display:block\">\n    <div class=\"popover-inner\" style=\"width:300px;margin-left:-300px\">\n        <a style=\"cursor:pointer;margin:2px 5px 0 0\" class=\"close\">×</a>\n        <h3 class=\"popover-title\"></h3>\n        <div class=\"popover-content\">\n            <% for (var i = 0; i < matches.length; i++) { %>\n                <a href=\"#\"><%= matches[i] %></a><%= (i < matches.length -1) ? \",\" : \"\" %>\n            <% } %>\n        </div>\n    </div>\n</div>",
+      noresults: "<div class=\"alert alert-info\">\n    <p>The Widget has no results.</p>\n</div>",
       error: "<div class=\"alert alert-block\">\n    <h4 class=\"alert-heading\"><%= title %></h4>\n    <p><%= text %></p>\n</div>"
     };
 
@@ -198,24 +199,28 @@
               "errorCorrections": _this.errorCorrections,
               "pValues": _this.pValues
             }));
-            height = $(_this.el).height() - $(_this.el).find('header').height() - 18;
-            $(_this.el).find("div.content").html($(_.template(_this.templates.table, {
-              "label": response.label
-            }))).css("height", "" + height + "px");
-            table = $(_this.el).find("div.content table");
-            _ref = response.results;
-            _fn = function(row) {
-              var td, tr;
-              table.append(tr = $(_.template(_this.templates.row, {
-                "row": row
-              })));
-              return td = tr.find("td.matches .count").click(function() {
-                return _this.matchesClick(td, row["matches"]);
-              });
-            };
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              row = _ref[_i];
-              _fn(row);
+            if (response.results.length > 0) {
+              height = $(_this.el).height() - $(_this.el).find('header').height() - 18;
+              $(_this.el).find("div.content").html($(_.template(_this.templates.table, {
+                "label": response.label
+              }))).css("height", "" + height + "px");
+              table = $(_this.el).find("div.content table");
+              _ref = response.results;
+              _fn = function(row) {
+                var td, tr;
+                table.append(tr = $(_.template(_this.templates.row, {
+                  "row": row
+                })));
+                return td = tr.find("td.matches .count").click(function() {
+                  return _this.matchesClick(td, row["matches"]);
+                });
+              };
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                row = _ref[_i];
+                _fn(row);
+              }
+            } else {
+              $(_this.el).find("div.content").html($(_.template(_this.templates.noresults)));
             }
             return $(_this.el).find("form select").change(_this.formClick);
           }
