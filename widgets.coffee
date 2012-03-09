@@ -262,6 +262,7 @@ class EnrichmentWidget extends InterMineWidget
 # --------------------------------------------
 
 
+# Asynchronously load resources by adding them to the `<head>` and use callback.
 class Loader
 
     getHead: -> document.getElementsByTagName('head')[0]
@@ -275,6 +276,7 @@ class Loader
                 window.setTimeout callback, 0
 
 
+# JavaScript Loader.
 class JSLoader extends Loader
 
     constructor: (path, callback) ->
@@ -283,6 +285,18 @@ class JSLoader extends Loader
         script.type = "text/javascript"
         @setCallback(script, callback) if callback
         @getHead().appendChild(script)
+
+
+# Cascading Style Sheet Loader.
+class CSSLoader extends Loader
+
+    constructor: (path, callback) ->
+        sheet = document.createElement "link"
+        sheet.rel = "stylesheet"
+        sheet.type = "text/css"
+        sheet.href = path
+        @setCallback(sheet, callback) if callback
+        @getHead().appendChild(sheet)
 
 
 # --------------------------------------------
