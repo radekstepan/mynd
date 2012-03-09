@@ -1,10 +1,12 @@
 (function() {
-  var CSSLoader, ChartWidget, EnrichmentWidget, InterMineWidget, JSLoader, Loader,
+  var CSSLoader, ChartWidget, EnrichmentWidget, InterMineWidget, JSLoader, Loader, root,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
     __slice = Array.prototype.slice,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  root = this;
 
   InterMineWidget = (function() {
 
@@ -312,7 +314,7 @@
     };
 
     function Widgets(service, token) {
-      var library, path, _ref, _ref2,
+      var library, path, _fn, _ref,
         _this = this;
       this.service = service;
       this.token = token != null ? token : "";
@@ -320,14 +322,19 @@
       this.enrichment = __bind(this.enrichment, this);
       this.chart = __bind(this.chart, this);
       _ref = this.resources.js;
-      for (library in _ref) {
-        path = _ref[library];
+      _fn = function(library, path) {
+        var _ref2;
         if (!(window[library] != null)) {
-          this.wait = ((_ref2 = this.wait) != null ? _ref2 : 0) + 1;
-          new JSLoader(path, function() {
+          _this.wait = ((_ref2 = _this.wait) != null ? _ref2 : 0) + 1;
+          return new JSLoader(path, function() {
+            if (library === "jQuery") root.$ = jQuery;
             return _this.wait -= 1;
           });
         }
+      };
+      for (library in _ref) {
+        path = _ref[library];
+        _fn(library, path);
       }
     }
 

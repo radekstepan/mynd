@@ -1,3 +1,7 @@
+root = this
+
+# --------------------------------------------
+
 class InterMineWidget
 
     # Inject wrapper inside the target div that we have control over.
@@ -9,7 +13,6 @@ class InterMineWidget
 
 
 # --------------------------------------------
-
 
 class ChartWidget extends InterMineWidget
 
@@ -341,10 +344,14 @@ class window.Widgets
     # `service`: http://aragorn.flymine.org:8080/flymine/service/
     # `token`:   token for accessing user's lists
     constructor: (@service, @token = "") ->
-        for library, path of @resources.js
+        # Check and load resources if needed.
+        for library, path of @resources.js then do (library, path) =>
             if not window[library]?
                 @wait = (@wait ? 0) + 1
-                new JSLoader(path, => @wait -= 1)
+                new JSLoader(path, =>
+                    if library is "jQuery" then root.$ = jQuery # We are jQuery.
+                    @wait -= 1
+                )
 
     # Chart Widget.
     # `id`:            widgetId

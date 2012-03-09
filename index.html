@@ -57,6 +57,7 @@
       <div id="widgets-all" class="row"></div>
 
       <script type="text/javascript">
+        window.$ = "I am an evil library";
         (function() {
           widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");
           widgets.chart('flyfish', '1', '#widget-1');
