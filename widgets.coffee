@@ -46,7 +46,12 @@ class ChartWidget extends InterMineWidget
                 <div class="content"></div>
             """
         noresults:
-            "<p>The widget has no results.</p>"
+            """
+                <div class="alert alert-block">
+                    <h4 class="alert-heading"><%= title %></h4>
+                    <p><%= text %></p>
+                </div>
+            """
 
     # Set the params on us and set Google load callback.
     # `service`:       http://aragorn.flymine.org:8080/flymine/service/
@@ -61,36 +66,43 @@ class ChartWidget extends InterMineWidget
     # Visualize the displayer.
     render: =>
         # Get JSON response by calling the service.
-        $.getJSON "#{@service}list/chart",
-            widget: @id
-            list:   @bagName
-            filter: ""
-            token:  "" # Only public lists for now.
-        , (response) =>
-            # We have results.
-            if response.results
-                # Render the widget template.
-                $(@el).html _.template @templates.normal,
-                    "title":       if @widgetOptions.title then response.title else ""
-                    "description": if @widgetOptions.description then response.description else ""
-                    "notAnalysed": response.notAnalysed
+        $.ajax
+            url:      "#{@service}list/chart"
+            dataType: "json"
+            data:
+                widget: @id
+                list:   @bagName
+                filter: ""
+                token:  "" # Only public lists for now.
+            
+            success: (response) =>
+                # We have results.
+                if response.wasSuccessful
+                    # Render the widget template.
+                    $(@el).html _.template @templates.normal,
+                        "title":       if @widgetOptions.title then response.title else ""
+                        "description": if @widgetOptions.description then response.description else ""
+                        "notAnalysed": response.notAnalysed
 
-                # Create the chart.
-                chart = new google.visualization[response.chartType]($(@el).find("div.content")[0])
-                chart.draw(google.visualization.arrayToDataTable(response.results, false), @chartOptions)
+                    # Create the chart.
+                    chart = new google.visualization[response.chartType]($(@el).find("div.content")[0])
+                    chart.draw(google.visualization.arrayToDataTable(response.results, false), @chartOptions)
 
-                # Add event listener on click the chart bar.
-                if response.pathQuery?
-                    google.visualization.events.addListener chart, "select", =>
-                        pq = response.pathQuery
-                        for item in chart.getSelection()
-                            if item.row?
-                                pq = pq.replace("%category", response.results[item.row + 1][0])
-                                if item.column?
-                                    pq = pq.replace("%series", response.results[0][item.column])
-                                @widgetOptions.selectCb(pq)
-            else
-                $(@el).html _.template @templates.noresults
+                    # Add event listener on click the chart bar.
+                    if response.pathQuery?
+                        google.visualization.events.addListener chart, "select", =>
+                            pq = response.pathQuery
+                            for item in chart.getSelection()
+                                if item.row?
+                                    pq = pq.replace("%category", response.results[item.row + 1][0])
+                                    if item.column?
+                                        pq = pq.replace("%series", response.results[0][item.column])
+                                    @widgetOptions.selectCb(pq)
+            
+            error: (err) =>
+                $(@el).html _.template @templates.noresults,
+                    "title": err.statusText
+                    "text":  err.responseText
 
 
 # --------------------------------------------
@@ -192,7 +204,12 @@ class EnrichmentWidget extends InterMineWidget
                 </div>
             """
         noresults:
-            "<p>The widget has no results.</p>"
+            """
+                <div class="alert alert-block">
+                    <h4 class="alert-heading"><%= title %></h4>
+                    <p><%= text %></p>
+                </div>
+            """
 
     # Set the params on us and render.
     # `service`:       http://aragorn.flymine.org:8080/flymine/service/
@@ -206,46 +223,52 @@ class EnrichmentWidget extends InterMineWidget
 
     # Visualize the displayer.
     render: =>
-        $.getJSON "#{@service}list/enrichment",
-            widget:     @id
-            list:       @bagName
-            correction: @formOptions.errorCorrection
-            maxp:       @formOptions.pValue
-            filter:     @formOptions.dataSet
-            token:      ""
-        , (response) =>
-            # We have results.
-            if response.results
-                # Render the widget template.
-                $(@el).html _.template @templates.normal,
-                    "title":       if @widgetOptions.title then response.title else ""
-                    "description": if @widgetOptions.description then response.description else ""
-                    "notAnalysed": response.notAnalysed
+        $.ajax
+            url:      "#{@service}list/enrichment"
+            dataType: "json"
+            data:
+                widget:     @id
+                list:       @bagName
+                correction: @formOptions.errorCorrection
+                maxp:       @formOptions.pValue
+                token:      ""
+            
+            success: (response) =>
+                # We have results.
+                if response.wasSuccessful
+                    # Render the widget template.
+                    $(@el).html _.template @templates.normal,
+                        "title":       if @widgetOptions.title then response.title else ""
+                        "description": if @widgetOptions.description then response.description else ""
+                        "notAnalysed": response.notAnalysed
 
-                $(@el).find("div.form").html _.template @templates.form,
-                    "options":          @formOptions
-                    "errorCorrections": @errorCorrections
-                    "pValues":          @pValues
-                
-                # How tall should the table be?
-                height = $(@el).height() - $(@el).find('header').height() - 18
+                    $(@el).find("div.form").html _.template @templates.form,
+                        "options":          @formOptions
+                        "errorCorrections": @errorCorrections
+                        "pValues":          @pValues
+                    
+                    # How tall should the table be?
+                    height = $(@el).height() - $(@el).find('header').height() - 18
 
-                # Render the table.
-                $(@el).find("div.content").html($ _.template @templates.table,
-                    "label": response.label
-                ).css "height", "#{height}px"
-                
-                # Table rows.
-                table = $(@el).find("div.content table")
-                for row in response.results then do (row) =>
-                    table.append tr = $ _.template @templates.row,
-                        "row": row
-                    td = tr.find("td.matches .count").click => @matchesClick td, row["matches"]
+                    # Render the table.
+                    $(@el).find("div.content").html($ _.template @templates.table,
+                        "label": response.label
+                    ).css "height", "#{height}px"
+                    
+                    # Table rows.
+                    table = $(@el).find("div.content table")
+                    for row in response.results then do (row) =>
+                        table.append tr = $ _.template @templates.row,
+                            "row": row
+                        td = tr.find("td.matches .count").click => @matchesClick td, row["matches"]
 
-                # Set behaviors.
-                $(@el).find("form select").change @formClick
-            else
-                $(@el).html _.template @templates.noresults
+                    # Set behaviors.
+                    $(@el).find("form select").change @formClick
+            
+            error: (err) =>
+                $(@el).html _.template @templates.noresults,
+                    "title": err.statusText
+                    "text":  err.responseText
 
     # On form select option change, set the new options and re-render.
     formClick: (e) =>
@@ -302,8 +325,10 @@ class CSSLoader extends Loader
 # --------------------------------------------
 
 
+# Public interface for the various InterMine Widgets.
 class window.Widgets
 
+    # JavaScript libraries as resources. Will be loaded if not present already.
     resources:
         js:
             jQuery: "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"

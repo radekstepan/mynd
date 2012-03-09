@@ -48,7 +48,7 @@
 
     ChartWidget.prototype.templates = {
       normal: "<header>\n    <% if (title) { %>\n        <h3><%= title %></h3>\n    <% } %>\n    <% if (description) { %>\n        <p><%= description %></p>\n    <% } %>\n    <% if (notAnalysed > 0) { %>\n        <p>Number of Genes in this list not analysed in this widget: <span class=\"label label-info\"><%= notAnalysed %></span></p>\n    <% } %>\n</header>\n<div class=\"content\"></div>",
-      noresults: "<p>The widget has no results.</p>"
+      noresults: "<div class=\"alert alert-block\">\n    <h4 class=\"alert-heading\"><%= title %></h4>\n    <p><%= text %></p>\n</div>"
     };
 
     function ChartWidget(service, id, bagName, el, widgetOptions) {
@@ -71,44 +71,53 @@
 
     ChartWidget.prototype.render = function() {
       var _this = this;
-      return $.getJSON("" + this.service + "list/chart", {
-        widget: this.id,
-        list: this.bagName,
-        filter: "",
-        token: ""
-      }, function(response) {
-        var chart;
-        if (response.results) {
-          $(_this.el).html(_.template(_this.templates.normal, {
-            "title": _this.widgetOptions.title ? response.title : "",
-            "description": _this.widgetOptions.description ? response.description : "",
-            "notAnalysed": response.notAnalysed
-          }));
-          chart = new google.visualization[response.chartType]($(_this.el).find("div.content")[0]);
-          chart.draw(google.visualization.arrayToDataTable(response.results, false), _this.chartOptions);
-          if (response.pathQuery != null) {
-            return google.visualization.events.addListener(chart, "select", function() {
-              var item, pq, _i, _len, _ref, _results;
-              pq = response.pathQuery;
-              _ref = chart.getSelection();
-              _results = [];
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                item = _ref[_i];
-                if (item.row != null) {
-                  pq = pq.replace("%category", response.results[item.row + 1][0]);
-                  if (item.column != null) {
-                    pq = pq.replace("%series", response.results[0][item.column]);
+      return $.ajax({
+        url: "" + this.service + "list/chart",
+        dataType: "json",
+        data: {
+          widget: this.id,
+          list: this.bagName,
+          filter: "",
+          token: ""
+        },
+        success: function(response) {
+          var chart;
+          if (response.wasSuccessful) {
+            $(_this.el).html(_.template(_this.templates.normal, {
+              "title": _this.widgetOptions.title ? response.title : "",
+              "description": _this.widgetOptions.description ? response.description : "",
+              "notAnalysed": response.notAnalysed
+            }));
+            chart = new google.visualization[response.chartType]($(_this.el).find("div.content")[0]);
+            chart.draw(google.visualization.arrayToDataTable(response.results, false), _this.chartOptions);
+            if (response.pathQuery != null) {
+              return google.visualization.events.addListener(chart, "select", function() {
+                var item, pq, _i, _len, _ref, _results;
+                pq = response.pathQuery;
+                _ref = chart.getSelection();
+                _results = [];
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                  item = _ref[_i];
+                  if (item.row != null) {
+                    pq = pq.replace("%category", response.results[item.row + 1][0]);
+                    if (item.column != null) {
+                      pq = pq.replace("%series", response.results[0][item.column]);
+                    }
+                    _results.push(_this.widgetOptions.selectCb(pq));
+                  } else {
+                    _results.push(void 0);
                   }
-                  _results.push(_this.widgetOptions.selectCb(pq));
-                } else {
-                  _results.push(void 0);
                 }
-              }
-              return _results;
-            });
+                return _results;
+              });
+            }
           }
-        } else {
-          return $(_this.el).html(_.template(_this.templates.noresults));
+        },
+        error: function(err) {
+          return $(_this.el).html(_.template(_this.templates.noresults, {
+            "title": err.statusText,
+            "text": err.responseText
+          }));
         }
       });
     };
@@ -137,7 +146,7 @@
       table: "<table class=\"table table-striped\">\n    <thead>\n        <tr>\n            <th><%= label %></th>\n            <th>p-Value</th>\n            <th>Matches</th>\n        </tr>\n    </thead>\n    <tbody></tbody>\n</table>",
       row: "<tr>\n    <td class=\"description\"><%= row[\"description\"] %></td>\n    <td class=\"pValue\"><%= row[\"p-value\"].toFixed(7) %></td>\n    <td class=\"matches\" style=\"position:relative\">\n        <span class=\"count label label-success\" style=\"cursor:pointer\"><%= row[\"matches\"].length %></span>\n    </td>\n</tr>",
       matches: "<div class=\"popover\" style=\"position:absolute;top:22px;right:0;z-index:1;display:block\">\n    <div class=\"popover-inner\" style=\"width:300px;margin-left:-300px\">\n        <a style=\"cursor:pointer;margin:2px 5px 0 0\" class=\"close\">×</a>\n        <h3 class=\"popover-title\"></h3>\n        <div class=\"popover-content\">\n            <% for (var i = 0; i < matches.length; i++) { %>\n                <a href=\"#\"><%= matches[i] %></a><%= (i < matches.length -1) ? \",\" : \"\" %>\n            <% } %>\n        </div>\n    </div>\n</div>",
-      noresults: "<p>The widget has no results.</p>"
+      noresults: "<div class=\"alert alert-block\">\n    <h4 class=\"alert-heading\"><%= title %></h4>\n    <p><%= text %></p>\n</div>"
     };
 
     function EnrichmentWidget(service, id, bagName, el, widgetOptions) {
@@ -158,48 +167,56 @@
 
     EnrichmentWidget.prototype.render = function() {
       var _this = this;
-      return $.getJSON("" + this.service + "list/enrichment", {
-        widget: this.id,
-        list: this.bagName,
-        correction: this.formOptions.errorCorrection,
-        maxp: this.formOptions.pValue,
-        filter: this.formOptions.dataSet,
-        token: ""
-      }, function(response) {
-        var height, row, table, _fn, _i, _len, _ref;
-        if (response.results) {
-          $(_this.el).html(_.template(_this.templates.normal, {
-            "title": _this.widgetOptions.title ? response.title : "",
-            "description": _this.widgetOptions.description ? response.description : "",
-            "notAnalysed": response.notAnalysed
-          }));
-          $(_this.el).find("div.form").html(_.template(_this.templates.form, {
-            "options": _this.formOptions,
-            "errorCorrections": _this.errorCorrections,
-            "pValues": _this.pValues
-          }));
-          height = $(_this.el).height() - $(_this.el).find('header').height() - 18;
-          $(_this.el).find("div.content").html($(_.template(_this.templates.table, {
-            "label": response.label
-          }))).css("height", "" + height + "px");
-          table = $(_this.el).find("div.content table");
-          _ref = response.results;
-          _fn = function(row) {
-            var td, tr;
-            table.append(tr = $(_.template(_this.templates.row, {
-              "row": row
-            })));
-            return td = tr.find("td.matches .count").click(function() {
-              return _this.matchesClick(td, row["matches"]);
-            });
-          };
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            row = _ref[_i];
-            _fn(row);
+      return $.ajax({
+        url: "" + this.service + "list/enrichment",
+        dataType: "json",
+        data: {
+          widget: this.id,
+          list: this.bagName,
+          correction: this.formOptions.errorCorrection,
+          maxp: this.formOptions.pValue,
+          token: ""
+        },
+        success: function(response) {
+          var height, row, table, _fn, _i, _len, _ref;
+          if (response.wasSuccessful) {
+            $(_this.el).html(_.template(_this.templates.normal, {
+              "title": _this.widgetOptions.title ? response.title : "",
+              "description": _this.widgetOptions.description ? response.description : "",
+              "notAnalysed": response.notAnalysed
+            }));
+            $(_this.el).find("div.form").html(_.template(_this.templates.form, {
+              "options": _this.formOptions,
+              "errorCorrections": _this.errorCorrections,
+              "pValues": _this.pValues
+            }));
+            height = $(_this.el).height() - $(_this.el).find('header').height() - 18;
+            $(_this.el).find("div.content").html($(_.template(_this.templates.table, {
+              "label": response.label
+            }))).css("height", "" + height + "px");
+            table = $(_this.el).find("div.content table");
+            _ref = response.results;
+            _fn = function(row) {
+              var td, tr;
+              table.append(tr = $(_.template(_this.templates.row, {
+                "row": row
+              })));
+              return td = tr.find("td.matches .count").click(function() {
+                return _this.matchesClick(td, row["matches"]);
+              });
+            };
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              row = _ref[_i];
+              _fn(row);
+            }
+            return $(_this.el).find("form select").change(_this.formClick);
           }
-          return $(_this.el).find("form select").change(_this.formClick);
-        } else {
-          return $(_this.el).html(_.template(_this.templates.noresults));
+        },
+        error: function(err) {
+          return $(_this.el).html(_.template(_this.templates.noresults, {
+            "title": err.statusText,
+            "text": err.responseText
+          }));
         }
       });
     };
