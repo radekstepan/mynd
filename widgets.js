@@ -228,7 +228,7 @@
                 _fn(row);
               }
             } else {
-              $(_this.el).find("div.content").html($(_.template(_this.templates.noresults)));
+              $(_this.el).find("div.content").html($(_.template(_this.templates.noresults, {})));
             }
             return $(_this.el).find("form select").change(_this.formClick);
           }
@@ -361,7 +361,7 @@
       if (this.wait) {
         return window.setTimeout((function() {
           return _this.chart.apply(_this, opts);
-        }), 1000);
+        }), 0);
       } else {
         return google.load("visualization", "1.0", {
           packages: ["corechart"],
@@ -383,7 +383,7 @@
       if (this.wait) {
         return window.setTimeout((function() {
           return _this.enrichment.apply(_this, opts);
-        }), 1000);
+        }), 0);
       } else {
         return (function(func, args, ctor) {
           ctor.prototype = func.prototype;
@@ -399,7 +399,7 @@
       if (this.wait) {
         return window.setTimeout((function() {
           return _this.all(type, bagName, el, widgetOptions);
-        }), 1000);
+        }), 0);
       } else {
         return $.getJSON("" + this.service + "widgets", function(response) {
           var widget, widgetEl, _i, _len, _ref, _results;
@@ -416,10 +416,10 @@
               }));
               switch (widget.widgetType) {
                 case "chart":
-                  _results.push(new ChartWidget(_this.service, _this.token, widget.name, bagName, "#" + el + " #" + widgetEl, widgetOptions));
+                  _results.push(_this.chart(widget.name, bagName, "" + el + " #" + widgetEl, widgetOptions));
                   break;
                 case "enrichment":
-                  _results.push(new EnrichmentWidget(_this.service, _this.token, widget.name, bagName, "#" + el + " #" + widgetEl, widgetOptions));
+                  _results.push(_this.enrichment(widget.name, bagName, "" + el + " #" + widgetEl, widgetOptions));
                   break;
                 default:
                   _results.push(void 0);

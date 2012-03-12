@@ -290,7 +290,7 @@ class EnrichmentWidget extends InterMineWidget
                             td = tr.find("td.matches .count").click => @matchesClick td, row["matches"]
                     else
                         # Render no results
-                        $(@el).find("div.content").html $ _.template @templates.noresults
+                        $(@el).find("div.content").html $ _.template @templates.noresults, {}
 
                     # Set behaviors.
                     $(@el).find("form select").change @formClick
@@ -383,7 +383,7 @@ class window.Widgets
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false }
     chart: (opts...) =>
-        if @wait then window.setTimeout((=> @chart(opts...)), 1000)
+        if @wait then window.setTimeout((=> @chart(opts...)), 0)
         else
             # Load Google Visualization.
             google.load "visualization", "1.0",
@@ -396,7 +396,7 @@ class window.Widgets
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
     enrichment: (opts...) =>
-        if @wait then window.setTimeout((=> @enrichment(opts...)), 1000) else new EnrichmentWidget(@service, @token, opts...)
+        if @wait then window.setTimeout((=> @enrichment(opts...)), 0) else new EnrichmentWidget(@service, @token, opts...)
 
     # All available Widgets.
     # `type`:          Gene, Protein
@@ -404,7 +404,7 @@ class window.Widgets
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
     all: (type = "Gene", bagName, el, widgetOptions) =>
-        if @wait then window.setTimeout((=> @all(type, bagName, el, widgetOptions)), 1000)
+        if @wait then window.setTimeout((=> @all(type, bagName, el, widgetOptions)), 0)
         else
             $.getJSON "#{@service}widgets"
             , (response) =>
@@ -419,6 +419,6 @@ class window.Widgets
                         # What type is it?
                         switch widget.widgetType
                             when "chart"
-                                new ChartWidget(@service, @token, widget.name, bagName, "##{el} ##{widgetEl}", widgetOptions)
+                                @chart(widget.name, bagName, "#{el} ##{widgetEl}", widgetOptions)
                             when "enrichment"
-                                new EnrichmentWidget(@service, @token, widget.name, bagName, "##{el} ##{widgetEl}", widgetOptions)
+                                @enrichment(widget.name, bagName, "#{el} ##{widgetEl}", widgetOptions)
