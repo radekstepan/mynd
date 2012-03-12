@@ -70,8 +70,8 @@
       this.widgetOptions = widgetOptions != null ? widgetOptions : {
         "title": true,
         "description": true,
-        "selectCb": function(pq) {
-          return console.log(pq);
+        selectCb: function(pq) {
+          return window.open("" + _this.service + "query/results?query=" + (encodeURIComponent(pq)) + "&format=html");
         }
       };
       this.render = __bind(this.render, this);

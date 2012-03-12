@@ -68,7 +68,12 @@ class ChartWidget extends InterMineWidget
     # `bagName`:       myBag
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false }
-    constructor: (@service, @token, @id, @bagName, @el, @widgetOptions = { "title": true, "description": true, "selectCb": (pq) => console.log pq }) ->
+    constructor: (@service, @token, @id, @bagName, @el, @widgetOptions = {
+        "title":       true
+        "description": true
+        # By default, the select callback will open a new window with a table of results.
+        selectCb: (pq) => window.open "#{@service}query/results?query=#{encodeURIComponent(pq)}&format=html"
+    }) ->
         super()
         @render()
 
