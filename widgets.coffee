@@ -108,12 +108,17 @@ class ChartWidget extends InterMineWidget
                             pq = response.pathQuery
                             for item in chart.getSelection()
                                 if item.row?
+                                    # Replace %category in PathQuery.
                                     pq = pq.replace("%category", response.results[item.row + 1][0])
                                     if item.column?
-                                        pq = pq.replace("%series", response.results[0][item.column])
+                                        # Replace %series in PathQuery.
+                                        pq = pq.replace("%series", @_translateSeries(response, response.results[0][item.column]))
                                     @widgetOptions.selectCb(pq)
             
             error: (err) => @error(err, @templates.error)
+
+    # Translate view series into PathQuery series (Expressed/Not Expressed into true/false).
+    _translateSeries: (response, series) -> response.seriesValues.split(',')[response.seriesLabels.split(',').indexOf(series)]
 
 
 # --------------------------------------------

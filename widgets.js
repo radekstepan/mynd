@@ -111,7 +111,7 @@
                   if (item.row != null) {
                     pq = pq.replace("%category", response.results[item.row + 1][0]);
                     if (item.column != null) {
-                      pq = pq.replace("%series", response.results[0][item.column]);
+                      pq = pq.replace("%series", _this._translateSeries(response, response.results[0][item.column]));
                     }
                     _results.push(_this.widgetOptions.selectCb(pq));
                   } else {
@@ -127,6 +127,10 @@
           return _this.error(err, _this.templates.error);
         }
       });
+    };
+
+    ChartWidget.prototype._translateSeries = function(response, series) {
+      return response.seriesValues.split(',')[response.seriesLabels.split(',').indexOf(series)];
     };
 
     return ChartWidget;
