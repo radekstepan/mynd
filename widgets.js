@@ -163,6 +163,7 @@
     };
 
     function EnrichmentWidget(service, token, id, bagName, el, widgetOptions) {
+      var _this = this;
       this.service = service;
       this.token = token;
       this.id = id;
@@ -170,7 +171,10 @@
       this.el = el;
       this.widgetOptions = widgetOptions != null ? widgetOptions : {
         "title": true,
-        "description": true
+        "description": true,
+        matchCb: function(id) {
+          return typeof console !== "undefined" && console !== null ? console.log(id) : void 0;
+        }
       };
       this.matchesClick = __bind(this.matchesClick, this);
       this.formClick = __bind(this.formClick, this);
@@ -224,7 +228,7 @@
                   "row": row
                 })));
                 return td = tr.find("td.matches .count").click(function() {
-                  return _this.matchesClick(td, row["matches"]);
+                  return _this.matchesClick(td, row["matches"], _this.widgetOptions.matchCb);
                 });
               };
               for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -248,13 +252,17 @@
       return this.render();
     };
 
-    EnrichmentWidget.prototype.matchesClick = function(target, matches) {
+    EnrichmentWidget.prototype.matchesClick = function(target, matches, matchCb) {
       var modal;
       target.after(modal = $(_.template(this.templates.matches, {
         "matches": matches
       })));
-      return modal.find("a.close").click(function() {
+      modal.find("a.close").click(function() {
         return modal.remove();
+      });
+      return modal.find("div.popover-content a").click(function(e) {
+        matchCb($(this).text());
+        return e.preventDefault();
       });
     };
 

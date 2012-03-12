@@ -67,7 +67,7 @@ class ChartWidget extends InterMineWidget
     # `id`:            widgetId
     # `bagName`:       myBag
     # `el`:            #target
-    # `widgetOptions`: { "title": true/false, "description": true/false }
+    # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
     constructor: (@service, @token, @id, @bagName, @el, @widgetOptions = {
         "title":       true
         "description": true
@@ -244,8 +244,13 @@ class EnrichmentWidget extends InterMineWidget
     # `id`:            widgetId
     # `bagName`:       myBag
     # `el`:            #target
-    # `widgetOptions`: { "title": true/false, "description": true/false }
-    constructor: (@service, @token, @id, @bagName, @el, @widgetOptions = { "title": true, "description": true }) ->
+    # `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function() {} }
+    constructor: (@service, @token, @id, @bagName, @el, @widgetOptions = {
+        "title":       true
+        "description": true
+        # By default, the select callback will dump the match id into the console.
+        matchCb: (id) => console?.log id
+    }) ->
         super()
         @render()
 
@@ -297,7 +302,7 @@ class EnrichmentWidget extends InterMineWidget
                         for row in response.results then do (row) =>
                             table.append tr = $ _.template @templates.row,
                                 "row": row
-                            td = tr.find("td.matches .count").click => @matchesClick td, row["matches"]
+                            td = tr.find("td.matches .count").click => @matchesClick td, row["matches"], @widgetOptions.matchCb
                     else
                         # Render no results
                         $(@el).find("div.content").html $ _.template @templates.noresults, {}
@@ -313,10 +318,14 @@ class EnrichmentWidget extends InterMineWidget
         @render()
 
     # Show matches.
-    matchesClick: (target, matches) =>
+    matchesClick: (target, matches, matchCb) =>
         target.after modal = $ _.template @templates.matches,
             "matches": matches
         modal.find("a.close").click -> modal.remove()
+        # Individual match click behavior.
+        modal.find("div.popover-content a").click (e) ->
+            matchCb $(@).text()
+            e.preventDefault()
 
 
 # --------------------------------------------
@@ -391,7 +400,7 @@ class window.Widgets
     # `id`:            widgetId
     # `bagName`:       myBag
     # `el`:            #target
-    # `widgetOptions`: { "title": true/false, "description": true/false }
+    # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
     chart: (opts...) =>
         if @wait then window.setTimeout((=> @chart(opts...)), 0)
         else
@@ -404,7 +413,7 @@ class window.Widgets
     # `id`:            widgetId
     # `bagName`:       myBag
     # `el`:            #target
-    # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
+    # `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function() {} }
     enrichment: (opts...) =>
         if @wait then window.setTimeout((=> @enrichment(opts...)), 0) else new EnrichmentWidget(@service, @token, opts...)
 
@@ -412,7 +421,7 @@ class window.Widgets
     # `type`:          Gene, Protein
     # `bagName`:       myBag
     # `el`:            #target
-    # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
+    # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {}, "matchCb": function() {} }
     all: (type = "Gene", bagName, el, widgetOptions) =>
         if @wait then window.setTimeout((=> @all(type, bagName, el, widgetOptions)), 0)
         else
