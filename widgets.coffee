@@ -163,14 +163,19 @@ class EnrichmentWidget extends InterMineWidget
                             <% } %>
                         </select>
                     </div>
-
-                    <div class="group" style="display:inline-block;margin-right:5px">
-                        <label>Dataset</label>
-                        <select name="dataSet" class="span2">
-                            <option value="All datasets" selected="selected">All datasets</option>
-                        </select>
-                    </div>
                 </form>
+            """
+        extra:
+            """
+                <div class="group" style="display:inline-block;margin-right:5px">
+                    <label><%= label %></label>
+                    <select name="dataSet" class="span2">
+                        <% for (var i = 0; i < possible.length; i++) { %>
+                            <% var v = possible[i] %>
+                            <option value="<%= v %>" <%= (selected == v) ? 'selected="selected"' : "" %>><%= v %></option>
+                        <% } %>
+                    </select>
+                </div>
             """
         table:
             """
@@ -260,6 +265,13 @@ class EnrichmentWidget extends InterMineWidget
                         "errorCorrections": @errorCorrections
                         "pValues":          @pValues
                     
+                    # Extra attributes (DataSets)?
+                    if response.extraAttributeLabel?
+                        $(@l).find('div.form form').append _.template @templates.extra,
+                            "label":    response.extraAttributeLabel
+                            "possible": response.extraAttributePossibleValues
+                            "selected": response.extraAttributeSelectedValue
+
                     # Results?
                     if response.results.length > 0
                         # How tall should the table be?
