@@ -425,19 +425,26 @@ class window.Widgets
     all: (type = "Gene", bagName, el, widgetOptions) =>
         if @wait then window.setTimeout((=> @all(type, bagName, el, widgetOptions)), 0)
         else
-            $.getJSON "#{@service}widgets"
-            , (response) =>
-                # We have results.
-                if response.widgets
-                    # For all that match our object type...
-                    for widget in response.widgets when type in widget.targets
-                        # Create target element for individual Widget (slugify just to make sure).
-                        widgetEl = widget.name.replace(/[^-a-zA-Z0-9,&\s]+/ig, '').replace(/-/gi, "_").replace(/\s/gi, "-").toLowerCase()
-                        $(el).append $('<div/>', id: widgetEl, class: "widget span6")
-                        
-                        # What type is it?
-                        switch widget.widgetType
-                            when "chart"
-                                @chart(widget.name, bagName, "#{el} ##{widgetEl}", widgetOptions)
-                            when "enrichment"
-                                @enrichment(widget.name, bagName, "#{el} ##{widgetEl}", widgetOptions)
+            $.ajax
+                url:      "#{@service}widgets"
+                dataType: "json"
+                
+                success: (response) =>
+                    # We have results.
+                    if response.widgets
+                        # For all that match our object type...
+                        for widget in response.widgets when type in widget.targets
+                            # Create target element for individual Widget (slugify just to make sure).
+                            widgetEl = widget.name.replace(/[^-a-zA-Z0-9,&\s]+/ig, '').replace(/-/gi, "_").replace(/\s/gi, "-").toLowerCase()
+                            $(el).append $('<div/>', id: widgetEl, class: "widget span6")
+                            
+                            # What type is it?
+                            switch widget.widgetType
+                                when "chart"
+                                    @chart(widget.name, bagName, "#{el} ##{widgetEl}", widgetOptions)
+                                when "enrichment"
+                                    @enrichment(widget.name, bagName, "#{el} ##{widgetEl}", widgetOptions)                
+                
+                error: (err) -> $(el).html $ '<div/>',
+                    class: "alert alert-error"
+                    text:  "An unspecified error has happened, server timeout?"
