@@ -1,3 +1,3 @@
 #!/bin/sh
 
-coffee --watch --compile widgets.coffee
+coffee --watch --compile --output js/ src/
