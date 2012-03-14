@@ -19,10 +19,7 @@
     }
 
     InterMineWidget.prototype.error = function(err, template) {
-      return $(this.el).html(_.template(template, {
-        "title": err.statusText,
-        "text": err.responseText
-      }));
+      return $(this.el).html(_.template(template, err));
     };
 
     return InterMineWidget;
@@ -98,33 +95,43 @@
               "description": _this.widgetOptions.description ? response.description : "",
               "notAnalysed": response.notAnalysed
             }));
-            chart = new google.visualization[response.chartType]($(_this.el).find("div.content")[0]);
-            chart.draw(google.visualization.arrayToDataTable(response.results, false), _this.chartOptions);
-            if (response.pathQuery != null) {
-              return google.visualization.events.addListener(chart, "select", function() {
-                var item, pq, _i, _len, _ref, _results;
-                pq = response.pathQuery;
-                _ref = chart.getSelection();
-                _results = [];
-                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                  item = _ref[_i];
-                  if (item.row != null) {
-                    pq = pq.replace("%category", response.results[item.row + 1][0]);
-                    if (item.column != null) {
-                      pq = pq.replace("%series", _this._translateSeries(response, response.results[0][item.column]));
+            if (response.chartType in google.visualization) {
+              chart = new google.visualization[response.chartType]($(_this.el).find("div.content")[0]);
+              chart.draw(google.visualization.arrayToDataTable(response.results, false), _this.chartOptions);
+              if (response.pathQuery != null) {
+                return google.visualization.events.addListener(chart, "select", function() {
+                  var item, pq, _i, _len, _ref, _results;
+                  pq = response.pathQuery;
+                  _ref = chart.getSelection();
+                  _results = [];
+                  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    item = _ref[_i];
+                    if (item.row != null) {
+                      pq = pq.replace("%category", response.results[item.row + 1][0]);
+                      if (item.column != null) {
+                        pq = pq.replace("%series", _this._translateSeries(response, response.results[0][item.column]));
+                      }
+                      _results.push(_this.widgetOptions.selectCb(pq));
+                    } else {
+                      _results.push(void 0);
                     }
-                    _results.push(_this.widgetOptions.selectCb(pq));
-                  } else {
-                    _results.push(void 0);
                   }
-                }
-                return _results;
-              });
+                  return _results;
+                });
+              }
+            } else {
+              return _this.error({
+                title: response.chartType,
+                text: "This chart type does not exist in Google Visualization API"
+              }, _this.templates.error);
             }
           }
         },
         error: function(err) {
-          return _this.error(err, _this.templates.error);
+          return _this.error({
+            title: err.statusText,
+            text: err.responseText
+          }, _this.templates.error);
         }
       });
     };
@@ -242,7 +249,10 @@
           }
         },
         error: function(err) {
-          return _this.error(err, _this.templates.error);
+          return _this.error({
+            title: err.statusText,
+            text: err.responseText
+          }, _this.templates.error);
         }
       });
     };

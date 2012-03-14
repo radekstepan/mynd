@@ -11,10 +11,7 @@ class InterMineWidget
             style: "height:572px;overflow:hidden"
         @el = "#{@el} div.inner"
 
-    error: (err, template) =>
-        $(@el).html _.template template,
-            "title": err.statusText
-            "text":  err.responseText
+    error: (err, template) => $(@el).html _.template template, err
 
 
 # --------------------------------------------
@@ -99,23 +96,27 @@ class ChartWidget extends InterMineWidget
                         "notAnalysed": response.notAnalysed
 
                     # Create the chart.
-                    chart = new google.visualization[response.chartType]($(@el).find("div.content")[0])
-                    chart.draw(google.visualization.arrayToDataTable(response.results, false), @chartOptions)
+                    if response.chartType of google.visualization # If the type exists...
+                        chart = new google.visualization[response.chartType]($(@el).find("div.content")[0])
+                        chart.draw(google.visualization.arrayToDataTable(response.results, false), @chartOptions)
 
-                    # Add event listener on click the chart bar.
-                    if response.pathQuery?
-                        google.visualization.events.addListener chart, "select", =>
-                            pq = response.pathQuery
-                            for item in chart.getSelection()
-                                if item.row?
-                                    # Replace %category in PathQuery.
-                                    pq = pq.replace("%category", response.results[item.row + 1][0])
-                                    if item.column?
-                                        # Replace %series in PathQuery.
-                                        pq = pq.replace("%series", @_translateSeries(response, response.results[0][item.column]))
-                                    @widgetOptions.selectCb(pq)
+                        # Add event listener on click the chart bar.
+                        if response.pathQuery?
+                            google.visualization.events.addListener chart, "select", =>
+                                pq = response.pathQuery
+                                for item in chart.getSelection()
+                                    if item.row?
+                                        # Replace %category in PathQuery.
+                                        pq = pq.replace("%category", response.results[item.row + 1][0])
+                                        if item.column?
+                                            # Replace %series in PathQuery.
+                                            pq = pq.replace("%series", @_translateSeries(response, response.results[0][item.column]))
+                                        @widgetOptions.selectCb(pq)
+                    else
+                        # Undefined Google Visualization chart type.
+                        @error({title: response.chartType, text: "This chart type does not exist in Google Visualization API"}, @templates.error)
             
-            error: (err) => @error(err, @templates.error)
+            error: (err) => @error({title: err.statusText, text: err.responseText}, @templates.error)
 
     # Translate view series into PathQuery series (Expressed/Not Expressed into true/false).
     _translateSeries: (response, series) -> response.seriesValues.split(',')[response.seriesLabels.split(',').indexOf(series)]
@@ -310,7 +311,7 @@ class EnrichmentWidget extends InterMineWidget
                     # Set behaviors.
                     $(@el).find("form select").change @formClick
             
-            error: (err) => @error(err, @templates.error)
+            error: (err) => @error({title: err.statusText, text: err.responseText}, @templates.error)
 
     # On form select option change, set the new options and re-render.
     formClick: (e) =>
