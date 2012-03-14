@@ -1,2 +1,4 @@
 *.jsp
 js/lib/*
+test/lib/*
+test/*.js
