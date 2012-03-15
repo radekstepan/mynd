@@ -1,16 +1,137 @@
 (function() {
-  var CSSLoader, ChartWidget, EnrichmentWidget, InterMineWidget, JSLoader, Loader, root,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  var CSSLoader, ChartWidget, EnrichmentWidget, InterMineWidget, JSLoader, Loader, root, t,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __slice = Array.prototype.slice,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   root = this;
 
+  t = {};
+
+  t.Root = (function() {
+
+    function Root() {}
+
+    Root.prototype.result = false;
+
+    Root.prototype.is = function() {
+      return this.result;
+    };
+
+    Root.prototype.toString = function() {
+      return this.expected;
+    };
+
+    return Root;
+
+  })();
+
+  t.String = (function(_super) {
+
+    __extends(String, _super);
+
+    String.prototype.expected = "String";
+
+    function String(key) {
+      this.result = typeof key === 'string';
+    }
+
+    return String;
+
+  })(t.Root);
+
+  t.Integer = (function(_super) {
+
+    __extends(Integer, _super);
+
+    Integer.prototype.expected = "Integer";
+
+    function Integer(key) {
+      this.result = typeof key === 'number';
+    }
+
+    return Integer;
+
+  })(t.Root);
+
+  t.Boolean = (function(_super) {
+
+    __extends(Boolean, _super);
+
+    Boolean.prototype.expected = "Boolean true";
+
+    function Boolean(key) {
+      this.result = typeof key === 'boolean';
+    }
+
+    return Boolean;
+
+  })(t.Root);
+
+  t.Null = (function(_super) {
+
+    __extends(Null, _super);
+
+    Null.prototype.expected = "Null";
+
+    function Null(key) {
+      this.result = key === null;
+    }
+
+    return Null;
+
+  })(t.Root);
+
+  t.List = (function(_super) {
+
+    __extends(List, _super);
+
+    List.prototype.expected = "List";
+
+    function List(key) {
+      this.result = key instanceof Array;
+    }
+
+    return List;
+
+  })(t.Root);
+
+  t.HTTPSuccess = (function(_super) {
+
+    __extends(HTTPSuccess, _super);
+
+    HTTPSuccess.prototype.expected = "HTTP code 200";
+
+    function HTTPSuccess(key) {
+      this.result = key === 200;
+    }
+
+    return HTTPSuccess;
+
+  })(t.Root);
+
+  t.Undefined = (function(_super) {
+
+    __extends(Undefined, _super);
+
+    function Undefined() {
+      Undefined.__super__.constructor.apply(this, arguments);
+    }
+
+    Undefined.prototype.expected = "it to be undefined";
+
+    return Undefined;
+
+  })(t.Root);
+
   InterMineWidget = (function() {
 
+    InterMineWidget.prototype.invalidJSONKey = "<li style=\"vertical-align:bottom\">\n    <span style=\"display:inline-block\" class=\"label label-inverse\"><%= key %></span> is <%= actual %>; was expecting <%= expected %>\n</li>";
+
     function InterMineWidget() {
+      this.isValidResponse = __bind(this.isValidResponse, this);
       this.error = __bind(this.error, this);      $(this.el).html($('<div/>', {
         "class": "inner",
         style: "height:572px;overflow:hidden"
@@ -20,6 +141,22 @@
 
     InterMineWidget.prototype.error = function(err, template) {
       return $(this.el).html(_.template(template, err));
+    };
+
+    InterMineWidget.prototype.isValidResponse = function(json) {
+      var fails, key, r, value, _base;
+      fails = [];
+      for (key in json) {
+        value = json[key];
+        if ((r = (typeof (_base = this.json)[key] === "function" ? new _base[key](value) : void 0) || (r = new t.Undefined())) && r.is() === false) {
+          fails.push(_.template(this.invalidJSONKey, {
+            key: key,
+            actual: r.is(),
+            expected: new String(r)
+          }));
+        }
+      }
+      return fails;
     };
 
     return InterMineWidget;
@@ -54,7 +191,25 @@
 
     ChartWidget.prototype.templates = {
       normal: "<header>\n    <% if (title) { %>\n        <h3><%= title %></h3>\n    <% } %>\n    <% if (description) { %>\n        <p><%= description %></p>\n    <% } %>\n    <% if (notAnalysed > 0) { %>\n        <p>Number of Genes in this list not analysed in this widget: <span class=\"label label-info\"><%= notAnalysed %></span></p>\n    <% } %>\n</header>\n<div class=\"content\"></div>",
+      noresults: "<div class=\"alert alert-info\">\n    <p>The Widget has no results.</p>\n</div>",
       error: "<div class=\"alert alert-block\">\n    <h4 class=\"alert-heading\"><%= title %></h4>\n    <p><%= text %></p>\n</div>"
+    };
+
+    ChartWidget.prototype.json = {
+      "chartType": t.String,
+      "description": t.String,
+      "error": t.Null,
+      "list": t.String,
+      "notAnalysed": t.Integer,
+      "pathQuery": t.String,
+      "requestedAt": t.String,
+      "results": t.List,
+      "seriesLabels": t.String,
+      "seriesValues": t.String,
+      "statusCode": t.HTTPSuccess,
+      "title": t.String,
+      "type": t.String,
+      "wasSuccessful": t.Boolean
     };
 
     function ChartWidget(service, token, id, bagName, el, widgetOptions) {
@@ -84,47 +239,55 @@
         data: {
           widget: this.id,
           list: this.bagName,
-          filter: "",
           token: this.token
         },
         success: function(response) {
-          var chart;
-          if (response.wasSuccessful) {
+          var chart, fails;
+          if ((fails = _this.isValidResponse(response)) && !fails.length) {
             $(_this.el).html(_.template(_this.templates.normal, {
               "title": _this.widgetOptions.title ? response.title : "",
               "description": _this.widgetOptions.description ? response.description : "",
               "notAnalysed": response.notAnalysed
             }));
-            if (response.chartType in google.visualization) {
-              chart = new google.visualization[response.chartType]($(_this.el).find("div.content")[0]);
-              chart.draw(google.visualization.arrayToDataTable(response.results, false), _this.chartOptions);
-              if (response.pathQuery != null) {
-                return google.visualization.events.addListener(chart, "select", function() {
-                  var item, pq, _i, _len, _ref, _results;
-                  pq = response.pathQuery;
-                  _ref = chart.getSelection();
-                  _results = [];
-                  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                    item = _ref[_i];
-                    if (item.row != null) {
-                      pq = pq.replace("%category", response.results[item.row + 1][0]);
-                      if (item.column != null) {
-                        pq = pq.replace("%series", _this._translateSeries(response, response.results[0][item.column]));
+            if (response.results.length) {
+              if (response.chartType in google.visualization) {
+                chart = new google.visualization[response.chartType]($(_this.el).find("div.content")[0]);
+                chart.draw(google.visualization.arrayToDataTable(response.results, false), _this.chartOptions);
+                if (response.pathQuery != null) {
+                  return google.visualization.events.addListener(chart, "select", function() {
+                    var item, pq, _i, _len, _ref, _results;
+                    pq = response.pathQuery;
+                    _ref = chart.getSelection();
+                    _results = [];
+                    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                      item = _ref[_i];
+                      if (item.row != null) {
+                        pq = pq.replace("%category", response.results[item.row + 1][0]);
+                        if (item.column != null) {
+                          pq = pq.replace("%series", _this._translateSeries(response, response.results[0][item.column]));
+                        }
+                        _results.push(_this.widgetOptions.selectCb(pq));
+                      } else {
+                        _results.push(void 0);
                       }
-                      _results.push(_this.widgetOptions.selectCb(pq));
-                    } else {
-                      _results.push(void 0);
                     }
-                  }
-                  return _results;
-                });
+                    return _results;
+                  });
+                }
+              } else {
+                return _this.error({
+                  title: response.chartType,
+                  text: "This chart type does not exist in Google Visualization API"
+                }, _this.templates.error);
               }
             } else {
-              return _this.error({
-                title: response.chartType,
-                text: "This chart type does not exist in Google Visualization API"
-              }, _this.templates.error);
+              return $(_this.el).find("div.content").html($(_.template(_this.templates.noresults, {})));
             }
+          } else {
+            return _this.error({
+              title: "Invalid JSON response",
+              text: "<ol>" + (fails.join('')) + "</ol>"
+            }, _this.templates.error);
           }
         },
         error: function(err) {
@@ -150,8 +313,7 @@
 
     EnrichmentWidget.prototype.formOptions = {
       errorCorrection: "Holm-Bonferroni",
-      pValue: 0.05,
-      dataSet: "All datasets"
+      pValue: 0.05
     };
 
     EnrichmentWidget.prototype.errorCorrections = ["Holm-Bonferroni", "Benjamini Hochberg", "Bonferroni", "None"];

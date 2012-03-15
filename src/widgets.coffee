@@ -1,8 +1,52 @@
 root = this
 
+# JSON Types.
+t = {}
+
+class t.Root
+    result: false
+    is: -> @result
+    toString: -> @expected
+
+class t.String extends t.Root
+    expected: "String"
+    constructor: (key) -> @result = typeof key is 'string'
+
+class t.Integer extends t.Root
+    expected: "Integer"
+    constructor: (key) -> @result = typeof key is 'number'
+
+class t.Boolean extends t.Root
+    expected: "Boolean true"
+    constructor: (key) -> @result = typeof key is 'boolean'
+
+class t.Null extends t.Root
+    expected: "Null"
+    constructor: (key) -> @result = key is null
+
+class t.List extends t.Root
+    expected: "List"
+    constructor: (key) -> @result = key instanceof Array
+
+class t.HTTPSuccess extends t.Root
+    expected: "HTTP code 200"
+    constructor: (key) -> @result = key is 200
+
+class t.Undefined extends t.Root
+    expected: "it to be undefined"
+
+
 # --------------------------------------------
 
 class InterMineWidget
+
+    # Template showing an invalid JSON response key.
+    invalidJSONKey:
+        """
+            <li style="vertical-align:bottom">
+                <span style="display:inline-block" class="label label-inverse"><%= key %></span> is <%= actual %>; was expecting <%= expected %>
+            </li>
+        """
 
     # Inject wrapper inside the target div that we have control over.
     constructor: ->
@@ -13,18 +57,29 @@ class InterMineWidget
 
     error: (err, template) => $(@el).html _.template template, err
 
+    # Validate JSON response against the spec.
+    isValidResponse: (json) =>
+        fails = []
+        for key, value of json
+            if (r = new @json[key]?(value) or r = new t.Undefined()) and r.is() is false
+                fails.push _.template @invalidJSONKey,
+                    key:      key
+                    actual:   r.is()
+                    expected: new String(r)
+        fails
 
 # --------------------------------------------
 
 class ChartWidget extends InterMineWidget
 
+    # Google Visualization chart options.
     chartOptions:
         fontName: "Sans-Serif"
         fontSize: 9
-        width: 400
-        height: 450
-        legend: "bottom"
-        colors: [ "#2F72FF", "#9FC0FF" ]
+        width:    400
+        height:   450
+        legend:   "bottom"
+        colors:   [ "#2F72FF", "#9FC0FF" ]
         chartArea:
             top: 30
         hAxis:
@@ -34,6 +89,7 @@ class ChartWidget extends InterMineWidget
             titleTextStyle:
                 fontName: "Sans-Serif"
 
+    # Our templates.
     templates:
         normal:
             """
@@ -50,6 +106,12 @@ class ChartWidget extends InterMineWidget
                 </header>
                 <div class="content"></div>
             """
+        noresults:
+            """
+                <div class="alert alert-info">
+                    <p>The Widget has no results.</p>
+                </div>
+            """
         error:
             """
                 <div class="alert alert-block">
@@ -57,6 +119,23 @@ class ChartWidget extends InterMineWidget
                     <p><%= text %></p>
                 </div>
             """
+
+    # Spec for a successful and correct JSON response.
+    json:
+        "chartType":     t.String
+        "description":   t.String
+        "error":         t.Null
+        "list":          t.String
+        "notAnalysed":   t.Integer
+        "pathQuery":     t.String
+        "requestedAt":   t.String
+        "results":       t.List
+        "seriesLabels":  t.String
+        "seriesValues":  t.String
+        "statusCode":    t.HTTPSuccess
+        "title":         t.String
+        "type":          t.String
+        "wasSuccessful": t.Boolean
 
     # Set the params on us and set Google load callback.
     # `service`:       http://aragorn.flymine.org:8080/flymine/service/
@@ -83,38 +162,48 @@ class ChartWidget extends InterMineWidget
             data:
                 widget: @id
                 list:   @bagName
-                filter: ""
                 token:  @token
             
-            success: (response) =>
-                # We have results.
-                if response.wasSuccessful
+            success: (response) =>                
+                # We have response, validate.
+                if (fails = @isValidResponse(response)) and not fails.length
                     # Render the widget template.
                     $(@el).html _.template @templates.normal,
                         "title":       if @widgetOptions.title then response.title else ""
                         "description": if @widgetOptions.description then response.description else ""
                         "notAnalysed": response.notAnalysed
 
-                    # Create the chart.
-                    if response.chartType of google.visualization # If the type exists...
-                        chart = new google.visualization[response.chartType]($(@el).find("div.content")[0])
-                        chart.draw(google.visualization.arrayToDataTable(response.results, false), @chartOptions)
+                    # Are the results empty?
+                    if response.results.length
+                        # Create the chart.
+                        if response.chartType of google.visualization # If the type exists...
+                            chart = new google.visualization[response.chartType]($(@el).find("div.content")[0])
+                            chart.draw(google.visualization.arrayToDataTable(response.results, false), @chartOptions)
 
-                        # Add event listener on click the chart bar.
-                        if response.pathQuery?
-                            google.visualization.events.addListener chart, "select", =>
-                                pq = response.pathQuery
-                                for item in chart.getSelection()
-                                    if item.row?
-                                        # Replace %category in PathQuery.
-                                        pq = pq.replace("%category", response.results[item.row + 1][0])
-                                        if item.column?
-                                            # Replace %series in PathQuery.
-                                            pq = pq.replace("%series", @_translateSeries(response, response.results[0][item.column]))
-                                        @widgetOptions.selectCb(pq)
+                            # Add event listener on click the chart bar.
+                            if response.pathQuery?
+                                google.visualization.events.addListener chart, "select", =>
+                                    pq = response.pathQuery
+                                    for item in chart.getSelection()
+                                        if item.row?
+                                            # Replace %category in PathQuery.
+                                            pq = pq.replace("%category", response.results[item.row + 1][0])
+                                            if item.column?
+                                                # Replace %series in PathQuery.
+                                                pq = pq.replace("%series", @_translateSeries(response, response.results[0][item.column]))
+                                            @widgetOptions.selectCb(pq)
+                        else
+                            # Undefined Google Visualization chart type.
+                            @error({title: response.chartType, text: "This chart type does not exist in Google Visualization API"}, @templates.error)
                     else
-                        # Undefined Google Visualization chart type.
-                        @error({title: response.chartType, text: "This chart type does not exist in Google Visualization API"}, @templates.error)
+                        # Render no results.
+                        $(@el).find("div.content").html $ _.template @templates.noresults, {}
+                else
+                    # Invalid results JSON.
+                    @error
+                        title: "Invalid JSON response"
+                        text:  "<ol>#{fails.join('')}</ol>"
+                    , @templates.error
             
             error: (err) => @error({title: err.statusText, text: err.responseText}, @templates.error)
 
@@ -130,7 +219,6 @@ class EnrichmentWidget extends InterMineWidget
     formOptions:
         errorCorrection: "Holm-Bonferroni"
         pValue:          0.05
-        dataSet:         "All datasets"
 
     errorCorrections: [ "Holm-Bonferroni", "Benjamini Hochberg", "Bonferroni", "None" ]
     pValues: [ 0.05, 0.10, 1.00 ]
