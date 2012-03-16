@@ -48,7 +48,7 @@ class InterMineWidget
         @el = "#{@el} div.inner"
 
     # Where is eco?
-    template: (name, context = {}) -> window.JST["widgets.#{name}"]?(context)
+    template: (name, context = {}) -> JST["#{name}.eco"]?(context)
 
     # Validate JSON response against the spec.
     isValidResponse: (json) =>

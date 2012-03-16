@@ -1,13 +1,15 @@
 Client for embedding InterMine widgets (ws_widgets).
 
 ## Requirements:
+### To Run:
 - Google API (included)
 - jQuery (included)
 - underscore.js (included)
+
+### To Compile/Test:
 - CoffeeScript & [eco](https://github.com/sstephenson/eco) templating
 - [uglify-js](https://github.com/mishoo/UglifyJS) to compress templates
 
-### CoffeeScript:
 Run `./compile.sh` to compile widgets and templates into one target and compile test.
 
 ## Usage:
