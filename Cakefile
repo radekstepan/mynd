@@ -2,17 +2,21 @@ fs = require "fs"
 eco = require "eco"
 cs = require 'coffee-script'
 
-option '-i', '--input [FILE]', 'path to widgets.coffee'
-option '-t', '--templates [DIR]', 'path to eco templates'
-option '-o', '--output [FILE]', 'path to output file'
+option '-i', '--input [FILE]', 'path to .coffee input'
+option '-t', '--templates [DIR]', 'path to .eco templates'
+option '-o', '--output [FILE]', 'path to .js output'
 
-task "compile:widget", "compile widgets library and templates together", (options) ->
+# Compile widgets.coffee and .eco templates into one output. Do not use globals for JST.
+task "compile:widgets", "compile widgets library and templates together", (options) ->
     input = options.input or "src/widgets.coffee"
     templates = options.templates or "src/templates"
     output = options.output or "js/widgets.js"
 
+    # Clean.
+    fs.unlink output
+
     # Open.
-    append output, "(function() {"
+    append output, "(function() {\n"
 
     # Compile templates.
     done = false
@@ -36,10 +40,21 @@ task "compile:widget", "compile widgets library and templates together", (option
             append output, cs.compile fs.readFileSync(input, "utf-8"), bare: "on"
 
             # Close.
-            append output, "}).call(this);"
+            append output, "\n}).call(this);"
         else
             setTimeout blocking, 0
     )()
+
+# Compile tests spec.coffee.
+task "compile:tests", "compile tests spec", (options) ->
+    input = options.input or "tests/spec.coffee"
+    output = options.output or "tests/spec.js"
+
+    # Clean.
+    fs.unlink output
+
+    # CoffeeScript compile.
+    append output, cs.compile fs.readFileSync input, "utf-8"
 
 # Traverse a directory and return a list of files (async, recursive).
 walk = (path, callback) ->
@@ -72,9 +87,9 @@ walk = (path, callback) ->
 
 # Append to existing file.
 append = (path, text) ->
-    fs.open path, "a", 666, (e, id) ->
-      fs.write id, "#{text}\n", null, "utf8", ->
-        fs.close id
+    fs.open path, "a", 0666, (e, id) ->
+        if e then throw new Error(e)
+        fs.write id, "#{text}\n", null, "utf8"
 
 # Compress using `uglify-js`.
 uglify = (input) ->

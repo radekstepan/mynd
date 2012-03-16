@@ -1,5 +1,5 @@
 #!/bin/sh
 
 clear
-cake compile:widget
+cake compile:widgets
 echo $?
