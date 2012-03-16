@@ -11,7 +11,7 @@ Client for embedding InterMine widgets (ws_widgets).
 - [uglify-js](https://github.com/mishoo/UglifyJS) to compress templates
 
 ## Compile:
-1. Install dependencies `./install.sh` or `npm install -d`
+1. Install dependencies `npm install -d`
 2. Run `./compile.sh` to compile widgets and templates into one target.
 
 ## Test:
