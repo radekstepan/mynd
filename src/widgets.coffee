@@ -156,20 +156,20 @@ class ChartWidget extends InterMineWidget
                                             @widgetOptions.selectCb(pq)
                         else
                             # Undefined Google Visualization chart type.
-                            $(@el).html @template "chart.error",
+                            $(@el).html @template "error",
                                 title: response.chartType
                                 text:  "This chart type does not exist in Google Visualization API"
                     else
                         # Render no results.
-                        $(@el).find("div.content").html $ @template "chart.noresults"
+                        $(@el).find("div.content").html $ @template "noresults"
                 else
                     # Invalid results JSON.
-                    $(@el).html @template "chart.error",
+                    $(@el).html @template "error",
                         title: "Invalid JSON response"
                         text:  "<ol>#{fails.join('')}</ol>"
             
             error: (err) =>
-                $(@el).html @template "chart.error",
+                $(@el).html @template "error",
                     title: err.statusText,
                     text:  err.responseText
 
@@ -255,13 +255,13 @@ class EnrichmentWidget extends InterMineWidget
                             td = tr.find("td.matches .count").click => @matchesClick td, row["matches"], @widgetOptions.matchCb
                     else
                         # Render no results
-                        $(@el).find("div.content").html $ @template "enrichment.noresults"
+                        $(@el).find("div.content").html $ @template "noresults"
 
                     # Set behaviors.
                     $(@el).find("form select").change @formClick
             
             error: (err) =>
-                $(@el).html @template "chart.error",
+                $(@el).html @template "error",
                     title: err.statusText,
                     text:  err.responseText
 
