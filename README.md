@@ -4,9 +4,11 @@ Client for embedding InterMine widgets (ws_widgets).
 - Google API (included)
 - jQuery (included)
 - underscore.js (included)
+- CoffeeScript & [eco](https://github.com/sstephenson/eco) templating
+- [uglify-js](https://github.com/mishoo/UglifyJS) to compress templates
 
 ### CoffeeScript:
-Run `./compile.sh` to compile and watch the `widgets.coffee` file for changes.
+Run `./compile.sh` to compile widgets and templates into one target and compile test.
 
 ## Usage:
 1. Create a new Widgets instance pointing to a service: `widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");`
