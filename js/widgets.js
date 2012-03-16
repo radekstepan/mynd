@@ -485,7 +485,7 @@
 
   })(Loader);
 
-  window.Widgets = (function() {
+  root.Widgets = (function() {
 
     Widgets.prototype.resources = {
       js: {
@@ -506,14 +506,14 @@
       _ref = this.resources.js;
       _fn = function(library, path) {
         var _ref2;
-        if (!(window[library] != null)) {
+        if (!(root[library] != null)) {
           _this.wait = ((_ref2 = _this.wait) != null ? _ref2 : 0) + 1;
           return new JSLoader(path, function() {
-            if (library === "jQuery") root.$ = window.jQuery;
+            if (library === "jQuery") root.$ = root.jQuery;
             return _this.wait -= 1;
           });
         } else {
-          if (library === "jQuery") return root.$ = window.jQuery;
+          if (library === "jQuery") return root.$ = root.jQuery;
         }
       };
       for (library in _ref) {

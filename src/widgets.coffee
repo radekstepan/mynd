@@ -324,7 +324,7 @@ class CSSLoader extends Loader
 
 
 # Public interface for the various InterMine Widgets.
-class window.Widgets
+class root.Widgets
 
     # JavaScript libraries as resources. Will be loaded if not present already.
     resources:
@@ -339,14 +339,14 @@ class window.Widgets
     constructor: (@service, @token = "") ->
         # Check and load resources if needed.
         for library, path of @resources.js then do (library, path) =>
-            if not window[library]?
+            if not root[library]?
                 @wait = (@wait ? 0) + 1
                 new JSLoader(path, =>
-                    if library is "jQuery" then root.$ = window.jQuery # We are jQuery.
+                    if library is "jQuery" then root.$ = root.jQuery # We are jQuery.
                     @wait -= 1
                 )
             else
-                if library is "jQuery" then root.$ = window.jQuery # We are jQuery.
+                if library is "jQuery" then root.$ = root.jQuery # We are jQuery.
 
     # Chart Widget.
     # `id`:            widgetId
