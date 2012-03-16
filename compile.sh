@@ -2,4 +2,4 @@
 
 clear
 cake compile:widgets
-echo $?
+exit $?
