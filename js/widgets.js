@@ -1,5 +1,5 @@
 (function() {
-  var CSSLoader, ChartWidget, EnrichmentWidget, InterMineWidget, JSLoader, Loader, root, t,
+  var CSSLoader, ChartWidget, EnrichmentWidget, InterMineWidget, JSLoader, Loader, root, type,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
@@ -8,9 +8,9 @@
 
   root = this;
 
-  t = {};
+  type = {};
 
-  t.Root = (function() {
+  type.Root = (function() {
 
     function Root() {}
 
@@ -28,103 +28,103 @@
 
   })();
 
-  t.String = (function(_super) {
+  type.isString = (function(_super) {
 
-    __extends(String, _super);
+    __extends(isString, _super);
 
-    String.prototype.expected = "String";
+    isString.prototype.expected = "String";
 
-    function String(key) {
+    function isString(key) {
       this.result = typeof key === 'string';
     }
 
-    return String;
+    return isString;
 
-  })(t.Root);
+  })(type.Root);
 
-  t.Integer = (function(_super) {
+  type.isInteger = (function(_super) {
 
-    __extends(Integer, _super);
+    __extends(isInteger, _super);
 
-    Integer.prototype.expected = "Integer";
+    isInteger.prototype.expected = "Integer";
 
-    function Integer(key) {
+    function isInteger(key) {
       this.result = typeof key === 'number';
     }
 
-    return Integer;
+    return isInteger;
 
-  })(t.Root);
+  })(type.Root);
 
-  t.Boolean = (function(_super) {
+  type.isBoolean = (function(_super) {
 
-    __extends(Boolean, _super);
+    __extends(isBoolean, _super);
 
-    Boolean.prototype.expected = "Boolean true";
+    isBoolean.prototype.expected = "Boolean true";
 
-    function Boolean(key) {
+    function isBoolean(key) {
       this.result = typeof key === 'boolean';
     }
 
-    return Boolean;
+    return isBoolean;
 
-  })(t.Root);
+  })(type.Root);
 
-  t.Null = (function(_super) {
+  type.isNull = (function(_super) {
 
-    __extends(Null, _super);
+    __extends(isNull, _super);
 
-    Null.prototype.expected = "Null";
+    isNull.prototype.expected = "Null";
 
-    function Null(key) {
+    function isNull(key) {
       this.result = key === null;
     }
 
-    return Null;
+    return isNull;
 
-  })(t.Root);
+  })(type.Root);
 
-  t.List = (function(_super) {
+  type.isArray = (function(_super) {
 
-    __extends(List, _super);
+    __extends(isArray, _super);
 
-    List.prototype.expected = "List";
+    isArray.prototype.expected = "Array";
 
-    function List(key) {
+    function isArray(key) {
       this.result = key instanceof Array;
     }
 
-    return List;
+    return isArray;
 
-  })(t.Root);
+  })(type.Root);
 
-  t.HTTPSuccess = (function(_super) {
+  type.isHTTPSuccess = (function(_super) {
 
-    __extends(HTTPSuccess, _super);
+    __extends(isHTTPSuccess, _super);
 
-    HTTPSuccess.prototype.expected = "HTTP code 200";
+    isHTTPSuccess.prototype.expected = "HTTP code 200";
 
-    function HTTPSuccess(key) {
+    function isHTTPSuccess(key) {
       this.result = key === 200;
     }
 
-    return HTTPSuccess;
+    return isHTTPSuccess;
 
-  })(t.Root);
+  })(type.Root);
 
-  t.Undefined = (function(_super) {
+  type.isUndefined = (function(_super) {
 
-    __extends(Undefined, _super);
+    __extends(isUndefined, _super);
 
-    function Undefined() {
-      Undefined.__super__.constructor.apply(this, arguments);
+    function isUndefined() {
+      isUndefined.__super__.constructor.apply(this, arguments);
     }
 
-    Undefined.prototype.expected = "it to be undefined";
+    isUndefined.prototype.expected = "it to be undefined";
 
-    return Undefined;
+    return isUndefined;
 
-  })(t.Root);
+  })(type.Root);
 
   InterMineWidget = (function() {
 
@@ -148,7 +148,7 @@
       fails = [];
       for (key in json) {
         value = json[key];
-        if ((r = (typeof (_base = this.json)[key] === "function" ? new _base[key](value) : void 0) || (r = new t.Undefined())) && r.is() === false) {
+        if ((r = (typeof (_base = this.json)[key] === "function" ? new _base[key](value) : void 0) || (r = new type.isUndefined())) && !r.is()) {
           fails.push(_.template(this.invalidJSONKey, {
             key: key,
             actual: r.is(),
@@ -196,20 +196,20 @@
     };
 
     ChartWidget.prototype.json = {
-      "chartType": t.String,
-      "description": t.String,
-      "error": t.Null,
-      "list": t.String,
-      "notAnalysed": t.Integer,
-      "pathQuery": t.String,
-      "requestedAt": t.String,
-      "results": t.List,
-      "seriesLabels": t.String,
-      "seriesValues": t.String,
-      "statusCode": t.HTTPSuccess,
-      "title": t.String,
-      "type": t.String,
-      "wasSuccessful": t.Boolean
+      "chartType": type.isString,
+      "description": type.isString,
+      "error": type.isNull,
+      "list": type.isString,
+      "notAnalysed": type.isInteger,
+      "pathQuery": type.isString,
+      "requestedAt": type.isString,
+      "results": type.isArray,
+      "seriesLabels": type.isString,
+      "seriesValues": type.isString,
+      "statusCode": type.isHTTPSuccess,
+      "title": type.isString,
+      "type": type.isString,
+      "wasSuccessful": type.isBoolean
     };
 
     function ChartWidget(service, token, id, bagName, el, widgetOptions) {

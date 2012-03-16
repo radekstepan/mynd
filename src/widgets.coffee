@@ -1,42 +1,42 @@
 root = this
 
 # JSON Types.
-t = {}
-
-class t.Root
+type = {}
+class type.Root
     result: false
     is: -> @result
     toString: -> @expected
 
-class t.String extends t.Root
+class type.isString extends type.Root
     expected: "String"
     constructor: (key) -> @result = typeof key is 'string'
 
-class t.Integer extends t.Root
+class type.isInteger extends type.Root
     expected: "Integer"
     constructor: (key) -> @result = typeof key is 'number'
 
-class t.Boolean extends t.Root
+class type.isBoolean extends type.Root
     expected: "Boolean true"
     constructor: (key) -> @result = typeof key is 'boolean'
 
-class t.Null extends t.Root
+class type.isNull extends type.Root
     expected: "Null"
     constructor: (key) -> @result = key is null
 
-class t.List extends t.Root
-    expected: "List"
+class type.isArray extends type.Root
+    expected: "Array"
     constructor: (key) -> @result = key instanceof Array
 
-class t.HTTPSuccess extends t.Root
+class type.isHTTPSuccess extends type.Root
     expected: "HTTP code 200"
     constructor: (key) -> @result = key is 200
 
-class t.Undefined extends t.Root
+class type.isUndefined extends type.Root
     expected: "it to be undefined"
 
 
 # --------------------------------------------
+
 
 class InterMineWidget
 
@@ -61,7 +61,7 @@ class InterMineWidget
     isValidResponse: (json) =>
         fails = []
         for key, value of json
-            if (r = new @json[key]?(value) or r = new t.Undefined()) and r.is() is false
+            if (r = new @json[key]?(value) or r = new type.isUndefined()) and not r.is()
                 fails.push _.template @invalidJSONKey,
                     key:      key
                     actual:   r.is()
@@ -122,20 +122,20 @@ class ChartWidget extends InterMineWidget
 
     # Spec for a successful and correct JSON response.
     json:
-        "chartType":     t.String
-        "description":   t.String
-        "error":         t.Null
-        "list":          t.String
-        "notAnalysed":   t.Integer
-        "pathQuery":     t.String
-        "requestedAt":   t.String
-        "results":       t.List
-        "seriesLabels":  t.String
-        "seriesValues":  t.String
-        "statusCode":    t.HTTPSuccess
-        "title":         t.String
-        "type":          t.String
-        "wasSuccessful": t.Boolean
+        "chartType":     type.isString
+        "description":   type.isString
+        "error":         type.isNull
+        "list":          type.isString
+        "notAnalysed":   type.isInteger
+        "pathQuery":     type.isString
+        "requestedAt":   type.isString
+        "results":       type.isArray
+        "seriesLabels":  type.isString
+        "seriesValues":  type.isString
+        "statusCode":    type.isHTTPSuccess
+        "title":         type.isString
+        "type":          type.isString
+        "wasSuccessful": type.isBoolean
 
     # Set the params on us and set Google load callback.
     # `service`:       http://aragorn.flymine.org:8080/flymine/service/
