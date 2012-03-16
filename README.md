@@ -10,8 +10,9 @@ Client for embedding InterMine widgets (ws_widgets).
 - CoffeeScript & [eco](https://github.com/sstephenson/eco) templating
 - [uglify-js](https://github.com/mishoo/UglifyJS) to compress templates
 
-Run `./compile.sh` to compile widgets and templates into one target.
-Run `cake compile:tests` to compile the test spec.
+1. Install dependencies `npm install -d`
+2. Run `./compile.sh` to compile widgets and templates into one target.
+3. Run `cake compile:tests` to compile the test spec.
 
 ## Usage:
 1. Create a new Widgets instance pointing to a service: `widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");`

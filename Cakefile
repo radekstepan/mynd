@@ -1,6 +1,6 @@
 fs = require "fs"
-eco = require "eco"
 cs = require 'coffee-script'
+eco = require "eco"
 
 option '-i', '--input [FILE]', 'path to .coffee input'
 option '-t', '--templates [DIR]', 'path to .eco templates'
