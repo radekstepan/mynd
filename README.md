@@ -10,7 +10,7 @@ Client for embedding InterMine widgets (ws_widgets).
 - CoffeeScript & [eco](https://github.com/sstephenson/eco) templating
 - [uglify-js](https://github.com/mishoo/UglifyJS) to compress templates
 
-1. Install dependencies `npm install -d`
+1. Install dependencies `./install.sh` or `npm install -d`
 2. Run `./compile.sh` to compile widgets and templates into one target.
 3. Run `cake compile:tests` to compile the test spec.
 
