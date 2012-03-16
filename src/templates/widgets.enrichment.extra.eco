@@ -1,0 +1,10 @@
+<div class="group" style="display:inline-block;margin-right:5px">
+    <label><%= @label %></label>
+    <select name="dataSet" class="span2">
+        <% for v in @possible: %>
+            <option value="<%= v %>" <%= 'selected="selected"' if @selected is v %>>
+                <%= v %>
+            </option>
+        <% end %>
+    </select>
+</div>

@@ -1,0 +1,7 @@
+<tr>
+    <td class="description"><%= @row["description"] %></td>
+    <td class="pValue"><%= @row["p-value"].toFixed(7) %></td>
+    <td class="matches" style="position:relative">
+        <span class="count label label-success" style="cursor:pointer"><%= @row["matches"].length %></span>
+    </td>
+</tr>

@@ -40,14 +40,6 @@ class type.isUndefined extends type.Root
 
 class InterMineWidget
 
-    # Template showing an invalid JSON response key.
-    invalidJSONKey:
-        """
-            <li style="vertical-align:bottom">
-                <span style="display:inline-block" class="label label-inverse"><%= key %></span> is <%= actual %>; was expecting <%= expected %>
-            </li>
-        """
-
     # Inject wrapper inside the target div that we have control over.
     constructor: ->
         $(@el).html $ '<div/>',
@@ -55,14 +47,15 @@ class InterMineWidget
             style: "height:572px;overflow:hidden"
         @el = "#{@el} div.inner"
 
-    error: (err, template) => $(@el).html _.template template, err
+    # Where is eco?
+    template: (name, context = {}) -> window.JST["widgets.#{name}"]?(context)
 
     # Validate JSON response against the spec.
     isValidResponse: (json) =>
         fails = []
         for key, value of json
             if (r = new @json[key]?(value) or r = new type.isUndefined()) and not r.is()
-                fails.push _.template @invalidJSONKey,
+                fails.push @template "invalidjsonkey",
                     key:      key
                     actual:   r.is()
                     expected: new String(r)
@@ -88,37 +81,6 @@ class ChartWidget extends InterMineWidget
         vAxis:
             titleTextStyle:
                 fontName: "Sans-Serif"
-
-    # Our templates.
-    templates:
-        normal:
-            """
-                <header>
-                    <% if (title) { %>
-                        <h3><%= title %></h3>
-                    <% } %>
-                    <% if (description) { %>
-                        <p><%= description %></p>
-                    <% } %>
-                    <% if (notAnalysed > 0) { %>
-                        <p>Number of Genes in this list not analysed in this widget: <span class="label label-info"><%= notAnalysed %></span></p>
-                    <% } %>
-                </header>
-                <div class="content"></div>
-            """
-        noresults:
-            """
-                <div class="alert alert-info">
-                    <p>The Widget has no results.</p>
-                </div>
-            """
-        error:
-            """
-                <div class="alert alert-block">
-                    <h4 class="alert-heading"><%= title %></h4>
-                    <p><%= text %></p>
-                </div>
-            """
 
     # Spec for a successful and correct JSON response.
     json:
@@ -168,7 +130,7 @@ class ChartWidget extends InterMineWidget
                 # We have response, validate.
                 if (fails = @isValidResponse(response)) and not fails.length
                     # Render the widget template.
-                    $(@el).html _.template @templates.normal,
+                    $(@el).html @template "chart.normal",
                         "title":       if @widgetOptions.title then response.title else ""
                         "description": if @widgetOptions.description then response.description else ""
                         "notAnalysed": response.notAnalysed
@@ -194,18 +156,22 @@ class ChartWidget extends InterMineWidget
                                             @widgetOptions.selectCb(pq)
                         else
                             # Undefined Google Visualization chart type.
-                            @error({title: response.chartType, text: "This chart type does not exist in Google Visualization API"}, @templates.error)
+                            $(@el).html @template "chart.error",
+                                title: response.chartType
+                                text:  "This chart type does not exist in Google Visualization API"
                     else
                         # Render no results.
-                        $(@el).find("div.content").html $ _.template @templates.noresults, {}
+                        $(@el).find("div.content").html $ @template "chart.noresults"
                 else
                     # Invalid results JSON.
-                    @error
+                    $(@el).html @template "chart.error",
                         title: "Invalid JSON response"
                         text:  "<ol>#{fails.join('')}</ol>"
-                    , @templates.error
             
-            error: (err) => @error({title: err.statusText, text: err.responseText}, @templates.error)
+            error: (err) =>
+                $(@el).html @template "chart.error",
+                    title: err.statusText,
+                    text:  err.responseText
 
     # Translate view series into PathQuery series (Expressed/Not Expressed into true/false).
     _translateSeries: (response, series) -> response.seriesValues.split(',')[response.seriesLabels.split(',').indexOf(series)]
@@ -222,110 +188,6 @@ class EnrichmentWidget extends InterMineWidget
 
     errorCorrections: [ "Holm-Bonferroni", "Benjamini Hochberg", "Bonferroni", "None" ]
     pValues: [ 0.05, 0.10, 1.00 ]
-
-    templates:
-        normal:
-            """
-                <header>
-                    <% if (title) { %>
-                        <h3><%= title %></h3>
-                    <% } %>
-                    <% if (description) { %>
-                        <p><%= description %></p>
-                    <% } %>
-                    <% if (notAnalysed > 0) { %>
-                        <p>Number of Genes in this list not analysed in this widget: <span class="label label-info"><%= notAnalysed %></span></p>
-                    <% } %>
-                    <div class="form"></div>
-                </header>
-                <div class="content" style="overflow:auto;overflow-x:hidden;height:400px"></div>
-            """
-        form:
-            """
-                <form>
-                    <div class="group" style="display:inline-block;margin-right:5px">
-                        <label>Test Correction</label>
-                        <select name="errorCorrection" class="span2">
-                            <% for (var i = 0; i < errorCorrections.length; i++) { %>
-                                <% var correction = errorCorrections[i] %>
-                                <option value="<%= correction %>" <%= (options.errorCorrection == correction) ? 'selected="selected"' : "" %>><%= correction %></option>
-                            <% } %>
-                        </select>
-                    </div>
-
-                    <div class="group" style="display:inline-block;margin-right:5px">
-                        <label>Max p-value</label>
-                        <select name="pValue" class="span2">
-                            <% for (var i = 0; i < pValues.length; i++) { %>
-                                <% var p = pValues[i] %>
-                                <option value="<%= p %>" <%= (options.pValue == p) ? 'selected="selected"' : "" %>><%= p %></option>
-                            <% } %>
-                        </select>
-                    </div>
-                </form>
-            """
-        extra:
-            """
-                <div class="group" style="display:inline-block;margin-right:5px">
-                    <label><%= label %></label>
-                    <select name="dataSet" class="span2">
-                        <% for (var i = 0; i < possible.length; i++) { %>
-                            <% var v = possible[i] %>
-                            <option value="<%= v %>" <%= (selected == v) ? 'selected="selected"' : "" %>><%= v %></option>
-                        <% } %>
-                    </select>
-                </div>
-            """
-        table:
-            """
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th><%= label %></th>
-                            <th>p-Value</th>
-                            <th>Matches</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            """
-        row:
-            """
-                <tr>
-                    <td class="description"><%= row["description"] %></td>
-                    <td class="pValue"><%= row["p-value"].toFixed(7) %></td>
-                    <td class="matches" style="position:relative">
-                        <span class="count label label-success" style="cursor:pointer"><%= row["matches"].length %></span>
-                    </td>
-                </tr>
-            """
-        matches:
-            """
-                <div class="popover" style="position:absolute;top:22px;right:0;z-index:1;display:block">
-                    <div class="popover-inner" style="width:300px;margin-left:-300px">
-                        <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>
-                        <h3 class="popover-title"></h3>
-                        <div class="popover-content">
-                            <% for (var i = 0; i < matches.length; i++) { %>
-                                <a href="#"><%= matches[i] %></a><%= (i < matches.length -1) ? "," : "" %>
-                            <% } %>
-                        </div>
-                    </div>
-                </div>
-            """
-        noresults:
-            """
-                <div class="alert alert-info">
-                    <p>The Widget has no results.</p>
-                </div>
-            """
-        error:
-            """
-                <div class="alert alert-block">
-                    <h4 class="alert-heading"><%= title %></h4>
-                    <p><%= text %></p>
-                </div>
-            """
 
     # Set the params on us and render.
     # `service`:       http://aragorn.flymine.org:8080/flymine/service/
@@ -359,19 +221,19 @@ class EnrichmentWidget extends InterMineWidget
                 # We have results.
                 if response.wasSuccessful
                     # Render the widget template.
-                    $(@el).html _.template @templates.normal,
+                    $(@el).html @template "enrichment.normal",
                         "title":       if @widgetOptions.title then response.title else ""
                         "description": if @widgetOptions.description then response.description else ""
                         "notAnalysed": response.notAnalysed
 
-                    $(@el).find("div.form").html _.template @templates.form,
+                    $(@el).find("div.form").html @template "enrichment.form",
                         "options":          @formOptions
                         "errorCorrections": @errorCorrections
                         "pValues":          @pValues
                     
                     # Extra attributes (DataSets)?
                     if response.extraAttributeLabel?
-                        $(@l).find('div.form form').append _.template @templates.extra,
+                        $(@l).find('div.form form').append @template "enrichment.extra",
                             "label":    response.extraAttributeLabel
                             "possible": response.extraAttributePossibleValues
                             "selected": response.extraAttributeSelectedValue
@@ -382,24 +244,26 @@ class EnrichmentWidget extends InterMineWidget
                         height = $(@el).height() - $(@el).find('header').height() - 18
 
                         # Render the table.
-                        $(@el).find("div.content").html($ _.template @templates.table,
-                            "label": response.label
+                        $(@el).find("div.content").html(
+                            $ @template "enrichment.table", "label": response.label
                         ).css "height", "#{height}px"
                         
                         # Table rows.
                         table = $(@el).find("div.content table")
                         for row in response.results then do (row) =>
-                            table.append tr = $ _.template @templates.row,
-                                "row": row
+                            table.append tr = $ @template "enrichment.row", "row": row
                             td = tr.find("td.matches .count").click => @matchesClick td, row["matches"], @widgetOptions.matchCb
                     else
                         # Render no results
-                        $(@el).find("div.content").html $ _.template @templates.noresults, {}
+                        $(@el).find("div.content").html $ @template "enrichment.noresults"
 
                     # Set behaviors.
                     $(@el).find("form select").change @formClick
             
-            error: (err) => @error({title: err.statusText, text: err.responseText}, @templates.error)
+            error: (err) =>
+                $(@el).html @template "chart.error",
+                    title: err.statusText,
+                    text:  err.responseText
 
     # On form select option change, set the new options and re-render.
     formClick: (e) =>
@@ -408,8 +272,7 @@ class EnrichmentWidget extends InterMineWidget
 
     # Show matches.
     matchesClick: (target, matches, matchCb) =>
-        target.after modal = $ _.template @templates.matches,
-            "matches": matches
+        target.after modal = $ @template "enrichment.matches", "matches": matches
         modal.find("a.close").click -> modal.remove()
         # Individual match click behavior.
         modal.find("div.popover-content a").click (e) ->

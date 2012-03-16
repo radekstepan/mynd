@@ -1,3 +1,5 @@
+((function(){this.JST||(this.JST={}),this.JST["widgets.invalidjsonkey"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<li style="vertical-align:bottom">\n    <span style="display:inline-block" class="label label-inverse">'),b.push(d(this.key)),b.push("</span> is "),b.push(d(this.actual)),b.push("; was expecting "),b.push(d(this.expected)),b.push("\n</li>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}})).call(this),function(){this.JST||(this.JST={}),this.JST["widgets.enrichment.row"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<tr>\n    <td class="description">'),b.push(d(this.row.description)),b.push('</td>\n    <td class="pValue">'),b.push(d(this.row["p-value"].toFixed(7))),b.push('</td>\n    <td class="matches" style="position:relative">\n        <span class="count label label-success" style="cursor:pointer">'),b.push(d(this.row.matches.length)),b.push("</span>\n    </td>\n</tr>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}}.call(this),function(){this.JST||(this.JST={}),this.JST["widgets.enrichment.form"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f,g,h,i,j;b.push('<form>\n    <div class="group" style="display:inline-block;margin-right:5px">\n        <label>Test Correction</label>\n        <select name="errorCorrection" class="span2">\n            '),i=this.errorCorrections;for(e=0,g=i.length;e<g;e++)a=i[e],b.push('\n                <option value="'),b.push(d(a)),b.push('" '),this.options.errorCorrection===a&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(a)),b.push("\n            </option>\n            ");b.push('\n        </select>\n    </div>\n\n    <div class="group" style="display:inline-block;margin-right:5px">\n        <label>Max p-value</label>\n        <select name="pValue" class="span2">\n            '),j=this.pValues;for(f=0,h=j.length;f<h;f++)c=j[f],b.push('\n                <option value="'),b.push(d(c)),b.push('" '),this.options.pValue===c&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(c)),b.push("\n                </option>\n            ");b.push("\n        </select>\n    </div>\n</form>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}}.call(this),function(){this.JST||(this.JST={}),this.JST["widgets.enrichment.noresults"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<div class="alert alert-info">\n    <p>The Widget has no results.</p>\n</div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}}.call(this),function(){this.JST||(this.JST={}),this.JST["widgets.enrichment.extra"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f;b.push('<div class="group" style="display:inline-block;margin-right:5px">\n    <label>'),b.push(d(this.label)),b.push('</label>\n    <select name="dataSet" class="span2">\n        '),f=this.possible;for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n            <option value="'),b.push(d(a)),b.push('" '),this.selected===a&&b.push(d('selected="selected"')),b.push(">\n                "),b.push(d(a)),b.push("\n            </option>\n        ");b.push("\n    </select>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}}.call(this),function(){this.JST||(this.JST={}),this.JST["widgets.enrichment.table"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<table class="table table-striped">\n    <thead>\n        <tr>\n            <th>'),b.push(d(label)),b.push("</th>\n            <th>p-Value</th>\n            <th>Matches</th>\n        </tr>\n    </thead>\n    <tbody></tbody>\n</table>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}}.call(this),function(){this.JST||(this.JST={}),this.JST["widgets.enrichment.normal"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(d(this.description)),b.push("</p>\n    "),this.notAnalysed&&(b.push('\n        <p>Number of Genes in this list not analysed in this widget: <span class="label label-info">'),b.push(d(this.notAnalysed)),b.push("</span></p>\n    ")),b.push('\n    <div class="form"></div>\n</header>\n<div class="content" style="overflow:auto;overflow-x:hidden;height:400px"></div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}}.call(this),function(){this.JST||(this.JST={}),this.JST["widgets.chart.error"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<div class="alert alert-block">\n    <h4 class="alert-heading">'),b.push(d(this.title)),b.push("</h4>\n    <p>"),b.push(d(this.text)),b.push("</p>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}}.call(this),function(){this.JST||(this.JST={}),this.JST["widgets.chart.noresults"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<div class="alert alert-info">\n    <p>The Widget has no results.</p>\n</div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}}.call(this),function(){this.JST||(this.JST={}),this.JST["widgets.enrichment.matches"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f;b.push('<div class="popover" style="position:absolute;top:22px;right:0;z-index:1;display:block">\n    <div class="popover-inner" style="width:300px;margin-left:-300px">\n        <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>\n        <h3 class="popover-title"></h3>\n        <div class="popover-content">\n            '),f=this.matches;for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n                <a href="#">'),b.push(d(a)),b.push("</a>\n            ");b.push("\n        </div>\n    </div>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}}.call(this),function(){this.JST||(this.JST={}),this.JST["widgets.chart.normal"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(d(this.description)),b.push("</p>\n    "),this.notAnalysed&&(b.push('\n        <p>Number of Genes in this list not analysed in this widget: <span class="label label-info">'),b.push(d(this.notAnalysed)),b.push("</span></p>\n    ")),b.push('\n</header>\n<div class="content"></div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}}.call(this),function(){this.JST||(this.JST={}),this.JST["widgets.enrichment.error"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<div class="alert alert-block">\n    <h4 class="alert-heading">'),b.push(d(this.title)),b.push("</h4>\n    <p>"),b.push(d(this.text)),b.push("</p>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}}.call(this);
+
 (function() {
   var CSSLoader, ChartWidget, EnrichmentWidget, InterMineWidget, JSLoader, Loader, root, type,
     __hasProp = Object.prototype.hasOwnProperty,
@@ -128,19 +130,18 @@
 
   InterMineWidget = (function() {
 
-    InterMineWidget.prototype.invalidJSONKey = "<li style=\"vertical-align:bottom\">\n    <span style=\"display:inline-block\" class=\"label label-inverse\"><%= key %></span> is <%= actual %>; was expecting <%= expected %>\n</li>";
-
     function InterMineWidget() {
-      this.isValidResponse = __bind(this.isValidResponse, this);
-      this.error = __bind(this.error, this);      $(this.el).html($('<div/>', {
+      this.isValidResponse = __bind(this.isValidResponse, this);      $(this.el).html($('<div/>', {
         "class": "inner",
         style: "height:572px;overflow:hidden"
       }));
       this.el = "" + this.el + " div.inner";
     }
 
-    InterMineWidget.prototype.error = function(err, template) {
-      return $(this.el).html(_.template(template, err));
+    InterMineWidget.prototype.template = function(name, context) {
+      var _base, _name;
+      if (context == null) context = {};
+      return typeof (_base = window.JST)[_name = "widgets." + name] === "function" ? _base[_name](context) : void 0;
     };
 
     InterMineWidget.prototype.isValidResponse = function(json) {
@@ -149,7 +150,7 @@
       for (key in json) {
         value = json[key];
         if ((r = (typeof (_base = this.json)[key] === "function" ? new _base[key](value) : void 0) || (r = new type.isUndefined())) && !r.is()) {
-          fails.push(_.template(this.invalidJSONKey, {
+          fails.push(this.template("invalidjsonkey", {
             key: key,
             actual: r.is(),
             expected: new String(r)
@@ -187,12 +188,6 @@
           fontName: "Sans-Serif"
         }
       }
-    };
-
-    ChartWidget.prototype.templates = {
-      normal: "<header>\n    <% if (title) { %>\n        <h3><%= title %></h3>\n    <% } %>\n    <% if (description) { %>\n        <p><%= description %></p>\n    <% } %>\n    <% if (notAnalysed > 0) { %>\n        <p>Number of Genes in this list not analysed in this widget: <span class=\"label label-info\"><%= notAnalysed %></span></p>\n    <% } %>\n</header>\n<div class=\"content\"></div>",
-      noresults: "<div class=\"alert alert-info\">\n    <p>The Widget has no results.</p>\n</div>",
-      error: "<div class=\"alert alert-block\">\n    <h4 class=\"alert-heading\"><%= title %></h4>\n    <p><%= text %></p>\n</div>"
     };
 
     ChartWidget.prototype.json = {
@@ -244,7 +239,7 @@
         success: function(response) {
           var chart, fails;
           if ((fails = _this.isValidResponse(response)) && !fails.length) {
-            $(_this.el).html(_.template(_this.templates.normal, {
+            $(_this.el).html(_this.template("chart.normal", {
               "title": _this.widgetOptions.title ? response.title : "",
               "description": _this.widgetOptions.description ? response.description : "",
               "notAnalysed": response.notAnalysed
@@ -275,26 +270,26 @@
                   });
                 }
               } else {
-                return _this.error({
+                return $(_this.el).html(_this.template("chart.error", {
                   title: response.chartType,
                   text: "This chart type does not exist in Google Visualization API"
-                }, _this.templates.error);
+                }));
               }
             } else {
-              return $(_this.el).find("div.content").html($(_.template(_this.templates.noresults, {})));
+              return $(_this.el).find("div.content").html($(_this.template("chart.noresults")));
             }
           } else {
-            return _this.error({
+            return $(_this.el).html(_this.template("chart.error", {
               title: "Invalid JSON response",
               text: "<ol>" + (fails.join('')) + "</ol>"
-            }, _this.templates.error);
+            }));
           }
         },
         error: function(err) {
-          return _this.error({
+          return $(_this.el).html(_this.template("chart.error", {
             title: err.statusText,
             text: err.responseText
-          }, _this.templates.error);
+          }));
         }
       });
     };
@@ -319,17 +314,6 @@
     EnrichmentWidget.prototype.errorCorrections = ["Holm-Bonferroni", "Benjamini Hochberg", "Bonferroni", "None"];
 
     EnrichmentWidget.prototype.pValues = [0.05, 0.10, 1.00];
-
-    EnrichmentWidget.prototype.templates = {
-      normal: "<header>\n    <% if (title) { %>\n        <h3><%= title %></h3>\n    <% } %>\n    <% if (description) { %>\n        <p><%= description %></p>\n    <% } %>\n    <% if (notAnalysed > 0) { %>\n        <p>Number of Genes in this list not analysed in this widget: <span class=\"label label-info\"><%= notAnalysed %></span></p>\n    <% } %>\n    <div class=\"form\"></div>\n</header>\n<div class=\"content\" style=\"overflow:auto;overflow-x:hidden;height:400px\"></div>",
-      form: "<form>\n    <div class=\"group\" style=\"display:inline-block;margin-right:5px\">\n        <label>Test Correction</label>\n        <select name=\"errorCorrection\" class=\"span2\">\n            <% for (var i = 0; i < errorCorrections.length; i++) { %>\n                <% var correction = errorCorrections[i] %>\n                <option value=\"<%= correction %>\" <%= (options.errorCorrection == correction) ? 'selected=\"selected\"' : \"\" %>><%= correction %></option>\n            <% } %>\n        </select>\n    </div>\n\n    <div class=\"group\" style=\"display:inline-block;margin-right:5px\">\n        <label>Max p-value</label>\n        <select name=\"pValue\" class=\"span2\">\n            <% for (var i = 0; i < pValues.length; i++) { %>\n                <% var p = pValues[i] %>\n                <option value=\"<%= p %>\" <%= (options.pValue == p) ? 'selected=\"selected\"' : \"\" %>><%= p %></option>\n            <% } %>\n        </select>\n    </div>\n</form>",
-      extra: "<div class=\"group\" style=\"display:inline-block;margin-right:5px\">\n    <label><%= label %></label>\n    <select name=\"dataSet\" class=\"span2\">\n        <% for (var i = 0; i < possible.length; i++) { %>\n            <% var v = possible[i] %>\n            <option value=\"<%= v %>\" <%= (selected == v) ? 'selected=\"selected\"' : \"\" %>><%= v %></option>\n        <% } %>\n    </select>\n</div>",
-      table: "<table class=\"table table-striped\">\n    <thead>\n        <tr>\n            <th><%= label %></th>\n            <th>p-Value</th>\n            <th>Matches</th>\n        </tr>\n    </thead>\n    <tbody></tbody>\n</table>",
-      row: "<tr>\n    <td class=\"description\"><%= row[\"description\"] %></td>\n    <td class=\"pValue\"><%= row[\"p-value\"].toFixed(7) %></td>\n    <td class=\"matches\" style=\"position:relative\">\n        <span class=\"count label label-success\" style=\"cursor:pointer\"><%= row[\"matches\"].length %></span>\n    </td>\n</tr>",
-      matches: "<div class=\"popover\" style=\"position:absolute;top:22px;right:0;z-index:1;display:block\">\n    <div class=\"popover-inner\" style=\"width:300px;margin-left:-300px\">\n        <a style=\"cursor:pointer;margin:2px 5px 0 0\" class=\"close\">×</a>\n        <h3 class=\"popover-title\"></h3>\n        <div class=\"popover-content\">\n            <% for (var i = 0; i < matches.length; i++) { %>\n                <a href=\"#\"><%= matches[i] %></a><%= (i < matches.length -1) ? \",\" : \"\" %>\n            <% } %>\n        </div>\n    </div>\n</div>",
-      noresults: "<div class=\"alert alert-info\">\n    <p>The Widget has no results.</p>\n</div>",
-      error: "<div class=\"alert alert-block\">\n    <h4 class=\"alert-heading\"><%= title %></h4>\n    <p><%= text %></p>\n</div>"
-    };
 
     function EnrichmentWidget(service, token, id, bagName, el, widgetOptions) {
       var _this = this;
@@ -367,18 +351,18 @@
         success: function(response) {
           var height, row, table, _fn, _i, _len, _ref;
           if (response.wasSuccessful) {
-            $(_this.el).html(_.template(_this.templates.normal, {
+            $(_this.el).html(_this.template("enrichment.normal", {
               "title": _this.widgetOptions.title ? response.title : "",
               "description": _this.widgetOptions.description ? response.description : "",
               "notAnalysed": response.notAnalysed
             }));
-            $(_this.el).find("div.form").html(_.template(_this.templates.form, {
+            $(_this.el).find("div.form").html(_this.template("enrichment.form", {
               "options": _this.formOptions,
               "errorCorrections": _this.errorCorrections,
               "pValues": _this.pValues
             }));
             if (response.extraAttributeLabel != null) {
-              $(_this.l).find('div.form form').append(_.template(_this.templates.extra, {
+              $(_this.l).find('div.form form').append(_this.template("enrichment.extra", {
                 "label": response.extraAttributeLabel,
                 "possible": response.extraAttributePossibleValues,
                 "selected": response.extraAttributeSelectedValue
@@ -386,14 +370,14 @@
             }
             if (response.results.length > 0) {
               height = $(_this.el).height() - $(_this.el).find('header').height() - 18;
-              $(_this.el).find("div.content").html($(_.template(_this.templates.table, {
+              $(_this.el).find("div.content").html($(_this.template("enrichment.table", {
                 "label": response.label
               }))).css("height", "" + height + "px");
               table = $(_this.el).find("div.content table");
               _ref = response.results;
               _fn = function(row) {
                 var td, tr;
-                table.append(tr = $(_.template(_this.templates.row, {
+                table.append(tr = $(_this.template("enrichment.row", {
                   "row": row
                 })));
                 return td = tr.find("td.matches .count").click(function() {
@@ -405,16 +389,16 @@
                 _fn(row);
               }
             } else {
-              $(_this.el).find("div.content").html($(_.template(_this.templates.noresults, {})));
+              $(_this.el).find("div.content").html($(_this.template("enrichment.noresults")));
             }
             return $(_this.el).find("form select").change(_this.formClick);
           }
         },
         error: function(err) {
-          return _this.error({
+          return $(_this.el).html(_this.template("chart.error", {
             title: err.statusText,
             text: err.responseText
-          }, _this.templates.error);
+          }));
         }
       });
     };
@@ -426,7 +410,7 @@
 
     EnrichmentWidget.prototype.matchesClick = function(target, matches, matchCb) {
       var modal;
-      target.after(modal = $(_.template(this.templates.matches, {
+      target.after(modal = $(this.template("enrichment.matches", {
         "matches": matches
       })));
       modal.find("a.close").click(function() {

@@ -1,0 +1,10 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th><%= label %></th>
+            <th>p-Value</th>
+            <th>Matches</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>

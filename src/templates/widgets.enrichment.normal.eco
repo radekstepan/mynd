@@ -1,0 +1,9 @@
+<header>
+    <h3><%= @title if @title %></h3>
+    <p><%= @description if @description %></p>
+    <% if @notAnalysed: %>
+        <p>Number of Genes in this list not analysed in this widget: <span class="label label-info"><%= @notAnalysed %></span></p>
+    <% end %>
+    <div class="form"></div>
+</header>
+<div class="content" style="overflow:auto;overflow-x:hidden;height:400px"></div>

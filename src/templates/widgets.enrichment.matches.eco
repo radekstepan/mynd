@@ -1,0 +1,11 @@
+<div class="popover" style="position:absolute;top:22px;right:0;z-index:1;display:block">
+    <div class="popover-inner" style="width:300px;margin-left:-300px">
+        <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>
+        <h3 class="popover-title"></h3>
+        <div class="popover-content">
+            <% for match in @matches: %>
+                <a href="#"><%= match %></a>
+            <% end %>
+        </div>
+    </div>
+</div>
