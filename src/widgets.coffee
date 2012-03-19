@@ -50,16 +50,22 @@ class InterMineWidget
     # Where is eco?
     template: (name, context = {}) -> JST["#{name}.eco"]?(context)
 
-    # Validate JSON response against the spec.
-    isValidResponse: (json) =>
+    # Validate JSON object against the spec.
+    # @throws "Invalid JSON"
+    validateType: (object, spec) =>
         fails = []
-        for key, value of json
-            if (r = new @json[key]?(value) or r = new type.isUndefined()) and not r.is()
+        for key, value of object
+            if (r = new spec[key]?(value) or r = new type.isUndefined()) and not r.is()
                 fails.push @template "invalidjsonkey",
                     key:      key
                     actual:   r.is()
                     expected: new String(r)
-        fails
+        if fails.length
+            # Invalid results JSON.
+            $(@el).html @template "error",
+                title: "Invalid JSON"
+                text:  "<ol>#{fails.join('')}</ol>"
+            throw "Invalid JSON"
 
 # --------------------------------------------
 
@@ -83,21 +89,22 @@ class ChartWidget extends InterMineWidget
                 fontName: "Sans-Serif"
 
     # Spec for a successful and correct JSON response.
-    json:
-        "chartType":     type.isString
-        "description":   type.isString
-        "error":         type.isNull
-        "list":          type.isString
-        "notAnalysed":   type.isInteger
-        "pathQuery":     type.isString
-        "requestedAt":   type.isString
-        "results":       type.isArray
-        "seriesLabels":  type.isString
-        "seriesValues":  type.isString
-        "statusCode":    type.isHTTPSuccess
-        "title":         type.isString
-        "type":          type.isString
-        "wasSuccessful": type.isBoolean
+    spec:
+        response:
+            "chartType":     type.isString
+            "description":   type.isString
+            "error":         type.isNull
+            "list":          type.isString
+            "notAnalysed":   type.isInteger
+            "pathQuery":     type.isString
+            "requestedAt":   type.isString
+            "results":       type.isArray
+            "seriesLabels":  type.isString
+            "seriesValues":  type.isString
+            "statusCode":    type.isHTTPSuccess
+            "title":         type.isString
+            "type":          type.isString
+            "wasSuccessful": type.isBoolean
 
     # Set the params on us and set Google load callback.
     # `service`:       http://aragorn.flymine.org:8080/flymine/service/
@@ -128,45 +135,40 @@ class ChartWidget extends InterMineWidget
             
             success: (response) =>                
                 # We have response, validate.
-                if (fails = @isValidResponse(response)) and not fails.length
-                    # Render the widget template.
-                    $(@el).html @template "chart.normal",
-                        "title":       if @widgetOptions.title then response.title else ""
-                        "description": if @widgetOptions.description then response.description else ""
-                        "notAnalysed": response.notAnalysed
+                @validateType response, @spec.response
+                # Render the widget template.
+                $(@el).html @template "chart.normal",
+                    "title":       if @widgetOptions.title then response.title else ""
+                    "description": if @widgetOptions.description then response.description else ""
+                    "notAnalysed": response.notAnalysed
 
-                    # Are the results empty?
-                    if response.results.length
-                        # Create the chart.
-                        if response.chartType of google.visualization # If the type exists...
-                            chart = new google.visualization[response.chartType]($(@el).find("div.content")[0])
-                            chart.draw(google.visualization.arrayToDataTable(response.results, false), @chartOptions)
+                # Are the results empty?
+                if response.results.length
+                    # Create the chart.
+                    if response.chartType of google.visualization # If the type exists...
+                        chart = new google.visualization[response.chartType]($(@el).find("div.content")[0])
+                        chart.draw(google.visualization.arrayToDataTable(response.results, false), @chartOptions)
 
-                            # Add event listener on click the chart bar.
-                            if response.pathQuery?
-                                google.visualization.events.addListener chart, "select", =>
-                                    pq = response.pathQuery
-                                    for item in chart.getSelection()
-                                        if item.row?
-                                            # Replace %category in PathQuery.
-                                            pq = pq.replace("%category", response.results[item.row + 1][0])
-                                            if item.column?
-                                                # Replace %series in PathQuery.
-                                                pq = pq.replace("%series", @_translateSeries(response, response.results[0][item.column]))
-                                            @widgetOptions.selectCb(pq)
-                        else
-                            # Undefined Google Visualization chart type.
-                            $(@el).html @template "error",
-                                title: response.chartType
-                                text:  "This chart type does not exist in Google Visualization API"
+                        # Add event listener on click the chart bar.
+                        if response.pathQuery?
+                            google.visualization.events.addListener chart, "select", =>
+                                pq = response.pathQuery
+                                for item in chart.getSelection()
+                                    if item.row?
+                                        # Replace %category in PathQuery.
+                                        pq = pq.replace("%category", response.results[item.row + 1][0])
+                                        if item.column?
+                                            # Replace %series in PathQuery.
+                                            pq = pq.replace("%series", @_translateSeries(response, response.results[0][item.column]))
+                                        @widgetOptions.selectCb(pq)
                     else
-                        # Render no results.
-                        $(@el).find("div.content").html $ @template "noresults"
+                        # Undefined Google Visualization chart type.
+                        $(@el).html @template "error",
+                            title: response.chartType
+                            text:  "This chart type does not exist in Google Visualization API"
                 else
-                    # Invalid results JSON.
-                    $(@el).html @template "error",
-                        title: "Invalid JSON response"
-                        text:  "<ol>#{fails.join('')}</ol>"
+                    # Render no results.
+                    $(@el).find("div.content").html $ @template "noresults"
             
             error: (err) =>
                 $(@el).html @template "error",
@@ -190,19 +192,25 @@ class EnrichmentWidget extends InterMineWidget
     pValues: [ 0.05, 0.10, 1.00 ]
 
     # Spec for a successful and correct JSON response.
-    json:
-        "title":         type.isString
-        "description":   type.isString
-        "error":         type.isNull
-        "list":          type.isString
-        "notAnalysed":   type.isInteger
-        "requestedAt":   type.isString
-        "results":       type.isArray
-        "label":         type.isString
-        "statusCode":    type.isHTTPSuccess
-        "title":         type.isString
-        "type":          type.isString
-        "wasSuccessful": type.isBoolean
+    spec:
+        response:
+            "title":         type.isString
+            "description":   type.isString
+            "error":         type.isNull
+            "list":          type.isString
+            "notAnalysed":   type.isInteger
+            "requestedAt":   type.isString
+            "results":       type.isArray
+            "label":         type.isString
+            "statusCode":    type.isHTTPSuccess
+            "title":         type.isString
+            "type":          type.isString
+            "wasSuccessful": type.isBoolean
+        resultRow:
+            "description": type.isString
+            "item":        type.isString
+            "matches":     type.isArray
+            "p-value":     type.isInteger
 
     # Set the params on us and render.
     # `service`:       http://aragorn.flymine.org:8080/flymine/service/
@@ -234,53 +242,51 @@ class EnrichmentWidget extends InterMineWidget
             
             success: (response) =>
                 # We have response, validate.
-                if (fails = @isValidResponse(response)) and not fails.length
-                    # We have results.
-                    if response.wasSuccessful
-                        # Render the widget template.
-                        $(@el).html @template "enrichment.normal",
-                            "title":       if @widgetOptions.title then response.title else ""
-                            "description": if @widgetOptions.description then response.description else ""
-                            "notAnalysed": response.notAnalysed
+                @validateType response, @spec.response
+                # We have results.
+                if response.wasSuccessful
+                    # Render the widget template.
+                    $(@el).html @template "enrichment.normal",
+                        "title":       if @widgetOptions.title then response.title else ""
+                        "description": if @widgetOptions.description then response.description else ""
+                        "notAnalysed": response.notAnalysed
 
-                        $(@el).find("div.form").html @template "enrichment.form",
-                            "options":          @formOptions
-                            "errorCorrections": @errorCorrections
-                            "pValues":          @pValues
+                    $(@el).find("div.form").html @template "enrichment.form",
+                        "options":          @formOptions
+                        "errorCorrections": @errorCorrections
+                        "pValues":          @pValues
+                    
+                    # Extra attributes (DataSets)?
+                    if response.extraAttributeLabel?
+                        $(@l).find('div.form form').append @template "enrichment.extra",
+                            "label":    response.extraAttributeLabel
+                            "possible": response.extraAttributePossibleValues
+                            "selected": response.extraAttributeSelectedValue
+
+                    # Results?
+                    if response.results.length > 0
+                        # How tall should the table be?
+                        height = $(@el).height() - $(@el).find('header').height() - 18
+
+                        # Render the table.
+                        $(@el).find("div.content").html(
+                            $ @template "enrichment.table", "label": response.label
+                        ).css "height", "#{height}px"
                         
-                        # Extra attributes (DataSets)?
-                        if response.extraAttributeLabel?
-                            $(@l).find('div.form form').append @template "enrichment.extra",
-                                "label":    response.extraAttributeLabel
-                                "possible": response.extraAttributePossibleValues
-                                "selected": response.extraAttributeSelectedValue
+                        # Table rows.
+                        table = $(@el).find("div.content table")
+                        for row in response.results then do (row) =>
+                            # Validate type.
+                            @validateType row, @spec.resultRow
+                            # Append.
+                            table.append tr = $ @template "enrichment.row", "row": row
+                            td = tr.find("td.matches .count").click => @matchesClick td, row["matches"], @widgetOptions.matchCb
+                    else
+                        # Render no results
+                        $(@el).find("div.content").html $ @template "noresults"
 
-                        # Results?
-                        if response.results.length > 0
-                            # How tall should the table be?
-                            height = $(@el).height() - $(@el).find('header').height() - 18
-
-                            # Render the table.
-                            $(@el).find("div.content").html(
-                                $ @template "enrichment.table", "label": response.label
-                            ).css "height", "#{height}px"
-                            
-                            # Table rows.
-                            table = $(@el).find("div.content table")
-                            for row in response.results then do (row) =>
-                                table.append tr = $ @template "enrichment.row", "row": row
-                                td = tr.find("td.matches .count").click => @matchesClick td, row["matches"], @widgetOptions.matchCb
-                        else
-                            # Render no results
-                            $(@el).find("div.content").html $ @template "noresults"
-
-                        # Set behaviors.
-                        $(@el).find("form select").change @formClick
-                else
-                    # Invalid results JSON.
-                    $(@el).html @template "error",
-                        title: "Invalid JSON response"
-                        text:  "<ol>#{fails.join('')}</ol>"
+                    # Set behaviors.
+                    $(@el).find("form select").change @formClick
             
             error: (err) =>
                 $(@el).html @template "error",

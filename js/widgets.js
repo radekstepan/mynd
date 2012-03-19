@@ -1,7 +1,6 @@
 (function() {
 var JST = {};
 JST["error.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<div class="alert alert-block">\n    <h4 class="alert-heading">'),b.push(d(this.title)),b.push("</h4>\n    <p>"),b.push(this.text),b.push("</p>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["enrichment.matches.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f;b.push('<div class="popover" style="position:absolute;top:22px;right:0;z-index:1;display:block">\n    <div class="popover-inner" style="width:300px;margin-left:-300px">\n        <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>\n        <h3 class="popover-title"></h3>\n        <div class="popover-content">\n            '),f=this.matches;for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n                <a href="#">'),b.push(d(a.displayed)),b.push("</a>\n            ");b.push("\n        </div>\n    </div>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.row.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<tr>\n    <td class="description">'),b.push(d(this.row.description)),b.push('</td>\n    <td class="pValue">'),b.push(d(this.row["p-value"].toFixed(7))),b.push('</td>\n    <td class="matches" style="position:relative">\n        <span class="count label label-success" style="cursor:pointer">'),b.push(d(this.row.matches.length)),b.push("</span>\n    </td>\n</tr>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["noresults.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<div class="alert alert-info">\n    <p>The Widget has no results.</p>\n</div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<table class="table table-striped">\n    <thead>\n        <tr>\n            <th>'),b.push(d(this.label)),b.push("</th>\n            <th>p-Value</th>\n            <th>Matches</th>\n        </tr>\n    </thead>\n    <tbody></tbody>\n</table>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
@@ -10,6 +9,7 @@ JST["enrichment.normal.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=
 JST["chart.normal.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push('\n        <p>Number of Genes in this list not analysed in this widget: <span class="label label-info">'),b.push(d(this.notAnalysed)),b.push("</span></p>\n    ")),b.push('\n</header>\n<div class="content"></div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.extra.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f;b.push('<div class="group" style="display:inline-block;margin-right:5px">\n    <label>'),b.push(d(this.label)),b.push('</label>\n    <select name="dataSet" class="span2">\n        '),f=this.possible;for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n            <option value="'),b.push(d(a)),b.push('" '),this.selected===a&&b.push(d('selected="selected"')),b.push(">\n                "),b.push(d(a)),b.push("\n            </option>\n        ");b.push("\n    </select>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["invalidjsonkey.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<li style="vertical-align:bottom">\n    <span style="display:inline-block" class="label label-inverse">'),b.push(d(this.key)),b.push("</span> is "),b.push(d(this.actual)),b.push("; was expecting "),b.push(d(this.expected)),b.push("\n</li>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
+JST["enrichment.matches.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f;b.push('<div class="popover" style="position:absolute;top:22px;right:0;z-index:1;display:block">\n    <div class="popover-inner" style="width:300px;margin-left:-300px">\n        <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>\n        <h3 class="popover-title"></h3>\n        <div class="popover-content">\n            '),f=this.matches;for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n                <a href="#">'),b.push(d(a.displayed)),b.push("</a>\n            ");b.push("\n        </div>\n    </div>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 var CSSLoader, ChartWidget, EnrichmentWidget, InterMineWidget, JSLoader, Loader, root, type,
   __hasProp = Object.prototype.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
@@ -140,7 +140,7 @@ type.isUndefined = (function(_super) {
 InterMineWidget = (function() {
 
   function InterMineWidget() {
-    this.isValidResponse = __bind(this.isValidResponse, this);    $(this.el).html($('<div/>', {
+    this.validateType = __bind(this.validateType, this);    $(this.el).html($('<div/>', {
       "class": "inner",
       style: "height:572px;overflow:hidden"
     }));
@@ -153,12 +153,12 @@ InterMineWidget = (function() {
     return typeof JST[_name = "" + name + ".eco"] === "function" ? JST[_name](context) : void 0;
   };
 
-  InterMineWidget.prototype.isValidResponse = function(json) {
-    var fails, key, r, value, _base;
+  InterMineWidget.prototype.validateType = function(object, spec) {
+    var fails, key, r, value;
     fails = [];
-    for (key in json) {
-      value = json[key];
-      if ((r = (typeof (_base = this.json)[key] === "function" ? new _base[key](value) : void 0) || (r = new type.isUndefined())) && !r.is()) {
+    for (key in object) {
+      value = object[key];
+      if ((r = (typeof spec[key] === "function" ? new spec[key](value) : void 0) || (r = new type.isUndefined())) && !r.is()) {
         fails.push(this.template("invalidjsonkey", {
           key: key,
           actual: r.is(),
@@ -166,7 +166,13 @@ InterMineWidget = (function() {
         }));
       }
     }
-    return fails;
+    if (fails.length) {
+      $(this.el).html(this.template("error", {
+        title: "Invalid JSON",
+        text: "<ol>" + (fails.join('')) + "</ol>"
+      }));
+      throw "Invalid JSON";
+    }
   };
 
   return InterMineWidget;
@@ -199,21 +205,23 @@ ChartWidget = (function(_super) {
     }
   };
 
-  ChartWidget.prototype.json = {
-    "chartType": type.isString,
-    "description": type.isString,
-    "error": type.isNull,
-    "list": type.isString,
-    "notAnalysed": type.isInteger,
-    "pathQuery": type.isString,
-    "requestedAt": type.isString,
-    "results": type.isArray,
-    "seriesLabels": type.isString,
-    "seriesValues": type.isString,
-    "statusCode": type.isHTTPSuccess,
-    "title": type.isString,
-    "type": type.isString,
-    "wasSuccessful": type.isBoolean
+  ChartWidget.prototype.spec = {
+    response: {
+      "chartType": type.isString,
+      "description": type.isString,
+      "error": type.isNull,
+      "list": type.isString,
+      "notAnalysed": type.isInteger,
+      "pathQuery": type.isString,
+      "requestedAt": type.isString,
+      "results": type.isArray,
+      "seriesLabels": type.isString,
+      "seriesValues": type.isString,
+      "statusCode": type.isHTTPSuccess,
+      "title": type.isString,
+      "type": type.isString,
+      "wasSuccessful": type.isBoolean
+    }
   };
 
   function ChartWidget(service, token, id, bagName, el, widgetOptions) {
@@ -246,52 +254,46 @@ ChartWidget = (function(_super) {
         token: this.token
       },
       success: function(response) {
-        var chart, fails;
-        if ((fails = _this.isValidResponse(response)) && !fails.length) {
-          $(_this.el).html(_this.template("chart.normal", {
-            "title": _this.widgetOptions.title ? response.title : "",
-            "description": _this.widgetOptions.description ? response.description : "",
-            "notAnalysed": response.notAnalysed
-          }));
-          if (response.results.length) {
-            if (response.chartType in google.visualization) {
-              chart = new google.visualization[response.chartType]($(_this.el).find("div.content")[0]);
-              chart.draw(google.visualization.arrayToDataTable(response.results, false), _this.chartOptions);
-              if (response.pathQuery != null) {
-                return google.visualization.events.addListener(chart, "select", function() {
-                  var item, pq, _i, _len, _ref, _results;
-                  pq = response.pathQuery;
-                  _ref = chart.getSelection();
-                  _results = [];
-                  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                    item = _ref[_i];
-                    if (item.row != null) {
-                      pq = pq.replace("%category", response.results[item.row + 1][0]);
-                      if (item.column != null) {
-                        pq = pq.replace("%series", _this._translateSeries(response, response.results[0][item.column]));
-                      }
-                      _results.push(_this.widgetOptions.selectCb(pq));
-                    } else {
-                      _results.push(void 0);
+        var chart;
+        _this.validateType(response, _this.spec.response);
+        $(_this.el).html(_this.template("chart.normal", {
+          "title": _this.widgetOptions.title ? response.title : "",
+          "description": _this.widgetOptions.description ? response.description : "",
+          "notAnalysed": response.notAnalysed
+        }));
+        if (response.results.length) {
+          if (response.chartType in google.visualization) {
+            chart = new google.visualization[response.chartType]($(_this.el).find("div.content")[0]);
+            chart.draw(google.visualization.arrayToDataTable(response.results, false), _this.chartOptions);
+            if (response.pathQuery != null) {
+              return google.visualization.events.addListener(chart, "select", function() {
+                var item, pq, _i, _len, _ref, _results;
+                pq = response.pathQuery;
+                _ref = chart.getSelection();
+                _results = [];
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                  item = _ref[_i];
+                  if (item.row != null) {
+                    pq = pq.replace("%category", response.results[item.row + 1][0]);
+                    if (item.column != null) {
+                      pq = pq.replace("%series", _this._translateSeries(response, response.results[0][item.column]));
                     }
+                    _results.push(_this.widgetOptions.selectCb(pq));
+                  } else {
+                    _results.push(void 0);
                   }
-                  return _results;
-                });
-              }
-            } else {
-              return $(_this.el).html(_this.template("error", {
-                title: response.chartType,
-                text: "This chart type does not exist in Google Visualization API"
-              }));
+                }
+                return _results;
+              });
             }
           } else {
-            return $(_this.el).find("div.content").html($(_this.template("noresults")));
+            return $(_this.el).html(_this.template("error", {
+              title: response.chartType,
+              text: "This chart type does not exist in Google Visualization API"
+            }));
           }
         } else {
-          return $(_this.el).html(_this.template("error", {
-            title: "Invalid JSON response",
-            text: "<ol>" + (fails.join('')) + "</ol>"
-          }));
+          return $(_this.el).find("div.content").html($(_this.template("noresults")));
         }
       },
       error: function(err) {
@@ -324,19 +326,27 @@ EnrichmentWidget = (function(_super) {
 
   EnrichmentWidget.prototype.pValues = [0.05, 0.10, 1.00];
 
-  EnrichmentWidget.prototype.json = {
-    "title": type.isString,
-    "description": type.isString,
-    "error": type.isNull,
-    "list": type.isString,
-    "notAnalysed": type.isInteger,
-    "requestedAt": type.isString,
-    "results": type.isArray,
-    "label": type.isString,
-    "statusCode": type.isHTTPSuccess,
-    "title": type.isString,
-    "type": type.isString,
-    "wasSuccessful": type.isBoolean
+  EnrichmentWidget.prototype.spec = {
+    response: {
+      "title": type.isString,
+      "description": type.isString,
+      "error": type.isNull,
+      "list": type.isString,
+      "notAnalysed": type.isInteger,
+      "requestedAt": type.isString,
+      "results": type.isArray,
+      "label": type.isString,
+      "statusCode": type.isHTTPSuccess,
+      "title": type.isString,
+      "type": type.isString,
+      "wasSuccessful": type.isBoolean
+    },
+    resultRow: {
+      "description": type.isString,
+      "item": type.isString,
+      "matches": type.isArray,
+      "p-value": type.isInteger
+    }
   };
 
   function EnrichmentWidget(service, token, id, bagName, el, widgetOptions) {
@@ -373,56 +383,51 @@ EnrichmentWidget = (function(_super) {
         token: this.token
       },
       success: function(response) {
-        var fails, height, row, table, _fn, _i, _len, _ref;
-        if ((fails = _this.isValidResponse(response)) && !fails.length) {
-          if (response.wasSuccessful) {
-            $(_this.el).html(_this.template("enrichment.normal", {
-              "title": _this.widgetOptions.title ? response.title : "",
-              "description": _this.widgetOptions.description ? response.description : "",
-              "notAnalysed": response.notAnalysed
-            }));
-            $(_this.el).find("div.form").html(_this.template("enrichment.form", {
-              "options": _this.formOptions,
-              "errorCorrections": _this.errorCorrections,
-              "pValues": _this.pValues
-            }));
-            if (response.extraAttributeLabel != null) {
-              $(_this.l).find('div.form form').append(_this.template("enrichment.extra", {
-                "label": response.extraAttributeLabel,
-                "possible": response.extraAttributePossibleValues,
-                "selected": response.extraAttributeSelectedValue
-              }));
-            }
-            if (response.results.length > 0) {
-              height = $(_this.el).height() - $(_this.el).find('header').height() - 18;
-              $(_this.el).find("div.content").html($(_this.template("enrichment.table", {
-                "label": response.label
-              }))).css("height", "" + height + "px");
-              table = $(_this.el).find("div.content table");
-              _ref = response.results;
-              _fn = function(row) {
-                var td, tr;
-                table.append(tr = $(_this.template("enrichment.row", {
-                  "row": row
-                })));
-                return td = tr.find("td.matches .count").click(function() {
-                  return _this.matchesClick(td, row["matches"], _this.widgetOptions.matchCb);
-                });
-              };
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                row = _ref[_i];
-                _fn(row);
-              }
-            } else {
-              $(_this.el).find("div.content").html($(_this.template("noresults")));
-            }
-            return $(_this.el).find("form select").change(_this.formClick);
-          }
-        } else {
-          return $(_this.el).html(_this.template("error", {
-            title: "Invalid JSON response",
-            text: "<ol>" + (fails.join('')) + "</ol>"
+        var height, row, table, _fn, _i, _len, _ref;
+        _this.validateType(response, _this.spec.response);
+        if (response.wasSuccessful) {
+          $(_this.el).html(_this.template("enrichment.normal", {
+            "title": _this.widgetOptions.title ? response.title : "",
+            "description": _this.widgetOptions.description ? response.description : "",
+            "notAnalysed": response.notAnalysed
           }));
+          $(_this.el).find("div.form").html(_this.template("enrichment.form", {
+            "options": _this.formOptions,
+            "errorCorrections": _this.errorCorrections,
+            "pValues": _this.pValues
+          }));
+          if (response.extraAttributeLabel != null) {
+            $(_this.l).find('div.form form').append(_this.template("enrichment.extra", {
+              "label": response.extraAttributeLabel,
+              "possible": response.extraAttributePossibleValues,
+              "selected": response.extraAttributeSelectedValue
+            }));
+          }
+          if (response.results.length > 0) {
+            height = $(_this.el).height() - $(_this.el).find('header').height() - 18;
+            $(_this.el).find("div.content").html($(_this.template("enrichment.table", {
+              "label": response.label
+            }))).css("height", "" + height + "px");
+            table = $(_this.el).find("div.content table");
+            _ref = response.results;
+            _fn = function(row) {
+              var td, tr;
+              _this.validateType(row, _this.spec.resultRow);
+              table.append(tr = $(_this.template("enrichment.row", {
+                "row": row
+              })));
+              return td = tr.find("td.matches .count").click(function() {
+                return _this.matchesClick(td, row["matches"], _this.widgetOptions.matchCb);
+              });
+            };
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              row = _ref[_i];
+              _fn(row);
+            }
+          } else {
+            $(_this.el).find("div.content").html($(_this.template("noresults")));
+          }
+          return $(_this.el).find("form select").change(_this.formClick);
         }
       },
       error: function(err) {
