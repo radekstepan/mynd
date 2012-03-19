@@ -189,6 +189,21 @@ class EnrichmentWidget extends InterMineWidget
     errorCorrections: [ "Holm-Bonferroni", "Benjamini Hochberg", "Bonferroni", "None" ]
     pValues: [ 0.05, 0.10, 1.00 ]
 
+    # Spec for a successful and correct JSON response.
+    json:
+        "title":         type.isString
+        "description":   type.isString
+        "error":         type.isNull
+        "list":          type.isString
+        "notAnalysed":   type.isInteger
+        "requestedAt":   type.isString
+        "results":       type.isArray
+        "label":         type.isString
+        "statusCode":    type.isHTTPSuccess
+        "title":         type.isString
+        "type":          type.isString
+        "wasSuccessful": type.isBoolean
+
     # Set the params on us and render.
     # `service`:       http://aragorn.flymine.org:8080/flymine/service/
     # `token`:         token for accessing user's lists
@@ -218,47 +233,54 @@ class EnrichmentWidget extends InterMineWidget
                 token:      @token
             
             success: (response) =>
-                # We have results.
-                if response.wasSuccessful
-                    # Render the widget template.
-                    $(@el).html @template "enrichment.normal",
-                        "title":       if @widgetOptions.title then response.title else ""
-                        "description": if @widgetOptions.description then response.description else ""
-                        "notAnalysed": response.notAnalysed
+                # We have response, validate.
+                if (fails = @isValidResponse(response)) and not fails.length
+                    # We have results.
+                    if response.wasSuccessful
+                        # Render the widget template.
+                        $(@el).html @template "enrichment.normal",
+                            "title":       if @widgetOptions.title then response.title else ""
+                            "description": if @widgetOptions.description then response.description else ""
+                            "notAnalysed": response.notAnalysed
 
-                    $(@el).find("div.form").html @template "enrichment.form",
-                        "options":          @formOptions
-                        "errorCorrections": @errorCorrections
-                        "pValues":          @pValues
-                    
-                    # Extra attributes (DataSets)?
-                    if response.extraAttributeLabel?
-                        $(@l).find('div.form form').append @template "enrichment.extra",
-                            "label":    response.extraAttributeLabel
-                            "possible": response.extraAttributePossibleValues
-                            "selected": response.extraAttributeSelectedValue
-
-                    # Results?
-                    if response.results.length > 0
-                        # How tall should the table be?
-                        height = $(@el).height() - $(@el).find('header').height() - 18
-
-                        # Render the table.
-                        $(@el).find("div.content").html(
-                            $ @template "enrichment.table", "label": response.label
-                        ).css "height", "#{height}px"
+                        $(@el).find("div.form").html @template "enrichment.form",
+                            "options":          @formOptions
+                            "errorCorrections": @errorCorrections
+                            "pValues":          @pValues
                         
-                        # Table rows.
-                        table = $(@el).find("div.content table")
-                        for row in response.results then do (row) =>
-                            table.append tr = $ @template "enrichment.row", "row": row
-                            td = tr.find("td.matches .count").click => @matchesClick td, row["matches"], @widgetOptions.matchCb
-                    else
-                        # Render no results
-                        $(@el).find("div.content").html $ @template "noresults"
+                        # Extra attributes (DataSets)?
+                        if response.extraAttributeLabel?
+                            $(@l).find('div.form form').append @template "enrichment.extra",
+                                "label":    response.extraAttributeLabel
+                                "possible": response.extraAttributePossibleValues
+                                "selected": response.extraAttributeSelectedValue
 
-                    # Set behaviors.
-                    $(@el).find("form select").change @formClick
+                        # Results?
+                        if response.results.length > 0
+                            # How tall should the table be?
+                            height = $(@el).height() - $(@el).find('header').height() - 18
+
+                            # Render the table.
+                            $(@el).find("div.content").html(
+                                $ @template "enrichment.table", "label": response.label
+                            ).css "height", "#{height}px"
+                            
+                            # Table rows.
+                            table = $(@el).find("div.content table")
+                            for row in response.results then do (row) =>
+                                table.append tr = $ @template "enrichment.row", "row": row
+                                td = tr.find("td.matches .count").click => @matchesClick td, row["matches"], @widgetOptions.matchCb
+                        else
+                            # Render no results
+                            $(@el).find("div.content").html $ @template "noresults"
+
+                        # Set behaviors.
+                        $(@el).find("form select").change @formClick
+                else
+                    # Invalid results JSON.
+                    $(@el).html @template "error",
+                        title: "Invalid JSON response"
+                        text:  "<ol>#{fails.join('')}</ol>"
             
             error: (err) =>
                 $(@el).html @template "error",
