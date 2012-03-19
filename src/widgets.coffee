@@ -154,7 +154,7 @@ class ChartWidget extends InterMineWidget
                     "notAnalysed": response.notAnalysed
 
                 # Are the results empty?
-                if response.results.length
+                if response.results.length > 1
                     # Create the chart.
                     if response.chartType of google.visualization # If the type exists...
                         chart = new google.visualization[response.chartType]($(@el).find("div.content")[0])
@@ -259,6 +259,11 @@ class EnrichmentWidget extends InterMineWidget
                         "description": if @widgetOptions.description then response.description else ""
                         "notAnalysed": response.notAnalysed
 
+                    # Callback for actions.
+                    $(@el).find("div.actions button.view").click => @viewClick()
+                    $(@el).find("div.actions button.export").click => @exportClick()
+
+                    # Form options.
                     $(@el).find("div.form").html @template "enrichment.form",
                         "options":          @formOptions
                         "errorCorrections": @errorCorrections
@@ -283,12 +288,15 @@ class EnrichmentWidget extends InterMineWidget
                         
                         # Table rows.
                         table = $(@el).find("div.content table")
-                        for row in response.results then do (row) =>
+                        for i in [0...response.results.length] then do (i) =>
+                            row = response.results[i]
                             # Validate type.
                             @validateType row, @spec.resultRow
                             # Append.
                             table.append tr = $ @template "enrichment.row", "row": row
+                            # Events.
                             td = tr.find("td.matches .count").click => @matchesClick td, row["matches"], @widgetOptions.matchCb
+                            tr.find("td.check input").click => @checkboxClick i, row
                     else
                         # Render no results
                         $(@el).find("div.content").html $ @template "noresults"
@@ -303,6 +311,11 @@ class EnrichmentWidget extends InterMineWidget
         @formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value")
         @render()
 
+    # Append to or remove from a list of selected rows.
+    checkboxClick: (key, row) =>
+        if not @selected? then @selected = {}
+        if @selected[key]? then delete @selected[key] else @selected[key] = row
+
     # Show matches.
     matchesClick: (target, matches, matchCb) =>
         target.after modal = $ @template "enrichment.matches", "matches": matches
@@ -311,6 +324,18 @@ class EnrichmentWidget extends InterMineWidget
         modal.find("div.popover-content a").click (e) ->
             matchCb $(@).text()
             e.preventDefault()
+
+    # Button toolbar 'View' click.
+    viewClick: ->
+        console.log "view"
+
+    # Button toolbar 'Export' click.
+    exportClick: =>
+        result = []
+        for key, value of @selected
+            result.push $(@template "enrichment.download", value).html()
+        w = window.open('', '', "width=900,height=600")
+        w.document.writeln result.join '<br/>'
 
 
 # --------------------------------------------

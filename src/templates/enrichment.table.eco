@@ -1,6 +1,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
+            <th></th>
             <th><%= @label %></th>
             <th>p-Value</th>
             <th>Matches</th>
