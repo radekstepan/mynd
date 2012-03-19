@@ -51,7 +51,6 @@ class InterMineWidget
     template: (name, context = {}) -> JST["#{name}.eco"]?(context)
 
     # Validate JSON object against the spec.
-    # @throws "Invalid JSON"
     validateType: (object, spec) =>
         fails = []
         for key, value of object
@@ -60,12 +59,24 @@ class InterMineWidget
                     key:      key
                     actual:   r.is()
                     expected: new String(r)
-        if fails.length
-            # Invalid results JSON.
-            $(@el).html @template "error",
-                title: "Invalid JSON"
-                text:  "<ol>#{fails.join('')}</ol>"
-            throw "Invalid JSON"
+        
+        if fails.length then @error "JSONObjectType", fails
+
+    # The possible errors we handle.
+    error: (type, data) =>
+        opts = title: "Error", text: "Generic error"
+
+        # Which?
+        switch type
+            when "AJAXTransport"
+                opts.title = data.statusText
+                opts.text = data.responseText
+            when "JSONObjectType"
+                opts.title = "Invalid JSON"
+                opts.text = "<ol>#{data.join('')}</ol>"
+
+        # Show.
+        $(@el).html @template "error", opts
 
 # --------------------------------------------
 
@@ -170,10 +181,7 @@ class ChartWidget extends InterMineWidget
                     # Render no results.
                     $(@el).find("div.content").html $ @template "noresults"
             
-            error: (err) =>
-                $(@el).html @template "error",
-                    title: err.statusText,
-                    text:  err.responseText
+            error: (err) => @error "AJAXTransport", err
 
     # Translate view series into PathQuery series (Expressed/Not Expressed into true/false).
     _translateSeries: (response, series) -> response.seriesValues.split(',')[response.seriesLabels.split(',').indexOf(series)]
@@ -225,7 +233,7 @@ class EnrichmentWidget extends InterMineWidget
         # By default, the select callback will dump the match id into the console.
         matchCb: (id) => console?.log id
     }) ->
-        super()
+        super() # Luke... I am your father!
         @render()
 
     # Visualize the displayer.
@@ -288,10 +296,7 @@ class EnrichmentWidget extends InterMineWidget
                     # Set behaviors.
                     $(@el).find("form select").change @formClick
             
-            error: (err) =>
-                $(@el).html @template "error",
-                    title: err.statusText,
-                    text:  err.responseText
+            error: (err) => @error "AJAXTransport", err
 
     # On form select option change, set the new options and re-render.
     formClick: (e) =>
