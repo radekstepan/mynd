@@ -1,5 +1,5 @@
 #!/bin/sh
 
 clear
-cake compile:widgets
+cake compile:main
 exit $?

@@ -2,29 +2,85 @@ fs = require "fs"
 cs = require 'coffee-script'
 eco = require "eco"
 
-option '-i', '--input [FILE]', 'path to .coffee input'
-option '-t', '--templates [DIR]', 'path to .eco templates'
-option '-o', '--output [FILE]', 'path to .js output'
-option '-m', '--minify', 'should we minify for production?'
+
+# --------------------------------------------
+
+
+# Main input/output.
+MAIN =
+    INPUT: "src/widgets.coffee"
+    OUTPUT: "js/widgets.js"
+# Test input/output.
+SPEC =
+    INPUT: "tests/spec.coffee"
+    OUTPUT: "tests/spec.js"
+# Templates dir.
+TEMPLATES = "src/templates"
+# Which folders to watch for changes?
+WATCH = [ "src", "src/templates" ]
+
+# ANSI Terminal colors.
+COLORS =
+    BOLD: '\033[0;1m'
+    RED: '\033[0;31m'
+    GREEN: '\033[0;32m'
+    BLUE: '\033[0;34m'
+    DEFAULT: '\033[0m'
+
+# --------------------------------------------
+
+
+option '-m', '--minify', 'should we minify main library for production?'
+option '-w', '--watch', 'should we watch source directories for changes?'
 
 # Compile widgets.coffee and .eco templates into one output. Do not use globals for JST.
-task "compile:widgets", "compile widgets library and templates together", (options) ->
-    input = options.input or "src/widgets.coffee"
-    templates = options.templates or "src/templates"
-    output = options.output or "js/widgets.js"
+task "compile:main", "compile widgets library and templates together", (options) ->
+    main options.minify, ->
+
+    # Watch for changes?
+    if options.watch
+        done = true # Have we finished with main compilation step?
+        for dir in WATCH
+            console.log "#{COLORS.BOLD}Watching #{dir}#{COLORS.DEFAULT}"
+            fs.watch dir, (event, file) ->
+                if event in [ "rename", "change" ]
+                    console.log "#{COLORS.BLUE}Change detected in #{file}#{COLORS.DEFAULT}"
+                    if done
+                        done = false
+                        main options.minify, -> done = true
+
+# Compile tests spec.coffee.
+task "compile:tests", "compile tests spec", (options) ->
+    console.log "#{COLORS.BOLD}Compiling tests#{COLORS.DEFAULT}"
 
     # Clean.
-    fs.unlink output
+    fs.unlink SPEC.OUTPUT
+
+    # CoffeeScript compile.
+    append SPEC.OUTPUT, cs.compile fs.readFileSync SPEC.INPUT, "utf-8"
+
+    # Done.
+    console.log "#{COLORS.GREEN}Tests compilation a success#{COLORS.DEFAULT}"
+
+
+# --------------------------------------------
+
+
+main = (minify, callback) ->
+    console.log "#{COLORS.BOLD}Compiling main#{COLORS.DEFAULT}"
+
+    # Clean.
+    fs.unlink MAIN.OUTPUT
 
     # Open.
-    append output, "(function() {"
+    append MAIN.OUTPUT, "(function() {"
 
     # Compile templates.
     done = false
-    walk templates, (err, files) ->
+    walk TEMPLATES, (err, files) ->
         if err then throw new Error('problem walking templates')
         else
-            append output, "var JST = {};"
+            append MAIN.OUTPUT, "var JST = {};"
             # Only take eco files.
             match = /\.eco$/
             for file in files
@@ -32,31 +88,24 @@ task "compile:widgets", "compile widgets library and templates together", (optio
                     # Read in, precompile & compress.
                     js = eco.precompile fs.readFileSync file, "utf-8"
                     name = file.split('/').pop()
-                    append output, uglify "JST['#{name}'] = #{js}"
+                    append MAIN.OUTPUT, uglify "JST['#{name}'] = #{js}"
             done = true
 
     (blocking = ->
         if done
             # Compile main library (and optionally minify).
-            compiled = cs.compile fs.readFileSync(input, "utf-8"), bare: "on"
-            if options.minify then append output, uglify compiled else append output, compiled
+            compiled = cs.compile fs.readFileSync(MAIN.INPUT, "utf-8"), bare: "on"
+            if minify then append MAIN.OUTPUT, uglify compiled else append MAIN.OUTPUT, compiled
 
             # Close.
-            append output, "}).call(this);"
+            append MAIN.OUTPUT, "}).call(this);"
+            
+            # We are done here?
+            console.log "#{COLORS.GREEN}Main compilation a success#{COLORS.DEFAULT}"
+            callback()
         else
             setTimeout blocking, 0
     )()
-
-# Compile tests spec.coffee.
-task "compile:tests", "compile tests spec", (options) ->
-    input = options.input or "tests/spec.coffee"
-    output = options.output or "tests/spec.js"
-
-    # Clean.
-    fs.unlink output
-
-    # CoffeeScript compile.
-    append output, cs.compile fs.readFileSync input, "utf-8"
 
 # Traverse a directory and return a list of files (async, recursive).
 walk = (path, callback) ->
@@ -98,4 +147,4 @@ uglify = (input) ->
     jsp = require("uglify-js").parser
     pro = require("uglify-js").uglify
 
-    pro.gen_code(pro.ast_squeeze(pro.ast_mangle(jsp.parse(input))))
+    pro.gen_code pro.ast_squeeze pro.ast_mangle jsp.parse input
