@@ -1,4 +1,4 @@
 <div class="alert alert-block">
     <h4 class="alert-heading"><%= @title %></h4>
-    <p><%= @text %></p>
+    <p><%- @text %></p>
 </div>
