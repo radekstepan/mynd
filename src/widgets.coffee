@@ -85,7 +85,7 @@ class ChartWidget extends InterMineWidget
     # Google Visualization chart options.
     chartOptions:
         fontName: "Sans-Serif"
-        fontSize: 9
+        fontSize: 11
         width:    400
         height:   450
         legend:   "bottom"
@@ -144,7 +144,7 @@ class ChartWidget extends InterMineWidget
                 list:   @bagName
                 token:  @token
             
-            success: (response) =>                
+            success: (response) =>
                 # We have response, validate.
                 @validateType response, @spec.response
                 # Render the widget template.
