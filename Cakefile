@@ -5,6 +5,7 @@ eco = require "eco"
 option '-i', '--input [FILE]', 'path to .coffee input'
 option '-t', '--templates [DIR]', 'path to .eco templates'
 option '-o', '--output [FILE]', 'path to .js output'
+option '-m', '--minify', 'should we minify for production?'
 
 # Compile widgets.coffee and .eco templates into one output. Do not use globals for JST.
 task "compile:widgets", "compile widgets library and templates together", (options) ->
@@ -16,7 +17,7 @@ task "compile:widgets", "compile widgets library and templates together", (optio
     fs.unlink output
 
     # Open.
-    append output, "(function() {\n"
+    append output, "(function() {"
 
     # Compile templates.
     done = false
@@ -36,11 +37,12 @@ task "compile:widgets", "compile widgets library and templates together", (optio
 
     (blocking = ->
         if done
-            # Compile main library.
-            append output, cs.compile fs.readFileSync(input, "utf-8"), bare: "on"
+            # Compile main library (and optionally minify).
+            compiled = cs.compile fs.readFileSync(input, "utf-8"), bare: "on"
+            if options.minify then append output, uglify compiled else append output, compiled
 
             # Close.
-            append output, "\n}).call(this);"
+            append output, "}).call(this);"
         else
             setTimeout blocking, 0
     )()
