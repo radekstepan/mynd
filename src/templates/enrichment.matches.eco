@@ -4,7 +4,7 @@
         <h3 class="popover-title"></h3>
         <div class="popover-content">
             <% for match in @matches: %>
-                <a href="#"><%= match %></a>
+                <a href="#"><%= match.displayed %></a>
             <% end %>
         </div>
     </div>
