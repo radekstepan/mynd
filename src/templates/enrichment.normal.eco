@@ -4,10 +4,12 @@
     <% if @notAnalysed: %>
         <p>Number of Genes in this list not analysed in this widget: <span class="label label-info"><%= @notAnalysed %></span></p>
     <% end %>
+
     <div class="form"></div>
-    <div class="actions">
+
+    <div class="actions" style="margin-bottom:10px">
         <a class="view btn btn-mini disabled">View</a>
         <a class="export btn btn-mini disabled">Export</a>
     </div>
 </header>
-<div class="content" style="position:relative;padding-top:30px"></div>
+<div class="content"></div>

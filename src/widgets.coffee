@@ -297,6 +297,11 @@ class EnrichmentWidget extends InterMineWidget
                             # Events.
                             td = tr.find("td.matches .count").click => @matchesClick td, row["matches"], @widgetOptions.matchCb
                             tr.find("td.check input").click => @checkboxClick i, row
+
+                        # Fix the `div.head` element width.
+                        table.find('thead th').each (i, th) =>
+                            $(@el).find("div.content div.head div:eq(#{i})").width $(th).width()
+                        
                     else
                         # Render no results
                         $(@el).find("div.content").html $ @template "noresults"
