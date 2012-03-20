@@ -1,11 +1,13 @@
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th></th>
-            <th><%= @label %></th>
-            <th>p-Value</th>
-            <th>Matches</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+<div class="wrapper" style="overflow:auto;overflow-x:hidden">
+    <table class="table table-striped">
+        <thead style="position:absolute;top:0;left:0">
+            <tr>
+                <th></th>
+                <th><%= @label %></th>
+                <th>p-Value</th>
+                <th>Matches</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>

@@ -278,13 +278,13 @@ class EnrichmentWidget extends InterMineWidget
 
                     # Results?
                     if response.results.length > 0
-                        # How tall should the table be?
-                        height = $(@el).height() - $(@el).find('header').height() - 18
+                        # How tall should the table be? Whole height - header - table head - some extra space
+                        height = $(@el).height() - $(@el).find('header').height() - 30 - 18
 
                         # Render the table.
                         $(@el).find("div.content").html(
                             $ @template "enrichment.table", "label": response.label
-                        ).css "height", "#{height}px"
+                        ).find('div.wrapper').css 'height', "#{height}px"
                         
                         # Table rows.
                         table = $(@el).find("div.content table")

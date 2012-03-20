@@ -100,14 +100,16 @@ main = (minify, callback) ->
     close = (cb) -> cb "}).call(this);"
 
     done = (results) ->
-        # Write them all.
+        # Combine them all.
         for result in results
             for index, item of result
                 if item instanceof Array
+                    # Need to queue these as well.
                     for sub in item
                         append MAIN.OUTPUT, sub
                 else
                     append MAIN.OUTPUT, item
+        # TODO: Write them all...
         
         # We are done.
         console.log "#{COLORS.GREEN}Main compilation a success#{COLORS.DEFAULT}"

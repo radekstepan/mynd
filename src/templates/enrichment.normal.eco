@@ -10,4 +10,4 @@
         <a class="export btn btn-mini disabled">Export</a>
     </div>
 </header>
-<div class="content" style="overflow:auto;overflow-x:hidden;height:390px;padding-top:10px"></div>
+<div class="content" style="position:relative;padding-top:30px"></div>
