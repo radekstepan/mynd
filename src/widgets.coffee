@@ -331,8 +331,13 @@ class EnrichmentWidget extends InterMineWidget
 
     # Button toolbar 'Export' click.
     exportClick: (e) =>
+        # Create a tab delimited string.
+        result = []
+        for key, value of @selected
+            result.push [ value.item, value['p-value'] ].join("\t") + [ match.displayed for match in value.matches ].join(',')
+
         # Create.
-        ex = new Exporter $(e.target), @selected
+        ex = new Exporter $(e.target), result.join("\n"), "#{@bagName} #{@id}.tsv"
         # Cleanup.
         root.setTimeout (->
             ex.destroy()
@@ -347,21 +352,22 @@ class Exporter
 
     mime:     'text/plain'
     charset:  'UTF-8'
-    download: 'widget.tsv'
     url:      (root.webkitURL or root.URL)
 
-    constructor: (a, data) ->
+    # Use BlobBuilder and URL to force download dynamic string asa file.
+    # `a`:        $ <a/>
+    # `data`:     string to download
+    # `filename`: take a guess...
+    constructor: (a, data, filename = 'widget.tsv') ->
         # Get BlobBuilder.
         builder = new (root.BlobBuilder or root.WebKitBlobBuilder or root.MozBlobBuilder)()
 
         # Populate.
-        for key, value of data
-            console.log value
-        builder.append "nečum pičo"
+        builder.append data
 
-        a.attr 'download', @download # download
+        a.attr 'download', filename # download
         (@href = @url.createObjectURL builder.getBlob "#{@mime};charset=#{@charset}") and (a.attr 'href', @href) # href
-        a.attr 'data-downloadurl', [ @mime, @download, @href ].join ':' # data-downloadurl
+        a.attr 'data-downloadurl', [ @mime, filename, @href ].join ':' # data-downloadurl
 
     # Revoke.
     destroy: => @url.revokeObjectURL @href
