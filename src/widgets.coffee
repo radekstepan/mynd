@@ -346,6 +346,7 @@ class EnrichmentWidget extends InterMineWidget
 class Exporter
 
     mime:     'text/plain'
+    charset:  'UTF-8'
     download: 'widget.tsv'
     url:      (root.webkitURL or root.URL)
 
@@ -359,7 +360,7 @@ class Exporter
         builder.append "nečum pičo"
 
         a.attr 'download', @download # download
-        (@href = @url.createObjectURL builder.getBlob @mime) and (a.attr 'href', @href) # href
+        (@href = @url.createObjectURL builder.getBlob "#{@mime};charset=#{@charset}") and (a.attr 'href', @href) # href
         a.attr 'data-downloadurl', [ @mime, @download, @href ].join ':' # data-downloadurl
 
     # Revoke.
