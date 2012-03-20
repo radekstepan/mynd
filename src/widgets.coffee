@@ -336,7 +336,7 @@ class EnrichmentWidget extends InterMineWidget
         # Cleanup.
         root.setTimeout (->
             ex.destroy()
-        ), 0
+        ), 5000
 
 
 # --------------------------------------------
@@ -354,8 +354,8 @@ class Exporter
         builder = new (root.BlobBuilder or root.WebKitBlobBuilder or root.MozBlobBuilder)()
 
         # Populate.
-        #for key, value in data
-        #    builder.append value
+        for key, value of data
+            console.log value
         builder.append "nečum pičo"
 
         a.attr 'download', @download # download
