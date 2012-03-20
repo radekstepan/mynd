@@ -7,7 +7,7 @@
     <div class="form"></div>
     <div class="actions">
         <button class="view btn btn-mini btn-primary">View</button>
-        <a class="export btn btn-mini" download="widget.tsv" href="#">Export</a>
+        <a class="export btn btn-mini" href="#">Export</a>
     </div>
 </header>
 <div class="content" style="overflow:auto;overflow-x:hidden;height:390px;padding-top:10px"></div>

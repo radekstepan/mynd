@@ -261,7 +261,7 @@ class EnrichmentWidget extends InterMineWidget
 
                     # Callback for actions.
                     $(@el).find("div.actions button.view").click => @viewClick()
-                    $(@el).find("div.actions a.export").click => @exportClick()
+                    $(@el).find("div.actions a.export").click (e) => @exportClick e
 
                     # Form options.
                     $(@el).find("div.form").html @template "enrichment.form",
@@ -330,11 +330,9 @@ class EnrichmentWidget extends InterMineWidget
         console.log "view"
 
     # Button toolbar 'Export' click.
-    exportClick: =>
+    exportClick: (e) =>
         # Create.
-        ex = new Exporter @selected
-        # Set.
-        $(@el).find('div.actions a.export').attr 'href', ex.href
+        ex = new Exporter $(e.target), @selected
         # Cleanup.
         root.setTimeout (->
             ex.destroy()
@@ -347,10 +345,11 @@ class EnrichmentWidget extends InterMineWidget
 # Generate and export export a file.
 class Exporter
 
-    mime: 'text/plain'
-    url : (root.webkitURL or root.URL)
+    mime:     'text/plain'
+    download: 'widget.tsv'
+    url:      (root.webkitURL or root.URL)
 
-    constructor: (data) ->
+    constructor: (a, data) ->
         # Get BlobBuilder.
         builder = new (root.BlobBuilder or root.WebKitBlobBuilder or root.MozBlobBuilder)()
 
@@ -358,12 +357,13 @@ class Exporter
         #for key, value in data
         #    builder.append value
         builder.append "nečum pičo"
-        
-        @href = @url.createObjectURL builder.getBlob @mime
+
+        a.attr 'download', @download # download
+        (@href = @url.createObjectURL builder.getBlob @mime) and (a.attr 'href', @href) # href
+        a.attr 'data-downloadurl', [ @mime, @download, @href ].join ':' # data-downloadurl
 
     # Revoke.
-    destroy: =>
-        @url.revokeObjectURL @href
+    destroy: => @url.revokeObjectURL @href
 
 
 # --------------------------------------------
