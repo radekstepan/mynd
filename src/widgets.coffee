@@ -271,7 +271,7 @@ class EnrichmentWidget extends InterMineWidget
                     
                     # Extra attributes (DataSets)?
                     if response.extraAttributeLabel?
-                        $(@l).find('div.form form').append @template "enrichment.extra",
+                        $(@el).find('div.form form').append @template "enrichment.extra",
                             "label":    response.extraAttributeLabel
                             "possible": response.extraAttributePossibleValues
                             "selected": response.extraAttributeSelectedValue
@@ -354,7 +354,8 @@ class EnrichmentWidget extends InterMineWidget
 # --------------------------------------------
 
 
-# Generate and export export a file.
+# Generate and download a file from a string.
+# On Chrome will force download, on Firefox will open a new window.
 class Exporter
 
     mime:     'text/plain'

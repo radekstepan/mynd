@@ -72,40 +72,65 @@ main = (minify, callback) ->
     # Clean.
     fs.unlink MAIN.OUTPUT
 
-    # Open.
-    append MAIN.OUTPUT, "(function() {"
+    # Head.
+    head = (cb) -> cb "(function() {"
 
     # Compile templates.
-    done = false
-    walk TEMPLATES, (err, files) ->
-        if err then throw new Error('problem walking templates')
-        else
-            append MAIN.OUTPUT, "var JST = {};"
-            # Only take eco files.
-            match = /\.eco$/
-            for file in files
-                if file.match match
-                    # Read in, precompile & compress.
-                    js = eco.precompile fs.readFileSync file, "utf-8"
-                    name = file.split('/').pop()
-                    append MAIN.OUTPUT, uglify "JST['#{name}'] = #{js}"
-            done = true
+    templates = (cb) ->
+        tmpl = [ "var JST = {};" ]
+        walk TEMPLATES, (err, files) ->
+            if err then throw new Error('problem walking templates')
+            else
+                # Only take eco files.
+                match = /\.eco$/
+                for file in files
+                    if file.match match
+                        # Read in, precompile & compress.
+                        js = eco.precompile fs.readFileSync file, "utf-8"
+                        name = file.split('/').pop()
+                        tmpl.push uglify "JST['#{name}'] = #{js}"
+                cb tmpl
 
-    (blocking = ->
-        if done
-            # Compile main library (and optionally minify).
-            compiled = cs.compile fs.readFileSync(MAIN.INPUT, "utf-8"), bare: "on"
-            if minify then append MAIN.OUTPUT, uglify compiled else append MAIN.OUTPUT, compiled
+    # Compile main library (and optionally minify).
+    widgets = (cb) ->
+        compiled = cs.compile fs.readFileSync(MAIN.INPUT, "utf-8"), bare: "on"
+        if minify then cb uglify compiled else cb compiled
 
-            # Close.
-            append MAIN.OUTPUT, "}).call(this);"
-            
-            # We are done here?
-            console.log "#{COLORS.GREEN}Main compilation a success#{COLORS.DEFAULT}"
-            callback()
-        else
-            setTimeout blocking, 0
-    )()
+    # Close.
+    close = (cb) -> cb "}).call(this);"
+
+    done = (results) ->
+        # Write them all.
+        for result in results
+            for index, item of result
+                if item instanceof Array
+                    for sub in item
+                        append MAIN.OUTPUT, sub
+                else
+                    append MAIN.OUTPUT, item
+        
+        # We are done.
+        console.log "#{COLORS.GREEN}Main compilation a success#{COLORS.DEFAULT}"
+
+    # This is the queue order.
+    queue [ head, templates, widgets, close ], done
+
+# A serial queue that waits until all resources have returned and then calls back.
+queue = (calls, callback) ->
+    make = (index) ->
+      ->
+        counter--
+        all[index] = arguments
+        callback(all) unless counter
+
+    # How many do we have?
+    counter = calls.length
+    # Store results here.
+    all = []
+
+    i = 0
+    for call in calls
+        call make i++
 
 # Traverse a directory and return a list of files (async, recursive).
 walk = (path, callback) ->
