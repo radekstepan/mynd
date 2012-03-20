@@ -6,8 +6,8 @@
     <% end %>
     <div class="form"></div>
     <div class="actions">
-        <button class="view btn btn-mini btn-primary">View</button>
-        <a class="export btn btn-mini" href="#">Export</a>
+        <a class="view btn btn-mini disabled">View</a>
+        <a class="export btn btn-mini disabled">Export</a>
     </div>
 </header>
 <div class="content" style="overflow:auto;overflow-x:hidden;height:390px;padding-top:10px"></div>

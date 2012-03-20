@@ -316,6 +316,12 @@ class EnrichmentWidget extends InterMineWidget
         if not @selected? then @selected = {}
         if @selected[key]? then delete @selected[key] else @selected[key] = row
 
+        # Update the action buttons.
+        for key, value of @selected
+            $(@el).find('div.actions a.btn.disabled').removeClass 'disabled'
+            return
+        $(@el).find('div.actions a.btn').addClass 'disabled'
+
     # Show matches.
     matchesClick: (target, matches, matchCb) =>
         target.after modal = $ @template "enrichment.matches", "matches": matches
@@ -334,14 +340,15 @@ class EnrichmentWidget extends InterMineWidget
         # Create a tab delimited string.
         result = []
         for key, value of @selected
-            result.push [ value.item, value['p-value'] ].join("\t") + [ match.displayed for match in value.matches ].join(',')
+            result.push [ value.item, value['p-value'] ].join("\t") + "\t" + [ match.displayed for match in value.matches ].join(',')
 
-        # Create.
-        ex = new Exporter $(e.target), result.join("\n"), "#{@bagName} #{@id}.tsv"
-        # Cleanup.
-        root.setTimeout (->
-            ex.destroy()
-        ), 5000
+        if result.length # Can be empty.
+            # Create.
+            ex = new Exporter $(e.target), result.join("\n"), "#{@bagName} #{@id}.tsv"
+            # Cleanup.
+            root.setTimeout (->
+                ex.destroy()
+            ), 5000
 
 
 # --------------------------------------------
