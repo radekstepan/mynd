@@ -6,12 +6,11 @@ JST["enrichment.row.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d
 JST["noresults.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<div class="alert alert-info">\n    <p>The Widget has no results.</p>\n</div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<table class="table table-striped">\n    <thead>\n        <tr>\n            <th></th>\n            <th>'),b.push(d(this.label)),b.push("</th>\n            <th>p-Value</th>\n            <th>Matches</th>\n        </tr>\n    </thead>\n    <tbody></tbody>\n</table>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.form.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f,g,h,i,j;b.push('<form>\n    <div class="group" style="display:inline-block;margin-right:5px">\n        <label>Test Correction</label>\n        <select name="errorCorrection" class="span2">\n            '),i=this.errorCorrections;for(e=0,g=i.length;e<g;e++)a=i[e],b.push('\n                <option value="'),b.push(d(a)),b.push('" '),this.options.errorCorrection===a&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(a)),b.push("\n            </option>\n            ");b.push('\n        </select>\n    </div>\n\n    <div class="group" style="display:inline-block;margin-right:5px">\n        <label>Max p-value</label>\n        <select name="pValue" class="span2">\n            '),j=this.pValues;for(f=0,h=j.length;f<h;f++)c=j[f],b.push('\n                <option value="'),b.push(d(c)),b.push('" '),this.options.pValue===c&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(c)),b.push("\n                </option>\n            ");b.push("\n        </select>\n    </div>\n</form>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["enrichment.download.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f;b.push("<pre>"),b.push(d(this.item)),b.push("&#9;"),b.push(d(this["p-value"])),b.push("&#9;"),f=this.matches;for(c=0,e=f.length;c<e;c++)a=f[c],b.push(d(a.displayed));b.push("</pre>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["enrichment.normal.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push('\n        <p>Number of Genes in this list not analysed in this widget: <span class="label label-info">'),b.push(d(this.notAnalysed)),b.push("</span></p>\n    ")),b.push('\n    <div class="form"></div>\n    <div class="actions">\n        <button class="view btn btn-mini btn-primary">View</button>\n        <button class="export btn btn-mini">Export</button>\n    </div>\n</header>\n<div class="content" style="overflow:auto;overflow-x:hidden;height:390px;padding-top:10px"></div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
+JST["enrichment.normal.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push('\n        <p>Number of Genes in this list not analysed in this widget: <span class="label label-info">'),b.push(d(this.notAnalysed)),b.push("</span></p>\n    ")),b.push('\n    <div class="form"></div>\n    <div class="actions">\n        <button class="view btn btn-mini btn-primary">View</button>\n        <a class="export btn btn-mini" download="widget.tsv" href="#">Export</a>\n    </div>\n</header>\n<div class="content" style="overflow:auto;overflow-x:hidden;height:390px;padding-top:10px"></div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["chart.normal.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push('\n        <p>Number of Genes in this list not analysed in this widget: <span class="label label-info">'),b.push(d(this.notAnalysed)),b.push("</span></p>\n    ")),b.push('\n</header>\n<div class="content"></div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.extra.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f;b.push('<div class="group" style="display:inline-block;margin-right:5px">\n    <label>'),b.push(d(this.label)),b.push('</label>\n    <select name="dataSet" class="span2">\n        '),f=this.possible;for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n            <option value="'),b.push(d(a)),b.push('" '),this.selected===a&&b.push(d('selected="selected"')),b.push(">\n                "),b.push(d(a)),b.push("\n            </option>\n        ");b.push("\n    </select>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["invalidjsonkey.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<li style="vertical-align:bottom">\n    <span style="display:inline-block" class="label label-inverse">'),b.push(d(this.key)),b.push("</span> is "),b.push(d(this.actual)),b.push("; was expecting "),b.push(d(this.expected)),b.push("\n</li>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-var CSSLoader, ChartWidget, EnrichmentWidget, InterMineWidget, JSLoader, Loader, root, type,
+var CSSLoader, ChartWidget, EnrichmentWidget, Exporter, InterMineWidget, JSLoader, Loader, root, type,
   __hasProp = Object.prototype.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
@@ -249,7 +248,7 @@ ChartWidget = (function(_super) {
       "title": true,
       "description": true,
       selectCb: function(pq) {
-        return window.open("" + _this.service + "query/results?query=" + (encodeURIComponent(pq)) + "&format=html");
+        return root.open("" + _this.service + "query/results?query=" + (encodeURIComponent(pq)) + "&format=html");
       }
     };
     this.render = __bind(this.render, this);
@@ -407,7 +406,7 @@ EnrichmentWidget = (function(_super) {
           $(_this.el).find("div.actions button.view").click(function() {
             return _this.viewClick();
           });
-          $(_this.el).find("div.actions button.export").click(function() {
+          $(_this.el).find("div.actions a.export").click(function() {
             return _this.exportClick();
           });
           $(_this.el).find("div.form").html(_this.template("enrichment.form", {
@@ -490,20 +489,39 @@ EnrichmentWidget = (function(_super) {
   };
 
   EnrichmentWidget.prototype.exportClick = function() {
-    var key, result, value, w, _ref;
-    result = [];
-    _ref = this.selected;
-    for (key in _ref) {
-      value = _ref[key];
-      result.push($(this.template("enrichment.download", value)).html());
-    }
-    w = window.open('', '', "width=900,height=600");
-    return w.document.writeln(result.join('<br/>'));
+    var ex;
+    ex = new Exporter(this.selected);
+    $(this.el).find('div.actions a.export').attr('href', ex.href);
+    return root.setTimeout((function() {
+      return ex.destroy();
+    }), 0);
   };
 
   return EnrichmentWidget;
 
 })(InterMineWidget);
+
+Exporter = (function() {
+
+  Exporter.prototype.mime = 'text/plain';
+
+  Exporter.prototype.url = root.webkitURL || root.URL;
+
+  function Exporter(data) {
+    this.destroy = __bind(this.destroy, this);
+    var builder;
+    builder = new (root.BlobBuilder || root.WebKitBlobBuilder || root.MozBlobBuilder)();
+    builder.append("nečum pičo");
+    this.href = this.url.createObjectURL(builder.getBlob(this.mime));
+  }
+
+  Exporter.prototype.destroy = function() {
+    return this.url.revokeObjectURL(this.href);
+  };
+
+  return Exporter;
+
+})();
 
 Loader = (function() {
 
@@ -520,7 +538,7 @@ Loader = (function() {
       state = tag.readyState;
       if (state === "complete" || state === "loaded") {
         tag.onreadystatechange = null;
-        return window.setTimeout(callback, 0);
+        return root.setTimeout(callback, 0);
       }
     };
   };
@@ -606,7 +624,7 @@ root.Widgets = (function() {
       _this = this;
     opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     if (this.wait) {
-      return window.setTimeout((function() {
+      return root.setTimeout((function() {
         return _this.chart.apply(_this, opts);
       }), 0);
     } else {
@@ -628,7 +646,7 @@ root.Widgets = (function() {
       _this = this;
     opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     if (this.wait) {
-      return window.setTimeout((function() {
+      return root.setTimeout((function() {
         return _this.enrichment.apply(_this, opts);
       }), 0);
     } else {
@@ -644,7 +662,7 @@ root.Widgets = (function() {
     var _this = this;
     if (type == null) type = "Gene";
     if (this.wait) {
-      return window.setTimeout((function() {
+      return root.setTimeout((function() {
         return _this.all(type, bagName, el, widgetOptions);
       }), 0);
     } else {

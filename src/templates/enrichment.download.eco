@@ -1,1 +1,0 @@
-<pre><%= @item %>&#9;<%= @["p-value"] %>&#9;<% for match in @matches: %><%= match["displayed"] %><% end %></pre>

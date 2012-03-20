@@ -128,7 +128,7 @@ class ChartWidget extends InterMineWidget
         "title":       true
         "description": true
         # By default, the select callback will open a new window with a table of results.
-        selectCb: (pq) => window.open "#{@service}query/results?query=#{encodeURIComponent(pq)}&format=html"
+        selectCb: (pq) => root.open "#{@service}query/results?query=#{encodeURIComponent(pq)}&format=html"
     }) ->
         super()
         @render()
@@ -261,7 +261,7 @@ class EnrichmentWidget extends InterMineWidget
 
                     # Callback for actions.
                     $(@el).find("div.actions button.view").click => @viewClick()
-                    $(@el).find("div.actions button.export").click => @exportClick()
+                    $(@el).find("div.actions a.export").click => @exportClick()
 
                     # Form options.
                     $(@el).find("div.form").html @template "enrichment.form",
@@ -331,11 +331,39 @@ class EnrichmentWidget extends InterMineWidget
 
     # Button toolbar 'Export' click.
     exportClick: =>
-        result = []
-        for key, value of @selected
-            result.push $(@template "enrichment.download", value).html()
-        w = window.open('', '', "width=900,height=600")
-        w.document.writeln result.join '<br/>'
+        # Create.
+        ex = new Exporter @selected
+        # Set.
+        $(@el).find('div.actions a.export').attr 'href', ex.href
+        # Cleanup.
+        root.setTimeout (->
+            ex.destroy()
+        ), 0
+
+
+# --------------------------------------------
+
+
+# Generate and export export a file.
+class Exporter
+
+    mime: 'text/plain'
+    url : (root.webkitURL or root.URL)
+
+    constructor: (data) ->
+        # Get BlobBuilder.
+        builder = new (root.BlobBuilder or root.WebKitBlobBuilder or root.MozBlobBuilder)()
+
+        # Populate.
+        #for key, value in data
+        #    builder.append value
+        builder.append "nečum pičo"
+        
+        @href = @url.createObjectURL builder.getBlob @mime
+
+    # Revoke.
+    destroy: =>
+        @url.revokeObjectURL @href
 
 
 # --------------------------------------------
@@ -352,7 +380,7 @@ class Loader
             state = tag.readyState
             if state is "complete" or state is "loaded"
                 tag.onreadystatechange = null
-                window.setTimeout callback, 0
+                root.setTimeout callback, 0
 
 
 # JavaScript Loader.
@@ -412,7 +440,7 @@ class root.Widgets
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
     chart: (opts...) =>
-        if @wait then window.setTimeout((=> @chart(opts...)), 0)
+        if @wait then root.setTimeout((=> @chart(opts...)), 0)
         else
             # Load Google Visualization.
             google.load "visualization", "1.0",
@@ -425,7 +453,7 @@ class root.Widgets
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function() {} }
     enrichment: (opts...) =>
-        if @wait then window.setTimeout((=> @enrichment(opts...)), 0) else new EnrichmentWidget(@service, @token, opts...)
+        if @wait then root.setTimeout((=> @enrichment(opts...)), 0) else new EnrichmentWidget(@service, @token, opts...)
 
     # All available Widgets.
     # `type`:          Gene, Protein
@@ -433,7 +461,7 @@ class root.Widgets
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {}, "matchCb": function() {} }
     all: (type = "Gene", bagName, el, widgetOptions) =>
-        if @wait then window.setTimeout((=> @all(type, bagName, el, widgetOptions)), 0)
+        if @wait then root.setTimeout((=> @all(type, bagName, el, widgetOptions)), 0)
         else
             $.ajax
                 url:      "#{@service}widgets"
