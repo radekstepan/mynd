@@ -100,16 +100,15 @@ main = (minify, callback) ->
     close = (cb) -> cb "}).call(this);"
 
     done = (results) ->
+        output = []
+
         # Combine them all.
         for result in results
             for index, item of result
-                if item instanceof Array
-                    # Need to queue these as well.
-                    for sub in item
-                        append MAIN.OUTPUT, sub
-                else
-                    append MAIN.OUTPUT, item
-        # TODO: Write them all...
+                if item instanceof Array then output.push sub for sub in item else output.push item
+        
+        # Write them all at once
+        write MAIN.OUTPUT, output.join "\n"
         
         # We are done.
         console.log "#{COLORS.GREEN}Main compilation a success#{COLORS.DEFAULT}"
@@ -164,10 +163,10 @@ walk = (path, callback) ->
                     callback null, results unless --pending # Done yet?
 
 # Append to existing file.
-append = (path, text) ->
+write = (path, text) ->
     fs.open path, "a", 0666, (e, id) ->
         if e then throw new Error(e)
-        fs.write id, "#{text}\n", null, "utf8"
+        fs.write id, text, null, "utf8"
 
 # Compress using `uglify-js`.
 uglify = (input) ->
