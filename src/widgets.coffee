@@ -285,7 +285,10 @@ class EnrichmentWidget extends InterMineWidget
                         $(@el).find("div.content").html(
                             $ @template "enrichment.table", "label": response.label
                         ).find('div.wrapper').css 'height', "#{height}px"
-                        
+
+                        # (De-)Select all.
+                        $(@el).find('div.content div.head input.check').click (e) => @selectAllClick e
+
                         # Table rows.
                         table = $(@el).find("div.content table")
                         for i in [0...response.results.length] then do (i) =>
@@ -326,6 +329,22 @@ class EnrichmentWidget extends InterMineWidget
             $(@el).find('div.actions a.btn.disabled').removeClass 'disabled'
             return
         $(@el).find('div.actions a.btn').addClass 'disabled'
+
+    # (De-)Select all items in a table
+    selectAllClick: (e) =>
+        if not @selected? then @selected = {}
+        
+        # Select all.
+        if $(e.target).is(':checked')
+            $(@el).find('div.content table tbody tr').each (i, row) =>
+                $(row).find('td.check input:not(:checked)').attr 'checked', true
+                @selected[i] = row
+            $(@el).find('div.actions a.btn').removeClass 'disabled'
+        # Deselect all.
+        else
+            @selected = {}
+            $(@el).find('div.content table tbody tr td.check input:checked').each (i, input) -> $(input).attr 'checked', false
+            $(@el).find('div.actions a.btn').addClass 'disabled'
 
     # Show matches.
     matchesClick: (target, matches, matchCb) =>
