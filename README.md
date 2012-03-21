@@ -5,6 +5,7 @@ Client for embedding InterMine widgets (ws_widgets).
 - Google API (included)
 - jQuery (included)
 - underscore.js (included)
+- backbone.js (included)
 
 ### To Compile/Test:
 - CoffeeScript & [eco](https://github.com/sstephenson/eco) templating

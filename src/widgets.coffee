@@ -38,342 +38,359 @@ class type.isUndefined extends type.Root
 # --------------------------------------------
 
 
-class InterMineWidget
+# 'Factory' used for dynamic class extension.
+factory = (Backbone) ->
 
-    # Inject wrapper inside the target div that we have control over.
-    constructor: ->
-        $(@el).html $ '<div/>',
-            class: "inner"
-            style: "height:572px;overflow:hidden"
-            html:  "Loading &hellip;"
-        @el = "#{@el} div.inner"
 
-    # Where is eco?
-    template: (name, context = {}) -> JST["#{name}.eco"]?(context)
+    # --------------------------------------------
 
-    # Validate JSON object against the spec.
-    validateType: (object, spec) =>
-        fails = []
-        for key, value of object
-            if (r = new spec[key]?(value) or r = new type.isUndefined()) and not r.is()
-                fails.push @template "invalidjsonkey",
-                    key:      key
-                    actual:   r.is()
-                    expected: new String(r)
-        
-        if fails.length then @error "JSONObjectType", fails
 
-    # The possible errors we handle.
-    error: (type, data) =>
-        opts = title: "Error", text: "Generic error"
+    class InterMineWidget extends Backbone.View
 
-        # Which?
-        switch type
-            when "AJAXTransport"
-                opts.title = data.statusText
-                opts.text = data.responseText
-            when "JSONObjectType"
-                opts.title = "Invalid JSON"
-                opts.text = "<ol>#{data.join('')}</ol>"
+        # Inject wrapper inside the target div that we have control over.
+        constructor: ->
+            $(@el).html $ '<div/>',
+                class: "inner"
+                style: "height:572px;overflow:hidden"
+                html:  "Loading &hellip;"
+            @el = "#{@el} div.inner"
 
-        # Show.
-        $(@el).html @template "error", opts
+        # Where is eco?
+        template: (name, context = {}) -> JST["#{name}.eco"]?(context)
 
-# --------------------------------------------
-
-class ChartWidget extends InterMineWidget
-
-    # Google Visualization chart options.
-    chartOptions:
-        fontName: "Sans-Serif"
-        fontSize: 11
-        width:    400
-        height:   450
-        legend:   "bottom"
-        colors:   [ "#2F72FF", "#9FC0FF" ]
-        chartArea:
-            top: 30
-        hAxis:
-            titleTextStyle:
-                fontName: "Sans-Serif"
-        vAxis:
-            titleTextStyle:
-                fontName: "Sans-Serif"
-
-    # Spec for a successful and correct JSON response.
-    spec:
-        response:
-            "chartType":     type.isString
-            "description":   type.isString
-            "error":         type.isNull
-            "list":          type.isString
-            "notAnalysed":   type.isInteger
-            "pathQuery":     type.isString
-            "requestedAt":   type.isString
-            "results":       type.isArray
-            "seriesLabels":  type.isString
-            "seriesValues":  type.isString
-            "statusCode":    type.isHTTPSuccess
-            "title":         type.isString
-            "type":          type.isString
-            "wasSuccessful": type.isBoolean
-
-    # Set the params on us and set Google load callback.
-    # `service`:       http://aragorn.flymine.org:8080/flymine/service/
-    # `token`:         token for accessing user's lists
-    # `id`:            widgetId
-    # `bagName`:       myBag
-    # `el`:            #target
-    # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
-    constructor: (@service, @token, @id, @bagName, @el, @widgetOptions = {
-        "title":       true
-        "description": true
-        # By default, the select callback will open a new window with a table of results.
-        selectCb: (pq) => root.open "#{@service}query/results?query=#{encodeURIComponent(pq)}&format=html"
-    }) ->
-        super()
-        @render()
-
-    # Visualize the displayer.
-    render: =>
-        # Get JSON response by calling the service.
-        $.ajax
-            url:      "#{@service}list/chart"
-            dataType: "json"
-            data:
-                widget: @id
-                list:   @bagName
-                token:  @token
+        # Validate JSON object against the spec.
+        validateType: (object, spec) =>
+            fails = []
+            for key, value of object
+                if (r = new spec[key]?(value) or r = new type.isUndefined()) and not r.is()
+                    fails.push @template "invalidjsonkey",
+                        key:      key
+                        actual:   r.is()
+                        expected: new String(r)
             
-            success: (response) =>
-                # We have response, validate.
-                @validateType response, @spec.response
-                # Render the widget template.
-                $(@el).html @template "chart.normal",
-                    "title":       if @widgetOptions.title then response.title else ""
-                    "description": if @widgetOptions.description then response.description else ""
-                    "notAnalysed": response.notAnalysed
+            if fails.length then @error "JSONObjectType", fails
 
-                # Are the results empty?
-                if response.results.length > 1
-                    # Create the chart.
-                    if response.chartType of google.visualization # If the type exists...
-                        chart = new google.visualization[response.chartType]($(@el).find("div.content")[0])
-                        chart.draw(google.visualization.arrayToDataTable(response.results, false), @chartOptions)
+        # The possible errors we handle.
+        error: (type, data) =>
+            opts = title: "Error", text: "Generic error"
 
-                        # Add event listener on click the chart bar.
-                        if response.pathQuery?
-                            google.visualization.events.addListener chart, "select", =>
-                                pq = response.pathQuery
-                                for item in chart.getSelection()
-                                    if item.row?
-                                        # Replace %category in PathQuery.
-                                        pq = pq.replace("%category", response.results[item.row + 1][0])
-                                        if item.column?
-                                            # Replace %series in PathQuery.
-                                            pq = pq.replace("%series", @_translateSeries(response, response.results[0][item.column]))
-                                        @widgetOptions.selectCb(pq)
-                    else
-                        # Undefined Google Visualization chart type.
-                        $(@el).html @template "error",
-                            title: response.chartType
-                            text:  "This chart type does not exist in Google Visualization API"
-                else
-                    # Render no results.
-                    $(@el).find("div.content").html $ @template "noresults"
-            
-            error: (err) => @error "AJAXTransport", err
+            # Which?
+            switch type
+                when "AJAXTransport"
+                    opts.title = data.statusText
+                    opts.text = data.responseText
+                when "JSONObjectType"
+                    opts.title = "Invalid JSON"
+                    opts.text = "<ol>#{data.join('')}</ol>"
 
-    # Translate view series into PathQuery series (Expressed/Not Expressed into true/false).
-    _translateSeries: (response, series) -> response.seriesValues.split(',')[response.seriesLabels.split(',').indexOf(series)]
+            # Show.
+            $(@el).html @template "error", opts
 
 
-# --------------------------------------------
+    # --------------------------------------------
 
 
-class EnrichmentWidget extends InterMineWidget
+    class ChartWidget extends InterMineWidget
 
-    formOptions:
-        errorCorrection: "Holm-Bonferroni"
-        pValue:          0.05
+        # Google Visualization chart options.
+        chartOptions:
+            fontName: "Sans-Serif"
+            fontSize: 11
+            width:    400
+            height:   450
+            legend:   "bottom"
+            colors:   [ "#2F72FF", "#9FC0FF" ]
+            chartArea:
+                top: 30
+            hAxis:
+                titleTextStyle:
+                    fontName: "Sans-Serif"
+            vAxis:
+                titleTextStyle:
+                    fontName: "Sans-Serif"
 
-    errorCorrections: [ "Holm-Bonferroni", "Benjamini Hochberg", "Bonferroni", "None" ]
-    pValues: [ 0.05, 0.10, 1.00 ]
+        # Spec for a successful and correct JSON response.
+        spec:
+            response:
+                "chartType":     type.isString
+                "description":   type.isString
+                "error":         type.isNull
+                "list":          type.isString
+                "notAnalysed":   type.isInteger
+                "pathQuery":     type.isString
+                "requestedAt":   type.isString
+                "results":       type.isArray
+                "seriesLabels":  type.isString
+                "seriesValues":  type.isString
+                "statusCode":    type.isHTTPSuccess
+                "title":         type.isString
+                "type":          type.isString
+                "wasSuccessful": type.isBoolean
 
-    # Spec for a successful and correct JSON response.
-    spec:
-        response:
-            "title":         type.isString
-            "description":   type.isString
-            "error":         type.isNull
-            "list":          type.isString
-            "notAnalysed":   type.isInteger
-            "requestedAt":   type.isString
-            "results":       type.isArray
-            "label":         type.isString
-            "statusCode":    type.isHTTPSuccess
-            "title":         type.isString
-            "type":          type.isString
-            "wasSuccessful": type.isBoolean
-        resultRow:
-            "description": type.isString
-            "item":        type.isString
-            "matches":     type.isArray
-            "p-value":     type.isInteger
+        # Set the params on us and set Google load callback.
+        # `service`:       http://aragorn.flymine.org:8080/flymine/service/
+        # `token`:         token for accessing user's lists
+        # `id`:            widgetId
+        # `bagName`:       myBag
+        # `el`:            #target
+        # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
+        constructor: (@service, @token, @id, @bagName, @el, @widgetOptions = {
+            "title":       true
+            "description": true
+            # By default, the select callback will open a new window with a table of results.
+            selectCb: (pq) => root.open "#{@service}query/results?query=#{encodeURIComponent(pq)}&format=html"
+        }) ->
+            super()
+            @render()
 
-    # Set the params on us and render.
-    # `service`:       http://aragorn.flymine.org:8080/flymine/service/
-    # `token`:         token for accessing user's lists
-    # `id`:            widgetId
-    # `bagName`:       myBag
-    # `el`:            #target
-    # `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function() {} }
-    constructor: (@service, @token, @id, @bagName, @el, @widgetOptions = {
-        "title":       true
-        "description": true
-        # By default, the select callback will dump the match id into the console.
-        matchCb: (id) => console?.log id
-    }) ->
-        super() # Luke... I am your father!
-        @render()
-
-    # Visualize the displayer.
-    render: =>
-        $.ajax
-            url:      "#{@service}list/enrichment"
-            dataType: "json"
-            data:
-                widget:     @id
-                list:       @bagName
-                correction: @formOptions.errorCorrection
-                maxp:       @formOptions.pValue
-                token:      @token
-            
-            success: (response) =>
-                # We have response, validate.
-                @validateType response, @spec.response
-                # We have results.
-                if response.wasSuccessful
+        # Visualize the displayer.
+        render: =>
+            # Get JSON response by calling the service.
+            $.ajax
+                url:      "#{@service}list/chart"
+                dataType: "json"
+                data:
+                    widget: @id
+                    list:   @bagName
+                    token:  @token
+                
+                success: (response) =>
+                    # We have response, validate.
+                    @validateType response, @spec.response
                     # Render the widget template.
-                    $(@el).html @template "enrichment.normal",
+                    $(@el).html @template "chart.normal",
                         "title":       if @widgetOptions.title then response.title else ""
                         "description": if @widgetOptions.description then response.description else ""
                         "notAnalysed": response.notAnalysed
 
-                    # Callback for actions.
-                    $(@el).find("div.actions button.view").click => @viewClick()
-                    $(@el).find("div.actions a.export").click (e) => @exportClick e
+                    # Are the results empty?
+                    if response.results.length > 1
+                        # Create the chart.
+                        if response.chartType of google.visualization # If the type exists...
+                            chart = new google.visualization[response.chartType]($(@el).find("div.content")[0])
+                            chart.draw(google.visualization.arrayToDataTable(response.results, false), @chartOptions)
 
-                    # Form options.
-                    $(@el).find("div.form").html @template "enrichment.form",
-                        "options":          @formOptions
-                        "errorCorrections": @errorCorrections
-                        "pValues":          @pValues
-                    
-                    # Extra attributes (DataSets)?
-                    if response.extraAttributeLabel?
-                        $(@el).find('div.form form').append @template "enrichment.extra",
-                            "label":    response.extraAttributeLabel
-                            "possible": response.extraAttributePossibleValues
-                            "selected": response.extraAttributeSelectedValue
-
-                    # Results?
-                    if response.results.length > 0
-                        # How tall should the table be? Whole height - header - table head - some extra space
-                        height = $(@el).height() - $(@el).find('header').height() - 30 - 18
-
-                        # Render the table.
-                        $(@el).find("div.content").html(
-                            $ @template "enrichment.table", "label": response.label
-                        ).find('div.wrapper').css 'height', "#{height}px"
-
-                        # (De-)Select all.
-                        $(@el).find('div.content div.head input.check').click (e) => @selectAllClick e
-
-                        # Table rows.
-                        table = $(@el).find("div.content table")
-                        for i in [0...response.results.length] then do (i) =>
-                            row = response.results[i]
-                            # Validate type.
-                            @validateType row, @spec.resultRow
-                            # Append.
-                            table.append tr = $ @template "enrichment.row", "row": row
-                            # Events.
-                            td = tr.find("td.matches .count").click => @matchesClick td, row["matches"], @widgetOptions.matchCb
-                            tr.find("td.check input").click => @checkboxClick i, row
-
-                        # Fix the `div.head` element width.
-                        table.find('thead th').each (i, th) =>
-                            $(@el).find("div.content div.head div:eq(#{i})").width $(th).width()
-                        
+                            # Add event listener on click the chart bar.
+                            if response.pathQuery?
+                                google.visualization.events.addListener chart, "select", =>
+                                    pq = response.pathQuery
+                                    for item in chart.getSelection()
+                                        if item.row?
+                                            # Replace %category in PathQuery.
+                                            pq = pq.replace("%category", response.results[item.row + 1][0])
+                                            if item.column?
+                                                # Replace %series in PathQuery.
+                                                pq = pq.replace("%series", @_translateSeries(response, response.results[0][item.column]))
+                                            @widgetOptions.selectCb(pq)
+                        else
+                            # Undefined Google Visualization chart type.
+                            $(@el).html @template "error",
+                                title: response.chartType
+                                text:  "This chart type does not exist in Google Visualization API"
                     else
-                        # Render no results
+                        # Render no results.
                         $(@el).find("div.content").html $ @template "noresults"
+                
+                error: (err) => @error "AJAXTransport", err
 
-                    # Set behaviors.
-                    $(@el).find("form select").change @formClick
-            
-            error: (err) => @error "AJAXTransport", err
+        # Translate view series into PathQuery series (Expressed/Not Expressed into true/false).
+        _translateSeries: (response, series) -> response.seriesValues.split(',')[response.seriesLabels.split(',').indexOf(series)]
 
-    # On form select option change, set the new options and re-render.
-    formClick: (e) =>
-        @formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value")
-        @render()
 
-    # Append to or remove from a list of selected rows.
-    checkboxClick: (key, row) =>
-        if not @selected? then @selected = {}
-        if @selected[key]? then delete @selected[key] else @selected[key] = row
+    # --------------------------------------------
 
-        # Update the action buttons.
-        for key, value of @selected
-            $(@el).find('div.actions a.btn.disabled').removeClass 'disabled'
-            return
-        $(@el).find('div.actions a.btn').addClass 'disabled'
 
-    # (De-)Select all items in a table
-    selectAllClick: (e) =>
-        if not @selected? then @selected = {}
-        
-        # Select all.
-        if $(e.target).is(':checked')
-            $(@el).find('div.content table tbody tr').each (i, row) =>
-                $(row).find('td.check input:not(:checked)').attr 'checked', true
-                @selected[i] = row
-            $(@el).find('div.actions a.btn').removeClass 'disabled'
-        # Deselect all.
-        else
-            @selected = {}
-            $(@el).find('div.content table tbody tr td.check input:checked').each (i, input) -> $(input).attr 'checked', false
+    class EnrichmentWidget extends InterMineWidget
+
+        formOptions:
+            errorCorrection: "Holm-Bonferroni"
+            pValue:          0.05
+
+        errorCorrections: [ "Holm-Bonferroni", "Benjamini Hochberg", "Bonferroni", "None" ]
+        pValues: [ 0.05, 0.10, 1.00 ]
+
+        # Spec for a successful and correct JSON response.
+        spec:
+            response:
+                "title":         type.isString
+                "description":   type.isString
+                "error":         type.isNull
+                "list":          type.isString
+                "notAnalysed":   type.isInteger
+                "requestedAt":   type.isString
+                "results":       type.isArray
+                "label":         type.isString
+                "statusCode":    type.isHTTPSuccess
+                "title":         type.isString
+                "type":          type.isString
+                "wasSuccessful": type.isBoolean
+            resultRow:
+                "description": type.isString
+                "item":        type.isString
+                "matches":     type.isArray
+                "p-value":     type.isInteger
+
+        # Set the params on us and render.
+        # `service`:       http://aragorn.flymine.org:8080/flymine/service/
+        # `token`:         token for accessing user's lists
+        # `id`:            widgetId
+        # `bagName`:       myBag
+        # `el`:            #target
+        # `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function() {} }
+        constructor: (@service, @token, @id, @bagName, @el, @widgetOptions = {
+            "title":       true
+            "description": true
+            # By default, the select callback will dump the match id into the console.
+            matchCb: (id) => console?.log id
+        }) ->
+            super() # Luke... I am your father!
+            @render()
+
+        # Visualize the displayer.
+        render: =>
+            $.ajax
+                url:      "#{@service}list/enrichment"
+                dataType: "json"
+                data:
+                    widget:     @id
+                    list:       @bagName
+                    correction: @formOptions.errorCorrection
+                    maxp:       @formOptions.pValue
+                    token:      @token
+                
+                success: (response) =>
+                    # We have response, validate.
+                    @validateType response, @spec.response
+                    # We have results.
+                    if response.wasSuccessful
+                        # Render the widget template.
+                        $(@el).html @template "enrichment.normal",
+                            "title":       if @widgetOptions.title then response.title else ""
+                            "description": if @widgetOptions.description then response.description else ""
+                            "notAnalysed": response.notAnalysed
+
+                        # Callback for actions.
+                        #$(@el).find("div.actions button.view").click => @viewAction()
+                        $(@el).find("div.actions a.export").click (e) => @exportClick e
+
+                        # Form options.
+                        $(@el).find("div.form").html @template "enrichment.form",
+                            "options":          @formOptions
+                            "errorCorrections": @errorCorrections
+                            "pValues":          @pValues
+                        
+                        # Extra attributes (DataSets)?
+                        if response.extraAttributeLabel?
+                            $(@el).find('div.form form').append @template "enrichment.extra",
+                                "label":    response.extraAttributeLabel
+                                "possible": response.extraAttributePossibleValues
+                                "selected": response.extraAttributeSelectedValue
+
+                        # Results?
+                        if response.results.length > 0
+                            # How tall should the table be? Whole height - header - table head - some extra space
+                            height = $(@el).height() - $(@el).find('header').height() - 30 - 18
+
+                            # Render the table.
+                            $(@el).find("div.content").html(
+                                $ @template "enrichment.table", "label": response.label
+                            ).find('div.wrapper').css 'height', "#{height}px"
+
+                            # (De-)Select all.
+                            $(@el).find('div.content div.head input.check').click (e) => @selectAllClick e
+
+                            # Table rows.
+                            table = $(@el).find("div.content table")
+                            for i in [0...response.results.length] then do (i) =>
+                                row = response.results[i]
+                                # Validate type.
+                                @validateType row, @spec.resultRow
+                                # Append.
+                                table.append tr = $ @template "enrichment.row", "row": row
+                                # Events.
+                                td = tr.find("td.matches .count").click => @matchesClick td, row["matches"], @widgetOptions.matchCb
+                                tr.find("td.check input").click => @checkboxClick i, row
+
+                            # Fix the `div.head` element width.
+                            table.find('thead th').each (i, th) =>
+                                $(@el).find("div.content div.head div:eq(#{i})").width $(th).width()
+                            
+                        else
+                            # Render no results
+                            $(@el).find("div.content").html $ @template "noresults"
+
+                        # Set behaviors.
+                        $(@el).find("form select").change @formClick
+                
+                error: (err) => @error "AJAXTransport", err
+
+        # On form select option change, set the new options and re-render.
+        formClick: (e) =>
+            @formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value")
+            @render()
+
+        # Append to or remove from a list of selected rows.
+        checkboxClick: (key, row) =>
+            if not @selected? then @selected = {}
+            if @selected[key]? then delete @selected[key] else @selected[key] = row
+
+            # Update the action buttons.
+            for key, value of @selected
+                $(@el).find('div.actions a.btn.disabled').removeClass 'disabled'
+                return
             $(@el).find('div.actions a.btn').addClass 'disabled'
 
-    # Show matches.
-    matchesClick: (target, matches, matchCb) =>
-        target.after modal = $ @template "enrichment.matches", "matches": matches
-        modal.find("a.close").click -> modal.remove()
-        # Individual match click behavior.
-        modal.find("div.popover-content a").click (e) ->
-            matchCb $(@).text()
-            e.preventDefault()
+        # (De-)Select all items in a table
+        selectAllClick: (e) =>
+            if not @selected? then @selected = {}
+            
+            # Select all.
+            if $(e.target).is(':checked')
+                $(@el).find('div.content table tbody tr').each (i, row) =>
+                    $(row).find('td.check input:not(:checked)').attr 'checked', true
+                    @selected[i] = row
+                $(@el).find('div.actions a.btn').removeClass 'disabled'
+            # Deselect all.
+            else
+                @selected = {}
+                $(@el).find('div.content table tbody tr td.check input:checked').each (i, input) -> $(input).attr 'checked', false
+                $(@el).find('div.actions a.btn').addClass 'disabled'
 
-    # Button toolbar 'View' click.
-    viewClick: ->
-        console.log "view"
+        # Show matches.
+        matchesClick: (target, matches, matchCb) =>
+            target.after modal = $ @template "enrichment.matches", "matches": matches
+            modal.find("a.close").click -> modal.remove()
+            # Individual match click behavior.
+            modal.find("div.popover-content a").click (e) ->
+                matchCb $(@).text()
+                e.preventDefault()
 
-    # Button toolbar 'Export' click.
-    exportClick: (e) =>
-        # Create a tab delimited string.
-        result = []
-        for key, value of @selected
-            result.push [ value.item, value['p-value'] ].join("\t") + "\t" + [ match.displayed for match in value.matches ].join(',')
+        # Button toolbar 'View' click.
+        viewAction: ->
+            console.log 'viewAction triggered thanks to Backbone'
 
-        if result.length # Can be empty.
-            # Create.
-            ex = new Exporter $(e.target), result.join("\n"), "#{@bagName} #{@id}.tsv"
-            # Cleanup.
-            root.setTimeout (->
-                ex.destroy()
-            ), 5000
+        # Button toolbar 'Export' click.
+        exportClick: (e) =>
+            # Create a tab delimited string.
+            result = []
+            for key, value of @selected
+                result.push [ value.item, value['p-value'] ].join("\t") + "\t" + [ match.displayed for match in value.matches ].join(',')
+
+            if result.length # Can be empty.
+                # Create.
+                ex = new Exporter $(e.target), result.join("\n"), "#{@bagName} #{@id}.tsv"
+                # Cleanup.
+                root.setTimeout (->
+                    ex.destroy()
+                ), 5000
+
+
+    # --------------------------------------------
+
+
+    "InterMineWidget":  InterMineWidget,
+    "ChartWidget":      ChartWidget,
+    "EnrichmentWidget": EnrichmentWidget
 
 
 # --------------------------------------------
@@ -455,9 +472,10 @@ class root.Widgets
     # JavaScript libraries as resources. Will be loaded if not present already.
     resources:
         js:
-            jQuery: "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
-            _:      "http://documentcloud.github.com/underscore/underscore.js"
-            google: "https://www.google.com/jsapi"
+            jQuery:   "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+            _:        "http://documentcloud.github.com/underscore/underscore.js"
+            google:   "https://www.google.com/jsapi"
+            Backbone: "http://documentcloud.github.com/backbone/backbone-min.js"
 
     # New Widgets client.
     # `service`: http://aragorn.flymine.org:8080/flymine/service/
@@ -468,11 +486,18 @@ class root.Widgets
             if not root[library]?
                 @wait = (@wait ? 0) + 1
                 new JSLoader(path, =>
-                    if library is "jQuery" then root.$ = root.jQuery # We are jQuery.
+                    # We are jQuery.
+                    if library is 'jQuery' then root.$ = root.jQuery
+                    # We are Backbone.
+                    if library is 'Backbone' then root extends factory(root.Backbone)
+                    
                     @wait -= 1
                 )
             else
-                if library is "jQuery" then root.$ = root.jQuery # We are jQuery.
+                # We are jQuery.
+                if library is 'jQuery' then root.$ = root.jQuery
+                # We are Backbone.
+                if library is 'Backbone' then root extends factory(root.Backbone)
 
     # Chart Widget.
     # `id`:            widgetId
