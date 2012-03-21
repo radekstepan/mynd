@@ -45,6 +45,7 @@ class InterMineWidget
         $(@el).html $ '<div/>',
             class: "inner"
             style: "height:572px;overflow:hidden"
+            html:  "Loading &hellip;"
         @el = "#{@el} div.inner"
 
     # Where is eco?
@@ -392,7 +393,7 @@ class Exporter
     # `filename`: take a guess...
     constructor: (a, data, filename = 'widget.tsv') ->
         # Get BlobBuilder.
-        builder = new (root.BlobBuilder or root.WebKitBlobBuilder or root.MozBlobBuilder)()
+        builder = new (root.WebKitBlobBuilder or root.MozBlobBuilder or root.BlobBuilder)()
 
         # Populate.
         builder.append data

@@ -143,7 +143,8 @@ InterMineWidget = (function() {
     this.error = __bind(this.error, this);
     this.validateType = __bind(this.validateType, this);    $(this.el).html($('<div/>', {
       "class": "inner",
-      style: "height:572px;overflow:hidden"
+      style: "height:572px;overflow:hidden",
+      html: "Loading &hellip;"
     }));
     this.el = "" + this.el + " div.inner";
   }
@@ -491,6 +492,12 @@ EnrichmentWidget = (function(_super) {
     if ($(e.target).is(':checked')) {
       $(this.el).find('div.content table tbody tr').each(function(i, row) {
         $(row).find('td.check input:not(:checked)').attr('checked', true);
+        console.log(row);
+        row = {
+          'item': "xx",
+          'matches': [],
+          'p-value': 0.5
+        };
         return _this.selected[i] = row;
       });
       return $(this.el).find('div.actions a.btn').removeClass('disabled');
