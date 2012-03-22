@@ -17,9 +17,9 @@ Client for embedding InterMine widgets (ws_widgets).
 
 2. Choose which widgets you want to load:
 ```javascript
-    widgets.all('Gene', 'myList', '#all-widgets'); // load all Widgets
-    widgets.chart('flyfish', 'myList', '#widget-1'); // load a specific Chart Widget
-    widgets.enrichment('pathway_enrichment', 'myList', '#widget-2'); // load a specific Enrichment Widget
+widgets.all('Gene', 'myList', '#all-widgets'); // load all Widgets
+widgets.chart('flyfish', 'myList', '#widget-1'); // load a specific Chart Widget
+widgets.enrichment('pathway_enrichment', 'myList', '#widget-2'); // load a specific Enrichment Widget
 ```
 ## Use:
 2. Start a simple HTTP server using `.webserver.sh`.
