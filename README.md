@@ -1,4 +1,4 @@
-Client for embedding InterMine widgets (ws_widgets).
+Client for embedding InterMine widgets (ws_widgets branch only!).
 
 ## Requirements:
 ### To Run:
@@ -13,20 +13,26 @@ Client for embedding InterMine widgets (ws_widgets).
 - [uglify-js](https://github.com/mishoo/UglifyJS) to compress templates
 
 ## Configure:
-1. Create a new Widgets instance in `index.html` pointing to a service:
-    ```javascript
-    widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");
-    ```
+**Create a new Widgets** instance in `index.html` pointing to a service:
 
-2. Choose which widgets you want to load:
-    ```javascript
-    widgets.all('Gene', 'myList', '#all-widgets'); // load all Widgets
-    widgets.chart('flyfish', 'myList', '#widget-1'); // load a specific Chart Widget
-    widgets.enrichment('pathway_enrichment', 'myList', '#widget-2'); // load a specific Enrichment Widget
-    ```
+```javascript
+widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");
+```
+
+**Choose which widgets** you want to load:
+
+```javascript
+// Load all Widgets:
+widgets.all('Gene', 'myList', '#all-widgets');
+// Load a specific Chart Widget:
+widgets.chart('flyfish', 'myList', '#widget-1');
+// Load a specific Enrichment Widget:
+widgets.enrichment('pathway_enrichment', 'myList', '#widget-2');
+```
+
 ## Use:
-2. Start a simple HTTP server using `.webserver.sh`.
-3. Visit `http://0.0.0.0:1111/`
+1. Start a simple HTTP server using `.webserver.sh`.
+2. Visit [http://0.0.0.0:1111/](http://0.0.0.0:1111/)
 
 ## Compile:
 1. Install dependencies `npm install -d`.
@@ -35,7 +41,7 @@ Client for embedding InterMine widgets (ws_widgets).
 ## Test:
 1. Run `cake compile:tests` to compile the test spec.
 2. Start a simple HTTP server using `.webserver.sh`.
-3. Visit `http://0.0.0.0:1111/tests/` that automatically runs [Jasmine](http://pivotal.github.com/jasmine/) tests.
+3. Visit [http://0.0.0.0:1111/tests/](http://0.0.0.0:1111/tests/) that automatically runs [Jasmine](http://pivotal.github.com/jasmine/) tests.
 
 ## Example:
 ![image](https://raw.github.com/radekstepan/intermine-widget-client/master/example.png)
