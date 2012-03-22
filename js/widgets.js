@@ -252,7 +252,7 @@ factory = function(Backbone) {
         "title": true,
         "description": true,
         selectCb: function(pq) {
-          return root.open("" + _this.service + "query/results?query=" + (encodeURIComponent(pq)) + "&format=html");
+          return window.open("" + _this.service + "query/results?query=" + (encodeURIComponent(pq)) + "&format=html");
         }
       };
       this.render = __bind(this.render, this);
@@ -542,7 +542,7 @@ factory = function(Backbone) {
       }
       if (result.length) {
         ex = new Exporter($(e.target), result.join("\n"), "" + this.bagName + " " + this.id + ".tsv");
-        return root.setTimeout((function() {
+        return window.setTimeout((function() {
           return ex.destroy();
         }), 5000);
       }
@@ -564,14 +564,14 @@ Exporter = (function() {
 
   Exporter.prototype.charset = 'UTF-8';
 
-  Exporter.prototype.url = root.webkitURL || root.URL;
+  Exporter.prototype.url = window.webkitURL || window.URL;
 
   function Exporter(a, data, filename) {
     var builder;
     if (filename == null) filename = 'widget.tsv';
     this.destroy = __bind(this.destroy, this);
-    builder = new (root.WebKitBlobBuilder || root.MozBlobBuilder || root.BlobBuilder)();
-    builder.append(data);
+    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
+    builder.append(data(s));
     a.attr('download', filename);
     (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
     a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
@@ -600,7 +600,7 @@ Loader = (function() {
       state = tag.readyState;
       if (state === "complete" || state === "loaded") {
         tag.onreadystatechange = null;
-        return root.setTimeout(callback, 0);
+        return window.setTimeout(callback, 0);
       }
     };
   };
@@ -666,16 +666,18 @@ root.Widgets = (function() {
     _ref = this.resources.js;
     _fn = function(library, path) {
       var _ref2;
-      if (!(root[library] != null)) {
+      if (!(window[library] != null)) {
         _this.wait = ((_ref2 = _this.wait) != null ? _ref2 : 0) + 1;
         return new JSLoader(path, function() {
-          if (library === 'jQuery') root.$ = root.jQuery;
-          if (library === 'Backbone') __extends(root, factory(root.Backbone));
+          if (library === 'jQuery') root.$ = window.jQuery;
+          if (library === 'Backbone') __extends(root, factory(window.Backbone));
           return _this.wait -= 1;
         });
       } else {
-        if (library === 'jQuery') root.$ = root.jQuery;
-        if (library === 'Backbone') return __extends(root, factory(root.Backbone));
+        if (library === 'jQuery') root.$ = window.jQuery;
+        if (library === 'Backbone') {
+          return __extends(root, factory(window.Backbone));
+        }
       }
     };
     for (library in _ref) {
@@ -689,7 +691,7 @@ root.Widgets = (function() {
       _this = this;
     opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     if (this.wait) {
-      return root.setTimeout((function() {
+      return window.setTimeout((function() {
         return _this.chart.apply(_this, opts);
       }), 0);
     } else {
@@ -711,7 +713,7 @@ root.Widgets = (function() {
       _this = this;
     opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     if (this.wait) {
-      return root.setTimeout((function() {
+      return window.setTimeout((function() {
         return _this.enrichment.apply(_this, opts);
       }), 0);
     } else {
@@ -727,7 +729,7 @@ root.Widgets = (function() {
     var _this = this;
     if (type == null) type = "Gene";
     if (this.wait) {
-      return root.setTimeout((function() {
+      return window.setTimeout((function() {
         return _this.all(type, bagName, el, widgetOptions);
       }), 0);
     } else {

@@ -3,8 +3,8 @@
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
-      "coffee-script": ">= 0.0.1"
-    , "eco": ">= 0.0.1"
-    , "uglify-js": ">= 0.0.1"
+      "coffee-script": "latest"
+    , "eco": "latest"
+    , "uglify-js": "latest"
   }
 }

@@ -138,7 +138,7 @@ factory = (Backbone) ->
             "title":       true
             "description": true
             # By default, the select callback will open a new window with a table of results.
-            selectCb: (pq) => root.open "#{@service}query/results?query=#{encodeURIComponent(pq)}&format=html"
+            selectCb: (pq) => window.open "#{@service}query/results?query=#{encodeURIComponent(pq)}&format=html"
         }) ->
             super()
             @render()
@@ -380,7 +380,7 @@ factory = (Backbone) ->
                 # Create.
                 ex = new Exporter $(e.target), result.join("\n"), "#{@bagName} #{@id}.tsv"
                 # Cleanup.
-                root.setTimeout (->
+                window.setTimeout (->
                     ex.destroy()
                 ), 5000
 
@@ -402,7 +402,7 @@ class Exporter
 
     mime:     'text/plain'
     charset:  'UTF-8'
-    url:      (root.webkitURL or root.URL)
+    url:      (window.webkitURL or window.URL)
 
     # Use BlobBuilder and URL to force download dynamic string asa file.
     # `a`:        $ <a/>
@@ -410,10 +410,10 @@ class Exporter
     # `filename`: take a guess...
     constructor: (a, data, filename = 'widget.tsv') ->
         # Get BlobBuilder.
-        builder = new (root.WebKitBlobBuilder or root.MozBlobBuilder or root.BlobBuilder)()
+        builder = new (window.WebKitBlobBuilder or window.MozBlobBuilder or window.BlobBuilder)()
 
         # Populate.
-        builder.append data
+        builder.append data s
 
         a.attr 'download', filename # download
         (@href = @url.createObjectURL builder.getBlob "#{@mime};charset=#{@charset}") and (a.attr 'href', @href) # href
@@ -437,7 +437,7 @@ class Loader
             state = tag.readyState
             if state is "complete" or state is "loaded"
                 tag.onreadystatechange = null
-                root.setTimeout callback, 0
+                window.setTimeout callback, 0
 
 
 # JavaScript Loader.
@@ -483,21 +483,21 @@ class root.Widgets
     constructor: (@service, @token = "") ->
         # Check and load resources if needed.
         for library, path of @resources.js then do (library, path) =>
-            if not root[library]?
+            if not window[library]?
                 @wait = (@wait ? 0) + 1
                 new JSLoader(path, =>
                     # We are jQuery.
-                    if library is 'jQuery' then root.$ = root.jQuery
+                    if library is 'jQuery' then root.$ = window.jQuery
                     # We are Backbone.
-                    if library is 'Backbone' then root extends factory(root.Backbone)
+                    if library is 'Backbone' then root extends factory(window.Backbone)
                     
                     @wait -= 1
                 )
             else
                 # We are jQuery.
-                if library is 'jQuery' then root.$ = root.jQuery
+                if library is 'jQuery' then root.$ = window.jQuery
                 # We are Backbone.
-                if library is 'Backbone' then root extends factory(root.Backbone)
+                if library is 'Backbone' then root extends factory(window.Backbone)
 
     # Chart Widget.
     # `id`:            widgetId
@@ -505,7 +505,7 @@ class root.Widgets
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
     chart: (opts...) =>
-        if @wait then root.setTimeout((=> @chart(opts...)), 0)
+        if @wait then window.setTimeout((=> @chart(opts...)), 0)
         else
             # Load Google Visualization.
             google.load "visualization", "1.0",
@@ -518,7 +518,7 @@ class root.Widgets
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function() {} }
     enrichment: (opts...) =>
-        if @wait then root.setTimeout((=> @enrichment(opts...)), 0) else new EnrichmentWidget(@service, @token, opts...)
+        if @wait then window.setTimeout((=> @enrichment(opts...)), 0) else new EnrichmentWidget(@service, @token, opts...)
 
     # All available Widgets.
     # `type`:          Gene, Protein
@@ -526,7 +526,7 @@ class root.Widgets
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {}, "matchCb": function() {} }
     all: (type = "Gene", bagName, el, widgetOptions) =>
-        if @wait then root.setTimeout((=> @all(type, bagName, el, widgetOptions)), 0)
+        if @wait then window.setTimeout((=> @all(type, bagName, el, widgetOptions)), 0)
         else
             $.ajax
                 url:      "#{@service}widgets"
