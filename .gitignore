@@ -1,5 +1,3 @@
 *.jsp
 js/lib/*
-tests/lib/*
-tests/*.js
 node_modules/
