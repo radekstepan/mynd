@@ -56,7 +56,7 @@ INTERMINE =
 
 ### With Commit
 
-**Execute** the release task by running `cake release --commit "message"`; this will commit the `widget.js` file with your custom message.
+**Execute** the release task by running `cake --commit "message" release`; this will commit the `widget.js` file with your custom message.
 
 ## Example:
 ![image](https://raw.github.com/radekstepan/intermine-widget-client/master/example.png)
