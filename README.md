@@ -13,14 +13,17 @@ Client for embedding InterMine widgets (ws_widgets).
 - [uglify-js](https://github.com/mishoo/UglifyJS) to compress templates
 
 ## Configure:
-1. Create a new Widgets instance pointing to a service: `widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");` in `index.html`.
+1. Create a new Widgets instance in `index.html` pointing to a service:
+    ```javascript
+    widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");
+    ```
 
 2. Choose which widgets you want to load:
-```javascript
-widgets.all('Gene', 'myList', '#all-widgets'); // load all Widgets
-widgets.chart('flyfish', 'myList', '#widget-1'); // load a specific Chart Widget
-widgets.enrichment('pathway_enrichment', 'myList', '#widget-2'); // load a specific Enrichment Widget
-```
+    ```javascript
+    widgets.all('Gene', 'myList', '#all-widgets'); // load all Widgets
+    widgets.chart('flyfish', 'myList', '#widget-1'); // load a specific Chart Widget
+    widgets.enrichment('pathway_enrichment', 'myList', '#widget-2'); // load a specific Enrichment Widget
+    ```
 ## Use:
 2. Start a simple HTTP server using `.webserver.sh`.
 3. Visit `http://0.0.0.0:1111/`
