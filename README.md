@@ -7,6 +7,10 @@ Client for embedding InterMine widgets (ws_widgets).
 - underscore.js (included)
 - backbone.js (included)
 
+1. Open the `index.html`, and modify where the widgets webservice exists (line #63).
+2. Start a simple HTTP server using `.webserver.sh`.
+3. Visit `http://0.0.0.0:1111/`
+
 ### To Compile/Test:
 - CoffeeScript & [eco](https://github.com/sstephenson/eco) templating
 - [uglify-js](https://github.com/mishoo/UglifyJS) to compress templates
@@ -17,7 +21,8 @@ Client for embedding InterMine widgets (ws_widgets).
 
 ## Test:
 1. Run `cake compile:tests` to compile the test spec.
-2. Visit `http://0.0.0.0:1111/tests/` that automatically runs [Jasmine](http://pivotal.github.com/jasmine/) tests.
+2. Start a simple HTTP server using `.webserver.sh`.
+3. Visit `http://0.0.0.0:1111/tests/` that automatically runs [Jasmine](http://pivotal.github.com/jasmine/) tests.
 
 ## Use:
 1. Create a new Widgets instance pointing to a service: `widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");`
