@@ -16,7 +16,8 @@ Client for embedding InterMine widgets (ws_widgets).
 2. Run `cake compile:main` to compile widgets and templates into one target. Check optional parameters by running `cake`.
 
 ## Test:
-3. Run `cake compile:tests` to compile the test spec.
+1. Run `cake compile:tests` to compile the test spec.
+2. Visit `http://0.0.0.0:1111/tests/` that automatically runs [Jasmine](http://pivotal.github.com/jasmine/) tests.
 
 ## Use:
 1. Create a new Widgets instance pointing to a service: `widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");`

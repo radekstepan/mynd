@@ -57,7 +57,7 @@ task "compile:tests", "compile tests spec", (options) ->
     fs.unlink SPEC.OUTPUT
 
     # CoffeeScript compile.
-    append SPEC.OUTPUT, cs.compile fs.readFileSync SPEC.INPUT, "utf-8"
+    write SPEC.OUTPUT, cs.compile fs.readFileSync SPEC.INPUT, "utf-8"
 
     # Done.
     console.log "#{COLORS.GREEN}Tests compilation a success#{COLORS.DEFAULT}"
