@@ -104,9 +104,6 @@ task "release", "release compiled widgets.js into target InterMine directory", (
 main = (minify, callback) ->
     console.log "#{COLORS.BOLD}Compiling main#{COLORS.DEFAULT}"
 
-    # Clean.
-    fs.unlink MAIN.OUTPUT
-
     # Head.
     head = (cb) -> cb "(function() {"
 
@@ -198,7 +195,7 @@ walk = (path, callback) ->
                     callback null, results unless --pending # Done yet?
 
 # Append to existing file.
-write = (path, text, mode = "a") ->
+write = (path, text, mode = "w") ->
     fs.open path, mode, 0666, (e, id) ->
         if e then throw new Error(e)
         fs.write id, text, null, "utf8"
