@@ -38,36 +38,14 @@
         <p>BDGP expression patterns loaded from <span class="label">ws_widgets</span> FlyMine branch.</p>
       </div>
 
-      <div class="row">
-        <div class="span6">
-          <article id="widget-1"></article>
-        </div>
-        <div class="span6">
-          <article id="widget-2"></article>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="span6">
-          <article id="widget-3"></article>
-        </div>
-        <div class="span6">
-          <article id="widget-4"></article>
-        </div>
-      </div>
-
-      <div id="widgets-all" class="row"></div>
+      <div id="widgets-genes" class="row"></div>
+      <div id="widgets-proteins" class="row"></div>
 
       <script type="text/javascript">
         (function() {
           widgets = new Widgets("http://aragorn:8080/flymine/service/");
-          /*
-          widgets.chart('flyfish', 'demo-genes', '#widget-1');
-          widgets.chart('flyatlas', 'demo-genes', '#widget-2');
-          widgets.enrichment('bdgp_enrichment', 'demo-genes', '#widget-3');
-          widgets.enrichment('prot_dom_enrichment', 'demo-genes', '#widget-4');
-          */
-          widgets.all('Protein', 'demo-proteins', '#widgets-all')
+          widgets.all('Gene', 'demo-genes', '#widgets-genes');
+          widgets.all('Protein', 'demo-proteins', '#widgets-proteins');
         })();
       </script>
 
