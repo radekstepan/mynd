@@ -17,10 +17,16 @@ MAIN =
 SPEC =
     INPUT: "tests/spec.coffee"
     OUTPUT: "tests/spec.js"
+
 # Templates dir.
 TEMPLATES = "src/templates"
+# Utils dir.
+UTILS = "src/utils"
+# Classes dir.
+CLASSES = "src/class"
 # Which folders to watch for changes?
-WATCH = [ "src", "src/templates" ]
+WATCH = [ "src", "src/templates", "src/utils", "src/class" ]
+
 # Path to InterMine SVN output.
 INTERMINE =
     ROOT: "/home/rs676/svn/ws_widgets"
@@ -38,13 +44,12 @@ COLORS =
 # --------------------------------------------
 
 
-option '-m', '--minify', 'should we minify main library for production?'
 option '-w', '--watch', 'should we watch source directories for changes?'
 option '-c', '--commit [MESSAGE]', 'make an SVN commit in InterMine passing the message'
 
 # Compile widgets.coffee and .eco templates into one output. Do not use globals for JST.
 task "compile:main", "compile widgets library and templates together", (options) ->
-    main options.minify, ->
+    main ->
 
     # Watch for changes?
     if options.watch
@@ -56,7 +61,7 @@ task "compile:main", "compile widgets library and templates together", (options)
                     console.log "#{COLORS.BLUE}Change detected in #{file}#{COLORS.DEFAULT}"
                     if done
                         done = false
-                        main options.minify, -> done = true
+                        main -> done = true
 
 # Compile tests spec.coffee.
 task "compile:tests", "compile tests spec", (options) ->
@@ -101,11 +106,11 @@ task "release", "release compiled widgets.js into target InterMine directory", (
 # --------------------------------------------
 
 
-main = (minify, callback) ->
+main = (callback) ->
     console.log "#{COLORS.BOLD}Compiling main#{COLORS.DEFAULT}"
 
     # Head.
-    head = (cb) -> cb "(function() {"
+    head = (cb) -> cb "(function() {\nvar root;\nroot = this;\n"
 
     # Compile templates.
     templates = (cb) ->
@@ -123,10 +128,43 @@ main = (minify, callback) ->
                         tmpl.push uglify "JST['#{name}'] = #{js}"
                 cb tmpl
 
-    # Compile main library (and optionally minify).
+    # Compile utils in any order.
+    utils = (cb) ->
+        utils = []
+        walk UTILS, (err, files) ->
+            if err then throw new Error('problem walking utils')
+            else
+                for file in files
+                    # Read in, compile.
+                    utils.push cs.compile fs.readFileSync(file, "utf-8"), bare: "on"
+                cb utils
+
+    # Compile the main classes in any order (access through factory).
+    classes = (cb) ->
+        classes = [ "var factory;\nfactory = function(Backbone) {\n" ]
+        walk CLASSES, (err, files) ->
+            if err then throw new Error('problem walking classes')
+            else
+                names = []
+                for file in files
+                    # Read in, compile.
+                    source = cs.compile fs.readFileSync(file, "utf-8"), bare: "on"
+                    # Insert spaces as we are inside the factory function (nicety).
+                    classes.push ( "  #{line}\n" for line in source.split("\n") ).join('')
+                    # Get the class name (it better match).
+                    names.push file.split('/').pop().split('.')[0]
+                
+                # Create a closing return statement exposing all classes.
+                classes.push "  return {\n"
+                classes.push ( "    \"#{name}\": #{name},\n" for name in names ).join('')
+                classes.push "  };\n};"
+
+                cb classes
+
+    # Compile the public library.
     widgets = (cb) ->
         compiled = cs.compile fs.readFileSync(MAIN.INPUT, "utf-8"), bare: "on"
-        if minify then cb uglify compiled else cb compiled
+        cb compiled
 
     # Close.
     close = (cb) -> cb "}).call(this);"
@@ -146,7 +184,7 @@ main = (minify, callback) ->
         console.log "#{COLORS.GREEN}Done#{COLORS.DEFAULT}"
 
     # This is the queue order.
-    queue [ head, templates, widgets, close ], done
+    queue [ head, templates, utils, classes, widgets, close ], done
 
 # A serial queue that waits until all resources have returned and then calls back.
 queue = (calls, callback) ->
