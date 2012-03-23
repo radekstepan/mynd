@@ -1,13 +1,13 @@
 # Public interface for the various InterMine Widgets.
-class root.Widgets
+class window.Widgets
 
-    # JavaScript libraries as resources. Will be loaded if not present already.
+    # JavaScript libraries as resources. Will be loaded if not present already, in the specified order.
     resources:
         js:
             jQuery:   "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
             _:        "http://documentcloud.github.com/underscore/underscore.js"
-            google:   "https://www.google.com/jsapi"
             Backbone: "http://documentcloud.github.com/backbone/backbone-min.js"
+            google:   "https://www.google.com/jsapi"
 
     # New Widgets client.
     # `service`: http://aragorn.flymine.org:8080/flymine/service/
@@ -15,21 +15,17 @@ class root.Widgets
     constructor: (@service, @token = "") ->
         # Check and load resources if needed.
         for library, path of @resources.js then do (library, path) =>
-            if not window[library]?
-                @wait = (@wait ? 0) + 1
+            if not window[library]? and path
+                @wait = (@wait ? 0) + 1 # One more thing...
+                @resources.js[library] = false # We are loading this.
+                # Actual load.
                 new JSLoader(path, =>
-                    # We are jQuery.
-                    if library is 'jQuery' then root.$ = window.jQuery
-                    # We are Backbone.
-                    if library is 'Backbone' then root extends factory(window.Backbone)
-                    
+                    # One less thing...
                     @wait -= 1
+                    if not @wait
+                        # We are Backbone, we can now export classes.
+                        o extends factory(window.Backbone)
                 )
-            else
-                # We are jQuery.
-                if library is 'jQuery' then root.$ = window.jQuery
-                # We are Backbone.
-                if library is 'Backbone' then root extends factory(window.Backbone)
 
     # Chart Widget.
     # `id`:            widgetId
@@ -42,7 +38,7 @@ class root.Widgets
             # Load Google Visualization.
             google.load "visualization", "1.0",
                 packages: [ "corechart" ]
-                callback: => new ChartWidget(@service, @token, opts...)
+                callback: => new o.ChartWidget(@service, @token, opts...)
     
     # Enrichment Widget.
     # `id`:            widgetId
@@ -50,7 +46,7 @@ class root.Widgets
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function() {} }
     enrichment: (opts...) =>
-        if @wait then window.setTimeout((=> @enrichment(opts...)), 0) else new EnrichmentWidget(@service, @token, opts...)
+        if @wait then window.setTimeout((=> @enrichment(opts...)), 0) else new o.EnrichmentWidget(@service, @token, opts...)
 
     # All available Widgets.
     # `type`:          Gene, Protein
