@@ -23,7 +23,7 @@ class window.Widgets
                     # One less thing...
                     @wait -= 1
                     if not @wait
-                        # We are Backbone, we can now export classes.
+                        # All libraries loaded, we can now export classes.
                         o extends factory(window.Backbone)
                 )
 

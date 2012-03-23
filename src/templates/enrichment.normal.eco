@@ -8,8 +8,8 @@
     <div class="form"></div>
 
     <div class="actions" style="margin-bottom:10px">
-        <a class="view btn btn-mini disabled">View</a>
-        <a class="export btn btn-mini disabled">Export</a>
+        <a class="btn btn-mini disabled view">View</a>
+        <a class="btn btn-mini disabled export">Export</a>
     </div>
 </header>
 <div class="content"></div>

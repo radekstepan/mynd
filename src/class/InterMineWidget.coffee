@@ -1,4 +1,4 @@
-class InterMineWidget extends Backbone.View
+class InterMineWidget
 
     # Inject wrapper inside the target div that we have control over.
     constructor: ->

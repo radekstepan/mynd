@@ -110,7 +110,7 @@ main = (callback) ->
     console.log "#{COLORS.BOLD}Compiling main#{COLORS.DEFAULT}"
 
     # Head.
-    head = (cb) -> cb "(function() {\nvar root;\nroot = this;\n"
+    head = (cb) -> cb "(function() {\nvar o = {};\n"
 
     # Compile templates.
     templates = (cb) ->

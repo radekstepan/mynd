@@ -15,7 +15,7 @@ class Exporter
         builder = new (window.WebKitBlobBuilder or window.MozBlobBuilder or window.BlobBuilder)()
 
         # Populate.
-        builder.append data s
+        builder.append data
 
         a.attr 'download', filename # download
         (@href = @url.createObjectURL builder.getBlob "#{@mime};charset=#{@charset}") and (a.attr 'href', @href) # href
