@@ -2,7 +2,7 @@ class EnrichmentView extends Backbone.View
 
     events:
         "click div.actions a.view":      "viewAction"
-        "click div.actions a.view":      "viewAction"
+        "click div.actions a.export":    "exportAction"
         "change div.form select":        "formAction"
         "click div.content input.check": "selectAllAction"
 
@@ -85,54 +85,25 @@ class EnrichmentView extends Backbone.View
     # (De-)select all.
     selectAllAction: => @collection.toggleSelected()
 
-
-    # ------------------------------------------------
-
-
-    viewAction: -> console.log "viewAction!"
-
-    exportAction: ->
-        console.log "exportAction!"
-
+    # Export selected rows into a file.
+    exportAction: (e) =>
         # Create a tab delimited string.
         result = []
-        for key, value of @selected
-            result.push [ value.item, value['p-value'] ].join("\t") + "\t" + ( match.displayed for match in value.matches ).join()
+        for model in @collection.selected()
+            result.push [ model.get('item'), model.get('p-value') ].join("\t") + "\t" + ( match.displayed for match in model.get('matches') ).join()
 
         if result.length # Can be empty.
             # Create.
-            ex = new Exporter $(e.target), result.join("\n"), "#{@bagName} #{@id}.tsv"
+            ex = new Exporter $(e.target), result.join("\n"), "#{@widget.bagName} #{@widget.id}.tsv"
             # Cleanup.
             window.setTimeout (->
                 ex.destroy()
             ), 5000
 
-    # Append to or remove from a list of selected rows.
-    checkboxClick: (key, row) =>
-        if not @selected? then @selected = {}
-        if @selected[key]? then delete @selected[key] else @selected[key] = row
+    # ------------------------------------------------
 
-        # Update the action buttons.
-        for key, value of @selected
-            $(@el).find('div.actions a.btn.disabled').removeClass 'disabled'
-            return
-        $(@el).find('div.actions a.btn').addClass 'disabled'
 
-    # (De-)Select all items in a table
-    selectAllClick: (e) =>
-        if not @selected? then @selected = {}
-        
-        # Select all.
-        if $(e.target).is(':checked')
-            $(@el).find('div.content table tbody tr').each (i, row) =>
-                $(row).find('td.check input:not(:checked)').attr 'checked', true
-                @selected[i] = row
-            $(@el).find('div.actions a.btn').removeClass 'disabled'
-        # Deselect all.
-        else
-            @selected = {}
-            $(@el).find('div.content table tbody tr td.check input:checked').each (i, input) -> $(input).attr 'checked', false
-            $(@el).find('div.actions a.btn').addClass 'disabled'
+    viewAction: -> console.log "viewAction!"
 
     # Show matches.
     matchesClick: (target, matches, matchCb) =>

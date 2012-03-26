@@ -617,8 +617,7 @@ factory = function(Backbone) {
   
     function EnrichmentView() {
       this.matchesClick = __bind(this.matchesClick, this);
-      this.selectAllClick = __bind(this.selectAllClick, this);
-      this.checkboxClick = __bind(this.checkboxClick, this);
+      this.exportAction = __bind(this.exportAction, this);
       this.selectAllAction = __bind(this.selectAllAction, this);
       this.formAction = __bind(this.formAction, this);
       this.renderToolbar = __bind(this.renderToolbar, this);
@@ -627,7 +626,7 @@ factory = function(Backbone) {
   
     EnrichmentView.prototype.events = {
       "click div.actions a.view": "viewAction",
-      "click div.actions a.view": "viewAction",
+      "click div.actions a.export": "exportAction",
       "change div.form select": "formAction",
       "click div.content input.check": "selectAllAction"
     };
@@ -706,69 +705,33 @@ factory = function(Backbone) {
       return this.collection.toggleSelected();
     };
   
-    EnrichmentView.prototype.viewAction = function() {
-      return console.log("viewAction!");
-    };
-  
-    EnrichmentView.prototype.exportAction = function() {
-      var ex, key, match, result, value, _ref;
-      console.log("exportAction!");
+    EnrichmentView.prototype.exportAction = function(e) {
+      var ex, match, model, result, _i, _len, _ref;
       result = [];
-      _ref = this.selected;
-      for (key in _ref) {
-        value = _ref[key];
-        result.push([value.item, value['p-value']].join("\t") + "\t" + ((function() {
-          var _i, _len, _ref2, _results;
-          _ref2 = value.matches;
+      _ref = this.collection.selected();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        model = _ref[_i];
+        result.push([model.get('item'), model.get('p-value')].join("\t") + "\t" + ((function() {
+          var _j, _len2, _ref2, _results;
+          _ref2 = model.get('matches');
           _results = [];
-          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
-            match = _ref2[_i];
+          for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+            match = _ref2[_j];
             _results.push(match.displayed);
           }
           return _results;
         })()).join());
       }
       if (result.length) {
-        ex = new Exporter($(e.target), result.join("\n"), "" + this.bagName + " " + this.id + ".tsv");
+        ex = new Exporter($(e.target), result.join("\n"), "" + this.widget.bagName + " " + this.widget.id + ".tsv");
         return window.setTimeout((function() {
           return ex.destroy();
         }), 5000);
       }
     };
   
-    EnrichmentView.prototype.checkboxClick = function(key, row) {
-      var value, _ref;
-      if (!(this.selected != null)) this.selected = {};
-      if (this.selected[key] != null) {
-        delete this.selected[key];
-      } else {
-        this.selected[key] = row;
-      }
-      _ref = this.selected;
-      for (key in _ref) {
-        value = _ref[key];
-        $(this.el).find('div.actions a.btn.disabled').removeClass('disabled');
-        return;
-      }
-      return $(this.el).find('div.actions a.btn').addClass('disabled');
-    };
-  
-    EnrichmentView.prototype.selectAllClick = function(e) {
-      var _this = this;
-      if (!(this.selected != null)) this.selected = {};
-      if ($(e.target).is(':checked')) {
-        $(this.el).find('div.content table tbody tr').each(function(i, row) {
-          $(row).find('td.check input:not(:checked)').attr('checked', true);
-          return _this.selected[i] = row;
-        });
-        return $(this.el).find('div.actions a.btn').removeClass('disabled');
-      } else {
-        this.selected = {};
-        $(this.el).find('div.content table tbody tr td.check input:checked').each(function(i, input) {
-          return $(input).attr('checked', false);
-        });
-        return $(this.el).find('div.actions a.btn').addClass('disabled');
-      }
+    EnrichmentView.prototype.viewAction = function() {
+      return console.log("viewAction!");
     };
   
     EnrichmentView.prototype.matchesClick = function(target, matches, matchCb) {
