@@ -7,7 +7,7 @@
 
     <div class="form"></div>
 
-    <div class="actions" style="margin-bottom:10px">
+    <div class="actions" style="padding:10px 0">
         <!-- enrichment.actions.eco -->
     </div>
 </header>

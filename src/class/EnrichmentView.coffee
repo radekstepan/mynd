@@ -37,16 +37,13 @@ class EnrichmentView extends Backbone.View
 
         # Results?
         if @response.results.length > 0
-            # How tall should the table be? Whole height - header - table head - some extra space
-            height = $(@el).height() - $(@el).find('header').height() - 30 - 18
-
             # Render the actions toolbar, we have results.
             @renderToolbar()
 
             # Render the table.
             $(@el).find("div.content").html(
                 $ @template "enrichment.table", "label": @response.label
-            ).find('div.wrapper').css 'height', "#{height}px"
+            )
 
             # Table rows.
             table = $(@el).find("div.content table")
@@ -65,6 +62,10 @@ class EnrichmentView extends Backbone.View
             # Fix the `div.head` element width.
             table.find('thead th').each (i, th) =>
                 $(@el).find("div.content div.head div:eq(#{i})").width $(th).width()
+
+            # How tall should the table be? Whole height - header - faux header.
+            height = $(@el).height() - $(@el).find('header').height() - $(@el).find('div.content div.head').height()
+            $(@el).find("div.content div.wrapper").css 'height', "#{height}px"
             
         else
             # Render no results

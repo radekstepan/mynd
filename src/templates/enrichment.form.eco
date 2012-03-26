@@ -1,4 +1,4 @@
-<form>
+<form style="margin:0">
     <div class="group" style="display:inline-block;margin-right:5px">
         <label>Test Correction</label>
         <select name="errorCorrection" class="span2">
