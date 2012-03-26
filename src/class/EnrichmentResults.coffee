@@ -15,6 +15,9 @@ class EnrichmentRow extends Backbone.Model
     # Validate type.
     validate: (row) => @widget.validateType row, @spec
 
+    # Toggle the `selected` state of this row item.
+    toggleSelected: => @set(selected: not @get("selected"))
+
 class EnrichmentResults extends Backbone.Collection
 
     model: EnrichmentRow
