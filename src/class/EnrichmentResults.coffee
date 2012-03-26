@@ -1,5 +1,17 @@
+class EnrichmentMatch extends Backbone.Model
+
+
+class EnrichmentMatches extends Backbone.Collection
+
+    model: EnrichmentMatch
+
+
 class EnrichmentRow extends Backbone.Model    
 
+    defaults:
+        "selected":    false # Is the row selected?
+
+    # Spec for validating the object data types.
     spec:
         "description": type.isString
         "item":        type.isString
@@ -7,12 +19,10 @@ class EnrichmentRow extends Backbone.Model
         "p-value":     type.isInteger
         "selected":    type.isBoolean
 
-    defaults:
-        "selected":    false # Is the row selected?
-
+    # Call the validation on us.
     initialize: (row, @widget) -> @validate row
 
-    # Validate type.
+    # Validate type (@throws Error).
     validate: (row) => @widget.validateType row, @spec
 
     # Toggle the `selected` state of this row item.

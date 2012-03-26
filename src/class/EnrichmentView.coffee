@@ -59,6 +59,7 @@ class EnrichmentView extends Backbone.View
                 table.append $ new EnrichmentRowView(
                     "model":    row
                     "template": @template
+                    "matchCb":  @options.matchCb
                 ).el
 
             # Fix the `div.head` element width.
@@ -100,16 +101,4 @@ class EnrichmentView extends Backbone.View
                 ex.destroy()
             ), 5000
 
-    # ------------------------------------------------
-
-
     viewAction: -> console.log "viewAction!"
-
-    # Show matches.
-    matchesClick: (target, matches, matchCb) =>
-        target.after modal = $ @template "enrichment.matches", "matches": matches
-        modal.find("a.close").click -> modal.remove()
-        # Individual match click behavior.
-        modal.find("div.popover-content a").click (e) ->
-            matchCb $(@).text()
-            e.preventDefault()
