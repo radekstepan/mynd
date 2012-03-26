@@ -1,11 +1,16 @@
 class EnrichmentView extends Backbone.View
 
     events:
-        "click div.actions a.view":   "viewAction"
-        "click div.actions a.export": "exportAction"
+        "click div.actions a.view": "viewAction"
+        "click div.actions a.view": "viewAction"
+        "change div.form select":   "formAction"
 
     initialize: (o) ->
         @[k] = v for k, v of o
+
+        # New Collection.
+        @collection = new EnrichmentResults
+
         @render()
 
     render: ->
@@ -41,11 +46,15 @@ class EnrichmentView extends Backbone.View
             # Table rows.
             table = $(@el).find("div.content table")
             for i in [0...@response.results.length] then do (i) =>
-                row = @response.results[i]
-                # Validate type.
-                @widget.validateType row, @widget.spec.resultRow
-                # Append.
-                table.append tr = $ @template "enrichment.row", "row": row
+                # New Model.
+                row = new EnrichmentRow @response.results[i], @widget
+                @collection.add row
+
+                # Render.
+                table.append $ new EnrichmentRowView(
+                    "model":    row
+                    "template": @template
+                ).el
 
             # Fix the `div.head` element width.
             table.find('thead th').each (i, th) =>
@@ -56,6 +65,15 @@ class EnrichmentView extends Backbone.View
             $(@el).find("div.content").html $ @template "noresults"
 
         @
+
+    # On form select option change, set the new options and re-render.
+    formAction: (e) =>
+        @widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value")
+        @widget.render()
+
+
+    # ------------------------------------------------
+
 
     viewAction: -> console.log "viewAction!"
 
@@ -74,15 +92,6 @@ class EnrichmentView extends Backbone.View
             window.setTimeout (->
                 ex.destroy()
             ), 5000
-
-
-    # ------------------------------------------------
-
-
-    # On form select option change, set the new options and re-render.
-    formClick: (e) =>
-        @formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value")
-        @render()
 
     # Append to or remove from a list of selected rows.
     checkboxClick: (key, row) =>

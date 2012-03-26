@@ -22,11 +22,6 @@ class EnrichmentWidget extends InterMineWidget
             "title":         type.isString
             "type":          type.isString
             "wasSuccessful": type.isBoolean
-        resultRow:
-            "description": type.isString
-            "item":        type.isString
-            "matches":     type.isArray
-            "p-value":     type.isInteger
 
     # Set the params on us and render.
     # `service`:       http://aragorn.flymine.org:8080/flymine/service/
@@ -61,6 +56,7 @@ class EnrichmentWidget extends InterMineWidget
                 @validateType response, @spec.response
                 # We have results.
                 if response.wasSuccessful
+                    # New View.
                     new EnrichmentView(
                         "widget":   @
                         "el":       @el
