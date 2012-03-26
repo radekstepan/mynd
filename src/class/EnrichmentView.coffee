@@ -11,6 +11,7 @@ class EnrichmentView extends Backbone.View
 
         # New Collection.
         @collection = new EnrichmentResults
+        @collection.bind('change', @renderToolbar) # Re-render toolbar on change.
 
         @render()
 
@@ -39,6 +40,9 @@ class EnrichmentView extends Backbone.View
             # How tall should the table be? Whole height - header - table head - some extra space
             height = $(@el).height() - $(@el).find('header').height() - 30 - 18
 
+            # Render the actions toolbar, we have results.
+            @renderToolbar()
+
             # Render the table.
             $(@el).find("div.content").html(
                 $ @template "enrichment.table", "label": @response.label
@@ -66,6 +70,12 @@ class EnrichmentView extends Backbone.View
             $(@el).find("div.content").html $ @template "noresults"
 
         @
+
+    # Render the actions toolbar based on how many collection model rows are selected.
+    renderToolbar: =>
+        $(@el).find("div.actions").html(
+            $ @template "enrichment.actions", "disabled": @collection.selected().length is 0
+        )
 
     # On form select option change, set the new options and re-render.
     formAction: (e) =>

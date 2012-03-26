@@ -8,8 +8,9 @@
     <div class="form"></div>
 
     <div class="actions" style="margin-bottom:10px">
-        <a class="btn btn-mini disabled view">View</a>
-        <a class="btn btn-mini disabled export">Export</a>
+        <!-- enrichment.actions.eco -->
     </div>
 </header>
-<div class="content"></div>
+<div class="content">
+    <!-- enrichment.table.eco -->
+</div>

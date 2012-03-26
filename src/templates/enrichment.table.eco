@@ -17,6 +17,8 @@
                 <th>Matches</th>
             </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+            <!-- loop enrichment.row.eco -->
+        </tbody>
     </table>
 </div>
