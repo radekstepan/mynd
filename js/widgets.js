@@ -134,36 +134,6 @@ type.isUndefined = (function(_super) {
 
 })(type.Root);
 
-var Exporter,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-Exporter = (function() {
-
-  Exporter.prototype.mime = 'text/plain';
-
-  Exporter.prototype.charset = 'UTF-8';
-
-  Exporter.prototype.url = window.webkitURL || window.URL;
-
-  function Exporter(a, data, filename) {
-    var builder;
-    if (filename == null) filename = 'widget.tsv';
-    this.destroy = __bind(this.destroy, this);
-    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
-    builder.append(data);
-    a.attr('download', filename);
-    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
-    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
-  }
-
-  Exporter.prototype.destroy = function() {
-    return this.url.revokeObjectURL(this.href);
-  };
-
-  return Exporter;
-
-})();
-
 var CSSLoader, JSLoader, Loader,
   __hasProp = Object.prototype.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
@@ -227,6 +197,36 @@ CSSLoader = (function(_super) {
 
 })(Loader);
 
+var Exporter,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+Exporter = (function() {
+
+  Exporter.prototype.mime = 'text/plain';
+
+  Exporter.prototype.charset = 'UTF-8';
+
+  Exporter.prototype.url = window.webkitURL || window.URL;
+
+  function Exporter(a, data, filename) {
+    var builder;
+    if (filename == null) filename = 'widget.tsv';
+    this.destroy = __bind(this.destroy, this);
+    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
+    builder.append(data);
+    a.attr('download', filename);
+    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
+    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
+  }
+
+  Exporter.prototype.destroy = function() {
+    return this.url.revokeObjectURL(this.href);
+  };
+
+  return Exporter;
+
+})();
+
 var factory;
 factory = function(Backbone) {
 
@@ -288,6 +288,53 @@ factory = function(Backbone) {
     return InterMineWidget;
   
   })();
+  
+
+  var EnrichmentRowView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  EnrichmentRowView = (function(_super) {
+  
+    __extends(EnrichmentRowView, _super);
+  
+    function EnrichmentRowView() {
+      this.selectAction = __bind(this.selectAction, this);
+      this.render = __bind(this.render, this);
+      EnrichmentRowView.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentRowView.prototype.tagName = "tr";
+  
+    EnrichmentRowView.prototype.events = {
+      "click td.check input": "selectAction"
+    };
+  
+    EnrichmentRowView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      this.model.bind('change', this.render);
+      return this.render();
+    };
+  
+    EnrichmentRowView.prototype.render = function() {
+      $(this.el).html(this.template("enrichment.row", {
+        "row": this.model.toJSON()
+      }));
+      return this;
+    };
+  
+    EnrichmentRowView.prototype.selectAction = function() {
+      return this.model.toggleSelected();
+    };
+  
+    return EnrichmentRowView;
+  
+  })(Backbone.View);
   
 
   var ChartView,
@@ -382,54 +429,6 @@ factory = function(Backbone) {
     };
   
     return ChartView;
-  
-  })(Backbone.View);
-  
-
-  var EnrichmentRowView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  EnrichmentRowView = (function(_super) {
-  
-    __extends(EnrichmentRowView, _super);
-  
-    function EnrichmentRowView() {
-      this.selectAction = __bind(this.selectAction, this);
-      this.render = __bind(this.render, this);
-      EnrichmentRowView.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentRowView.prototype.tagName = "tr";
-  
-    EnrichmentRowView.prototype.events = {
-      "click td.check input": "selectAction"
-    };
-  
-    EnrichmentRowView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      this.model.bind('change', this.render);
-      return this.render();
-    };
-  
-    EnrichmentRowView.prototype.render = function() {
-      console.log("r");
-      $(this.el).html(this.template("enrichment.row", {
-        "row": this.model.toJSON()
-      }));
-      return this;
-    };
-  
-    EnrichmentRowView.prototype.selectAction = function() {
-      return this.model.toggleSelected();
-    };
-  
-    return EnrichmentRowView;
   
   })(Backbone.View);
   
@@ -570,6 +569,37 @@ factory = function(Backbone) {
   
     EnrichmentResults.prototype.model = EnrichmentRow;
   
+    EnrichmentResults.prototype.selected = function() {
+      return this.filter(function(row) {
+        return row.get("selected");
+      });
+    };
+  
+    EnrichmentResults.prototype.toggleSelected = function() {
+      var model, _i, _j, _len, _len2, _ref, _ref2, _results, _results2;
+      if (this.models.length - this.selected().length) {
+        _ref = this.models;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          model = _ref[_i];
+          _results.push(model.set({
+            "selected": true
+          }));
+        }
+        return _results;
+      } else {
+        _ref2 = this.models;
+        _results2 = [];
+        for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+          model = _ref2[_j];
+          _results2.push(model.set({
+            "selected": false
+          }));
+        }
+        return _results2;
+      }
+    };
+  
     return EnrichmentResults;
   
   })(Backbone.Collection);
@@ -588,6 +618,7 @@ factory = function(Backbone) {
       this.matchesClick = __bind(this.matchesClick, this);
       this.selectAllClick = __bind(this.selectAllClick, this);
       this.checkboxClick = __bind(this.checkboxClick, this);
+      this.selectAllAction = __bind(this.selectAllAction, this);
       this.formAction = __bind(this.formAction, this);
       EnrichmentView.__super__.constructor.apply(this, arguments);
     }
@@ -595,7 +626,8 @@ factory = function(Backbone) {
     EnrichmentView.prototype.events = {
       "click div.actions a.view": "viewAction",
       "click div.actions a.view": "viewAction",
-      "change div.form select": "formAction"
+      "change div.form select": "formAction",
+      "click div.content input.check": "selectAllAction"
     };
   
     EnrichmentView.prototype.initialize = function(o) {
@@ -658,6 +690,10 @@ factory = function(Backbone) {
     EnrichmentView.prototype.formAction = function(e) {
       this.widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value");
       return this.widget.render();
+    };
+  
+    EnrichmentView.prototype.selectAllAction = function() {
+      return this.collection.toggleSelected();
     };
   
     EnrichmentView.prototype.viewAction = function() {
@@ -841,8 +877,8 @@ factory = function(Backbone) {
   return {
 
     "InterMineWidget": InterMineWidget,
-    "ChartView": ChartView,
     "EnrichmentRowView": EnrichmentRowView,
+    "ChartView": ChartView,
     "ChartWidget": ChartWidget,
     "EnrichmentResults": EnrichmentResults,
     "EnrichmentView": EnrichmentView,

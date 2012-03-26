@@ -18,6 +18,19 @@ class EnrichmentRow extends Backbone.Model
     # Toggle the `selected` state of this row item.
     toggleSelected: => @set(selected: not @get("selected"))
 
+
 class EnrichmentResults extends Backbone.Collection
 
     model: EnrichmentRow
+
+    # Filter down the collection of all lists that are selected.
+    selected: -> @filter( (row) -> row.get "selected" )
+
+    # (De-)select all.
+    toggleSelected: ->
+        if @models.length - @selected().length
+            # Select all.
+            model.set "selected": true for model in @models
+        else
+            # Deselect all.
+            model.set "selected": false for model in @models

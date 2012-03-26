@@ -1,9 +1,10 @@
 class EnrichmentView extends Backbone.View
 
     events:
-        "click div.actions a.view": "viewAction"
-        "click div.actions a.view": "viewAction"
-        "change div.form select":   "formAction"
+        "click div.actions a.view":      "viewAction"
+        "click div.actions a.view":      "viewAction"
+        "change div.form select":        "formAction"
+        "click div.content input.check": "selectAllAction"
 
     initialize: (o) ->
         @[k] = v for k, v of o
@@ -70,6 +71,9 @@ class EnrichmentView extends Backbone.View
     formAction: (e) =>
         @widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value")
         @widget.render()
+
+    # (De-)select all.
+    selectAllAction: => @collection.toggleSelected()
 
 
     # ------------------------------------------------
