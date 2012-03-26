@@ -1,3 +1,6 @@
+# For our purposes, $ means jQuery or Zepto.
+$ = window.jQuery or window.Zepto
+
 # Public interface for the various InterMine Widgets.
 class window.Widgets
 

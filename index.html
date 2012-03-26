@@ -43,6 +43,7 @@
 
       <script type="text/javascript">
         (function() {
+          window.$ = "I am an evil library!";
           widgets = new Widgets("http://aragorn:8080/flymine/service/");
           widgets.all('Gene', 'demo-genes', '#widgets-genes');
           widgets.all('Protein', 'demo-proteins', '#widgets-proteins');
