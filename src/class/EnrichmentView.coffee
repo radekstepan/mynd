@@ -59,14 +59,20 @@ class EnrichmentView extends Backbone.View
                     "matchCb":  @options.matchCb
                 ).el
 
-            # Fix the `div.head` element width.
-            table.find('thead th').each (i, th) =>
-                $(@el).find("div.content div.head div:eq(#{i})").width $(th).width()
-
             # How tall should the table be? Whole height - header - faux header.
             height = $(@el).height() - $(@el).find('header').height() - $(@el).find('div.content div.head').height()
             $(@el).find("div.content div.wrapper").css 'height', "#{height}px"
-            
+
+            # Determine the width of the faux head element.
+            $(@el).find("div.content div.head").css "width", $(@el).find("div.content table").width() + "px"
+
+            # Fix the `div.head` elements width.
+            table.find('thead th').each (i, th) =>
+                $(@el).find("div.content div.head div:eq(#{i})").width $(th).width()
+
+            # Fix the `table` margin to hide gap after `thead` element.
+            table.css 'margin-top': '-' + table.find('thead').height() + 'px'
+
         else
             # Render no results
             $(@el).find("div.content").html $ @template "noresults"

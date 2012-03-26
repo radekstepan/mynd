@@ -1,12 +1,13 @@
 <!-- actual fixed head -->
-<div class="head">
-    <div style="font-weight:bold;display:inline-block;padding:0 8px;"><input type="checkbox" class="check" /></div>
-    <div style="font-weight:bold;display:inline-block;padding:0 2px;"><%= @label %></div>
-    <div style="font-weight:bold;display:inline-block;padding:0 3px;">p-Value</div>
-    <div style="font-weight:bold;display:inline-block;padding:0 4px;">Matches</div>
+<div class="head" style="display:table">
+    <div style="font-weight:bold;display:table-cell;padding:0 8px;"><input type="checkbox" class="check" /></div>
+    <div style="font-weight:bold;display:table-cell;padding:0 8px;"><%= @label %></div>
+    <div style="font-weight:bold;display:table-cell;padding:0 8px;">p-Value</div>
+    <div style="font-weight:bold;display:table-cell;padding:0 8px;">Matches</div>
+    <div style="clear:both"></div>
 </div>
 <div class="wrapper" style="overflow:auto;overflow-x:hidden">
-    <table class="table table-striped" style="margin-top:-34px">
+    <table class="table table-striped">
         <!-- head for proper cell width -->
         <thead style="visibility:hidden">
             <tr>

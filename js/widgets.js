@@ -7,7 +7,7 @@ JST["enrichment.matches.eco"]=function(a){a||(a={});var b=[],c=function(a){var c
 JST["enrichment.actions.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<a class="btn btn-mini '),this.disabled&&b.push("disabled"),b.push(' view">View</a>\n<a class="btn btn-mini '),this.disabled&&b.push("disabled"),b.push(' export">Export</a>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.row.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<td class="check"><input type="checkbox" '),b.push(d(this.row.selected?b.push('checked="checked"'):void 0)),b.push(' /></td>\n<td class="description">'),b.push(d(this.row.description)),b.push('</td>\n<td class="pValue">'),b.push(d(this.row["p-value"].toFixed(7))),b.push('</td>\n<td class="matches" style="position:relative">\n    <span class="count label label-success" style="cursor:pointer">'),b.push(d(this.row.matches.length)),b.push("</span>\n</td>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["noresults.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<div class="alert alert-info">\n    <p>The Widget has no results.</p>\n</div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["enrichment.table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<!-- actual fixed head -->\n<div class="head">\n    <div style="font-weight:bold;display:inline-block;padding:0 8px;"><input type="checkbox" class="check" /></div>\n    <div style="font-weight:bold;display:inline-block;padding:0 2px;">'),b.push(d(this.label)),b.push('</div>\n    <div style="font-weight:bold;display:inline-block;padding:0 3px;">p-Value</div>\n    <div style="font-weight:bold;display:inline-block;padding:0 4px;">Matches</div>\n</div>\n<div class="wrapper" style="overflow:auto;overflow-x:hidden">\n    <table class="table table-striped" style="margin-top:-34px">\n        <!-- head for proper cell width -->\n        <thead style="visibility:hidden">\n            <tr>\n                <th></th>\n                <th>'),b.push(d(this.label)),b.push("</th>\n                <th>p-Value</th>\n                <th>Matches</th>\n            </tr>\n        </thead>\n        <tbody>\n            <!-- loop enrichment.row.eco -->\n        </tbody>\n    </table>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
+JST["enrichment.table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<!-- actual fixed head -->\n<div class="head" style="display:table">\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;"><input type="checkbox" class="check" /></div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">'),b.push(d(this.label)),b.push('</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">p-Value</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">Matches</div>\n    <div style="clear:both"></div>\n</div>\n<div class="wrapper" style="overflow:auto;overflow-x:hidden">\n    <table class="table table-striped">\n        <!-- head for proper cell width -->\n        <thead style="visibility:hidden">\n            <tr>\n                <th></th>\n                <th>'),b.push(d(this.label)),b.push("</th>\n                <th>p-Value</th>\n                <th>Matches</th>\n            </tr>\n        </thead>\n        <tbody>\n            <!-- loop enrichment.row.eco -->\n        </tbody>\n    </table>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.form.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f,g,h,i,j;b.push('<form style="margin:0">\n    <div class="group" style="display:inline-block;margin-right:5px">\n        <label>Test Correction</label>\n        <select name="errorCorrection" class="span2">\n            '),i=this.errorCorrections;for(e=0,g=i.length;e<g;e++)a=i[e],b.push('\n                <option value="'),b.push(d(a)),b.push('" '),this.options.errorCorrection===a&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(a)),b.push("\n            </option>\n            ");b.push('\n        </select>\n    </div>\n\n    <div class="group" style="display:inline-block;margin-right:5px">\n        <label>Max p-value</label>\n        <select name="pValue" class="span2">\n            '),j=this.pValues;for(f=0,h=j.length;f<h;f++)c=j[f],b.push('\n                <option value="'),b.push(d(c)),b.push('" '),this.options.pValue===c&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(c)),b.push("\n                </option>\n            ");b.push("\n        </select>\n    </div>\n</form>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.normal.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push('\n        <p>Number of Genes in this list not analysed in this widget: <span class="label label-info">'),b.push(d(this.notAnalysed)),b.push("</span></p>\n    ")),b.push('\n\n    <div class="form"></div>\n\n    <div class="actions" style="padding:10px 0">\n        <!-- enrichment.actions.eco -->\n    </div>\n</header>\n<div class="content">\n    <!-- enrichment.table.eco -->\n</div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["chart.normal.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push('\n        <p>Number of Genes in this list not analysed in this widget: <span class="label label-info">'),b.push(d(this.notAnalysed)),b.push("</span></p>\n    ")),b.push('\n</header>\n<div class="content"></div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
@@ -135,6 +135,36 @@ type.isUndefined = (function(_super) {
 
 })(type.Root);
 
+var Exporter,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+Exporter = (function() {
+
+  Exporter.prototype.mime = 'text/plain';
+
+  Exporter.prototype.charset = 'UTF-8';
+
+  Exporter.prototype.url = window.webkitURL || window.URL;
+
+  function Exporter(a, data, filename) {
+    var builder;
+    if (filename == null) filename = 'widget.tsv';
+    this.destroy = __bind(this.destroy, this);
+    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
+    builder.append(data);
+    a.attr('download', filename);
+    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
+    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
+  }
+
+  Exporter.prototype.destroy = function() {
+    return this.url.revokeObjectURL(this.href);
+  };
+
+  return Exporter;
+
+})();
+
 var CSSLoader, JSLoader, Loader,
   __hasProp = Object.prototype.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
@@ -197,36 +227,6 @@ CSSLoader = (function(_super) {
   return CSSLoader;
 
 })(Loader);
-
-var Exporter,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-Exporter = (function() {
-
-  Exporter.prototype.mime = 'text/plain';
-
-  Exporter.prototype.charset = 'UTF-8';
-
-  Exporter.prototype.url = window.webkitURL || window.URL;
-
-  function Exporter(a, data, filename) {
-    var builder;
-    if (filename == null) filename = 'widget.tsv';
-    this.destroy = __bind(this.destroy, this);
-    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
-    builder.append(data);
-    a.attr('download', filename);
-    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
-    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
-  }
-
-  Exporter.prototype.destroy = function() {
-    return this.url.revokeObjectURL(this.href);
-  };
-
-  return Exporter;
-
-})();
 
 var factory;
 factory = function(Backbone) {
@@ -291,6 +291,53 @@ factory = function(Backbone) {
   })();
   
 
+  var EnrichmentMatchesView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  EnrichmentMatchesView = (function(_super) {
+  
+    __extends(EnrichmentMatchesView, _super);
+  
+    function EnrichmentMatchesView() {
+      this.matchAction = __bind(this.matchAction, this);
+      this.render = __bind(this.render, this);
+      EnrichmentMatchesView.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentMatchesView.prototype.events = {
+      "click a.match": "matchAction",
+      "click a.close": "remove"
+    };
+  
+    EnrichmentMatchesView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      this.collection = new EnrichmentMatches(this.matches);
+      return this.render();
+    };
+  
+    EnrichmentMatchesView.prototype.render = function() {
+      $(this.el).html(this.template("enrichment.matches", {
+        "matches": this.collection.toJSON()
+      }));
+      return this;
+    };
+  
+    EnrichmentMatchesView.prototype.matchAction = function(e) {
+      this.callback($(e.target).text());
+      return e.preventDefault();
+    };
+  
+    return EnrichmentMatchesView;
+  
+  })(Backbone.View);
+  
+
   var EnrichmentRowView,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = Object.prototype.hasOwnProperty,
@@ -344,53 +391,6 @@ factory = function(Backbone) {
     };
   
     return EnrichmentRowView;
-  
-  })(Backbone.View);
-  
-
-  var EnrichmentMatchesView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  EnrichmentMatchesView = (function(_super) {
-  
-    __extends(EnrichmentMatchesView, _super);
-  
-    function EnrichmentMatchesView() {
-      this.matchAction = __bind(this.matchAction, this);
-      this.render = __bind(this.render, this);
-      EnrichmentMatchesView.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentMatchesView.prototype.events = {
-      "click a.match": "matchAction",
-      "click a.close": "remove"
-    };
-  
-    EnrichmentMatchesView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      this.collection = new EnrichmentMatches(this.matches);
-      return this.render();
-    };
-  
-    EnrichmentMatchesView.prototype.render = function() {
-      $(this.el).html(this.template("enrichment.matches", {
-        "matches": this.collection.toJSON()
-      }));
-      return this;
-    };
-  
-    EnrichmentMatchesView.prototype.matchAction = function(e) {
-      this.callback($(e.target).text());
-      return e.preventDefault();
-    };
-  
-    return EnrichmentMatchesView;
   
   })(Backbone.View);
   
@@ -571,124 +571,6 @@ factory = function(Backbone) {
   })(InterMineWidget);
   
 
-  var EnrichmentMatch, EnrichmentMatches, EnrichmentResults, EnrichmentRow,
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-  
-  EnrichmentMatch = (function(_super) {
-  
-    __extends(EnrichmentMatch, _super);
-  
-    function EnrichmentMatch() {
-      EnrichmentMatch.__super__.constructor.apply(this, arguments);
-    }
-  
-    return EnrichmentMatch;
-  
-  })(Backbone.Model);
-  
-  EnrichmentMatches = (function(_super) {
-  
-    __extends(EnrichmentMatches, _super);
-  
-    function EnrichmentMatches() {
-      EnrichmentMatches.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentMatches.prototype.model = EnrichmentMatch;
-  
-    return EnrichmentMatches;
-  
-  })(Backbone.Collection);
-  
-  EnrichmentRow = (function(_super) {
-  
-    __extends(EnrichmentRow, _super);
-  
-    function EnrichmentRow() {
-      this.toggleSelected = __bind(this.toggleSelected, this);
-      this.validate = __bind(this.validate, this);
-      EnrichmentRow.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentRow.prototype.defaults = {
-      "selected": false
-    };
-  
-    EnrichmentRow.prototype.spec = {
-      "description": type.isString,
-      "item": type.isString,
-      "matches": type.isArray,
-      "p-value": type.isInteger,
-      "selected": type.isBoolean
-    };
-  
-    EnrichmentRow.prototype.initialize = function(row, widget) {
-      this.widget = widget;
-      return this.validate(row);
-    };
-  
-    EnrichmentRow.prototype.validate = function(row) {
-      return this.widget.validateType(row, this.spec);
-    };
-  
-    EnrichmentRow.prototype.toggleSelected = function() {
-      return this.set({
-        selected: !this.get("selected")
-      });
-    };
-  
-    return EnrichmentRow;
-  
-  })(Backbone.Model);
-  
-  EnrichmentResults = (function(_super) {
-  
-    __extends(EnrichmentResults, _super);
-  
-    function EnrichmentResults() {
-      EnrichmentResults.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentResults.prototype.model = EnrichmentRow;
-  
-    EnrichmentResults.prototype.selected = function() {
-      return this.filter(function(row) {
-        return row.get("selected");
-      });
-    };
-  
-    EnrichmentResults.prototype.toggleSelected = function() {
-      var model, _i, _j, _len, _len2, _ref, _ref2, _results, _results2;
-      if (this.models.length - this.selected().length) {
-        _ref = this.models;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          model = _ref[_i];
-          _results.push(model.set({
-            "selected": true
-          }));
-        }
-        return _results;
-      } else {
-        _ref2 = this.models;
-        _results2 = [];
-        for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
-          model = _ref2[_j];
-          _results2.push(model.set({
-            "selected": false
-          }));
-        }
-        return _results2;
-      }
-    };
-  
-    return EnrichmentResults;
-  
-  })(Backbone.Collection);
-  
-
   var EnrichmentView,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = Object.prototype.hasOwnProperty,
@@ -763,11 +645,15 @@ factory = function(Backbone) {
         for (i = 0, _ref = this.response.results.length; 0 <= _ref ? i < _ref : i > _ref; 0 <= _ref ? i++ : i--) {
           _fn(i);
         }
+        height = $(this.el).height() - $(this.el).find('header').height() - $(this.el).find('div.content div.head').height();
+        $(this.el).find("div.content div.wrapper").css('height', "" + height + "px");
+        $(this.el).find("div.content div.head").css("width", $(this.el).find("div.content table").width() + "px");
         table.find('thead th').each(function(i, th) {
           return $(_this.el).find("div.content div.head div:eq(" + i + ")").width($(th).width());
         });
-        height = $(this.el).height() - $(this.el).find('header').height() - $(this.el).find('div.content div.head').height();
-        $(this.el).find("div.content div.wrapper").css('height', "" + height + "px");
+        table.css({
+          'margin-top': '-' + table.find('thead').height() + 'px'
+        });
       } else {
         $(this.el).find("div.content").html($(this.template("noresults")));
       }
@@ -917,16 +803,134 @@ factory = function(Backbone) {
   })(InterMineWidget);
   
 
+  var EnrichmentMatch, EnrichmentMatches, EnrichmentResults, EnrichmentRow,
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  
+  EnrichmentMatch = (function(_super) {
+  
+    __extends(EnrichmentMatch, _super);
+  
+    function EnrichmentMatch() {
+      EnrichmentMatch.__super__.constructor.apply(this, arguments);
+    }
+  
+    return EnrichmentMatch;
+  
+  })(Backbone.Model);
+  
+  EnrichmentMatches = (function(_super) {
+  
+    __extends(EnrichmentMatches, _super);
+  
+    function EnrichmentMatches() {
+      EnrichmentMatches.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentMatches.prototype.model = EnrichmentMatch;
+  
+    return EnrichmentMatches;
+  
+  })(Backbone.Collection);
+  
+  EnrichmentRow = (function(_super) {
+  
+    __extends(EnrichmentRow, _super);
+  
+    function EnrichmentRow() {
+      this.toggleSelected = __bind(this.toggleSelected, this);
+      this.validate = __bind(this.validate, this);
+      EnrichmentRow.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentRow.prototype.defaults = {
+      "selected": false
+    };
+  
+    EnrichmentRow.prototype.spec = {
+      "description": type.isString,
+      "item": type.isString,
+      "matches": type.isArray,
+      "p-value": type.isInteger,
+      "selected": type.isBoolean
+    };
+  
+    EnrichmentRow.prototype.initialize = function(row, widget) {
+      this.widget = widget;
+      return this.validate(row);
+    };
+  
+    EnrichmentRow.prototype.validate = function(row) {
+      return this.widget.validateType(row, this.spec);
+    };
+  
+    EnrichmentRow.prototype.toggleSelected = function() {
+      return this.set({
+        selected: !this.get("selected")
+      });
+    };
+  
+    return EnrichmentRow;
+  
+  })(Backbone.Model);
+  
+  EnrichmentResults = (function(_super) {
+  
+    __extends(EnrichmentResults, _super);
+  
+    function EnrichmentResults() {
+      EnrichmentResults.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentResults.prototype.model = EnrichmentRow;
+  
+    EnrichmentResults.prototype.selected = function() {
+      return this.filter(function(row) {
+        return row.get("selected");
+      });
+    };
+  
+    EnrichmentResults.prototype.toggleSelected = function() {
+      var model, _i, _j, _len, _len2, _ref, _ref2, _results, _results2;
+      if (this.models.length - this.selected().length) {
+        _ref = this.models;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          model = _ref[_i];
+          _results.push(model.set({
+            "selected": true
+          }));
+        }
+        return _results;
+      } else {
+        _ref2 = this.models;
+        _results2 = [];
+        for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+          model = _ref2[_j];
+          _results2.push(model.set({
+            "selected": false
+          }));
+        }
+        return _results2;
+      }
+    };
+  
+    return EnrichmentResults;
+  
+  })(Backbone.Collection);
+  
+
   return {
 
     "InterMineWidget": InterMineWidget,
-    "EnrichmentRowView": EnrichmentRowView,
     "EnrichmentMatchesView": EnrichmentMatchesView,
+    "EnrichmentRowView": EnrichmentRowView,
     "ChartView": ChartView,
     "ChartWidget": ChartWidget,
-    "EnrichmentResults": EnrichmentResults,
     "EnrichmentView": EnrichmentView,
     "EnrichmentWidget": EnrichmentWidget,
+    "EnrichmentResults": EnrichmentResults,
 
   };
 };
