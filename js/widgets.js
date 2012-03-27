@@ -135,36 +135,6 @@ type.isUndefined = (function(_super) {
 
 })(type.Root);
 
-var Exporter,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-Exporter = (function() {
-
-  Exporter.prototype.mime = 'text/plain';
-
-  Exporter.prototype.charset = 'UTF-8';
-
-  Exporter.prototype.url = window.webkitURL || window.URL;
-
-  function Exporter(a, data, filename) {
-    var builder;
-    if (filename == null) filename = 'widget.tsv';
-    this.destroy = __bind(this.destroy, this);
-    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
-    builder.append(data);
-    a.attr('download', filename);
-    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
-    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
-  }
-
-  Exporter.prototype.destroy = function() {
-    return this.url.revokeObjectURL(this.href);
-  };
-
-  return Exporter;
-
-})();
-
 var CSSLoader, JSLoader, Loader,
   __hasProp = Object.prototype.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
@@ -227,6 +197,36 @@ CSSLoader = (function(_super) {
   return CSSLoader;
 
 })(Loader);
+
+var Exporter,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+Exporter = (function() {
+
+  Exporter.prototype.mime = 'text/plain';
+
+  Exporter.prototype.charset = 'UTF-8';
+
+  Exporter.prototype.url = window.webkitURL || window.URL;
+
+  function Exporter(a, data, filename) {
+    var builder;
+    if (filename == null) filename = 'widget.tsv';
+    this.destroy = __bind(this.destroy, this);
+    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
+    builder.append(data);
+    a.attr('download', filename);
+    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
+    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
+  }
+
+  Exporter.prototype.destroy = function() {
+    return this.url.revokeObjectURL(this.href);
+  };
+
+  return Exporter;
+
+})();
 
 var factory;
 factory = function(Backbone) {
@@ -291,53 +291,6 @@ factory = function(Backbone) {
   })();
   
 
-  var EnrichmentMatchesView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  EnrichmentMatchesView = (function(_super) {
-  
-    __extends(EnrichmentMatchesView, _super);
-  
-    function EnrichmentMatchesView() {
-      this.matchAction = __bind(this.matchAction, this);
-      this.render = __bind(this.render, this);
-      EnrichmentMatchesView.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentMatchesView.prototype.events = {
-      "click a.match": "matchAction",
-      "click a.close": "remove"
-    };
-  
-    EnrichmentMatchesView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      this.collection = new EnrichmentMatches(this.matches);
-      return this.render();
-    };
-  
-    EnrichmentMatchesView.prototype.render = function() {
-      $(this.el).html(this.template("enrichment.matches", {
-        "matches": this.collection.toJSON()
-      }));
-      return this;
-    };
-  
-    EnrichmentMatchesView.prototype.matchAction = function(e) {
-      this.callback($(e.target).text());
-      return e.preventDefault();
-    };
-  
-    return EnrichmentMatchesView;
-  
-  })(Backbone.View);
-  
-
   var EnrichmentRowView,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = Object.prototype.hasOwnProperty,
@@ -386,11 +339,59 @@ factory = function(Backbone) {
       return $(this.el).find('td.matches span').after(new EnrichmentMatchesView({
         "matches": this.model.get("matches"),
         "template": this.template,
+        "type": this.type,
         "callback": this.matchCb
       }).el);
     };
   
     return EnrichmentRowView;
+  
+  })(Backbone.View);
+  
+
+  var EnrichmentMatchesView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  EnrichmentMatchesView = (function(_super) {
+  
+    __extends(EnrichmentMatchesView, _super);
+  
+    function EnrichmentMatchesView() {
+      this.matchAction = __bind(this.matchAction, this);
+      this.render = __bind(this.render, this);
+      EnrichmentMatchesView.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentMatchesView.prototype.events = {
+      "click a.match": "matchAction",
+      "click a.close": "remove"
+    };
+  
+    EnrichmentMatchesView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      this.collection = new EnrichmentMatches(this.matches);
+      return this.render();
+    };
+  
+    EnrichmentMatchesView.prototype.render = function() {
+      $(this.el).html(this.template("enrichment.matches", {
+        "matches": this.collection.toJSON()
+      }));
+      return this;
+    };
+  
+    EnrichmentMatchesView.prototype.matchAction = function(e) {
+      this.callback($(e.target).text(), this.type);
+      return e.preventDefault();
+    };
+  
+    return EnrichmentMatchesView;
   
   })(Backbone.View);
   
@@ -571,238 +572,6 @@ factory = function(Backbone) {
   })(InterMineWidget);
   
 
-  var EnrichmentView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  EnrichmentView = (function(_super) {
-  
-    __extends(EnrichmentView, _super);
-  
-    function EnrichmentView() {
-      this.exportAction = __bind(this.exportAction, this);
-      this.selectAllAction = __bind(this.selectAllAction, this);
-      this.formAction = __bind(this.formAction, this);
-      this.renderToolbar = __bind(this.renderToolbar, this);
-      EnrichmentView.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentView.prototype.events = {
-      "click div.actions a.view": "viewAction",
-      "click div.actions a.export": "exportAction",
-      "change div.form select": "formAction",
-      "click div.content input.check": "selectAllAction"
-    };
-  
-    EnrichmentView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      this.collection = new EnrichmentResults;
-      this.collection.bind('change', this.renderToolbar);
-      return this.render();
-    };
-  
-    EnrichmentView.prototype.render = function() {
-      var height, i, table, _fn, _ref,
-        _this = this;
-      $(this.el).html(this.template("enrichment.normal", {
-        "title": this.options.title ? this.response.title : "",
-        "description": this.options.description ? this.response.description : "",
-        "notAnalysed": this.response.notAnalysed
-      }));
-      $(this.el).find("div.form").html(this.template("enrichment.form", {
-        "options": this.form.options,
-        "pValues": this.form.pValues,
-        "errorCorrections": this.form.errorCorrections
-      }));
-      if (this.response.extraAttributeLabel != null) {
-        $(this.el).find('div.form form').append(this.template("enrichment.extra", {
-          "label": this.response.extraAttributeLabel,
-          "possible": this.response.extraAttributePossibleValues,
-          "selected": this.response.extraAttributeSelectedValue
-        }));
-      }
-      if (this.response.results.length > 0) {
-        this.renderToolbar();
-        $(this.el).find("div.content").html($(this.template("enrichment.table", {
-          "label": this.response.label
-        })));
-        table = $(this.el).find("div.content table");
-        _fn = function(i) {
-          var row;
-          row = new EnrichmentRow(_this.response.results[i], _this.widget);
-          _this.collection.add(row);
-          return table.append($(new EnrichmentRowView({
-            "model": row,
-            "template": _this.template,
-            "matchCb": _this.options.matchCb
-          }).el));
-        };
-        for (i = 0, _ref = this.response.results.length; 0 <= _ref ? i < _ref : i > _ref; 0 <= _ref ? i++ : i--) {
-          _fn(i);
-        }
-        height = $(this.el).height() - $(this.el).find('header').height() - $(this.el).find('div.content div.head').height();
-        $(this.el).find("div.content div.wrapper").css('height', "" + height + "px");
-        $(this.el).find("div.content div.head").css("width", $(this.el).find("div.content table").width() + "px");
-        table.find('thead th').each(function(i, th) {
-          return $(_this.el).find("div.content div.head div:eq(" + i + ")").width($(th).width());
-        });
-        table.css({
-          'margin-top': '-' + table.find('thead').height() + 'px'
-        });
-      } else {
-        $(this.el).find("div.content").html($(this.template("noresults")));
-      }
-      return this;
-    };
-  
-    EnrichmentView.prototype.renderToolbar = function() {
-      return $(this.el).find("div.actions").html($(this.template("enrichment.actions", {
-        "disabled": this.collection.selected().length === 0
-      })));
-    };
-  
-    EnrichmentView.prototype.formAction = function(e) {
-      this.widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value");
-      return this.widget.render();
-    };
-  
-    EnrichmentView.prototype.selectAllAction = function() {
-      return this.collection.toggleSelected();
-    };
-  
-    EnrichmentView.prototype.exportAction = function(e) {
-      var ex, match, model, result, _i, _len, _ref;
-      result = [];
-      _ref = this.collection.selected();
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        model = _ref[_i];
-        result.push([model.get('item'), model.get('p-value')].join("\t") + "\t" + ((function() {
-          var _j, _len2, _ref2, _results;
-          _ref2 = model.get('matches');
-          _results = [];
-          for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
-            match = _ref2[_j];
-            _results.push(match.displayed);
-          }
-          return _results;
-        })()).join());
-      }
-      if (result.length) {
-        ex = new Exporter($(e.target), result.join("\n"), "" + this.widget.bagName + " " + this.widget.id + ".tsv");
-        return window.setTimeout((function() {
-          return ex.destroy();
-        }), 5000);
-      }
-    };
-  
-    EnrichmentView.prototype.viewAction = function() {
-      return console.log("viewAction!");
-    };
-  
-    return EnrichmentView;
-  
-  })(Backbone.View);
-  
-
-  var EnrichmentWidget,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  EnrichmentWidget = (function(_super) {
-  
-    __extends(EnrichmentWidget, _super);
-  
-    EnrichmentWidget.prototype.formOptions = {
-      errorCorrection: "Holm-Bonferroni",
-      pValue: 0.05
-    };
-  
-    EnrichmentWidget.prototype.errorCorrections = ["Holm-Bonferroni", "Benjamini Hochberg", "Bonferroni", "None"];
-  
-    EnrichmentWidget.prototype.pValues = [0.05, 0.10, 1.00];
-  
-    EnrichmentWidget.prototype.spec = {
-      response: {
-        "title": type.isString,
-        "description": type.isString,
-        "error": type.isNull,
-        "list": type.isString,
-        "notAnalysed": type.isInteger,
-        "requestedAt": type.isString,
-        "results": type.isArray,
-        "label": type.isString,
-        "statusCode": type.isHTTPSuccess,
-        "title": type.isString,
-        "type": type.isString,
-        "wasSuccessful": type.isBoolean
-      }
-    };
-  
-    function EnrichmentWidget(service, token, id, bagName, el, widgetOptions) {
-      var _this = this;
-      this.service = service;
-      this.token = token;
-      this.id = id;
-      this.bagName = bagName;
-      this.el = el;
-      this.widgetOptions = widgetOptions != null ? widgetOptions : {
-        "title": true,
-        "description": true,
-        matchCb: function(id) {
-          return typeof console !== "undefined" && console !== null ? console.log(id) : void 0;
-        }
-      };
-      this.render = __bind(this.render, this);
-      EnrichmentWidget.__super__.constructor.call(this);
-      this.render();
-    }
-  
-    EnrichmentWidget.prototype.render = function() {
-      var _this = this;
-      return $.ajax({
-        url: "" + this.service + "list/enrichment",
-        dataType: "json",
-        data: {
-          widget: this.id,
-          list: this.bagName,
-          correction: this.formOptions.errorCorrection,
-          maxp: this.formOptions.pValue,
-          token: this.token
-        },
-        success: function(response) {
-          _this.validateType(response, _this.spec.response);
-          if (response.wasSuccessful) {
-            return new EnrichmentView({
-              "widget": _this,
-              "el": _this.el,
-              "template": _this.template,
-              "response": response,
-              "form": {
-                "options": _this.formOptions,
-                "pValues": _this.pValues,
-                "errorCorrections": _this.errorCorrections
-              },
-              "options": _this.widgetOptions
-            });
-          }
-        },
-        error: function(err) {
-          return _this.error("AJAXTransport", err);
-        }
-      });
-    };
-  
-    return EnrichmentWidget;
-  
-  })(InterMineWidget);
-  
-
   var EnrichmentMatch, EnrichmentMatches, EnrichmentResults, EnrichmentRow,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
@@ -921,16 +690,269 @@ factory = function(Backbone) {
   })(Backbone.Collection);
   
 
+  var EnrichmentView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  EnrichmentView = (function(_super) {
+  
+    __extends(EnrichmentView, _super);
+  
+    function EnrichmentView() {
+      this.viewAction = __bind(this.viewAction, this);
+      this.exportAction = __bind(this.exportAction, this);
+      this.selectAllAction = __bind(this.selectAllAction, this);
+      this.formAction = __bind(this.formAction, this);
+      this.renderToolbar = __bind(this.renderToolbar, this);
+      EnrichmentView.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentView.prototype.events = {
+      "click div.actions a.view": "viewAction",
+      "click div.actions a.export": "exportAction",
+      "change div.form select": "formAction",
+      "click div.content input.check": "selectAllAction"
+    };
+  
+    EnrichmentView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      this.collection = new EnrichmentResults;
+      this.collection.bind('change', this.renderToolbar);
+      return this.render();
+    };
+  
+    EnrichmentView.prototype.render = function() {
+      var height, i, table, _fn, _ref,
+        _this = this;
+      $(this.el).html(this.template("enrichment.normal", {
+        "title": this.options.title ? this.response.title : "",
+        "description": this.options.description ? this.response.description : "",
+        "notAnalysed": this.response.notAnalysed
+      }));
+      $(this.el).find("div.form").html(this.template("enrichment.form", {
+        "options": this.form.options,
+        "pValues": this.form.pValues,
+        "errorCorrections": this.form.errorCorrections
+      }));
+      if (this.response.extraAttributeLabel != null) {
+        $(this.el).find('div.form form').append(this.template("enrichment.extra", {
+          "label": this.response.extraAttributeLabel,
+          "possible": this.response.extraAttributePossibleValues,
+          "selected": this.response.extraAttributeSelectedValue
+        }));
+      }
+      if (this.response.results.length > 0) {
+        this.renderToolbar();
+        $(this.el).find("div.content").html($(this.template("enrichment.table", {
+          "label": this.response.label
+        })));
+        table = $(this.el).find("div.content table");
+        _fn = function(i) {
+          var row;
+          row = new EnrichmentRow(_this.response.results[i], _this.widget);
+          _this.collection.add(row);
+          return table.append($(new EnrichmentRowView({
+            "model": row,
+            "template": _this.template,
+            "type": _this.response.type,
+            "matchCb": _this.options.matchCb
+          }).el));
+        };
+        for (i = 0, _ref = this.response.results.length; 0 <= _ref ? i < _ref : i > _ref; 0 <= _ref ? i++ : i--) {
+          _fn(i);
+        }
+        height = $(this.el).height() - $(this.el).find('header').height() - $(this.el).find('div.content div.head').height();
+        $(this.el).find("div.content div.wrapper").css('height', "" + height + "px");
+        $(this.el).find("div.content div.head").css("width", $(this.el).find("div.content table").width() + "px");
+        table.find('thead th').each(function(i, th) {
+          return $(_this.el).find("div.content div.head div:eq(" + i + ")").width($(th).width());
+        });
+        table.css({
+          'margin-top': '-' + table.find('thead').height() + 'px'
+        });
+      } else {
+        $(this.el).find("div.content").html($(this.template("noresults")));
+      }
+      return this;
+    };
+  
+    EnrichmentView.prototype.renderToolbar = function() {
+      return $(this.el).find("div.actions").html($(this.template("enrichment.actions", {
+        "disabled": this.collection.selected().length === 0
+      })));
+    };
+  
+    EnrichmentView.prototype.formAction = function(e) {
+      this.widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value");
+      return this.widget.render();
+    };
+  
+    EnrichmentView.prototype.selectAllAction = function() {
+      return this.collection.toggleSelected();
+    };
+  
+    EnrichmentView.prototype.exportAction = function(e) {
+      var ex, match, model, result, _i, _len, _ref;
+      result = [];
+      _ref = this.collection.selected();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        model = _ref[_i];
+        result.push([model.get('item'), model.get('p-value')].join("\t") + "\t" + ((function() {
+          var _j, _len2, _ref2, _results;
+          _ref2 = model.get('matches');
+          _results = [];
+          for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+            match = _ref2[_j];
+            _results.push(match.displayed);
+          }
+          return _results;
+        })()).join());
+      }
+      if (result.length) {
+        ex = new Exporter($(e.target), result.join("\n"), "" + this.widget.bagName + " " + this.widget.id + ".tsv");
+        return window.setTimeout((function() {
+          return ex.destroy();
+        }), 5000);
+      }
+    };
+  
+    EnrichmentView.prototype.viewAction = function() {
+      var match, model, result, _i, _len, _ref;
+      result = [];
+      _ref = this.collection.selected();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        model = _ref[_i];
+        Array.prototype.push.apply(result, (function() {
+          var _j, _len2, _ref2, _results;
+          _ref2 = model.get('matches');
+          _results = [];
+          for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+            match = _ref2[_j];
+            _results.push(match.id);
+          }
+          return _results;
+        })());
+      }
+      return this.options.viewCb(result, "this is where real PathQuery goes");
+    };
+  
+    return EnrichmentView;
+  
+  })(Backbone.View);
+  
+
+  var EnrichmentWidget,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  EnrichmentWidget = (function(_super) {
+  
+    __extends(EnrichmentWidget, _super);
+  
+    EnrichmentWidget.prototype.formOptions = {
+      errorCorrection: "Holm-Bonferroni",
+      pValue: 0.05
+    };
+  
+    EnrichmentWidget.prototype.errorCorrections = ["Holm-Bonferroni", "Benjamini Hochberg", "Bonferroni", "None"];
+  
+    EnrichmentWidget.prototype.pValues = [0.05, 0.10, 1.00];
+  
+    EnrichmentWidget.prototype.spec = {
+      response: {
+        "title": type.isString,
+        "description": type.isString,
+        "error": type.isNull,
+        "list": type.isString,
+        "notAnalysed": type.isInteger,
+        "requestedAt": type.isString,
+        "results": type.isArray,
+        "label": type.isString,
+        "statusCode": type.isHTTPSuccess,
+        "title": type.isString,
+        "type": type.isString,
+        "wasSuccessful": type.isBoolean
+      }
+    };
+  
+    function EnrichmentWidget(service, token, id, bagName, el, widgetOptions) {
+      var _this = this;
+      this.service = service;
+      this.token = token;
+      this.id = id;
+      this.bagName = bagName;
+      this.el = el;
+      this.widgetOptions = widgetOptions != null ? widgetOptions : {
+        "title": true,
+        "description": true,
+        matchCb: function(id, type) {
+          return typeof console !== "undefined" && console !== null ? console.log(id, type) : void 0;
+        },
+        viewCb: function(ids, pq) {
+          return typeof console !== "undefined" && console !== null ? console.log(ids, pq) : void 0;
+        }
+      };
+      this.render = __bind(this.render, this);
+      EnrichmentWidget.__super__.constructor.call(this);
+      this.render();
+    }
+  
+    EnrichmentWidget.prototype.render = function() {
+      var _this = this;
+      return $.ajax({
+        url: "" + this.service + "list/enrichment",
+        dataType: "json",
+        data: {
+          widget: this.id,
+          list: this.bagName,
+          correction: this.formOptions.errorCorrection,
+          maxp: this.formOptions.pValue,
+          token: this.token
+        },
+        success: function(response) {
+          _this.validateType(response, _this.spec.response);
+          if (response.wasSuccessful) {
+            return new EnrichmentView({
+              "widget": _this,
+              "el": _this.el,
+              "template": _this.template,
+              "response": response,
+              "form": {
+                "options": _this.formOptions,
+                "pValues": _this.pValues,
+                "errorCorrections": _this.errorCorrections
+              },
+              "options": _this.widgetOptions
+            });
+          }
+        },
+        error: function(err) {
+          return _this.error("AJAXTransport", err);
+        }
+      });
+    };
+  
+    return EnrichmentWidget;
+  
+  })(InterMineWidget);
+  
+
   return {
 
     "InterMineWidget": InterMineWidget,
-    "EnrichmentMatchesView": EnrichmentMatchesView,
     "EnrichmentRowView": EnrichmentRowView,
+    "EnrichmentMatchesView": EnrichmentMatchesView,
     "ChartView": ChartView,
     "ChartWidget": ChartWidget,
+    "EnrichmentResults": EnrichmentResults,
     "EnrichmentView": EnrichmentView,
     "EnrichmentWidget": EnrichmentWidget,
-    "EnrichmentResults": EnrichmentResults,
 
   };
 };

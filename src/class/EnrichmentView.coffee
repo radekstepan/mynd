@@ -56,6 +56,7 @@ class EnrichmentView extends Backbone.View
                 table.append $ new EnrichmentRowView(
                     "model":    row
                     "template": @template
+                    "type":     @response.type
                     "matchCb":  @options.matchCb
                 ).el
 
@@ -70,7 +71,7 @@ class EnrichmentView extends Backbone.View
             table.find('thead th').each (i, th) =>
                 $(@el).find("div.content div.head div:eq(#{i})").width $(th).width()
 
-            # Fix the `table` margin to hide gap after `thead` element.
+            # Fix the `table` margin to hide gap after invisible `thead` element.
             table.css 'margin-top': '-' + table.find('thead').height() + 'px'
 
         else
@@ -108,4 +109,10 @@ class EnrichmentView extends Backbone.View
                 ex.destroy()
             ), 5000
 
-    viewAction: -> console.log "viewAction!"
+    # Selecting table rows and clicking on View should get us all ids of matches.
+    viewAction: =>
+        # Get all the matches in selected rows.
+        result = []
+        for model in @collection.selected()
+            Array::push.apply result, ( match.id for match in model.get('matches') )
+        @options.viewCb result, "this is where real PathQuery goes"

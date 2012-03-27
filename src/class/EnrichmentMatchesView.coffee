@@ -18,5 +18,5 @@ class EnrichmentMatchesView extends Backbone.View
 
     # Onclick the individual match, execute the callback.
     matchAction: (e) =>
-        @callback $(e.target).text()
+        @callback $(e.target).text(), @type
         e.preventDefault()

@@ -24,7 +24,7 @@ class ChartWidget extends InterMineWidget
     # `id`:            widgetId
     # `bagName`:       myBag
     # `el`:            #target
-    # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function() {} }
+    # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {} }
     constructor: (@service, @token, @id, @bagName, @el, @widgetOptions = {
         "title":       true
         "description": true

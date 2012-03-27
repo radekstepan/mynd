@@ -26,6 +26,7 @@ class EnrichmentRowView extends Backbone.View
             new EnrichmentMatchesView(
                 "matches":  @model.get "matches"
                 "template": @template
+                "type":     @type
                 "callback": @matchCb
             ).el
         )

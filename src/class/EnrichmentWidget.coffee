@@ -29,12 +29,13 @@ class EnrichmentWidget extends InterMineWidget
     # `id`:            widgetId
     # `bagName`:       myBag
     # `el`:            #target
-    # `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function() {} }
+    # `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "viewCb": function(ids, pq) {} } }
     constructor: (@service, @token, @id, @bagName, @el, @widgetOptions = {
         "title":       true
         "description": true
-        # By default, the select callback will dump the match id into the console.
-        matchCb: (id) => console?.log id
+        # By default, the callbacks will dump the params to console.
+        matchCb: (id, type) => console?.log id, type
+        viewCb: (ids, pq) => console?.log ids, pq
     }) ->
         super() # Luke... I am your father!
         @render()

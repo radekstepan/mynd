@@ -1,55 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Widget Client</title>
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    
-    <link href="css/bootstrap.css" rel="stylesheet">
+    <head>
+        <meta charset="utf-8">
+        <title>Widget Client</title>
 
-    <script type="text/javascript" src="js/lib/jquery.js"></script>
-    <script type="text/javascript" src="js/lib/underscore.js"></script>
-    <script type="text/javascript" src="js/lib/backbone.js"></script>
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 
-    <!-- widget.js -->
-    <script type="text/javascript" src="js/widgets.js"></script>
-  </head>
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <style>
+            .widget { margin:20px 10px; }
+        </style>
 
-  <body>
-    <!-- menu -->
-    <div class="navbar">
-      <div class="navbar-inner">
-        <div class="container" style="width: auto;">
-          <a class="brand" href="#">Widget Client</a>
-            <ul class="nav pull-right">
-              <li class="divider-vertical"></li>
-              <li><a href="https://github.com/radekstepan/intermine-widget-client">Fork me on GitHub</a></li>
-            </ul>
+        <script type="text/javascript" src="js/lib/jquery.js"></script>
+        <script type="text/javascript" src="js/lib/underscore.js"></script>
+        <script type="text/javascript" src="js/lib/backbone.js"></script>
+
+        <!-- widget.js -->
+        <script type="text/javascript" src="js/widgets.js"></script>
+        <script type="text/javascript" src="extensions/portal.js"></script>
+    </head>
+
+    <body>
+        <!-- menu -->
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container" style="width: auto;">
+                    <a class="brand" href="#">Widget Client</a>
+                    <ul class="nav pull-right">
+                        <li class="divider-vertical"></li>
+                        <li><a href="https://github.com/radekstepan/intermine-widget-client">Fork me on GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <div class="container">
+        <div class="container">
 
-      <div class="row">
-        <h2>Example Widgets</h2>
-        <p>BDGP expression patterns loaded from <span class="label">ws_widgets</span> FlyMine branch.</p>
-      </div>
+            <div class="row">
+                <h2>Example Widgets</h2>
+                <p>BDGP expression patterns loaded from <span class="label">ws_widgets</span> FlyMine branch.</p>
+            </div>
 
-      <div id="widgets-genes" class="row"></div>
-      <div id="widgets-proteins" class="row"></div>
+            <div id="widgets-genes" class="row"></div>
+            <div id="widgets-proteins" class="row"></div>
 
-      <script type="text/javascript">
-        (function() {
-          window.$ = "I am an evil library!";
-          widgets = new Widgets("http://aragorn:8080/flymine/service/");
-          widgets.all('Gene', 'demo-genes', '#widgets-genes');
-          widgets.all('Protein', 'demo-proteins', '#widgets-proteins');
-        })();
-      </script>
+            <script type="text/javascript">
+            (function() {
+                window.$ = "I am an evil library!";
 
-    </div>
-  </body>
+                /* New Widgets client. */
+                widgets = new Widgets("http://aragorn:8080/flymine/service/");
+
+                /* Mine specific callbacks. */
+                var options = {
+                    "title": true,
+                    "description": true,
+                    selectCb: function(pq) {
+                        return console.log(pq);
+                    },
+                    matchCb: function(id, type) {
+                        return window.open("http://aragorn:8080/flymine/portal.do?class=" + type + "&externalids=" + id);
+                    },
+                    viewCb: function(ids, pq) {
+                        return console.log(ids, pq);
+                    }
+                };
+
+                /* Give us all available widgets. */
+                widgets.all('Gene', 'demo-genes', '#widgets-genes', options);
+                widgets.all('Protein', 'demo-proteins', '#widgets-proteins', options);
+            })();
+            </script>
+
+        </div>
+    </body>
 </html>
