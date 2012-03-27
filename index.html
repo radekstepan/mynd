@@ -19,7 +19,6 @@
 
         <!-- widget.js -->
         <script type="text/javascript" src="js/widgets.js"></script>
-        <script type="text/javascript" src="extensions/portal.js"></script>
     </head>
 
     <body>
@@ -48,23 +47,22 @@
 
             <script type="text/javascript">
             (function() {
+                /* A test of having $ not be jQuery. */
                 window.$ = "I am an evil library!";
 
-                /* New Widgets client. */
-                widgets = new Widgets("http://aragorn:8080/flymine/service/");
+                /* InterMine root URL. */
+                var mine = "http://aragorn:8080/flymine";
 
-                /* Mine specific callbacks. */
+                /* New Widgets client. */
+                var widgets = new Widgets(mine + "/service/");
+
+                /* Extend options with "mine specific" callbacks. */
                 var options = {
-                    "title": true,
-                    "description": true,
                     selectCb: function(pq) {
-                        return console.log(pq);
+                        window.open(mine + "/service/query/results?query=" + encodeURIComponent(pq) + "&format=html");
                     },
                     matchCb: function(id, type) {
-                        return window.open("http://aragorn:8080/flymine/portal.do?class=" + type + "&externalids=" + id);
-                    },
-                    viewCb: function(ids, pq) {
-                        return console.log(ids, pq);
+                        window.open(mine + "/portal.do?class=" + type + "&externalids=" + id);
                     }
                 };
 

@@ -1,5 +1,14 @@
 class EnrichmentWidget extends InterMineWidget
 
+    # Default widget options that will be merged with user's values.
+    widgetOptions:
+        "title":       true
+        "description": true
+        matchCb: (id, type) ->
+            console?.log id, type
+        viewCb: (ids, pq) ->
+            console?.log ids, pq
+
     formOptions:
         errorCorrection: "Holm-Bonferroni"
         pValue:          0.05
@@ -30,13 +39,10 @@ class EnrichmentWidget extends InterMineWidget
     # `bagName`:       myBag
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "viewCb": function(ids, pq) {} } }
-    constructor: (@service, @token, @id, @bagName, @el, @widgetOptions = {
-        "title":       true
-        "description": true
-        # By default, the callbacks will dump the params to console.
-        matchCb: (id, type) => console?.log id, type
-        viewCb: (ids, pq) => console?.log ids, pq
-    }) ->
+    constructor: (@service, @token, @id, @bagName, @el, widgetOptions) ->
+        # Merge widgetOptions.
+        @widgetOptions = merge widgetOptions, @widgetOptions
+
         super() # Luke... I am your father!
         @render()
 

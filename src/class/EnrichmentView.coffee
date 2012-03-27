@@ -115,4 +115,6 @@ class EnrichmentView extends Backbone.View
         result = []
         for model in @collection.selected()
             Array::push.apply result, ( match.id for match in model.get('matches') )
-        @options.viewCb result, "this is where real PathQuery goes"
+
+        if result.length # Can be empty.
+            @options.viewCb result, "this is where real PathQuery goes"

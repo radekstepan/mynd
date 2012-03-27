@@ -38,15 +38,21 @@ class ChartView extends Backbone.View
                 # Add event listener on click the chart bar.
                 if @response.pathQuery?
                     google.visualization.events.addListener chart, "select", =>
+
+                        # Translate view series into PathQuery series (Expressed/Not Expressed into true/false).
+                        translate = (response, series) ->
+                            response.seriesValues.split(',')[response.seriesLabels.split(',').indexOf(series)]
+
+                        # PathQuery attr.
                         pq = @response.pathQuery
                         for item in chart.getSelection()
                             if item.row?
                                 # Replace %category in PathQuery.
-                                pq = pq.replace("%category", response.results[item.row + 1][0])
+                                pq = pq.replace "%category", @response.results[item.row + 1][0]
+                                # Replace %series in PathQuery.
                                 if item.column?
-                                    # Replace %series in PathQuery.
-                                    pq = pq.replace("%series", @_translateSeries(@response, @response.results[0][item.column]))
-                                @options.selectCb(pq)
+                                    pq = pq.replace("%series", translate @response, @response.results[0][item.column])
+                                @options.selectCb pq
             else
                 # Undefined Google Visualization chart type.
                 $(@el).html @template "error",
@@ -56,7 +62,3 @@ class ChartView extends Backbone.View
         else
             # Render no results.
             $(@el).find("div.content").html $ @template "noresults"
-
-
-    # Translate view series into PathQuery series (Expressed/Not Expressed into true/false).
-    _translateSeries: (response, series) -> response.seriesValues.split(',')[response.seriesLabels.split(',').indexOf(series)]

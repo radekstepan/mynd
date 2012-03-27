@@ -1,5 +1,12 @@
 class ChartWidget extends InterMineWidget
 
+    # Default widget options that will be merged with user's values.
+    widgetOptions:
+        "title":       true
+        "description": true
+        selectCb: (pq) ->
+            console?.log pq
+
     # Spec for a successful and correct JSON response.
     spec:
         response:
@@ -25,12 +32,10 @@ class ChartWidget extends InterMineWidget
     # `bagName`:       myBag
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {} }
-    constructor: (@service, @token, @id, @bagName, @el, @widgetOptions = {
-        "title":       true
-        "description": true
-        # By default, the select callback will open a new window with a table of results.
-        selectCb: (pq) => window.open "#{@service}query/results?query=#{encodeURIComponent(pq)}&format=html"
-    }) ->
+    constructor: (@service, @token, @id, @bagName, @el, widgetOptions) ->
+        # Merge widgetOptions.
+        @widgetOptions = merge widgetOptions, @widgetOptions
+
         super()
         @render()
 
