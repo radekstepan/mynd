@@ -67,7 +67,7 @@ INTERMINE =
 
 Will run a PathQuery against a mine and display its results in HTML.
 
-```javascript```
+```javascript
 var options = {
     selectCb: function(pq) {
         window.open(mineURL + "/service/query/results?query=" + encodeURIComponent(pq) + "&format=html");
@@ -80,7 +80,7 @@ widgets.chart('flyfish', 'myList', '#widget', options);
 
 Will open a Report page on a given mine for the match selected.
 
-```javascript```
+```javascript
 var options = {
     matchCb: function(id, type) {
         window.open(mineURL + "/portal.do?class=" + type + "&externalids=" + id);
@@ -91,7 +91,7 @@ widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
 
 ### I want to hide the title or description of a widget.
 
-```javascript```
+```javascript
 var options = {
     "title": false,
     "description": false
