@@ -32,7 +32,7 @@ class ChartWidget extends InterMineWidget
     # `bagName`:       myBag
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {} }
-    constructor: (@service, @token, @id, @bagName, @el, widgetOptions) ->
+    constructor: (@service, @token, @id, @bagName, @el, widgetOptions = {}) ->
         # Merge widgetOptions.
         @widgetOptions = merge widgetOptions, @widgetOptions
 

@@ -56,19 +56,9 @@
                 /* New Widgets client. */
                 var widgets = new Widgets(mine + "/service/");
 
-                /* Extend options with "mine specific" callbacks. */
-                var options = {
-                    selectCb: function(pq) {
-                        window.open(mine + "/service/query/results?query=" + encodeURIComponent(pq) + "&format=html");
-                    },
-                    matchCb: function(id, type) {
-                        window.open(mine + "/portal.do?class=" + type + "&externalids=" + id);
-                    }
-                };
-
                 /* Give us all available widgets. */
-                widgets.all('Gene', 'demo-genes', '#widgets-genes', options);
-                widgets.all('Protein', 'demo-proteins', '#widgets-proteins', options);
+                widgets.all('Gene', 'demo-genes', '#widgets-genes');
+                widgets.all('Protein', 'demo-proteins', '#widgets-proteins');
             })();
             </script>
 

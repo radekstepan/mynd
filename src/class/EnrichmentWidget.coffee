@@ -39,7 +39,7 @@ class EnrichmentWidget extends InterMineWidget
     # `bagName`:       myBag
     # `el`:            #target
     # `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "viewCb": function(ids, pq) {} } }
-    constructor: (@service, @token, @id, @bagName, @el, widgetOptions) ->
+    constructor: (@service, @token, @id, @bagName, @el, widgetOptions = {}) ->
         # Merge widgetOptions.
         @widgetOptions = merge widgetOptions, @widgetOptions
 
