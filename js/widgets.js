@@ -634,7 +634,7 @@ factory = function(Backbone) {
   
     EnrichmentRow.prototype.spec = {
       "description": type.isString,
-      "item": type.isString,
+      "identifier": type.isString,
       "matches": type.isArray,
       "p-value": type.isInteger,
       "selected": type.isBoolean

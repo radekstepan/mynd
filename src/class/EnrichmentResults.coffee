@@ -14,7 +14,7 @@ class EnrichmentRow extends Backbone.Model
     # Spec for validating the object data types.
     spec:
         "description": type.isString
-        "item":        type.isString
+        "identifier":  type.isString
         "matches":     type.isArray
         "p-value":     type.isInteger
         "selected":    type.isBoolean
