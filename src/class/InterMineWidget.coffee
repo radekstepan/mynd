@@ -21,7 +21,7 @@ class InterMineWidget
                     actual:   r.is()
                     expected: new String(r)
         
-        if fails.length then @error "JSONObjectType", fails
+        if fails.length then @error "JSONResponse", fails
 
     # The possible errors we handle.
     error: (type, data) =>
@@ -32,7 +32,7 @@ class InterMineWidget
             when "AJAXTransport"
                 opts.title = data.statusText
                 opts.text = data.responseText
-            when "JSONObjectType"
+            when "JSONResponse"
                 opts.title = "Invalid JSON"
                 opts.text = "<ol>#{data.join('')}</ol>"
 

@@ -19,19 +19,20 @@ class EnrichmentWidget extends InterMineWidget
     # Spec for a successful and correct JSON response.
     spec:
         response:
-            "title":         type.isString
-            "description":   type.isString
-            "pathQuery":     type.isJSON
-            "error":         type.isNull
-            "list":          type.isString
-            "notAnalysed":   type.isInteger
-            "requestedAt":   type.isString
-            "results":       type.isArray
-            "label":         type.isString
-            "statusCode":    type.isHTTPSuccess
-            "title":         type.isString
-            "type":          type.isString
-            "wasSuccessful": type.isBoolean
+            "title":          type.isString
+            "description":    type.isString
+            "pathQuery":      type.isJSON
+            "pathConstraint": type.isString
+            "error":          type.isNull
+            "list":           type.isString
+            "notAnalysed":    type.isInteger
+            "requestedAt":    type.isString
+            "results":        type.isArray
+            "label":          type.isString
+            "statusCode":     type.isHTTPSuccess
+            "title":          type.isString
+            "type":           type.isString
+            "wasSuccessful":  type.isBoolean
 
     # Set the params on us and render.
     # `service`:       http://aragorn.flymine.org:8080/flymine/service/
