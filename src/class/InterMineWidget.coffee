@@ -38,3 +38,6 @@ class InterMineWidget
 
         # Show.
         $(@el).html @template "error", opts
+
+        # Throw an error so we do not process further.
+        throw new Error type

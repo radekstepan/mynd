@@ -21,6 +21,7 @@ class EnrichmentWidget extends InterMineWidget
         response:
             "title":         type.isString
             "description":   type.isString
+            "pathQuery":     type.isJSON
             "error":         type.isNull
             "list":          type.isString
             "notAnalysed":   type.isInteger

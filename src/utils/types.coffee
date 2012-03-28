@@ -29,5 +29,15 @@ class type.isHTTPSuccess extends type.Root
     expected: "HTTP code 200"
     constructor: (key) -> @result = key is 200
 
+class type.isJSON extends type.Root
+    expected: "JSON Object"
+    constructor: (key) ->
+        @result = true
+        try
+            JSON?.parse key
+        catch e
+            console?.log key
+            @result = false
+
 class type.isUndefined extends type.Root
     expected: "it to be undefined"
