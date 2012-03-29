@@ -11,10 +11,10 @@ class EnrichmentWidget extends InterMineWidget
 
     formOptions:
         errorCorrection: "Holm-Bonferroni"
-        pValue:          0.05
+        pValue:          "0.05"
 
     errorCorrections: [ "Holm-Bonferroni", "Benjamini Hochberg", "Bonferroni", "None" ]
-    pValues: [ 0.05, 0.10, 1.00 ]
+    pValues: [ "0.05", "0.10", "1.00" ]
 
     # Spec for a successful and correct JSON response.
     spec:
@@ -50,6 +50,10 @@ class EnrichmentWidget extends InterMineWidget
 
     # Visualize the displayer.
     render: =>
+        # Removes all of the view's delegated events if there is one already.
+        @view?.undelegateEvents()
+
+        # Request new data.
         $.ajax
             url:      "#{@service}list/enrichment"
             dataType: "json"
@@ -66,7 +70,7 @@ class EnrichmentWidget extends InterMineWidget
                 # We have results.
                 if response.wasSuccessful
                     # New View.
-                    new EnrichmentView(
+                    @view = new EnrichmentView(
                         "widget":   @
                         "el":       @el
                         "template": @template
