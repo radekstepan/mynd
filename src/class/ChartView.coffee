@@ -52,6 +52,9 @@ class ChartView extends Backbone.View
                                 # Replace %series in PathQuery.
                                 if item.column?
                                     pq = pq.replace("%series", translate @response, @response.results[0][item.column])
+                                # Turn into JSON object?
+                                pq = JSON?.parse pq
+                                # Make the callback.
                                 @options.selectCb pq
             else
                 # Undefined Google Visualization chart type.
