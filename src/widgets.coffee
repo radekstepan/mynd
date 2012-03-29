@@ -47,7 +47,7 @@ class window.Widgets
     # `id`:            widgetId
     # `bagName`:       myBag
     # `el`:            #target
-    # `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "viewCb": function(ids, pq) {} }
+    # `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "viewCb": function(pq) {} }
     enrichment: (opts...) =>
         if @wait then window.setTimeout((=> @enrichment(opts...)), 0) else new o.EnrichmentWidget(@service, @token, opts...)
 

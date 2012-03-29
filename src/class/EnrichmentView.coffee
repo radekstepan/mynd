@@ -117,4 +117,13 @@ class EnrichmentView extends Backbone.View
             Array::push.apply result, ( match.id for match in model.get('matches') )
 
         if result.length # Can be empty.
-            @options.viewCb result, "this is where real PathQuery goes"
+            pq = @response.pathQuery
+            # JSON should have been validated by now.
+            pq = JSON.parse pq
+            # Add the ONE OF constraint.
+            pq.where.push
+                "path":   @response.pathConstraint
+                "op":     "ONE OF"
+                "values": result
+            # Callback.
+            @options.viewCb pq
