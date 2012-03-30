@@ -103,7 +103,10 @@ class EnrichmentView extends Backbone.View
 
         if result.length # Can be empty.
             # Create.
-            ex = new Exporter $(e.target), result.join("\n"), "#{@widget.bagName} #{@widget.id}.tsv"
+            try
+                ex = new Exporter $(e.target), result.join("\n"), "#{@widget.bagName} #{@widget.id}.tsv"
+            catch TypeError
+                ex = new PlainExporter result.join("\n")
             # Cleanup.
             window.setTimeout (->
                 ex.destroy()

@@ -59,7 +59,7 @@ class Load
                         else new JSLoader(resource.path, => @done resource)
 
             # Call back when all is done.
-            if @count or @wait then window.setTimeout((=> @load(resources, @callback)), 0) else @callback()
+            if @count or @wait then window.setTimeout((=> @load resources), 0) else @callback()
 
     done: (resource) =>
         @wait = false if resource.wait? # Wait no more.

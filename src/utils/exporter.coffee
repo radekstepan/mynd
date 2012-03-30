@@ -6,7 +6,7 @@ class Exporter
     charset:  'UTF-8'
     url:      (window.webkitURL or window.URL)
 
-    # Use BlobBuilder and URL to force download dynamic string asa file.
+    # Use BlobBuilder and URL to force download dynamic string as a file.
     # `a`:        $ <a/>
     # `data`:     string to download
     # `filename`: take a guess...
@@ -23,3 +23,17 @@ class Exporter
 
     # Revoke.
     destroy: => @url.revokeObjectURL @href
+
+
+# For old browsers.
+class PlainExporter
+
+    # Create a new window with a formatted content.
+    # `data`:     string to download
+    constructor: (data) ->
+        w = window.open()
+        w.document.open()
+        w.document.write data
+        w.document.close()
+
+    destroy: ->
