@@ -8,9 +8,12 @@ Client for embedding InterMine widgets (ws_widgets branch only!).
 - underscore.js (included)
 - backbone.js (included)
 
-### To Compile/Test:
-- CoffeeScript & [eco](https://github.com/sstephenson/eco) templating
-- [uglify-js](https://github.com/mishoo/UglifyJS) to compress templates
+### To Compile:
+
+You can install all the following dependencies by running `npm install -d`:
+
+- [CoffeeScript](http://coffeescript.org/) & [eco](https://github.com/sstephenson/eco) templating.
+- [uglify-js](https://github.com/mishoo/UglifyJS) to compress templates.
 
 ## Configure:
 **Create a new Widgets** instance in `index.html` pointing to a service:
@@ -35,13 +38,15 @@ widgets.enrichment('pathway_enrichment', 'myList', '#widget-2');
 2. Visit [http://0.0.0.0:1111/](http://0.0.0.0:1111/)
 
 ## Compile:
-1. Install dependencies `npm install -d`.
-2. Run `cake compile:main` to compile widgets and templates into one target. Check optional parameters by running `cake`.
+
+Run `cake compile:main` to compile widgets and templates into one target. Check optional parameters by running `cake`.
 
 ## Test:
-1. Run `cake compile:tests` to compile the test spec.
-2. Start a simple HTTP server using `.webserver.sh`.
-3. Visit [http://0.0.0.0:1111/tests/](http://0.0.0.0:1111/tests/) that automatically runs [Jasmine](http://pivotal.github.com/jasmine/) tests.
+
+1. Run `cake compile:tests` to compile tests.
+2. Visit [http://0.0.0.0:1111/test](http://0.0.0.0:1111/test) to run the tests using [Mocha](http://visionmedia.github.com/mocha/) and [Chai](http://chaijs.com/).
+
+The tests are automatically loaded from available tests in the `test/src` directory. Libraries needed to run the tests are loaded automatically too. You can speed up their execution by including the files the `<head>` section of the `test/index.html` file.
 
 ## Release to InterMine:
 

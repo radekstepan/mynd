@@ -13,10 +13,12 @@ exec = require('child_process').exec # execute custom commands
 MAIN =
     INPUT: "src/widgets.coffee"
     OUTPUT: "js/widgets.js"
-# Test input/output.
-SPEC =
-    INPUT: "tests/spec.coffee"
-    OUTPUT: "tests/spec.js"
+
+# Tests input/output and runner.
+TESTS =
+    INPUT:  "test/src"
+    OUTPUT: "test/js"
+    RUNNER: "test/runner.coffee"
 
 # Templates dir.
 TEMPLATES = "src/templates"
@@ -63,19 +65,34 @@ task "compile:main", "compile widgets library and templates together", (options)
                         done = false
                         main -> done = true
 
-# Compile tests spec.coffee.
-task "compile:tests", "compile tests spec", (options) ->
-    console.log "#{COLORS.BOLD}Compiling tests#{COLORS.DEFAULT}"
+# Compile tests.
+task "compile:tests", "compile tests so we can run them in the browser", (options) ->
+    console.log "#{COLORS.BOLD}Compiling tests in #{TESTS.INPUT}#{COLORS.DEFAULT}"
+    
+    # Compile the test runner.
+    source = cs.compile fs.readFileSync(TESTS.RUNNER, "utf-8")
+    write [ TESTS.OUTPUT, TESTS.RUNNER.split('/').pop().replace '.coffee', '.js' ].join('/'), source
 
-    # Clean.
-    fs.unlink SPEC.OUTPUT
+    # Compile tests in test/src/ to test/js/tests/.
+    walk TESTS.INPUT, (err, files) ->
+        if err then throw new Error('problem walking tests')
+        else
+            tests = []
+            for file in files
+                # Read in, compile.
+                source = cs.compile fs.readFileSync(file, "utf-8")
+                # Get the filename wo/ extension.
+                name = file.split('/').pop().replace '.coffee', ''
+                # Write to equivalent JS file
+                write [ TESTS.OUTPUT, "tests", "#{name}.js" ].join('/'), source
+                # Save the path to JSON output.
+                tests.push "\"#{name}\""
 
-    # CoffeeScript compile.
-    write SPEC.OUTPUT, cs.compile fs.readFileSync SPEC.INPUT, "utf-8"
+            # Write JSON so we can reference all tests. 
+            write [ TESTS.OUTPUT, 'tests.json' ].join('/'), "[#{tests.join(',')}]"
 
-    # Done.
+    # That's it.
     console.log "#{COLORS.GREEN}Done#{COLORS.DEFAULT}"
-
 
 # Release the latest version of the .js library into InterMine SVN.
 task "release", "release compiled widgets.js into target InterMine directory", (options) ->
