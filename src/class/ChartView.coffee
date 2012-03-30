@@ -1,3 +1,5 @@
+### View maintaining Chart Widget.###
+
 class ChartView extends Backbone.View
 
     # Google Visualization chart options.
@@ -47,9 +49,9 @@ class ChartView extends Backbone.View
                         pq = @response.pathQuery
                         for item in chart.getSelection()
                             if item.row?
-                                # Replace %category in PathQuery.
+                                # Replace `%category` in PathQuery.
                                 pq = pq.replace "%category", @response.results[item.row + 1][0]
-                                # Replace %series in PathQuery.
+                                # Replace `%series` in PathQuery.
                                 if item.column?
                                     pq = pq.replace("%series", translate @response, @response.results[0][item.column])
                                 # Turn into JSON object?

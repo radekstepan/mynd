@@ -1,3 +1,5 @@
+### Chart Widget main class.###
+
 class ChartWidget extends InterMineWidget
 
     # Default widget options that will be merged with user's values.
@@ -26,14 +28,15 @@ class ChartWidget extends InterMineWidget
             "wasSuccessful": type.isBoolean
 
     # Set the params on us and set Google load callback.
-    # `service`:       http://aragorn.flymine.org:8080/flymine/service/
-    # `token`:         token for accessing user's lists
-    # `id`:            widgetId
-    # `bagName`:       myBag
-    # `el`:            #target
-    # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {} }
+    #
+    # 1. `service`:       [http://aragorn:8080/flymine/service/](http://aragorn:8080/flymine/service/)
+    # 2. `token`:         token for accessing user's lists
+    # 3. `id`:            widgetId
+    # 4. `bagName`:       myBag
+    # 5. `el`:            #target
+    # 6. `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {} }
     constructor: (@service, @token, @id, @bagName, @el, widgetOptions = {}) ->
-        # Merge widgetOptions.
+        # Merge `widgetOptions`.
         @widgetOptions = merge widgetOptions, @widgetOptions
 
         super()

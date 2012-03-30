@@ -1,3 +1,5 @@
+### Enrichment Widget main class.###
+
 class EnrichmentWidget extends InterMineWidget
 
     # Default widget options that will be merged with user's values.
@@ -35,14 +37,15 @@ class EnrichmentWidget extends InterMineWidget
             "wasSuccessful":  type.isBoolean
 
     # Set the params on us and render.
-    # `service`:       http://aragorn.flymine.org:8080/flymine/service/
-    # `token`:         token for accessing user's lists
-    # `id`:            widgetId
-    # `bagName`:       myBag
-    # `el`:            #target
-    # `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "viewCb": function(pq) {} } }
+    #
+    # 1. `service`:       http://aragorn.flymine.org:8080/flymine/service/
+    # 2. `token`:         token for accessing user's lists
+    # 3. `id`:            widgetId
+    # 4. `bagName`:       myBag
+    # 4. `el`:            #target
+    # 5. `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "viewCb": function(pq) {} } }
     constructor: (@service, @token, @id, @bagName, @el, widgetOptions = {}) ->
-        # Merge widgetOptions.
+        # Merge `widgetOptions`.
         @widgetOptions = merge widgetOptions, @widgetOptions
 
         super() # Luke... I am your father!
@@ -50,7 +53,7 @@ class EnrichmentWidget extends InterMineWidget
 
     # Visualize the displayer.
     render: =>
-        # Removes all of the view's delegated events if there is one already.
+        # Removes all of the **View**'s delegated events if there is one already.
         @view?.undelegateEvents()
 
         # Request new data.
@@ -69,7 +72,7 @@ class EnrichmentWidget extends InterMineWidget
                 @validateType response, @spec.response
                 # We have results.
                 if response.wasSuccessful
-                    # New View.
+                    # New **View**.
                     @view = new EnrichmentView(
                         "widget":   @
                         "el":       @el

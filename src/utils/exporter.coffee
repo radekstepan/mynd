@@ -1,3 +1,5 @@
+### Create file download with custom content.###
+
 # Generate and download a file from a string.
 # On Chrome will force download, on Firefox will open a new window.
 class Exporter
@@ -6,12 +8,13 @@ class Exporter
     charset:  'UTF-8'
     url:      (window.webkitURL or window.URL)
 
-    # Use BlobBuilder and URL to force download dynamic string as a file.
-    # `a`:        $ <a/>
-    # `data`:     string to download
-    # `filename`: take a guess...
+    # Use `BlobBuilder` and `URL` to force download dynamic string as a file.
+    #
+    # 1. `a`:        $ <a/>
+    # 2. `data`:     string to download
+    # 3. `filename`: take a guess...
     constructor: (a, data, filename = 'widget.tsv') ->
-        # Get BlobBuilder.
+        # Get `BlobBuilder`.
         builder = new (window.WebKitBlobBuilder or window.MozBlobBuilder or window.BlobBuilder)()
 
         # Populate.
@@ -29,7 +32,8 @@ class Exporter
 class PlainExporter
 
     # Create a new window with a formatted content.
-    # `data`:     string to download
+    #
+    # 1. `data`:     string to download
     constructor: (data) ->
         w = window.open()
         w.document.open()

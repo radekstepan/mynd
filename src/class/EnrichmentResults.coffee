@@ -1,11 +1,16 @@
+### Models underpinning Enrichment Widget results.###
+
+#### Enrichment Row Match Model
 class EnrichmentMatch extends Backbone.Model
 
 
+#### Enrichment Row Matches Collection
 class EnrichmentMatches extends Backbone.Collection
 
     model: EnrichmentMatch
 
 
+#### Enrichment Row Model
 class EnrichmentRow extends Backbone.Model    
 
     defaults:
@@ -29,11 +34,12 @@ class EnrichmentRow extends Backbone.Model
     toggleSelected: => @set(selected: not @get("selected"))
 
 
+#### Enrichment Rows Collection
 class EnrichmentResults extends Backbone.Collection
 
     model: EnrichmentRow
 
-    # Filter down the collection of all lists that are selected.
+    # Filter down the **Collection** of all lists that are `selected`.
     selected: -> @filter( (row) -> row.get "selected" )
 
     # (De-)select all.

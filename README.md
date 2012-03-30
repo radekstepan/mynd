@@ -68,6 +68,10 @@ INTERMINE =
 
 ## Q&A:
 
+### Where is documentation?
+
+Access it here: [http://0.0.0.0:1111/docs/widgets.html](http://0.0.0.0:1111/docs/widgets.html) after starting the web server.
+
 ### I want to define a custom behavior when clicking on Chart Widget.
 
 Will run a PathQuery against a mine and display its results in HTML.

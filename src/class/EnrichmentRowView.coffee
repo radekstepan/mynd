@@ -1,3 +1,5 @@
+### Enrichment Widget table row.###
+
 class EnrichmentRowView extends Backbone.View
 
     tagName: "tr"

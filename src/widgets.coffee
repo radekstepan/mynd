@@ -1,4 +1,6 @@
-# For our purposes, $ means jQuery or Zepto.
+### Interface to InterMine Widgets.###
+
+# For our purposes, `$` means jQuery or Zepto.
 $ = window.jQuery or window.Zepto
 
 # Public interface for the various InterMine Widgets.
@@ -28,8 +30,9 @@ class window.Widgets
     ]
 
     # New Widgets client.
-    # `service`: http://aragorn.flymine.org:8080/flymine/service/
-    # `token`:   token for accessing user's lists
+    #
+    # 1. `service`: [http://aragorn:8080/flymine/service/](http://aragorn:8080/flymine/service/)
+    # 2. `token`:   token for accessing user's lists 
     constructor: (@service, @token = "") ->
         new Load @resources, =>
             # All libraries loaded, welcome jQuery, export classes.
@@ -39,10 +42,11 @@ class window.Widgets
             @wait = false
 
     # Chart Widget.
-    # `id`:            widgetId
-    # `bagName`:       myBag
-    # `el`:            #target
-    # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {} }
+    #
+    # 1. `id`:            widgetId
+    # 2. `bagName`:       myBag
+    # 3. `el`:            #target
+    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {} }
     chart: (opts...) =>
         if @wait then window.setTimeout((=> @chart(opts...)), 0)
         else
@@ -52,18 +56,20 @@ class window.Widgets
                 callback: => new o.ChartWidget(@service, @token, opts...)
     
     # Enrichment Widget.
-    # `id`:            widgetId
-    # `bagName`:       myBag
-    # `el`:            #target
-    # `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "viewCb": function(pq) {} }
+    #
+    # 1. `id`:            widgetId
+    # 2. `bagName`:       myBag
+    # 3. `el`:            #target
+    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "viewCb": function(pq) {} }
     enrichment: (opts...) =>
         if @wait then window.setTimeout((=> @enrichment(opts...)), 0) else new o.EnrichmentWidget(@service, @token, opts...)
 
     # All available Widgets.
-    # `type`:          Gene, Protein
-    # `bagName`:       myBag
-    # `el`:            #target
-    # `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {}, "matchCb": function(id, type) {}, "viewCb": function(ids, pq) {} }
+    #
+    # 1. `type`:          Gene, Protein
+    # 2. `bagName`:       myBag
+    # 3. `el`:            #target
+    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {}, "matchCb": function(id, type) {}, "viewCb": function(ids, pq) {} }
     all: (type = "Gene", bagName, el, widgetOptions) =>
         if @wait then window.setTimeout((=> @all(type, bagName, el, widgetOptions)), 0)
         else

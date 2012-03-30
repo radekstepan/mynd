@@ -1,3 +1,5 @@
+### View maintaining Enrichment Widget.###
+
 class EnrichmentView extends Backbone.View
 
     events:
@@ -9,7 +11,7 @@ class EnrichmentView extends Backbone.View
     initialize: (o) ->
         @[k] = v for k, v of o
 
-        # New Collection.
+        # New **Collection**.
         @collection = new EnrichmentResults
         @collection.bind('change', @renderToolbar) # Re-render toolbar on change.
 
@@ -48,7 +50,7 @@ class EnrichmentView extends Backbone.View
             # Table rows.
             table = $(@el).find("div.content table")
             for i in [0...@response.results.length] then do (i) =>
-                # New Model.
+                # New **Model**.
                 row = new EnrichmentRow @response.results[i], @widget
                 @collection.add row
 
@@ -112,7 +114,7 @@ class EnrichmentView extends Backbone.View
                 ex.destroy()
             ), 5000
 
-    # Selecting table rows and clicking on View should get us all ids of matches.
+    # Selecting table rows and clicking on **View** should get us all ids of matches.
     viewAction: =>
         # Get all the matches in selected rows.
         result = []

@@ -1,3 +1,5 @@
+### Pure JS based JS script, CSS loader.###
+
 # Asynchronously load resources by adding them to the `<head>` and use callback.
 class Loader
 
@@ -12,7 +14,7 @@ class Loader
                 window.setTimeout callback, 0
 
 
-# JavaScript Loader.
+#### JavaScript Loader.
 class JSLoader extends Loader
 
     constructor: (path, callback) ->
@@ -23,7 +25,7 @@ class JSLoader extends Loader
         @getHead().appendChild(script)
 
 
-# Cascading Style Sheet Loader.
+#### Cascading Style Sheet Loader.
 class CSSLoader extends Loader
 
     constructor: (path, callback) ->
@@ -35,6 +37,7 @@ class CSSLoader extends Loader
         @getHead().appendChild(sheet)
 
 
+#### Load multiple resources.
 # Pass resources to Load and it will call you back once everything is done.
 class Load
 

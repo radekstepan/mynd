@@ -1,3 +1,5 @@
+### Enrichment Widget table row matches box.###
+
 class EnrichmentMatchesView extends Backbone.View
 
     events:
@@ -7,7 +9,7 @@ class EnrichmentMatchesView extends Backbone.View
     initialize: (o) ->
         @[k] = v for k, v of o
 
-        # New Collection.
+        # New **Collection**.
         @collection = new EnrichmentMatches @matches
 
         @render()

@@ -1,6 +1,8 @@
+### Parent for both Widgets, handling templating, validation and errors.###
+
 class InterMineWidget
 
-    # Inject wrapper inside the target div that we have control over.
+    # Inject wrapper inside the target `div` that we have control over.
     constructor: ->
         $(@el).html $ '<div/>',
             class: "inner"
