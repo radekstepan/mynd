@@ -4,31 +4,39 @@ $ = window.jQuery or window.Zepto
 # Public interface for the various InterMine Widgets.
 class window.Widgets
 
-    # JavaScript libraries as resources. Will be loaded if not present already, in the specified order.
-    resources:
-        js:
-            jQuery:   "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
-            _:        "http://documentcloud.github.com/underscore/underscore.js"
-            Backbone: "http://documentcloud.github.com/backbone/backbone-min.js"
-            google:   "https://www.google.com/jsapi"
+    wait: true
+
+    # JavaScript libraries as resources. Will be loaded if not present already.
+    resources: [
+        name:  "jQuery"
+        path:  "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+        type:  "js"
+        wait:  true
+    ,
+        name:  "_"
+        path:  "http://documentcloud.github.com/underscore/underscore.js"
+        type:  "js"
+        wait:  true
+    ,
+        name:  "Backbone"
+        path:  "http://documentcloud.github.com/backbone/backbone-min.js"
+        type:  "js"
+    ,
+        name:  "google"
+        path:  "https://www.google.com/jsapi"
+        type:  "js"
+    ]
 
     # New Widgets client.
     # `service`: http://aragorn.flymine.org:8080/flymine/service/
     # `token`:   token for accessing user's lists
     constructor: (@service, @token = "") ->
-        # Check and load resources if needed.
-        for library, path of @resources.js then do (library, path) =>
-            if not window[library]? and path
-                @wait = (@wait ? 0) + 1 # One more thing...
-                @resources.js[library] = false # We are loading this.
-                # Actual load.
-                new JSLoader(path, =>
-                    # One less thing...
-                    @wait -= 1
-                    if not @wait
-                        # All libraries loaded, we can now export classes.
-                        o extends factory(window.Backbone)
-                )
+        new Load @resources, =>
+            # All libraries loaded, welcome jQuery, export classes.
+            $ = window.jQuery
+            o extends factory window.Backbone
+            # Switch off waiting switch.
+            @wait = false
 
     # Chart Widget.
     # `id`:            widgetId

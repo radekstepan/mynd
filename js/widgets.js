@@ -169,9 +169,10 @@ merge = function(child, parent) {
   return child;
 };
 
-var CSSLoader, JSLoader, Loader,
+var CSSLoader, JSLoader, Load, Loader,
   __hasProp = Object.prototype.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 Loader = (function() {
 
@@ -231,6 +232,65 @@ CSSLoader = (function(_super) {
   return CSSLoader;
 
 })(Loader);
+
+Load = (function() {
+
+  Load.prototype.wait = false;
+
+  function Load(resources, callback) {
+    this.callback = callback;
+    this.done = __bind(this.done, this);
+    this.load = __bind(this.load, this);
+    this.count = resources.length;
+    this.load(resources.reverse());
+  }
+
+  Load.prototype.load = function(resources) {
+    var resource,
+      _this = this;
+    if (this.wait) {
+      return window.setTimeout((function() {
+        return _this.load(resources);
+      }), 0);
+    } else {
+      if (resources.length) {
+        resource = resources.pop();
+        if (resource.wait != null) this.wait = true;
+        switch (resource.type) {
+          case "js":
+            if (resource.name != null) {
+              if ((window[resource.name] != null) && typeof window[resource.name] === "function") {
+                this.done(resource);
+              } else {
+                new JSLoader(resource.path, function() {
+                  return _this.done(resource);
+                });
+              }
+            } else {
+              new JSLoader(resource.path, function() {
+                return _this.done(resource);
+              });
+            }
+        }
+      }
+      if (this.count || this.wait) {
+        return window.setTimeout((function() {
+          return _this.load(resources, _this.callback);
+        }), 0);
+      } else {
+        return this.callback();
+      }
+    }
+  };
+
+  Load.prototype.done = function(resource) {
+    if (resource.wait != null) this.wait = false;
+    return this.count -= 1;
+  };
+
+  return Load;
+
+})();
 
 var Exporter,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
@@ -1008,52 +1068,53 @@ factory = function(Backbone) {
 
   };
 };
-var $, root,
+var $,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = Object.prototype.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
   __slice = Array.prototype.slice,
   __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-root = root || this;
+$ = window.jQuery || window.Zepto;
 
-$ = root.jQuery || root.Zepto;
+window.Widgets = (function() {
 
-root.Widgets = (function() {
+  Widgets.prototype.wait = true;
 
-  Widgets.prototype.resources = {
-    js: {
-      jQuery: "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js",
-      _: "http://documentcloud.github.com/underscore/underscore.js",
-      Backbone: "http://documentcloud.github.com/backbone/backbone-min.js",
-      google: "https://www.google.com/jsapi"
+  Widgets.prototype.resources = [
+    {
+      name: "jQuery",
+      path: "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js",
+      type: "js",
+      wait: true
+    }, {
+      name: "_",
+      path: "http://documentcloud.github.com/underscore/underscore.js",
+      type: "js",
+      wait: true
+    }, {
+      name: "Backbone",
+      path: "http://documentcloud.github.com/backbone/backbone-min.js",
+      type: "js"
+    }, {
+      name: "google",
+      path: "https://www.google.com/jsapi",
+      type: "js"
     }
-  };
+  ];
 
   function Widgets(service, token) {
-    var library, path, _fn, _ref,
-      _this = this;
+    var _this = this;
     this.service = service;
     this.token = token != null ? token : "";
     this.all = __bind(this.all, this);
     this.enrichment = __bind(this.enrichment, this);
     this.chart = __bind(this.chart, this);
-    _ref = this.resources.js;
-    _fn = function(library, path) {
-      var _ref2;
-      if (!(root[library] != null) && path) {
-        _this.wait = ((_ref2 = _this.wait) != null ? _ref2 : 0) + 1;
-        _this.resources.js[library] = false;
-        return new JSLoader(path, function() {
-          _this.wait -= 1;
-          if (!_this.wait) return __extends(o, factory(root.Backbone));
-        });
-      }
-    };
-    for (library in _ref) {
-      path = _ref[library];
-      _fn(library, path);
-    }
+    new Load(this.resources, function() {
+      $ = window.jQuery;
+      __extends(o, factory(window.Backbone));
+      return _this.wait = false;
+    });
   }
 
   Widgets.prototype.chart = function() {
@@ -1061,7 +1122,7 @@ root.Widgets = (function() {
       _this = this;
     opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     if (this.wait) {
-      return root.setTimeout((function() {
+      return window.setTimeout((function() {
         return _this.chart.apply(_this, opts);
       }), 0);
     } else {
@@ -1083,7 +1144,7 @@ root.Widgets = (function() {
       _this = this;
     opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     if (this.wait) {
-      return root.setTimeout((function() {
+      return window.setTimeout((function() {
         return _this.enrichment.apply(_this, opts);
       }), 0);
     } else {
@@ -1099,7 +1160,7 @@ root.Widgets = (function() {
     var _this = this;
     if (type == null) type = "Gene";
     if (this.wait) {
-      return root.setTimeout((function() {
+      return window.setTimeout((function() {
         return _this.all(type, bagName, el, widgetOptions);
       }), 0);
     } else {
