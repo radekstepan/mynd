@@ -42,25 +42,35 @@ class EnrichmentView extends Backbone.View
             # Render the actions toolbar, we have results.
             @renderToolbar()
 
+            @renderTable()
+        else
+            # Render no results
+            $(@el).find("div.content").html $ @template "noresults"
+
+        @
+
+    # Render the actions toolbar based on how many collection model rows are selected.
+    renderToolbar: =>
+        $(@el).find("div.actions").html(
+            $ @template "enrichment.actions", "disabled": @collection.selected().length is 0
+        )
+
+    # Render the table of results using Document Fragment to prevent browser reflows.
+    renderTable: =>
             # Render the table.
             $(@el).find("div.content").html(
                 $ @template "enrichment.table", "label": @response.label
             )
 
-            # Table rows.
+            # Table rows **Models** and a subsequent **Collection**.
             table = $(@el).find("div.content table")
             for i in [0...@response.results.length] then do (i) =>
                 # New **Model**.
                 row = new EnrichmentRow @response.results[i], @widget
                 @collection.add row
 
-                # Render.
-                table.append $ new EnrichmentRowView(
-                    "model":    row
-                    "template": @template
-                    "type":     @response.type
-                    "matchCb":  @options.matchCb
-                ).el
+            # Render row **Views**.
+            @renderTableBody table
 
             # How tall should the table be? Whole height - header - faux header.
             height = $(@el).height() - $(@el).find('header').height() - $(@el).find('div.content div.head').height()
@@ -76,17 +86,23 @@ class EnrichmentView extends Backbone.View
             # Fix the `table` margin to hide gap after invisible `thead` element.
             table.css 'margin-top': '-' + table.find('thead').height() + 'px'
 
-        else
-            # Render no results
-            $(@el).find("div.content").html $ @template "noresults"
+    # Render `<tbody>` from a @collection (use to achieve single re-flow of row Views).
+    renderTableBody: (table) =>
+        # Create a Document Fragment for the content that follows.
+        fragment = document.createDocumentFragment()
 
-        @
+        # Table rows.
+        for row in @collection.models
+            # Render.
+            fragment.appendChild new EnrichmentRowView(
+                "model":    row
+                "template": @template
+                "type":     @response.type
+                "matchCb":  @options.matchCb
+            ).el
 
-    # Render the actions toolbar based on how many collection model rows are selected.
-    renderToolbar: =>
-        $(@el).find("div.actions").html(
-            $ @template "enrichment.actions", "disabled": @collection.selected().length is 0
-        )
+        # Append the fragment to trigger the browser reflow.
+        table.html fragment
 
     # On form select option change, set the new options and re-render.
     formAction: (e) =>
@@ -94,7 +110,10 @@ class EnrichmentView extends Backbone.View
         @widget.render()
 
     # (De-)select all.
-    selectAllAction: => @collection.toggleSelected()
+    selectAllAction: =>
+        @collection.toggleSelected()
+        @renderToolbar()
+        @renderTableBody $(@el).find("div.content table")
 
     # Export selected rows into a file.
     exportAction: (e) =>

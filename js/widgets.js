@@ -157,6 +157,22 @@ type.isUndefined = (function(_super) {
 
 })(type.Root);
 
+/* Merge properties of 2 dictionaries.
+*/
+var merge;
+
+merge = function(child, parent) {
+  var key;
+  for (key in parent) {
+    if (!(child[key] != null)) {
+      if (Object.prototype.hasOwnProperty.call(parent, key)) {
+        child[key] = parent[key];
+      }
+    }
+  }
+  return child;
+};
+
 /* Pure JS based JS script, CSS loader.
 */
 var CSSLoader, JSLoader, Load, Loader,
@@ -282,22 +298,6 @@ Load = (function() {
 
 })();
 
-/* Merge properties of 2 dictionaries.
-*/
-var merge;
-
-merge = function(child, parent) {
-  var key;
-  for (key in parent) {
-    if (!(child[key] != null)) {
-      if (Object.prototype.hasOwnProperty.call(parent, key)) {
-        child[key] = parent[key];
-      }
-    }
-  }
-  return child;
-};
-
 /* Create file download with custom content.
 */
 var Exporter, PlainExporter,
@@ -413,55 +413,6 @@ factory = function(Backbone) {
   })();
   
 
-  /* Enrichment Widget table row matches box.
-  */
-  var EnrichmentMatchesView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  EnrichmentMatchesView = (function(_super) {
-  
-    __extends(EnrichmentMatchesView, _super);
-  
-    function EnrichmentMatchesView() {
-      this.matchAction = __bind(this.matchAction, this);
-      this.render = __bind(this.render, this);
-      EnrichmentMatchesView.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentMatchesView.prototype.events = {
-      "click a.match": "matchAction",
-      "click a.close": "remove"
-    };
-  
-    EnrichmentMatchesView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      this.collection = new EnrichmentMatches(this.matches);
-      return this.render();
-    };
-  
-    EnrichmentMatchesView.prototype.render = function() {
-      $(this.el).html(this.template("enrichment.matches", {
-        "matches": this.collection.toJSON()
-      }));
-      return this;
-    };
-  
-    EnrichmentMatchesView.prototype.matchAction = function(e) {
-      this.callback($(e.target).text(), this.type);
-      return e.preventDefault();
-    };
-  
-    return EnrichmentMatchesView;
-  
-  })(Backbone.View);
-  
-
   /* Enrichment Widget table row.
   */
   var EnrichmentRowView,
@@ -518,6 +469,55 @@ factory = function(Backbone) {
     };
   
     return EnrichmentRowView;
+  
+  })(Backbone.View);
+  
+
+  /* Enrichment Widget table row matches box.
+  */
+  var EnrichmentMatchesView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  EnrichmentMatchesView = (function(_super) {
+  
+    __extends(EnrichmentMatchesView, _super);
+  
+    function EnrichmentMatchesView() {
+      this.matchAction = __bind(this.matchAction, this);
+      this.render = __bind(this.render, this);
+      EnrichmentMatchesView.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentMatchesView.prototype.events = {
+      "click a.match": "matchAction",
+      "click a.close": "remove"
+    };
+  
+    EnrichmentMatchesView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      this.collection = new EnrichmentMatches(this.matches);
+      return this.render();
+    };
+  
+    EnrichmentMatchesView.prototype.render = function() {
+      $(this.el).html(this.template("enrichment.matches", {
+        "matches": this.collection.toJSON()
+      }));
+      return this;
+    };
+  
+    EnrichmentMatchesView.prototype.matchAction = function(e) {
+      this.callback($(e.target).text(), this.type);
+      return e.preventDefault();
+    };
+  
+    return EnrichmentMatchesView;
   
   })(Backbone.View);
   
@@ -704,177 +704,6 @@ factory = function(Backbone) {
   })(InterMineWidget);
   
 
-  /* View maintaining Enrichment Widget.
-  */
-  var EnrichmentView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  EnrichmentView = (function(_super) {
-  
-    __extends(EnrichmentView, _super);
-  
-    function EnrichmentView() {
-      this.viewAction = __bind(this.viewAction, this);
-      this.exportAction = __bind(this.exportAction, this);
-      this.selectAllAction = __bind(this.selectAllAction, this);
-      this.formAction = __bind(this.formAction, this);
-      this.renderToolbar = __bind(this.renderToolbar, this);
-      EnrichmentView.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentView.prototype.events = {
-      "click div.actions a.view": "viewAction",
-      "click div.actions a.export": "exportAction",
-      "change div.form select": "formAction",
-      "click div.content input.check": "selectAllAction"
-    };
-  
-    EnrichmentView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      this.collection = new EnrichmentResults;
-      this.collection.bind('change', this.renderToolbar);
-      return this.render();
-    };
-  
-    EnrichmentView.prototype.render = function() {
-      var height, i, table, _fn, _ref,
-        _this = this;
-      $(this.el).html(this.template("enrichment.normal", {
-        "title": this.options.title ? this.response.title : "",
-        "description": this.options.description ? this.response.description : "",
-        "notAnalysed": this.response.notAnalysed
-      }));
-      $(this.el).find("div.form").html(this.template("enrichment.form", {
-        "options": this.form.options,
-        "pValues": this.form.pValues,
-        "errorCorrections": this.form.errorCorrections
-      }));
-      if (this.response.extraAttributeLabel != null) {
-        $(this.el).find('div.form form').append(this.template("enrichment.extra", {
-          "label": this.response.extraAttributeLabel,
-          "possible": this.response.extraAttributePossibleValues,
-          "selected": this.response.extraAttributeSelectedValue
-        }));
-      }
-      if (this.response.results.length > 0) {
-        this.renderToolbar();
-        $(this.el).find("div.content").html($(this.template("enrichment.table", {
-          "label": this.response.label
-        })));
-        table = $(this.el).find("div.content table");
-        _fn = function(i) {
-          var row;
-          row = new EnrichmentRow(_this.response.results[i], _this.widget);
-          _this.collection.add(row);
-          return table.append($(new EnrichmentRowView({
-            "model": row,
-            "template": _this.template,
-            "type": _this.response.type,
-            "matchCb": _this.options.matchCb
-          }).el));
-        };
-        for (i = 0, _ref = this.response.results.length; 0 <= _ref ? i < _ref : i > _ref; 0 <= _ref ? i++ : i--) {
-          _fn(i);
-        }
-        height = $(this.el).height() - $(this.el).find('header').height() - $(this.el).find('div.content div.head').height();
-        $(this.el).find("div.content div.wrapper").css('height', "" + height + "px");
-        $(this.el).find("div.content div.head").css("width", $(this.el).find("div.content table").width() + "px");
-        table.find('thead th').each(function(i, th) {
-          return $(_this.el).find("div.content div.head div:eq(" + i + ")").width($(th).width());
-        });
-        table.css({
-          'margin-top': '-' + table.find('thead').height() + 'px'
-        });
-      } else {
-        $(this.el).find("div.content").html($(this.template("noresults")));
-      }
-      return this;
-    };
-  
-    EnrichmentView.prototype.renderToolbar = function() {
-      return $(this.el).find("div.actions").html($(this.template("enrichment.actions", {
-        "disabled": this.collection.selected().length === 0
-      })));
-    };
-  
-    EnrichmentView.prototype.formAction = function(e) {
-      this.widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value");
-      return this.widget.render();
-    };
-  
-    EnrichmentView.prototype.selectAllAction = function() {
-      return this.collection.toggleSelected();
-    };
-  
-    EnrichmentView.prototype.exportAction = function(e) {
-      var ex, match, model, result, _i, _len, _ref;
-      result = [];
-      _ref = this.collection.selected();
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        model = _ref[_i];
-        result.push([model.get('item'), model.get('p-value')].join("\t") + "\t" + ((function() {
-          var _j, _len2, _ref2, _results;
-          _ref2 = model.get('matches');
-          _results = [];
-          for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
-            match = _ref2[_j];
-            _results.push(match.displayed);
-          }
-          return _results;
-        })()).join());
-      }
-      if (result.length) {
-        try {
-          ex = new Exporter($(e.target), result.join("\n"), "" + this.widget.bagName + " " + this.widget.id + ".tsv");
-        } catch (TypeError) {
-          ex = new PlainExporter(result.join("\n"));
-        }
-        return window.setTimeout((function() {
-          return ex.destroy();
-        }), 5000);
-      }
-    };
-  
-    EnrichmentView.prototype.viewAction = function() {
-      var match, model, pq, result, _i, _len, _ref;
-      result = [];
-      _ref = this.collection.selected();
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        model = _ref[_i];
-        Array.prototype.push.apply(result, (function() {
-          var _j, _len2, _ref2, _results;
-          _ref2 = model.get('matches');
-          _results = [];
-          for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
-            match = _ref2[_j];
-            _results.push(match.id);
-          }
-          return _results;
-        })());
-      }
-      if (result.length) {
-        pq = this.response.pathQuery;
-        pq = JSON.parse(pq);
-        pq.where.push({
-          "path": this.response.pathConstraint,
-          "op": "ONE OF",
-          "values": result
-        });
-        return this.options.viewCb(pq);
-      }
-    };
-  
-    return EnrichmentView;
-  
-  })(Backbone.View);
-  
-
   /* Models underpinning Enrichment Widget results.
   */
   var EnrichmentMatch, EnrichmentMatches, EnrichmentResults, EnrichmentRow,
@@ -974,6 +803,8 @@ factory = function(Backbone) {
           model = _ref[_i];
           _results.push(model.set({
             "selected": true
+          }, {
+            'silent': true
           }));
         }
         return _results;
@@ -984,6 +815,8 @@ factory = function(Backbone) {
           model = _ref2[_j];
           _results2.push(model.set({
             "selected": false
+          }, {
+            'silent': true
           }));
         }
         return _results2;
@@ -993,6 +826,196 @@ factory = function(Backbone) {
     return EnrichmentResults;
   
   })(Backbone.Collection);
+  
+
+  /* View maintaining Enrichment Widget.
+  */
+  var EnrichmentView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  EnrichmentView = (function(_super) {
+  
+    __extends(EnrichmentView, _super);
+  
+    function EnrichmentView() {
+      this.viewAction = __bind(this.viewAction, this);
+      this.exportAction = __bind(this.exportAction, this);
+      this.selectAllAction = __bind(this.selectAllAction, this);
+      this.formAction = __bind(this.formAction, this);
+      this.renderTableBody = __bind(this.renderTableBody, this);
+      this.renderTable = __bind(this.renderTable, this);
+      this.renderToolbar = __bind(this.renderToolbar, this);
+      EnrichmentView.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentView.prototype.events = {
+      "click div.actions a.view": "viewAction",
+      "click div.actions a.export": "exportAction",
+      "change div.form select": "formAction",
+      "click div.content input.check": "selectAllAction"
+    };
+  
+    EnrichmentView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      this.collection = new EnrichmentResults;
+      this.collection.bind('change', this.renderToolbar);
+      return this.render();
+    };
+  
+    EnrichmentView.prototype.render = function() {
+      $(this.el).html(this.template("enrichment.normal", {
+        "title": this.options.title ? this.response.title : "",
+        "description": this.options.description ? this.response.description : "",
+        "notAnalysed": this.response.notAnalysed
+      }));
+      $(this.el).find("div.form").html(this.template("enrichment.form", {
+        "options": this.form.options,
+        "pValues": this.form.pValues,
+        "errorCorrections": this.form.errorCorrections
+      }));
+      if (this.response.extraAttributeLabel != null) {
+        $(this.el).find('div.form form').append(this.template("enrichment.extra", {
+          "label": this.response.extraAttributeLabel,
+          "possible": this.response.extraAttributePossibleValues,
+          "selected": this.response.extraAttributeSelectedValue
+        }));
+      }
+      if (this.response.results.length > 0) {
+        this.renderToolbar();
+        this.renderTable();
+      } else {
+        $(this.el).find("div.content").html($(this.template("noresults")));
+      }
+      return this;
+    };
+  
+    EnrichmentView.prototype.renderToolbar = function() {
+      return $(this.el).find("div.actions").html($(this.template("enrichment.actions", {
+        "disabled": this.collection.selected().length === 0
+      })));
+    };
+  
+    EnrichmentView.prototype.renderTable = function() {
+      var height, i, table, _fn, _ref,
+        _this = this;
+      $(this.el).find("div.content").html($(this.template("enrichment.table", {
+        "label": this.response.label
+      })));
+      table = $(this.el).find("div.content table");
+      _fn = function(i) {
+        var row;
+        row = new EnrichmentRow(_this.response.results[i], _this.widget);
+        return _this.collection.add(row);
+      };
+      for (i = 0, _ref = this.response.results.length; 0 <= _ref ? i < _ref : i > _ref; 0 <= _ref ? i++ : i--) {
+        _fn(i);
+      }
+      this.renderTableBody(table);
+      height = $(this.el).height() - $(this.el).find('header').height() - $(this.el).find('div.content div.head').height();
+      $(this.el).find("div.content div.wrapper").css('height', "" + height + "px");
+      $(this.el).find("div.content div.head").css("width", $(this.el).find("div.content table").width() + "px");
+      table.find('thead th').each(function(i, th) {
+        return $(_this.el).find("div.content div.head div:eq(" + i + ")").width($(th).width());
+      });
+      return table.css({
+        'margin-top': '-' + table.find('thead').height() + 'px'
+      });
+    };
+  
+    EnrichmentView.prototype.renderTableBody = function(table) {
+      var fragment, row, _i, _len, _ref;
+      fragment = document.createDocumentFragment();
+      _ref = this.collection.models;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        row = _ref[_i];
+        fragment.appendChild(new EnrichmentRowView({
+          "model": row,
+          "template": this.template,
+          "type": this.response.type,
+          "matchCb": this.options.matchCb
+        }).el);
+      }
+      return table.html(fragment);
+    };
+  
+    EnrichmentView.prototype.formAction = function(e) {
+      this.widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value");
+      return this.widget.render();
+    };
+  
+    EnrichmentView.prototype.selectAllAction = function() {
+      this.collection.toggleSelected();
+      this.renderToolbar();
+      return this.renderTableBody($(this.el).find("div.content table"));
+    };
+  
+    EnrichmentView.prototype.exportAction = function(e) {
+      var ex, match, model, result, _i, _len, _ref;
+      result = [];
+      _ref = this.collection.selected();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        model = _ref[_i];
+        result.push([model.get('item'), model.get('p-value')].join("\t") + "\t" + ((function() {
+          var _j, _len2, _ref2, _results;
+          _ref2 = model.get('matches');
+          _results = [];
+          for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+            match = _ref2[_j];
+            _results.push(match.displayed);
+          }
+          return _results;
+        })()).join());
+      }
+      if (result.length) {
+        try {
+          ex = new Exporter($(e.target), result.join("\n"), "" + this.widget.bagName + " " + this.widget.id + ".tsv");
+        } catch (TypeError) {
+          ex = new PlainExporter(result.join("\n"));
+        }
+        return window.setTimeout((function() {
+          return ex.destroy();
+        }), 5000);
+      }
+    };
+  
+    EnrichmentView.prototype.viewAction = function() {
+      var match, model, pq, result, _i, _len, _ref;
+      result = [];
+      _ref = this.collection.selected();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        model = _ref[_i];
+        Array.prototype.push.apply(result, (function() {
+          var _j, _len2, _ref2, _results;
+          _ref2 = model.get('matches');
+          _results = [];
+          for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+            match = _ref2[_j];
+            _results.push(match.id);
+          }
+          return _results;
+        })());
+      }
+      if (result.length) {
+        pq = this.response.pathQuery;
+        pq = JSON.parse(pq);
+        pq.where.push({
+          "path": this.response.pathConstraint,
+          "op": "ONE OF",
+          "values": result
+        });
+        return this.options.viewCb(pq);
+      }
+    };
+  
+    return EnrichmentView;
+  
+  })(Backbone.View);
   
 
   /* Enrichment Widget main class.
@@ -1103,12 +1126,12 @@ factory = function(Backbone) {
   return {
 
     "InterMineWidget": InterMineWidget,
-    "EnrichmentMatchesView": EnrichmentMatchesView,
     "EnrichmentRowView": EnrichmentRowView,
+    "EnrichmentMatchesView": EnrichmentMatchesView,
     "ChartView": ChartView,
     "ChartWidget": ChartWidget,
-    "EnrichmentView": EnrichmentView,
     "EnrichmentResults": EnrichmentResults,
+    "EnrichmentView": EnrichmentView,
     "EnrichmentWidget": EnrichmentWidget,
 
   };

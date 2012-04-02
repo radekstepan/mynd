@@ -42,11 +42,11 @@ class EnrichmentResults extends Backbone.Collection
     # Filter down the **Collection** of all lists that are `selected`.
     selected: -> @filter( (row) -> row.get "selected" )
 
-    # (De-)select all.
+    # Silently! (de-)select all.
     toggleSelected: ->
         if @models.length - @selected().length
             # Select all.
-            model.set "selected": true for model in @models
+            model.set {"selected": true}, {'silent': true} for model in @models
         else
             # Deselect all.
-            model.set "selected": false for model in @models
+            model.set {"selected": false}, {'silent': true} for model in @models
