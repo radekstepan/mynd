@@ -120,7 +120,8 @@ class EnrichmentView extends Backbone.View
         # Create a tab delimited string.
         result = []
         for model in @collection.selected()
-            result.push [ model.get('item'), model.get('p-value') ].join("\t") + "\t" + ( match.displayed for match in model.get('matches') ).join()
+            console.log model
+            result.push [ model.get('description'), model.get('p-value') ].join("\t") + "\t" + ( match.displayed for match in model.get('matches') ).join()
 
         if result.length # Can be empty.
             # Create.
