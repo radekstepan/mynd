@@ -4,7 +4,7 @@ class EnrichmentMatchesView extends Backbone.View
 
     events:
         "click a.match": "matchAction"
-        "click a.close": "remove"
+        "click a.close": "hide"
 
     initialize: (o) ->
         @[k] = v for k, v of o
@@ -22,3 +22,6 @@ class EnrichmentMatchesView extends Backbone.View
     matchAction: (e) =>
         @callback $(e.target).text(), @type
         e.preventDefault()
+
+    # Hide me.
+    hide: => $(@el).hide()
