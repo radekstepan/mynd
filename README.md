@@ -70,7 +70,7 @@ INTERMINE =
 
 ### Where is documentation?
 
-Commented source code is located on GitHub Pages here: [http://radekstepan.github.com/intermine-widget-client/](http://radekstepan.github.com/intermine-widget-client/).
+Commented source code is in the `/docs` directory: [http://0.0.0.0:1111/docs/widgets.html](http://0.0.0.0:1111/docs/widgets.html).
 
 ### I want to define a custom behavior when clicking on Chart Widget.
 
