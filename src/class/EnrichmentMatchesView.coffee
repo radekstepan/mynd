@@ -15,6 +15,7 @@ class EnrichmentMatchesView extends Backbone.View
         @render()
 
     render: =>
+        $(@el).css 'position':'relative'
         $(@el).html @template "enrichment.matches", "matches": @collection.toJSON()
         @
 

@@ -1,6 +1,6 @@
 <td class="check"><input type="checkbox" <%= if @row["selected"]: %>checked="checked"<% end %> /></td>
 <td class="description"><%= @row["description"] %></td>
 <td class="pValue"><%= @row["p-value"].toFixed(7) %></td>
-<td class="matches" style="position:relative">
+<td class="matches">
     <span class="count label label-success" style="cursor:pointer"><%= @row["matches"].length %></span>
 </td>
