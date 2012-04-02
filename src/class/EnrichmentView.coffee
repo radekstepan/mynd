@@ -120,7 +120,6 @@ class EnrichmentView extends Backbone.View
         # Create a tab delimited string.
         result = []
         for model in @collection.selected()
-            console.log model
             result.push [ model.get('description'), model.get('p-value') ].join("\t") + "\t" + ( match.displayed for match in model.get('matches') ).join()
 
         if result.length # Can be empty.
@@ -139,7 +138,7 @@ class EnrichmentView extends Backbone.View
         # Get all the matches in selected rows.
         result = []
         for model in @collection.selected()
-            Array::push.apply result, ( match.id for match in model.get('matches') )
+            Array::push.apply result, ( match.displayed for match in model.get('matches') )
 
         if result.length # Can be empty.
             pq = @response.pathQuery

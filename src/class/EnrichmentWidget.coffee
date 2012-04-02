@@ -53,6 +53,16 @@ class EnrichmentWidget extends InterMineWidget
 
     # Visualize the displayer.
     render: =>
+        # *Loading* overlay.
+        $(@el).append loading = $('<div/>',
+            'class': 'loading'
+            'html':  -> $('<p/>',
+                    'html':  'Loading &hellip;'
+                    'style': 'padding-top:50%;font-weight:bold;'
+                )
+            'style': 'background:rgba(255,255,255,0.9);position:absolute;top:0;left:0;height:100%;width:100%;text-align:center;'
+        )
+
         # Removes all of the **View**'s delegated events if there is one already.
         @view?.undelegateEvents()
 
@@ -68,6 +78,9 @@ class EnrichmentWidget extends InterMineWidget
                 token:      @token
             
             success: (response) =>
+                # No need for a loading overlay.
+                loading.remove()
+
                 # We have response, validate.
                 @validateType response, @spec.response
                 # We have results.

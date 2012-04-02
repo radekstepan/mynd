@@ -6,8 +6,7 @@ class InterMineWidget
     constructor: ->
         $(@el).html $ '<div/>',
             class: "inner"
-            style: "height:572px;overflow:hidden"
-            html:  "Loading &hellip;"
+            style: "height:572px;overflow:hidden;position:relative"
         @el = "#{@el} div.inner"
 
     # Where is eco?

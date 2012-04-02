@@ -163,6 +163,70 @@ type.isUndefined = (function(_super) {
 
 })(type.Root);
 
+/* Merge properties of 2 dictionaries.
+*/
+var merge;
+
+merge = function(child, parent) {
+  var key;
+  for (key in parent) {
+    if (!(child[key] != null)) {
+      if (Object.prototype.hasOwnProperty.call(parent, key)) {
+        child[key] = parent[key];
+      }
+    }
+  }
+  return child;
+};
+
+/* Create file download with custom content.
+*/
+var Exporter, PlainExporter,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+Exporter = (function() {
+
+  Exporter.prototype.mime = 'text/plain';
+
+  Exporter.prototype.charset = 'UTF-8';
+
+  Exporter.prototype.url = window.webkitURL || window.URL;
+
+  function Exporter(a, data, filename) {
+    var builder;
+    if (filename == null) filename = 'widget.tsv';
+    this.destroy = __bind(this.destroy, this);
+    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
+    builder.append(data);
+    a.attr('download', filename);
+    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
+    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
+  }
+
+  Exporter.prototype.destroy = function() {
+    return this.url.revokeObjectURL(this.href);
+  };
+
+  return Exporter;
+
+})();
+
+PlainExporter = (function() {
+
+  function PlainExporter(data) {
+    var w;
+    w = window.open();
+    w.document.open();
+    w.document.write(data);
+    w.document.close();
+  }
+
+  PlainExporter.prototype.destroy = function() {};
+
+  return PlainExporter;
+
+})();
+
 /* Pure JS based JS script, CSS loader.
 */
 var CSSLoader, JSLoader, Load, Loader,
@@ -288,70 +352,6 @@ Load = (function() {
 
 })();
 
-/* Merge properties of 2 dictionaries.
-*/
-var merge;
-
-merge = function(child, parent) {
-  var key;
-  for (key in parent) {
-    if (!(child[key] != null)) {
-      if (Object.prototype.hasOwnProperty.call(parent, key)) {
-        child[key] = parent[key];
-      }
-    }
-  }
-  return child;
-};
-
-/* Create file download with custom content.
-*/
-var Exporter, PlainExporter,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-Exporter = (function() {
-
-  Exporter.prototype.mime = 'text/plain';
-
-  Exporter.prototype.charset = 'UTF-8';
-
-  Exporter.prototype.url = window.webkitURL || window.URL;
-
-  function Exporter(a, data, filename) {
-    var builder;
-    if (filename == null) filename = 'widget.tsv';
-    this.destroy = __bind(this.destroy, this);
-    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
-    builder.append(data);
-    a.attr('download', filename);
-    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
-    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
-  }
-
-  Exporter.prototype.destroy = function() {
-    return this.url.revokeObjectURL(this.href);
-  };
-
-  return Exporter;
-
-})();
-
-PlainExporter = (function() {
-
-  function PlainExporter(data) {
-    var w;
-    w = window.open();
-    w.document.open();
-    w.document.write(data);
-    w.document.close();
-  }
-
-  PlainExporter.prototype.destroy = function() {};
-
-  return PlainExporter;
-
-})();
-
 var factory;
 factory = function(Backbone) {
 
@@ -366,8 +366,7 @@ factory = function(Backbone) {
       this.error = __bind(this.error, this);
       this.validateType = __bind(this.validateType, this);    $(this.el).html($('<div/>', {
         "class": "inner",
-        style: "height:572px;overflow:hidden",
-        html: "Loading &hellip;"
+        style: "height:572px;overflow:hidden;position:relative"
       }));
       this.el = "" + this.el + " div.inner";
     }
@@ -417,63 +416,6 @@ factory = function(Backbone) {
     return InterMineWidget;
   
   })();
-  
-
-  /* Enrichment Widget table row matches box.
-  */
-  var EnrichmentMatchesView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  EnrichmentMatchesView = (function(_super) {
-  
-    __extends(EnrichmentMatchesView, _super);
-  
-    function EnrichmentMatchesView() {
-      this.hide = __bind(this.hide, this);
-      this.matchAction = __bind(this.matchAction, this);
-      this.render = __bind(this.render, this);
-      EnrichmentMatchesView.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentMatchesView.prototype.events = {
-      "click a.match": "matchAction",
-      "click a.close": "hide"
-    };
-  
-    EnrichmentMatchesView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      this.collection = new EnrichmentMatches(this.matches);
-      return this.render();
-    };
-  
-    EnrichmentMatchesView.prototype.render = function() {
-      $(this.el).css({
-        'position': 'relative'
-      });
-      $(this.el).html(this.template("enrichment.matches", {
-        "matches": this.collection.toJSON()
-      }));
-      return this;
-    };
-  
-    EnrichmentMatchesView.prototype.matchAction = function(e) {
-      this.callback($(e.target).text(), this.type);
-      return e.preventDefault();
-    };
-  
-    EnrichmentMatchesView.prototype.hide = function() {
-      return $(this.el).hide();
-    };
-  
-    return EnrichmentMatchesView;
-  
-  })(Backbone.View);
   
 
   /* Enrichment Widget table row.
@@ -537,6 +479,63 @@ factory = function(Backbone) {
     };
   
     return EnrichmentRowView;
+  
+  })(Backbone.View);
+  
+
+  /* Enrichment Widget table row matches box.
+  */
+  var EnrichmentMatchesView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  EnrichmentMatchesView = (function(_super) {
+  
+    __extends(EnrichmentMatchesView, _super);
+  
+    function EnrichmentMatchesView() {
+      this.hide = __bind(this.hide, this);
+      this.matchAction = __bind(this.matchAction, this);
+      this.render = __bind(this.render, this);
+      EnrichmentMatchesView.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentMatchesView.prototype.events = {
+      "click a.match": "matchAction",
+      "click a.close": "hide"
+    };
+  
+    EnrichmentMatchesView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      this.collection = new EnrichmentMatches(this.matches);
+      return this.render();
+    };
+  
+    EnrichmentMatchesView.prototype.render = function() {
+      $(this.el).css({
+        'position': 'relative'
+      });
+      $(this.el).html(this.template("enrichment.matches", {
+        "matches": this.collection.toJSON()
+      }));
+      return this;
+    };
+  
+    EnrichmentMatchesView.prototype.matchAction = function(e) {
+      this.callback($(e.target).text(), this.type);
+      return e.preventDefault();
+    };
+  
+    EnrichmentMatchesView.prototype.hide = function() {
+      return $(this.el).hide();
+    };
+  
+    return EnrichmentMatchesView;
   
   })(Backbone.View);
   
@@ -980,7 +979,6 @@ factory = function(Backbone) {
       _ref = this.collection.selected();
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         model = _ref[_i];
-        console.log(model);
         result.push([model.get('description'), model.get('p-value')].join("\t") + "\t" + ((function() {
           var _j, _len2, _ref2, _results;
           _ref2 = model.get('matches');
@@ -1016,7 +1014,7 @@ factory = function(Backbone) {
           _results = [];
           for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
             match = _ref2[_j];
-            _results.push(match.id);
+            _results.push(match.displayed);
           }
           return _results;
         })());
@@ -1102,8 +1100,18 @@ factory = function(Backbone) {
     }
   
     EnrichmentWidget.prototype.render = function() {
-      var _ref,
+      var loading, _ref,
         _this = this;
+      $(this.el).append(loading = $('<div/>', {
+        'class': 'loading',
+        'html': function() {
+          return $('<p/>', {
+            'html': 'Loading &hellip;',
+            'style': 'padding-top:50%;font-weight:bold;'
+          });
+        },
+        'style': 'background:rgba(255,255,255,0.9);position:absolute;top:0;left:0;height:100%;width:100%;text-align:center;'
+      }));
       if ((_ref = this.view) != null) _ref.undelegateEvents();
       return $.ajax({
         url: "" + this.service + "list/enrichment",
@@ -1116,6 +1124,7 @@ factory = function(Backbone) {
           token: this.token
         },
         success: function(response) {
+          loading.remove();
           _this.validateType(response, _this.spec.response);
           if (response.wasSuccessful) {
             return _this.view = new EnrichmentView({
@@ -1146,8 +1155,8 @@ factory = function(Backbone) {
   return {
 
     "InterMineWidget": InterMineWidget,
-    "EnrichmentMatchesView": EnrichmentMatchesView,
     "EnrichmentRowView": EnrichmentRowView,
+    "EnrichmentMatchesView": EnrichmentMatchesView,
     "ChartView": ChartView,
     "ChartWidget": ChartWidget,
     "EnrichmentResults": EnrichmentResults,
