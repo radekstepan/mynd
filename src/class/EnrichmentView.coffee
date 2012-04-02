@@ -102,7 +102,7 @@ class EnrichmentView extends Backbone.View
             ).el
 
         # Append the fragment to trigger the browser reflow.
-        table.html fragment
+        table.find('tbody').html fragment
 
     # On form select option change, set the new options and re-render.
     formAction: (e) =>
