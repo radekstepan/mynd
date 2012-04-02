@@ -37,6 +37,8 @@ class window.Widgets
         new Load @resources, =>
             # All libraries loaded, welcome jQuery, export classes.
             $ = window.jQuery
+            # Enable Cross-Origin Resource Sharing (for Opera, IE).
+            $.support.cors = true
             o extends factory window.Backbone
             # Switch off waiting switch.
             @wait = false
@@ -75,7 +77,7 @@ class window.Widgets
         else
             $.ajax
                 url:      "#{@service}widgets"
-                dataType: "json"
+                dataType: "jsonp"
                 
                 success: (response) =>
                     # We have results.
@@ -93,6 +95,6 @@ class window.Widgets
                                 when "enrichment"
                                     @enrichment(widget.name, bagName, "#{el} ##{widgetEl}", widgetOptions)                
                 
-                error: (err) -> $(el).html $ '<div/>',
+                error: (xhr, opts, err) => $(el).html $ '<div/>',
                     class: "alert alert-error"
-                    text:  "An unspecified error has happened, server timeout?"
+                    html:  "#{xhr.statusText} for <a href='#{@service}widgets'>#{@service}widgets</a>"

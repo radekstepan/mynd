@@ -68,7 +68,7 @@ class Load
                         # Do we need to actually download it? Check for resource name.
                         if resource.name?
                             # Bastardly browsers (IE, Webkit, Opera) attach `<div>` elements by their id to `window`.
-                            if window[resource.name]? and typeof window[resource.name] is "function" then @done resource
+                            if window[resource.name]? and (typeof window[resource.name] is "function" or "object") then @done resource
                             else new JSLoader(resource.path, => @done resource)
                         # Standard load.
                         else new JSLoader(resource.path, => @done resource)

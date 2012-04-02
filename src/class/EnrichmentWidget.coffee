@@ -59,7 +59,7 @@ class EnrichmentWidget extends InterMineWidget
         # Request new data.
         $.ajax
             url:      "#{@service}list/enrichment"
-            dataType: "json"
+            dataType: "jsonp"
             data:
                 widget:     @id
                 list:       @bagName

@@ -33,7 +33,7 @@ class InterMineWidget
                 opts.title = opts.statusText
                 opts.text = opts.responseText
             when "JSONResponse"
-                opts.title = "Invalid JSON"
+                opts.title = "Invalid JSON Response"
                 opts.text = "<ol>#{opts.join('')}</ol>"
 
         # Show.
