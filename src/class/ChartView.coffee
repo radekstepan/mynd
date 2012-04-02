@@ -60,9 +60,7 @@ class ChartView extends Backbone.View
                                 @options.selectCb pq
             else
                 # Undefined Google Visualization chart type.
-                $(@el).html @template "error",
-                    title: @response.chartType
-                    text:  "This chart type does not exist in Google Visualization API"
+                @error 'title': @response.chartType, 'text': "This chart type does not exist in Google Visualization API"
 
         else
             # Render no results.

@@ -23,20 +23,18 @@ class InterMineWidget
                     actual:   r.is()
                     expected: new String(r)
         
-        if fails.length then @error "JSONResponse", fails
+        if fails.length then @error fails, "JSONResponse"
 
     # The possible errors we handle.
-    error: (type, data) =>
-        opts = title: "Error", text: "Generic error"
-
+    error: (opts={'title': 'Error', 'text': 'Generic error'}, type) =>
         # Which?
         switch type
             when "AJAXTransport"
-                opts.title = data.statusText
-                opts.text = data.responseText
+                opts.title = opts.statusText
+                opts.text = opts.responseText
             when "JSONResponse"
                 opts.title = "Invalid JSON"
-                opts.text = "<ol>#{data.join('')}</ol>"
+                opts.text = "<ol>#{opts.join('')}</ol>"
 
         # Show.
         $(@el).html @template "error", opts

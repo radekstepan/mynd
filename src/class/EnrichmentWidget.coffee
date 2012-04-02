@@ -85,4 +85,4 @@ class EnrichmentWidget extends InterMineWidget
                         "options":  @widgetOptions
                     )
             
-            error: (err) => @error "AJAXTransport", err
+            error: (err) => @error err, "AJAXTransport"
