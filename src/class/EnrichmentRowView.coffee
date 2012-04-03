@@ -24,14 +24,9 @@ class EnrichmentRowView extends Backbone.View
 
     # Show matches.
     matchesAction: =>
-        # Keyš.
-        if @matches?
-            $(@matches).show()
-        else
-            @matches = new EnrichmentMatchesView(
-                "matches":  @model.get "matches"
-                "template": @template
-                "type":     @type
-                "callback": @matchCb
-            ).el
-            $(@el).find('td.matches span').after @matches
+        $(@el).find('td.matches span').after new EnrichmentMatchesView(
+            "matches":  @model.get "matches"
+            "template": @template
+            "type":     @type
+            "callback": @matchCb
+        ).el
