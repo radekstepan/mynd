@@ -138,7 +138,7 @@ class EnrichmentView extends Backbone.View
         # Get all the matches in selected rows.
         result = []
         for model in @collection.selected()
-            Array::push.apply result, ( match.displayed for match in model.get('matches') )
+            result.push model.get 'identifier'
 
         if result.length # Can be empty.
             pq = @response.pathQuery

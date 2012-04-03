@@ -10,8 +10,8 @@ JST["noresults.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;retu
 JST["enrichment.table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<!-- actual fixed head -->\n<div class="head" style="display:table">\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;"><input type="checkbox" class="check" /></div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">'),b.push(d(this.label)),b.push('</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">p-Value</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">Matches</div>\n    <div style="clear:both"></div>\n</div>\n<div class="wrapper" style="overflow:auto;overflow-x:hidden">\n    <table class="table table-striped">\n        <!-- head for proper cell width -->\n        <thead style="visibility:hidden">\n            <tr>\n                <th></th>\n                <th>'),b.push(d(this.label)),b.push("</th>\n                <th>p-Value</th>\n                <th>Matches</th>\n            </tr>\n        </thead>\n        <tbody>\n            <!-- loop enrichment.row.eco -->\n        </tbody>\n    </table>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.form.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f,g,h,i,j;b.push('<form style="margin:0">\n    <div class="group" style="display:inline-block;margin-right:5px">\n        <label>Test Correction</label>\n        <select name="errorCorrection" class="span2">\n            '),i=this.errorCorrections;for(e=0,g=i.length;e<g;e++)a=i[e],b.push('\n                <option value="'),b.push(d(a)),b.push('" '),this.options.errorCorrection===a&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(a)),b.push("\n            </option>\n            ");b.push('\n        </select>\n    </div>\n\n    <div class="group" style="display:inline-block;margin-right:5px">\n        <label>Max p-value</label>\n        <select name="pValue" class="span2">\n            '),j=this.pValues;for(f=0,h=j.length;f<h;f++)c=j[f],b.push('\n                <option value="'),b.push(d(c)),b.push('" '),this.options.pValue===c&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(c)),b.push("\n                </option>\n            ");b.push("\n        </select>\n    </div>\n</form>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.normal.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push('\n        <p>Number of Genes in this list not analysed in this widget: <span class="label label-info">'),b.push(d(this.notAnalysed)),b.push("</span></p>\n    ")),b.push('\n\n    <div class="form"></div>\n\n    <div class="actions" style="padding:10px 0">\n        <!-- enrichment.actions.eco -->\n    </div>\n</header>\n<div class="content">\n    <!-- enrichment.table.eco -->\n</div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["loading.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<div class="loading" style="background:rgba(255,255,255,0.9);position:absolute;top:0;left:0;height:100%;width:100%;text-align:center;">\n    <p style="padding-top:50%;font-weight:bold;">Loading &hellip;</p>\n</div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["chart.normal.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push('\n        <p>Number of Genes in this list not analysed in this widget: <span class="label label-info">'),b.push(d(this.notAnalysed)),b.push("</span></p>\n    ")),b.push('\n</header>\n<div class="content"></div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
+JST["loading.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<div class="loading" style="background:rgba(255,255,255,0.9);position:absolute;top:0;left:0;height:100%;width:100%;text-align:center;">\n    <p style="padding-top:50%;font-weight:bold;">Loading &hellip;</p>\n</div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.extra.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f;b.push('<div class="group" style="display:inline-block;margin-right:5px">\n    <label>'),b.push(d(this.label)),b.push('</label>\n    <select name="dataSet" class="span2">\n        '),f=this.possible;for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n            <option value="'),b.push(d(a)),b.push('" '),this.selected===a&&b.push(d('selected="selected"')),b.push(">\n                "),b.push(d(a)),b.push("\n            </option>\n        ");b.push("\n    </select>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["invalidjsonkey.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<li style="vertical-align:bottom">\n    <span style="display:inline-block" class="label label-inverse">'),b.push(d(this.key)),b.push("</span> is "),b.push(d(this.actual)),b.push("; was expecting "),b.push(d(this.expected)),b.push("\n</li>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 /* Types in JS.
@@ -356,69 +356,6 @@ PlainExporter = (function() {
 var factory;
 factory = function(Backbone) {
 
-  /* Parent for both Widgets, handling templating, validation and errors.
-  */
-  var InterMineWidget,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-  
-  InterMineWidget = (function() {
-  
-    function InterMineWidget() {
-      this.error = __bind(this.error, this);
-      this.validateType = __bind(this.validateType, this);    $(this.el).html($('<div/>', {
-        "class": "inner",
-        style: "height:572px;overflow:hidden;position:relative"
-      }));
-      this.el = "" + this.el + " div.inner";
-    }
-  
-    InterMineWidget.prototype.template = function(name, context) {
-      var _name;
-      if (context == null) context = {};
-      return typeof JST[_name = "" + name + ".eco"] === "function" ? JST[_name](context) : void 0;
-    };
-  
-    InterMineWidget.prototype.validateType = function(object, spec) {
-      var fails, key, r, value;
-      fails = [];
-      for (key in object) {
-        value = object[key];
-        if ((r = (typeof spec[key] === "function" ? new spec[key](value) : void 0) || (r = new type.isUndefined())) && !r.is()) {
-          fails.push(this.template("invalidjsonkey", {
-            key: key,
-            actual: r.is(),
-            expected: new String(r)
-          }));
-        }
-      }
-      if (fails.length) return this.error(fails, "JSONResponse");
-    };
-  
-    InterMineWidget.prototype.error = function(opts, type) {
-      if (opts == null) {
-        opts = {
-          'title': 'Error',
-          'text': 'Generic error'
-        };
-      }
-      switch (type) {
-        case "AJAXTransport":
-          opts.title = opts.statusText;
-          opts.text = opts.responseText;
-          break;
-        case "JSONResponse":
-          opts.title = "Invalid JSON Response";
-          opts.text = "<ol>" + (opts.join('')) + "</ol>";
-      }
-      $(this.el).html(this.template("error", opts));
-      throw new Error(type);
-    };
-  
-    return InterMineWidget;
-  
-  })();
-  
-
   /* Enrichment Widget table row.
   */
   var EnrichmentRowView,
@@ -482,6 +419,69 @@ factory = function(Backbone) {
     return EnrichmentRowView;
   
   })(Backbone.View);
+  
+
+  /* Parent for both Widgets, handling templating, validation and errors.
+  */
+  var InterMineWidget,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  
+  InterMineWidget = (function() {
+  
+    function InterMineWidget() {
+      this.error = __bind(this.error, this);
+      this.validateType = __bind(this.validateType, this);    $(this.el).html($('<div/>', {
+        "class": "inner",
+        style: "height:572px;overflow:hidden;position:relative"
+      }));
+      this.el = "" + this.el + " div.inner";
+    }
+  
+    InterMineWidget.prototype.template = function(name, context) {
+      var _name;
+      if (context == null) context = {};
+      return typeof JST[_name = "" + name + ".eco"] === "function" ? JST[_name](context) : void 0;
+    };
+  
+    InterMineWidget.prototype.validateType = function(object, spec) {
+      var fails, key, r, value;
+      fails = [];
+      for (key in object) {
+        value = object[key];
+        if ((r = (typeof spec[key] === "function" ? new spec[key](value) : void 0) || (r = new type.isUndefined())) && !r.is()) {
+          fails.push(this.template("invalidjsonkey", {
+            key: key,
+            actual: r.is(),
+            expected: new String(r)
+          }));
+        }
+      }
+      if (fails.length) return this.error(fails, "JSONResponse");
+    };
+  
+    InterMineWidget.prototype.error = function(opts, type) {
+      if (opts == null) {
+        opts = {
+          'title': 'Error',
+          'text': 'Generic error'
+        };
+      }
+      switch (type) {
+        case "AJAXTransport":
+          opts.title = opts.statusText;
+          opts.text = opts.responseText;
+          break;
+        case "JSONResponse":
+          opts.title = "Invalid JSON Response";
+          opts.text = "<ol>" + (opts.join('')) + "</ol>";
+      }
+      $(this.el).html(this.template("error", opts));
+      throw new Error(type);
+    };
+  
+    return InterMineWidget;
+  
+  })();
   
 
   /* Enrichment Widget table row matches box.
@@ -1011,21 +1011,12 @@ factory = function(Backbone) {
     };
   
     EnrichmentView.prototype.viewAction = function() {
-      var match, model, pq, result, _i, _len, _ref;
+      var model, pq, result, _i, _len, _ref;
       result = [];
       _ref = this.collection.selected();
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         model = _ref[_i];
-        Array.prototype.push.apply(result, (function() {
-          var _j, _len2, _ref2, _results;
-          _ref2 = model.get('matches');
-          _results = [];
-          for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
-            match = _ref2[_j];
-            _results.push(match.displayed);
-          }
-          return _results;
-        })());
+        result.push(model.get('identifier'));
       }
       if (result.length) {
         pq = this.response.pathQuery;
@@ -1157,8 +1148,8 @@ factory = function(Backbone) {
 
   return {
 
-    "InterMineWidget": InterMineWidget,
     "EnrichmentRowView": EnrichmentRowView,
+    "InterMineWidget": InterMineWidget,
     "EnrichmentMatchesView": EnrichmentMatchesView,
     "ChartView": ChartView,
     "ChartWidget": ChartWidget,
