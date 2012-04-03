@@ -1,0 +1,3 @@
+<div class="loading" style="background:rgba(255,255,255,0.9);position:absolute;top:0;left:0;height:100%;width:100%;text-align:center;">
+    <p style="padding-top:50%;font-weight:bold;">Loading &hellip;</p>
+</div>

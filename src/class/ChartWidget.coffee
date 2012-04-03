@@ -44,6 +44,9 @@ class ChartWidget extends InterMineWidget
 
     # Visualize the displayer.
     render: =>
+        # *Loading* overlay.
+        timeout = window.setTimeout((=> $(@el).append @loading = $ @template 'loading'), 400)
+
         # Get JSON response by calling the service.
         $.ajax
             url:      "#{@service}list/chart"
@@ -54,6 +57,10 @@ class ChartWidget extends InterMineWidget
                 token:  @token
             
             success: (response) =>
+                # No need for a loading overlay.
+                window.clearTimeout timeout
+                @loading?.remove()
+
                 # We have response, validate.
                 @validateType response, @spec.response
                 # We have results.
