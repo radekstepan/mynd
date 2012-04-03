@@ -65,6 +65,10 @@ class ChartWidget extends InterMineWidget
                 @validateType response, @spec.response
                 # We have results.
                 if response.wasSuccessful
+                    # Actual name of the widget.
+                    @name = response.title
+
+                    # New **View**.
                     new ChartView(
                         "widget":   @
                         "el":       @el

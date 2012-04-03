@@ -79,6 +79,9 @@ class EnrichmentWidget extends InterMineWidget
                 @validateType response, @spec.response
                 # We have results.
                 if response.wasSuccessful
+                    # Actual name of the widget.
+                    @name = response.title
+
                     # New **View**.
                     @view = new EnrichmentView(
                         "widget":   @

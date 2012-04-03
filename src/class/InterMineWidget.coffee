@@ -26,6 +26,9 @@ class InterMineWidget
 
     # The possible errors we handle.
     error: (opts={'title': 'Error', 'text': 'Generic error'}, type) =>
+        # Add the name of the widget.
+        opts.name = @name or @id
+        
         # Which?
         switch type
             when "AJAXTransport"
