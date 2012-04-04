@@ -21,20 +21,23 @@ class EnrichmentWidget extends InterMineWidget
     # Spec for a successful and correct JSON response.
     spec:
         response:
-            "title":          type.isString
-            "description":    type.isString
-            "pathQuery":      type.isJSON
-            "pathConstraint": type.isString
-            "error":          type.isNull
-            "list":           type.isString
-            "notAnalysed":    type.isInteger
-            "requestedAt":    type.isString
-            "results":        type.isArray
-            "label":          type.isString
-            "statusCode":     type.isHTTPSuccess
-            "title":          type.isString
-            "type":           type.isString
-            "wasSuccessful":  type.isBoolean
+            "title":               type.isString
+            "description":         type.isString
+            "pathQuery":           type.isJSON
+            "pathConstraint":      type.isString
+            "error":               type.isNull
+            "list":                type.isString
+            "notAnalysed":         type.isInteger
+            "requestedAt":         type.isString
+            "results":             type.isArray
+            "label":               type.isString
+            "statusCode":          type.isHTTPSuccess
+            "title":               type.isString
+            "type":                type.isString
+            "wasSuccessful":       type.isBoolean
+            "filters":             type.isString
+            "filterLabel":         type.isString
+            "filterSelectedValue": type.isString
 
     # Set the params on us and render.
     #
@@ -59,16 +62,24 @@ class EnrichmentWidget extends InterMineWidget
         # Removes all of the **View**'s delegated events if there is one already.
         @view?.undelegateEvents()
 
+        # Payload.
+        data =
+            'widget':     @id
+            'list':       @bagName
+            'correction': @formOptions.errorCorrection
+            'maxp':       @formOptions.pValue
+            'token':      @token
+
+        # An extra form filter?
+        for key, value of @formOptions
+            # This should be handled better...
+            if key not in [ 'errorCorrection', 'pValue' ] then data['filter'] = value
+
         # Request new data.
         $.ajax
-            url:      "#{@service}list/enrichment"
-            dataType: "jsonp"
-            data:
-                widget:     @id
-                list:       @bagName
-                correction: @formOptions.errorCorrection
-                maxp:       @formOptions.pValue
-                token:      @token
+            'url':      "#{@service}list/enrichment"
+            'dataType': "jsonp"
+            'data':     data
             
             success: (response) =>
                 # No need for a loading overlay.

@@ -30,12 +30,12 @@ class EnrichmentView extends Backbone.View
             "pValues":          @form.pValues
             "errorCorrections": @form.errorCorrections
 
-        # Extra attributes (DataSets)?
-        if @response.extraAttributeLabel?
+        # Extra attributes (DataSets etc.)?
+        if @response.filterLabel?
             $(@el).find('div.form form').append @template "enrichment.extra",
-                "label":    @response.extraAttributeLabel
-                "possible": @response.extraAttributePossibleValues
-                "selected": @response.extraAttributeSelectedValue
+                "label":    @response.filterLabel
+                "possible": @response.filters.split(',') # Is a String unfortunately.
+                "selected": @response.filterSelectedValue
 
         # Results?
         if @response.results.length > 0
