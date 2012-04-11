@@ -6,7 +6,7 @@ class ChartView extends Backbone.View
     chartOptions:
         fontName: "Sans-Serif"
         fontSize: 11
-        width:    400
+        width:    550
         height:   450
         legend:   "bottom"
         colors:   [ "#2F72FF", "#9FC0FF" ]
@@ -19,6 +19,9 @@ class ChartView extends Backbone.View
             titleTextStyle:
                 fontName: "Sans-Serif"
 
+    events:
+        "change div.form select": "formAction"
+
     initialize: (o) ->
         @[k] = v for k, v of o
         @render()
@@ -29,6 +32,13 @@ class ChartView extends Backbone.View
             "title":       if @options.title then @response.title else ""
             "description": if @options.description then @response.description else ""
             "notAnalysed": @response.notAnalysed
+
+        # Extra attributes (DataSets etc.)?
+        if @response.filterLabel?
+            $(@el).find('div.form form').append @template "chart.extra",
+                "label":    @response.filterLabel
+                "possible": @response.filters.split(',') # Is a String unfortunately.
+                "selected": @response.filterSelectedValue
 
         # Are the results empty?
         if @response.results.length > 1
@@ -65,3 +75,8 @@ class ChartView extends Backbone.View
         else
             # Render no results.
             $(@el).find("div.content").html $ @template "noresults"
+
+    # On form select option change, set the new options and re-render.
+    formAction: (e) =>
+        @widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value")
+        @widget.render()

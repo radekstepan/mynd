@@ -4,5 +4,11 @@
     <% if @notAnalysed: %>
         <p>Number of Genes in this list not analysed in this widget: <span class="label label-info"><%= @notAnalysed %></span></p>
     <% end %>
+
+    <div class="form">
+        <form style="margin:0">
+            <!-- chart.extra.eco -->
+        </form>
+    </div>
 </header>
 <div class="content"></div>

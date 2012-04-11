@@ -5,7 +5,9 @@
         <p>Number of Genes in this list not analysed in this widget: <span class="label label-info"><%= @notAnalysed %></span></p>
     <% end %>
 
-    <div class="form"></div>
+    <div class="form">
+        <!-- enrichment.form.eco -->
+    </div>
 
     <div class="actions" style="padding:10px 0">
         <!-- enrichment.actions.eco -->

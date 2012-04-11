@@ -2,7 +2,7 @@
 
     <span class="nv">events:</span>
         <span class="s2">&quot;click a.match&quot;</span><span class="o">:</span> <span class="s2">&quot;matchAction&quot;</span>
-        <span class="s2">&quot;click a.close&quot;</span><span class="o">:</span> <span class="s2">&quot;remove&quot;</span>
+        <span class="s2">&quot;click a.close&quot;</span><span class="o">:</span> <span class="s2">&quot;hide&quot;</span>
 
     <span class="nv">initialize: </span><span class="nf">(o) -&gt;</span>
         <span class="err">@</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">=</span> <span class="nx">v</span> <span class="k">for</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span> <span class="k">of</span> <span class="nx">o</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>New <strong>Collection</strong>.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="vi">@collection = </span><span class="k">new</span> <span class="nx">EnrichmentMatches</span> <span class="nx">@matches</span>
@@ -10,9 +10,10 @@
         <span class="nx">@render</span><span class="p">()</span>
 
     <span class="nv">render: </span><span class="o">=&gt;</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nx">@el</span><span class="p">).</span><span class="nx">css</span> <span class="s1">&#39;position&#39;</span><span class="o">:</span><span class="s1">&#39;relative&#39;</span>
         <span class="nx">$</span><span class="p">(</span><span class="nx">@el</span><span class="p">).</span><span class="nx">html</span> <span class="nx">@template</span> <span class="s2">&quot;enrichment.matches&quot;</span><span class="p">,</span> <span class="s2">&quot;matches&quot;</span><span class="o">:</span> <span class="nx">@collection</span><span class="p">.</span><span class="nx">toJSON</span><span class="p">()</span>
         <span class="err">@</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Onclick the individual match, execute the callback.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">matchAction: </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
         <span class="nx">@callback</span> <span class="nx">$</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">).</span><span class="nx">text</span><span class="p">(),</span> <span class="nx">@type</span>
-        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Hide me.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">hide: </span><span class="o">=&gt;</span> <span class="nx">$</span><span class="p">(</span><span class="nx">@el</span><span class="p">).</span><span class="nx">hide</span><span class="p">()</span>
 
 </pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

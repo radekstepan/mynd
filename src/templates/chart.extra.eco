@@ -1,6 +1,6 @@
 <div class="group" style="display:inline-block;margin-right:5px">
     <label><%= @label %></label>
-    <select name="<%= @label %>" class="span2">
+    <select name="<%= @label %>" class="span3">
         <% for v in @possible: %>
             <option value="<%= v %>" <%= 'selected="selected"' if @selected is v %>>
                 <%= v %>

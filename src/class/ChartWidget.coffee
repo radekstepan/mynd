@@ -9,23 +9,28 @@ class ChartWidget extends InterMineWidget
         selectCb: (pq) ->
             console?.log pq
 
+    formOptions: {}
+
     # Spec for a successful and correct JSON response.
     spec:
         response:
-            "chartType":     type.isString
-            "description":   type.isString
-            "error":         type.isNull
-            "list":          type.isString
-            "notAnalysed":   type.isInteger
-            "pathQuery":     type.isString
-            "requestedAt":   type.isString
-            "results":       type.isArray
-            "seriesLabels":  type.isString
-            "seriesValues":  type.isString
-            "statusCode":    type.isHTTPSuccess
-            "title":         type.isString
-            "type":          type.isString
-            "wasSuccessful": type.isBoolean
+            "chartType":           type.isString
+            "description":         type.isString
+            "error":               type.isNull
+            "list":                type.isString
+            "notAnalysed":         type.isInteger
+            "pathQuery":           type.isString
+            "requestedAt":         type.isString
+            "results":             type.isArray
+            "seriesLabels":        type.isString
+            "seriesValues":        type.isString
+            "statusCode":          type.isHTTPSuccess
+            "title":               type.isString
+            "type":                type.isString
+            "wasSuccessful":       type.isBoolean
+            "filters":             type.isString
+            "filterLabel":         type.isString
+            "filterSelectedValue": type.isString
 
     # Set the params on us and set Google load callback.
     #
@@ -47,14 +52,25 @@ class ChartWidget extends InterMineWidget
         # *Loading* overlay.
         timeout = window.setTimeout((=> $(@el).append @loading = $ @template 'loading'), 400)
 
+        # Removes all of the **View**'s delegated events if there is one already.
+        @view?.undelegateEvents()
+
+        # Payload.
+        data =
+            'widget':     @id
+            'list':       @bagName
+            'token':      @token
+
+        # An extra form filter?
+        for key, value of @formOptions
+            # This should be handled better...
+            if key not in [ 'errorCorrection', 'pValue' ] then data['filter'] = value
+
         # Get JSON response by calling the service.
         $.ajax
             url:      "#{@service}list/chart"
             dataType: "jsonp"
-            data:
-                widget: @id
-                list:   @bagName
-                token:  @token
+            data:     data
             
             success: (response) =>
                 # No need for a loading overlay.
@@ -69,11 +85,13 @@ class ChartWidget extends InterMineWidget
                     @name = response.title
 
                     # New **View**.
-                    new ChartView(
+                    @view = new ChartView(
                         "widget":   @
                         "el":       @el
                         "template": @template
                         "response": response
+                        "form":
+                            "options": @formOptions
                         "options":  @widgetOptions
                     )
             
