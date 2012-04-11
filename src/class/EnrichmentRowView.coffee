@@ -5,8 +5,8 @@ class EnrichmentRowView extends Backbone.View
     tagName: "tr"
 
     events:
-        "click td.check input":  "selectAction"
-        "click td.matches span": "matchesAction"
+        "click td.check input":     "selectAction"
+        "click td.matches a.count": "toggleMatchesAction"
 
     initialize: (o) ->
         @[k] = v for k, v of o
@@ -23,10 +23,12 @@ class EnrichmentRowView extends Backbone.View
     selectAction: => @model.toggleSelected()
 
     # Show matches.
-    matchesAction: =>
-        $(@el).find('td.matches span').after new EnrichmentMatchesView(
-            "matches":  @model.get "matches"
-            "template": @template
-            "type":     @type
-            "callback": @matchCb
-        ).el
+    toggleMatchesAction: =>
+        if not @matchesView?
+            $(@el).find('td.matches a.count').after (@matchesView = new EnrichmentMatchesView(
+                "matches":  @model.get "matches"
+                "template": @template
+                "type":     @type
+                "callback": @matchCb
+            )).el
+        else @matchesView.toggle()

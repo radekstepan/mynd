@@ -2,5 +2,5 @@
 <td class="description"><%= @row["description"] %></td>
 <td class="pValue"><%= @row["p-value"] %></td>
 <td class="matches">
-    <span class="count label label-success" style="cursor:pointer"><%= @row["matches"].length %></span>
+    <a class="count" style="cursor:pointer"><%= @row["matches"].length %></a>
 </td>
