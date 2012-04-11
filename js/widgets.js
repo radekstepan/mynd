@@ -421,63 +421,6 @@ factory = function(Backbone) {
   })();
   
 
-  /* Enrichment Widget table row matches box.
-  */
-  var EnrichmentMatchesView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  EnrichmentMatchesView = (function(_super) {
-  
-    __extends(EnrichmentMatchesView, _super);
-  
-    function EnrichmentMatchesView() {
-      this.toggle = __bind(this.toggle, this);
-      this.matchAction = __bind(this.matchAction, this);
-      this.render = __bind(this.render, this);
-      EnrichmentMatchesView.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentMatchesView.prototype.events = {
-      "click a.match": "matchAction",
-      "click a.close": "toggle"
-    };
-  
-    EnrichmentMatchesView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      this.collection = new EnrichmentMatches(this.matches);
-      return this.render();
-    };
-  
-    EnrichmentMatchesView.prototype.render = function() {
-      $(this.el).css({
-        'position': 'relative'
-      });
-      $(this.el).html(this.template("enrichment.matches", {
-        "matches": this.collection.toJSON()
-      }));
-      return this;
-    };
-  
-    EnrichmentMatchesView.prototype.matchAction = function(e) {
-      this.callback($(e.target).text(), this.type);
-      return e.preventDefault();
-    };
-  
-    EnrichmentMatchesView.prototype.toggle = function() {
-      return $(this.el).toggle();
-    };
-  
-    return EnrichmentMatchesView;
-  
-  })(Backbone.View);
-  
-
   /* Enrichment Widget table row.
   */
   var EnrichmentRowView,
@@ -538,6 +481,63 @@ factory = function(Backbone) {
     };
   
     return EnrichmentRowView;
+  
+  })(Backbone.View);
+  
+
+  /* Enrichment Widget table row matches box.
+  */
+  var EnrichmentMatchesView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  EnrichmentMatchesView = (function(_super) {
+  
+    __extends(EnrichmentMatchesView, _super);
+  
+    function EnrichmentMatchesView() {
+      this.toggle = __bind(this.toggle, this);
+      this.matchAction = __bind(this.matchAction, this);
+      this.render = __bind(this.render, this);
+      EnrichmentMatchesView.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentMatchesView.prototype.events = {
+      "click a.match": "matchAction",
+      "click a.close": "toggle"
+    };
+  
+    EnrichmentMatchesView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      this.collection = new EnrichmentMatches(this.matches);
+      return this.render();
+    };
+  
+    EnrichmentMatchesView.prototype.render = function() {
+      $(this.el).css({
+        'position': 'relative'
+      });
+      $(this.el).html(this.template("enrichment.matches", {
+        "matches": this.collection.toJSON()
+      }));
+      return this;
+    };
+  
+    EnrichmentMatchesView.prototype.matchAction = function(e) {
+      this.callback($(e.target).text(), this.type);
+      return e.preventDefault();
+    };
+  
+    EnrichmentMatchesView.prototype.toggle = function() {
+      return $(this.el).toggle();
+    };
+  
+    return EnrichmentMatchesView;
   
   })(Backbone.View);
   
@@ -924,7 +924,7 @@ factory = function(Backbone) {
         v = o[k];
         this[k] = v;
       }
-      this.collection = new EnrichmentResults;
+      this.collection = new EnrichmentResults();
       this.collection.bind('change', this.renderToolbar);
       return this.render();
     };
@@ -1092,11 +1092,6 @@ factory = function(Backbone) {
       }
     };
   
-    EnrichmentWidget.prototype.formOptions = {
-      errorCorrection: "Holm-Bonferroni",
-      pValue: "0.05"
-    };
-  
     EnrichmentWidget.prototype.errorCorrections = ["Holm-Bonferroni", "Benjamini Hochberg", "Bonferroni", "None"];
   
     EnrichmentWidget.prototype.pValues = ["0.05", "0.10", "1.00"];
@@ -1132,6 +1127,10 @@ factory = function(Backbone) {
       if (widgetOptions == null) widgetOptions = {};
       this.render = __bind(this.render, this);
       this.widgetOptions = merge(widgetOptions, this.widgetOptions);
+      this.formOptions = {
+        errorCorrection: "Holm-Bonferroni",
+        pValue: "0.05"
+      };
       EnrichmentWidget.__super__.constructor.call(this);
       this.render();
     }
@@ -1194,8 +1193,8 @@ factory = function(Backbone) {
   return {
 
     "InterMineWidget": InterMineWidget,
-    "EnrichmentMatchesView": EnrichmentMatchesView,
     "EnrichmentRowView": EnrichmentRowView,
+    "EnrichmentMatchesView": EnrichmentMatchesView,
     "ChartView": ChartView,
     "ChartWidget": ChartWidget,
     "EnrichmentResults": EnrichmentResults,

@@ -47,7 +47,7 @@ class ChartWidget extends InterMineWidget
         super()
         @render()
 
-    # Visualize the displayer.
+    # Visualize the widget.
     render: =>
         # *Loading* overlay.
         timeout = window.setTimeout((=> $(@el).append @loading = $ @template 'loading'), 400)

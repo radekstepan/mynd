@@ -12,7 +12,7 @@ class EnrichmentView extends Backbone.View
         @[k] = v for k, v of o
 
         # New **Collection**.
-        @collection = new EnrichmentResults
+        @collection = new EnrichmentResults()
         @collection.bind('change', @renderToolbar) # Re-render toolbar on change.
 
         @render()

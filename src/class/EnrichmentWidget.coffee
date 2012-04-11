@@ -11,12 +11,8 @@ class EnrichmentWidget extends InterMineWidget
         viewCb: (pq) ->
             console?.log pq
 
-    formOptions:
-        errorCorrection: "Holm-Bonferroni"
-        pValue:          "0.05"
-
     errorCorrections: [ "Holm-Bonferroni", "Benjamini Hochberg", "Bonferroni", "None" ]
-    pValues: [ "0.05", "0.10", "1.00" ]
+    pValues:          [ "0.05", "0.10", "1.00" ]
 
     # Spec for a successful and correct JSON response.
     spec:
@@ -51,10 +47,15 @@ class EnrichmentWidget extends InterMineWidget
         # Merge `widgetOptions`.
         @widgetOptions = merge widgetOptions, @widgetOptions
 
+        # Set form options for this widget.
+        @formOptions =
+            errorCorrection: "Holm-Bonferroni"
+            pValue:          "0.05"
+
         super() # Luke... I am your father!
         @render()
 
-    # Visualize the displayer.
+    # Visualize the widget.
     render: =>
         # *Loading* overlay.
         timeout = window.setTimeout((=> $(@el).append @loading = $ @template 'loading'), 400)
