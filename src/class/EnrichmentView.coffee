@@ -133,14 +133,18 @@ class EnrichmentView extends Backbone.View
                 ex.destroy()
             ), 5000
 
-    # Selecting table rows and clicking on **View** should get us all ids of matches.
+    # Selecting table rows and clicking on **View** should create an EnrichmentMatches collection of all matches ids.
     viewAction: =>
         # Get all the matches in selected rows.
-        result = []
+        matches = []
+        descriptions = []
         for model in @collection.selected()
-            result.push model.get 'identifier'
+            descriptions.push model.get 'description'
+            for match in model.get 'matches'
+                matches.push match
 
-        if result.length # Can be empty.
+        if matches.length # Can be empty.
+            """
             pq = @response.pathQuery
             # JSON should have been validated by now.
             pq = JSON.parse pq
@@ -151,3 +155,17 @@ class EnrichmentView extends Backbone.View
                 "values": result
             # Callback.
             @options.viewCb pq
+            """
+
+            # Remove any previous matches modal window.
+            @matchesView?.remove()
+
+            # Append a new modal window with matches.
+            $(@el).find('div.actions').after (@matchesView = new EnrichmentMatchesView(
+                "collection":  new EnrichmentMatches matches
+                "description": descriptions.join(', ')
+                "template":    @template
+                "type":        "type"
+                "style":       "width:300px"
+                "callback":    @options.matchCb
+            )).el
