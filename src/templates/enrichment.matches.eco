@@ -1,11 +1,19 @@
 <div class="popover" style="position:absolute;top:5px;right:0;z-index:1;display:block">
     <div class="popover-inner" style="width:300px;margin-left:-300px">
         <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>
-        <h3 class="popover-title"></h3>
+        <h3 class="popover-title"><%= @description %></h3>
         <div class="popover-content">
-            <% for match in @matches: %>
+            <h4><%= @matches.length %> <%= @type %><%= 's' if @matches.length != 0 %>:</h4>
+            
+            <% for match in @matches[..@limit - 1]: %>
                 <a href="#" class="match"><%= match['displayed'] %></a>
             <% end %>
+            <%- '&hellip;' if @matches.length > @limit %>
+
+            <div style="margin-top:10px">
+                <a class="btn btn-small btn-primary results">View results</a>
+                <a class="btn btn-small list">Create list</a>
+            </div>
         </div>
     </div>
 </div>

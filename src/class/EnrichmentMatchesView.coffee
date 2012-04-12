@@ -2,6 +2,9 @@
 
 class EnrichmentMatchesView extends Backbone.View
 
+    # How many matches do we show before ending with an ellipsis?
+    limit: 5
+
     events:
         "click a.match": "matchAction"
         "click a.close": "toggle"
@@ -16,7 +19,11 @@ class EnrichmentMatchesView extends Backbone.View
 
     render: =>
         $(@el).css 'position':'relative'
-        $(@el).html @template "enrichment.matches", "matches": @collection.toJSON()
+        $(@el).html @template "enrichment.matches",
+            "description": @description
+            "type":        @type
+            "matches":     @collection.toJSON()
+            "limit":       @limit
         @
 
     # Onclick the individual match, execute the callback.

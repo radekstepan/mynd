@@ -57,8 +57,9 @@
                 var widgets = new Widgets(mine + "/service/");
 
                 /* Give us all available widgets. */
-                widgets.all('Gene', 'demo-genes', '#widgets-genes');
-                widgets.all('Protein', 'demo-proteins', '#widgets-proteins');
+                //widgets.all('Gene', 'demo-genes', '#widgets-genes');
+                //widgets.all('Protein', 'demo-proteins', '#widgets-proteins');
+                widgets.enrichment('pathway_enrichment', 'demo-genes', '#widgets-genes');
             })();
             </script>
 

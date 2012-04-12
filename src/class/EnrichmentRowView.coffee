@@ -26,9 +26,10 @@ class EnrichmentRowView extends Backbone.View
     toggleMatchesAction: =>
         if not @matchesView?
             $(@el).find('td.matches a.count').after (@matchesView = new EnrichmentMatchesView(
-                "matches":  @model.get "matches"
-                "template": @template
-                "type":     @type
-                "callback": @matchCb
+                "matches":     @model.get "matches"
+                "description": @model.get "description"
+                "template":    @template
+                "type":        @type
+                "callback":    @matchCb
             )).el
         else @matchesView.toggle()
