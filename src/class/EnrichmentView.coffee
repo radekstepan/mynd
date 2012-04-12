@@ -95,10 +95,11 @@ class EnrichmentView extends Backbone.View
         for row in @collection.models
             # Render.
             fragment.appendChild new EnrichmentRowView(
-                "model":    row
-                "template": @template
-                "type":     @response.type
-                "matchCb":  @options.matchCb
+                "model":     row
+                "template":  @template
+                "type":      @response.type
+                "callbacks": { "matchCb": @options.matchCb, "resultsCb": @options.resultsCb, "listCb": @options.listCb }
+                "response":  @response
             ).el
 
         # Append the fragment to trigger the browser reflow.
@@ -144,19 +145,6 @@ class EnrichmentView extends Backbone.View
                 matches.push match
 
         if matches.length # Can be empty.
-            """
-            pq = @response.pathQuery
-            # JSON should have been validated by now.
-            pq = JSON.parse pq
-            # Add the ONE OF constraint.
-            pq.where.push
-                "path":   @response.pathConstraint
-                "op":     "ONE OF"
-                "values": result
-            # Callback.
-            @options.viewCb pq
-            """
-
             # Remove any previous matches modal window.
             @matchesView?.remove()
 
@@ -165,7 +153,9 @@ class EnrichmentView extends Backbone.View
                 "collection":  new EnrichmentMatches matches
                 "description": descriptions.join(', ')
                 "template":    @template
-                "type":        "type"
                 "style":       "width:300px"
-                "callback":    @options.matchCb
+                "matchCb":     @options.matchCb
+                "resultsCb":   @options.resultsCb
+                "listCb":      @options.listCb
+                "response":    @response
             )).el

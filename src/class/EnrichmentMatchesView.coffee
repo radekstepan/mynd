@@ -24,7 +24,7 @@ class EnrichmentMatchesView extends Backbone.View
         $(@el).html @template "enrichment.matches",
             "description":      @description
             "descriptionLimit": @descriptionLimit
-            "type":             @type
+            "type":             @response.type
             "matches":          @collection.toJSON()
             "matchesLimit":     @matchesLimit
             "style":            @style or "width:300px;margin-left:-300px"
@@ -34,13 +34,33 @@ class EnrichmentMatchesView extends Backbone.View
     # Toggle me on/off.
     toggle: => $(@el).toggle()
 
+    # Build PathQuery for resultsAction and listAction.
+    getPq: =>
+        # Form PathQuery.
+        pq = @response.pathQuery
+        # JSON should have been validated by now.
+        @pq = JSON.parse pq
+        # Add the ONE OF constraint.
+        @pq.where.push
+            "path":   @response.pathConstraint
+            "op":     "ONE OF"
+            "values": @collection.map (match) -> match.get 'id'
+
     # Onclick the individual match, execute the callback.
     matchAction: (e) =>
-        @callback $(e.target).text(), @type
+        @matchCb $(e.target).text(), @response.type
         e.preventDefault()
 
     # View results action.
-    resultsAction: => console.log "resultsAction"
+    resultsAction: =>
+        @getPq() unless @pq?
+
+        # Callback.
+        @resultsCb @pq
 
     # Create a list action.
-    listAction: => console.log "listAction"
+    listAction: =>
+        @getPq() unless @pq?
+
+        # Callback.
+        @listCb @pq

@@ -3,8 +3,8 @@
     <span class="nv">tagName: </span><span class="s2">&quot;tr&quot;</span>
 
     <span class="nv">events:</span>
-        <span class="s2">&quot;click td.check input&quot;</span><span class="o">:</span>  <span class="s2">&quot;selectAction&quot;</span>
-        <span class="s2">&quot;click td.matches span&quot;</span><span class="o">:</span> <span class="s2">&quot;matchesAction&quot;</span>
+        <span class="s2">&quot;click td.check input&quot;</span><span class="o">:</span>     <span class="s2">&quot;selectAction&quot;</span>
+        <span class="s2">&quot;click td.matches a.count&quot;</span><span class="o">:</span> <span class="s2">&quot;toggleMatchesAction&quot;</span>
 
     <span class="nv">initialize: </span><span class="nf">(o) -&gt;</span>
         <span class="err">@</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">=</span> <span class="nx">v</span> <span class="k">for</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span> <span class="k">of</span> <span class="nx">o</span>
@@ -15,12 +15,17 @@
 
     <span class="nv">render: </span><span class="o">=&gt;</span>
         <span class="nx">$</span><span class="p">(</span><span class="nx">@el</span><span class="p">).</span><span class="nx">html</span> <span class="nx">@template</span> <span class="s2">&quot;enrichment.row&quot;</span><span class="p">,</span> <span class="s2">&quot;row&quot;</span><span class="o">:</span> <span class="nx">@model</span><span class="p">.</span><span class="nx">toJSON</span><span class="p">()</span>
-        <span class="err">@</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Toggle the <code>selected</code> attr of this row object.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">selectAction: </span><span class="o">=&gt;</span> <span class="nx">@model</span><span class="p">.</span><span class="nx">toggleSelected</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Show matches.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">matchesAction: </span><span class="o">=&gt;</span>
-        <span class="nx">$</span><span class="p">(</span><span class="nx">@el</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;td.matches span&#39;</span><span class="p">).</span><span class="nx">after</span> <span class="k">new</span> <span class="nx">EnrichmentMatchesView</span><span class="p">(</span>
-            <span class="s2">&quot;matches&quot;</span><span class="o">:</span>  <span class="nx">@model</span><span class="p">.</span><span class="nx">get</span> <span class="s2">&quot;matches&quot;</span>
-            <span class="s2">&quot;template&quot;</span><span class="o">:</span> <span class="nx">@template</span>
-            <span class="s2">&quot;type&quot;</span><span class="o">:</span>     <span class="nx">@type</span>
-            <span class="s2">&quot;callback&quot;</span><span class="o">:</span> <span class="nx">@matchCb</span>
-        <span class="p">).</span><span class="nx">el</span>
+        <span class="err">@</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Toggle the <code>selected</code> attr of this row object.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">selectAction: </span><span class="o">=&gt;</span> <span class="nx">@model</span><span class="p">.</span><span class="nx">toggleSelected</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Show matches.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">toggleMatchesAction: </span><span class="o">=&gt;</span>
+        <span class="k">if</span> <span class="o">not</span> <span class="nx">@matchesView</span><span class="o">?</span>
+            <span class="nx">$</span><span class="p">(</span><span class="nx">@el</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;td.matches a.count&#39;</span><span class="p">).</span><span class="nx">after</span> <span class="p">(</span><span class="vi">@matchesView = </span><span class="k">new</span> <span class="nx">EnrichmentMatchesView</span><span class="p">(</span>
+                <span class="s2">&quot;collection&quot;</span><span class="o">:</span>  <span class="k">new</span> <span class="nx">EnrichmentMatches</span> <span class="nx">@model</span><span class="p">.</span><span class="nx">get</span> <span class="s2">&quot;matches&quot;</span>
+                <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="nx">@model</span><span class="p">.</span><span class="nx">get</span> <span class="s2">&quot;description&quot;</span>
+                <span class="s2">&quot;template&quot;</span><span class="o">:</span>    <span class="nx">@template</span>
+                <span class="s2">&quot;matchCb&quot;</span><span class="o">:</span>     <span class="nx">@callbacks</span><span class="p">.</span><span class="nx">matchCb</span>
+                <span class="s2">&quot;resultsCb&quot;</span><span class="o">:</span>   <span class="nx">@callbacks</span><span class="p">.</span><span class="nx">resultsCb</span>
+                <span class="s2">&quot;listCb&quot;</span><span class="o">:</span>      <span class="nx">@callbacks</span><span class="p">.</span><span class="nx">listCb</span>
+                <span class="s2">&quot;response&quot;</span><span class="o">:</span>    <span class="nx">@response</span>
+            <span class="p">)).</span><span class="nx">el</span>
+        <span class="k">else</span> <span class="nx">@matchesView</span><span class="p">.</span><span class="nx">toggle</span><span class="p">()</span>
 
 </pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

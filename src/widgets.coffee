@@ -62,7 +62,7 @@ class window.Widgets
     # 1. `id`:            widgetId
     # 2. `bagName`:       myBag
     # 3. `el`:            #target
-    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "viewCb": function(pq) {} }
+    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "resultsCb": function(pq) {}, "listCb": function(pq) {} }
     enrichment: (opts...) =>
         if @wait then window.setTimeout((=> @enrichment(opts...)), 0) else new o.EnrichmentWidget(@service, @token, opts...)
 
@@ -71,7 +71,7 @@ class window.Widgets
     # 1. `type`:          Gene, Protein
     # 2. `bagName`:       myBag
     # 3. `el`:            #target
-    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {}, "matchCb": function(id, type) {}, "viewCb": function(ids, pq) {} }
+    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {}, "matchCb": function(id, type) {}, "resultsCb": function(pq) {}, "listCb": function(pq) {} }
     all: (type = "Gene", bagName, el, widgetOptions) =>
         if @wait then window.setTimeout((=> @all(type, bagName, el, widgetOptions)), 0)
         else

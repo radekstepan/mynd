@@ -6,9 +6,11 @@ class EnrichmentWidget extends InterMineWidget
     widgetOptions:
         "title":       true
         "description": true
-        matchCb: (id, type) ->
+        matchCb:       (id, type) ->
             console?.log id, type
-        viewCb: (pq) ->
+        resultsCb:     (pq) ->
+            console?.log pq
+        listCb:        (pq) ->
             console?.log pq
 
     errorCorrections: [ "Holm-Bonferroni", "Benjamini Hochberg", "Bonferroni", "None" ]
@@ -42,7 +44,7 @@ class EnrichmentWidget extends InterMineWidget
     # 3. `id`:            widgetId
     # 4. `bagName`:       myBag
     # 4. `el`:            #target
-    # 5. `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "viewCb": function(pq) {} } }
+    # 5. `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "resultsCb": function(pq) {}, "listCb": function(pq) {} } }
     constructor: (@service, @token, @id, @bagName, @el, widgetOptions = {}) ->
         # Merge `widgetOptions`.
         @widgetOptions = merge widgetOptions, @widgetOptions

@@ -13,12 +13,13 @@
             .widget { margin:20px 10px; }
         </style>
 
-        <script type="text/javascript" src="js/lib/jquery.js"></script>
-        <script type="text/javascript" src="js/lib/underscore.js"></script>
-        <script type="text/javascript" src="js/lib/backbone.js"></script>
+        <!-- local lib cache -->
+        <script src="js/lib/jquery.js"></script>
+        <script src="js/lib/underscore.js"></script>
+        <script src="js/lib/backbone.js"></script>
 
         <!-- widget.js -->
-        <script type="text/javascript" src="js/widgets.js"></script>
+        <script src="js/widgets.js"></script>
     </head>
 
     <body>
@@ -57,9 +58,8 @@
                 var widgets = new Widgets(mine + "/service/");
 
                 /* Give us all available widgets. */
-                //widgets.all('Gene', 'demo-genes', '#widgets-genes');
-                //widgets.all('Protein', 'demo-proteins', '#widgets-proteins');
-                widgets.enrichment('pathway_enrichment', 'demo-genes', '#widgets-genes');
+                widgets.all('Gene', 'demo-genes', '#widgets-genes');
+                widgets.all('Protein', 'demo-proteins', '#widgets-proteins');
             })();
             </script>
 
