@@ -57,34 +57,34 @@ class EnrichmentView extends Backbone.View
 
     # Render the table of results using Document Fragment to prevent browser reflows.
     renderTable: =>
-            # Render the table.
-            $(@el).find("div.content").html(
-                $ @template "enrichment.table", "label": @response.label
-            )
+        # Render the table.
+        $(@el).find("div.content").html(
+            $ @template "enrichment.table", "label": @response.label
+        )
 
-            # Table rows **Models** and a subsequent **Collection**.
-            table = $(@el).find("div.content table")
-            for i in [0...@response.results.length] then do (i) =>
-                # New **Model**.
-                row = new EnrichmentRow @response.results[i], @widget
-                @collection.add row
+        # Table rows **Models** and a subsequent **Collection**.
+        table = $(@el).find("div.content table")
+        for i in [0...@response.results.length] then do (i) =>
+            # New **Model**.
+            row = new EnrichmentRow @response.results[i], @widget
+            @collection.add row
 
-            # Render row **Views**.
-            @renderTableBody table
+        # Render row **Views**.
+        @renderTableBody table
 
-            # How tall should the table be? Whole height - header - faux header.
-            height = $(@el).height() - $(@el).find('header').height() - $(@el).find('div.content div.head').height()
-            $(@el).find("div.content div.wrapper").css 'height', "#{height}px"
+        # How tall should the table be? Whole height - header - faux header.
+        height = $(@el).height() - $(@el).find('header').height() - $(@el).find('div.content div.head').height()
+        $(@el).find("div.content div.wrapper").css 'height', "#{height}px"
 
-            # Determine the width of the faux head element.
-            $(@el).find("div.content div.head").css "width", $(@el).find("div.content table").width() + "px"
+        # Determine the width of the faux head element.
+        $(@el).find("div.content div.head").css "width", $(@el).find("div.content table").width() + "px"
 
-            # Fix the `div.head` elements width.
-            table.find('thead th').each (i, th) =>
-                $(@el).find("div.content div.head div:eq(#{i})").width $(th).width()
+        # Fix the `div.head` elements width.
+        table.find('thead th').each (i, th) =>
+            $(@el).find("div.content div.head div:eq(#{i})").width $(th).width()
 
-            # Fix the `table` margin to hide gap after invisible `thead` element.
-            table.css 'margin-top': '-' + table.find('thead').height() + 'px'
+        # Fix the `table` margin to hide gap after invisible `thead` element.
+        table.css 'margin-top': '-' + table.find('thead').height() + 'px'
 
     # Render `<tbody>` from a @collection (use to achieve single re-flow of row Views).
     renderTableBody: (table) =>

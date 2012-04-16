@@ -165,70 +165,6 @@ type.isUndefined = (function(_super) {
 
 })(type.Root);
 
-/* Merge properties of 2 dictionaries.
-*/
-var merge;
-
-merge = function(child, parent) {
-  var key;
-  for (key in parent) {
-    if (!(child[key] != null)) {
-      if (Object.prototype.hasOwnProperty.call(parent, key)) {
-        child[key] = parent[key];
-      }
-    }
-  }
-  return child;
-};
-
-/* Create file download with custom content.
-*/
-var Exporter, PlainExporter,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-Exporter = (function() {
-
-  Exporter.prototype.mime = 'text/plain';
-
-  Exporter.prototype.charset = 'UTF-8';
-
-  Exporter.prototype.url = window.webkitURL || window.URL;
-
-  function Exporter(a, data, filename) {
-    var builder;
-    if (filename == null) filename = 'widget.tsv';
-    this.destroy = __bind(this.destroy, this);
-    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
-    builder.append(data);
-    a.attr('download', filename);
-    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
-    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
-  }
-
-  Exporter.prototype.destroy = function() {
-    return this.url.revokeObjectURL(this.href);
-  };
-
-  return Exporter;
-
-})();
-
-PlainExporter = (function() {
-
-  function PlainExporter(data) {
-    var w;
-    w = window.open();
-    w.document.open();
-    w.document.write(data);
-    w.document.close();
-  }
-
-  PlainExporter.prototype.destroy = function() {};
-
-  return PlainExporter;
-
-})();
-
 /* Pure JS based JS script, CSS loader.
 */
 var CSSLoader, JSLoader, Load, Loader,
@@ -354,6 +290,70 @@ Load = (function() {
 
 })();
 
+/* Merge properties of 2 dictionaries.
+*/
+var merge;
+
+merge = function(child, parent) {
+  var key;
+  for (key in parent) {
+    if (!(child[key] != null)) {
+      if (Object.prototype.hasOwnProperty.call(parent, key)) {
+        child[key] = parent[key];
+      }
+    }
+  }
+  return child;
+};
+
+/* Create file download with custom content.
+*/
+var Exporter, PlainExporter,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+Exporter = (function() {
+
+  Exporter.prototype.mime = 'text/plain';
+
+  Exporter.prototype.charset = 'UTF-8';
+
+  Exporter.prototype.url = window.webkitURL || window.URL;
+
+  function Exporter(a, data, filename) {
+    var builder;
+    if (filename == null) filename = 'widget.tsv';
+    this.destroy = __bind(this.destroy, this);
+    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
+    builder.append(data);
+    a.attr('download', filename);
+    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
+    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
+  }
+
+  Exporter.prototype.destroy = function() {
+    return this.url.revokeObjectURL(this.href);
+  };
+
+  return Exporter;
+
+})();
+
+PlainExporter = (function() {
+
+  function PlainExporter(data) {
+    var w;
+    w = window.open();
+    w.document.open();
+    w.document.write(data);
+    w.document.close();
+  }
+
+  PlainExporter.prototype.destroy = function() {};
+
+  return PlainExporter;
+
+})();
+
 var factory;
 factory = function(Backbone) {
 
@@ -419,73 +419,6 @@ factory = function(Backbone) {
     return InterMineWidget;
   
   })();
-  
-
-  /* Enrichment Widget table row.
-  */
-  var EnrichmentRowView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  EnrichmentRowView = (function(_super) {
-  
-    __extends(EnrichmentRowView, _super);
-  
-    function EnrichmentRowView() {
-      this.toggleMatchesAction = __bind(this.toggleMatchesAction, this);
-      this.selectAction = __bind(this.selectAction, this);
-      this.render = __bind(this.render, this);
-      EnrichmentRowView.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentRowView.prototype.tagName = "tr";
-  
-    EnrichmentRowView.prototype.events = {
-      "click td.check input": "selectAction",
-      "click td.matches a.count": "toggleMatchesAction"
-    };
-  
-    EnrichmentRowView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      this.model.bind('change', this.render);
-      return this.render();
-    };
-  
-    EnrichmentRowView.prototype.render = function() {
-      $(this.el).html(this.template("enrichment.row", {
-        "row": this.model.toJSON()
-      }));
-      return this;
-    };
-  
-    EnrichmentRowView.prototype.selectAction = function() {
-      return this.model.toggleSelected();
-    };
-  
-    EnrichmentRowView.prototype.toggleMatchesAction = function() {
-      if (!(this.matchesView != null)) {
-        return $(this.el).find('td.matches a.count').after((this.matchesView = new EnrichmentMatchesView({
-          "collection": new EnrichmentMatches(this.model.get("matches")),
-          "description": this.model.get("description"),
-          "template": this.template,
-          "matchCb": this.callbacks.matchCb,
-          "resultsCb": this.callbacks.resultsCb,
-          "listCb": this.callbacks.listCb,
-          "response": this.response
-        })).el);
-      } else {
-        return this.matchesView.toggle();
-      }
-    };
-  
-    return EnrichmentRowView;
-  
-  })(Backbone.View);
   
 
   /* Enrichment Widget table row matches box.
@@ -581,118 +514,69 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
-  /* View maintaining Chart Widget.
+  /* Enrichment Widget table row.
   */
-  var ChartView,
+  var EnrichmentRowView,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
   
-  ChartView = (function(_super) {
+  EnrichmentRowView = (function(_super) {
   
-    __extends(ChartView, _super);
+    __extends(EnrichmentRowView, _super);
   
-    function ChartView() {
-      this.formAction = __bind(this.formAction, this);
-      ChartView.__super__.constructor.apply(this, arguments);
+    function EnrichmentRowView() {
+      this.toggleMatchesAction = __bind(this.toggleMatchesAction, this);
+      this.selectAction = __bind(this.selectAction, this);
+      this.render = __bind(this.render, this);
+      EnrichmentRowView.__super__.constructor.apply(this, arguments);
     }
   
-    ChartView.prototype.chartOptions = {
-      fontName: "Sans-Serif",
-      fontSize: 11,
-      width: 550,
-      height: 450,
-      legend: "bottom",
-      colors: ["#2F72FF", "#9FC0FF"],
-      chartArea: {
-        top: 30
-      },
-      hAxis: {
-        titleTextStyle: {
-          fontName: "Sans-Serif"
-        }
-      },
-      vAxis: {
-        titleTextStyle: {
-          fontName: "Sans-Serif"
-        }
-      }
+    EnrichmentRowView.prototype.tagName = "tr";
+  
+    EnrichmentRowView.prototype.events = {
+      "click td.check input": "selectAction",
+      "click td.matches a.count": "toggleMatchesAction"
     };
   
-    ChartView.prototype.events = {
-      "change div.form select": "formAction"
-    };
-  
-    ChartView.prototype.initialize = function(o) {
+    EnrichmentRowView.prototype.initialize = function(o) {
       var k, v;
       for (k in o) {
         v = o[k];
         this[k] = v;
       }
+      this.model.bind('change', this.render);
       return this.render();
     };
   
-    ChartView.prototype.render = function() {
-      var chart,
-        _this = this;
-      $(this.el).html(this.template("chart.normal", {
-        "title": this.options.title ? this.response.title : "",
-        "description": this.options.description ? this.response.description : "",
-        "notAnalysed": this.response.notAnalysed
+    EnrichmentRowView.prototype.render = function() {
+      $(this.el).html(this.template("enrichment.row", {
+        "row": this.model.toJSON()
       }));
-      if (this.response.filterLabel != null) {
-        $(this.el).find('div.form form').append(this.template("chart.extra", {
-          "label": this.response.filterLabel,
-          "possible": this.response.filters.split(','),
-          "selected": this.response.filterSelectedValue
-        }));
-      }
-      if (this.response.results.length > 1) {
-        if (this.response.chartType in google.visualization) {
-          chart = new google.visualization[this.response.chartType]($(this.el).find("div.content")[0]);
-          chart.draw(google.visualization.arrayToDataTable(this.response.results, false), this.chartOptions);
-          if (this.response.pathQuery != null) {
-            return google.visualization.events.addListener(chart, "select", function() {
-              var item, pq, translate, _i, _len, _ref, _results;
-              translate = function(response, series) {
-                return response.seriesValues.split(',')[response.seriesLabels.split(',').indexOf(series)];
-              };
-              pq = _this.response.pathQuery;
-              _ref = chart.getSelection();
-              _results = [];
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                item = _ref[_i];
-                if (item.row != null) {
-                  pq = pq.replace("%category", _this.response.results[item.row + 1][0]);
-                  if (item.column != null) {
-                    pq = pq.replace("%series", translate(_this.response, _this.response.results[0][item.column]));
-                  }
-                  pq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(pq) : void 0;
-                  _results.push(_this.options.selectCb(pq));
-                } else {
-                  _results.push(void 0);
-                }
-              }
-              return _results;
-            });
-          }
-        } else {
-          return this.error({
-            'title': this.response.chartType,
-            'text': "This chart type does not exist in Google Visualization API"
-          });
-        }
+      return this;
+    };
+  
+    EnrichmentRowView.prototype.selectAction = function() {
+      return this.model.toggleSelected();
+    };
+  
+    EnrichmentRowView.prototype.toggleMatchesAction = function() {
+      if (!(this.matchesView != null)) {
+        return $(this.el).find('td.matches a.count').after((this.matchesView = new EnrichmentMatchesView({
+          "collection": new EnrichmentMatches(this.model.get("matches")),
+          "description": this.model.get("description"),
+          "template": this.template,
+          "matchCb": this.callbacks.matchCb,
+          "resultsCb": this.callbacks.resultsCb,
+          "listCb": this.callbacks.listCb,
+          "response": this.response
+        })).el);
       } else {
-        return $(this.el).find("div.content").html($(this.template("noresults")));
+        return this.matchesView.toggle();
       }
     };
   
-    ChartView.prototype.formAction = function(e) {
-      this.widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value");
-      return this.widget.render();
-    };
-  
-    return ChartView;
+    return EnrichmentRowView;
   
   })(Backbone.View);
   
@@ -1246,16 +1130,132 @@ factory = function(Backbone) {
   })(InterMineWidget);
   
 
+  /* View maintaining Chart Widget.
+  */
+  var ChartView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  ChartView = (function(_super) {
+  
+    __extends(ChartView, _super);
+  
+    function ChartView() {
+      this.formAction = __bind(this.formAction, this);
+      ChartView.__super__.constructor.apply(this, arguments);
+    }
+  
+    ChartView.prototype.chartOptions = {
+      fontName: "Sans-Serif",
+      fontSize: 11,
+      width: 550,
+      height: 450,
+      legend: "bottom",
+      colors: ["#2F72FF", "#9FC0FF"],
+      chartArea: {
+        top: 30
+      },
+      hAxis: {
+        titleTextStyle: {
+          fontName: "Sans-Serif"
+        }
+      },
+      vAxis: {
+        titleTextStyle: {
+          fontName: "Sans-Serif"
+        }
+      }
+    };
+  
+    ChartView.prototype.events = {
+      "change div.form select": "formAction"
+    };
+  
+    ChartView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      return this.render();
+    };
+  
+    ChartView.prototype.render = function() {
+      var chart,
+        _this = this;
+      $(this.el).html(this.template("chart.normal", {
+        "title": this.options.title ? this.response.title : "",
+        "description": this.options.description ? this.response.description : "",
+        "notAnalysed": this.response.notAnalysed
+      }));
+      if (this.response.filterLabel != null) {
+        $(this.el).find('div.form form').append(this.template("chart.extra", {
+          "label": this.response.filterLabel,
+          "possible": this.response.filters.split(','),
+          "selected": this.response.filterSelectedValue
+        }));
+      }
+      if (this.response.results.length > 1) {
+        if (this.response.chartType in google.visualization) {
+          chart = new google.visualization[this.response.chartType]($(this.el).find("div.content")[0]);
+          chart.draw(google.visualization.arrayToDataTable(this.response.results, false), this.chartOptions);
+          if (this.response.pathQuery != null) {
+            return google.visualization.events.addListener(chart, "select", function() {
+              var item, pq, translate, _i, _len, _ref, _results;
+              translate = function(response, series) {
+                return response.seriesValues.split(',')[response.seriesLabels.split(',').indexOf(series)];
+              };
+              pq = _this.response.pathQuery;
+              _ref = chart.getSelection();
+              _results = [];
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                item = _ref[_i];
+                if (item.row != null) {
+                  pq = pq.replace("%category", _this.response.results[item.row + 1][0]);
+                  if (item.column != null) {
+                    pq = pq.replace("%series", translate(_this.response, _this.response.results[0][item.column]));
+                  }
+                  pq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(pq) : void 0;
+                  _results.push(_this.options.selectCb(pq));
+                } else {
+                  _results.push(void 0);
+                }
+              }
+              return _results;
+            });
+          }
+        } else {
+          return this.error({
+            'title': this.response.chartType,
+            'text': "This chart type does not exist in Google Visualization API"
+          });
+        }
+      } else {
+        return $(this.el).find("div.content").html($(this.template("noresults")));
+      }
+    };
+  
+    ChartView.prototype.formAction = function(e) {
+      this.widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value");
+      return this.widget.render();
+    };
+  
+    return ChartView;
+  
+  })(Backbone.View);
+  
+
   return {
 
     "InterMineWidget": InterMineWidget,
-    "EnrichmentRowView": EnrichmentRowView,
     "EnrichmentMatchesView": EnrichmentMatchesView,
-    "ChartView": ChartView,
+    "EnrichmentRowView": EnrichmentRowView,
     "ChartWidget": ChartWidget,
     "EnrichmentResults": EnrichmentResults,
     "EnrichmentView": EnrichmentView,
     "EnrichmentWidget": EnrichmentWidget,
+    "ChartView": ChartView,
 
   };
 };
