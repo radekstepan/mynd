@@ -65,8 +65,13 @@ class EnrichmentView extends Backbone.View
         # Table rows **Models** and a subsequent **Collection**.
         table = $(@el).find("div.content table")
         for i in [0...@response.results.length] then do (i) =>
+            # Form the data.
+            data = @response.results[i]
+            # External link through simple append.
+            if @response.externalLink then data.externalLink = @response.externalLink + data.identifier
+            
             # New **Model**.
-            row = new EnrichmentRow @response.results[i], @widget
+            row = new EnrichmentRow data, @widget
             @collection.add row
 
         # Render row **Views**.
