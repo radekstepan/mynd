@@ -31,6 +31,8 @@ widgets.all('Gene', 'myList', '#all-widgets');
 widgets.chart('flyfish', 'myList', '#widget-1');
 // Load a specific Enrichment Widget:
 widgets.enrichment('pathway_enrichment', 'myList', '#widget-2');
+// Load a specific Table Widget:
+widgets.table('interactions', 'myList', '#widget-3');
 ```
 
 ## Use:
