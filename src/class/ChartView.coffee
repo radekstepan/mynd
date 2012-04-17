@@ -6,12 +6,16 @@ class ChartView extends Backbone.View
     chartOptions:
         fontName: "Sans-Serif"
         fontSize: 11
-        width:    550
+        width:    460
         height:   450
-        legend:   "bottom"
         colors:   [ "#2F72FF", "#9FC0FF" ]
+        legend:
+            position: "top"
         chartArea:
-            top: 30
+            top:    30
+            left:   50
+            width:  400
+            height: 305
         hAxis:
             titleTextStyle:
                 fontName: "Sans-Serif"
