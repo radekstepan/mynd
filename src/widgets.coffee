@@ -66,6 +66,15 @@ class window.Widgets
     enrichment: (opts...) =>
         if @wait then window.setTimeout((=> @enrichment(opts...)), 0) else new o.EnrichmentWidget(@service, @token, opts...)
 
+    # Table Widget.
+    #
+    # 1. `id`:            widgetId
+    # 2. `bagName`:       myBag
+    # 3. `el`:            #target
+    # 4. `widgetOptions`: { "title": true/false, "description": true/false }
+    table: (opts...) =>
+        if @wait then window.setTimeout((=> @table(opts...)), 0) else new o.TableWidget(@service, @token, opts...)
+
     # All available Widgets.
     #
     # 1. `type`:          Gene, Protein
@@ -93,7 +102,9 @@ class window.Widgets
                                 when "chart"
                                     @chart(widget.name, bagName, "#{el} ##{widgetEl}", widgetOptions)
                                 when "enrichment"
-                                    @enrichment(widget.name, bagName, "#{el} ##{widgetEl}", widgetOptions)                
+                                    @enrichment(widget.name, bagName, "#{el} ##{widgetEl}", widgetOptions)
+                                when "table"
+                                    @table(widget.name, bagName, "#{el} ##{widgetEl}", widgetOptions)
                 
                 error: (xhr, opts, err) => $(el).html $ '<div/>',
                     class: "alert alert-error"
