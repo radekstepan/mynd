@@ -58,10 +58,8 @@
                 var widgets = new Widgets(mine + "/service/");
 
                 /* Give us all available widgets. */
-                //widgets.all('Gene', 'demo-genes', '#widgets-genes');
-                //widgets.all('Protein', 'demo-proteins', '#widgets-proteins');
-                widgets.table('interactions', 'demo-genes', '#widgets-genes');
-                widgets.enrichment('uniprot_keywords', 'demo-proteins', '#widgets-proteins');
+                widgets.all('Gene', 'demo-genes', '#widgets-genes');
+                widgets.all('Protein', 'demo-proteins', '#widgets-proteins');
             })();
             </script>
 
