@@ -168,22 +168,6 @@ type.isUndefined = (function(_super) {
 
 })(type.Root);
 
-/* Merge properties of 2 dictionaries.
-*/
-var merge;
-
-merge = function(child, parent) {
-  var key;
-  for (key in parent) {
-    if (!(child[key] != null)) {
-      if (Object.prototype.hasOwnProperty.call(parent, key)) {
-        child[key] = parent[key];
-      }
-    }
-  }
-  return child;
-};
-
 /* Pure JS based JS script, CSS loader.
 */
 var CSSLoader, JSLoader, Load, Loader,
@@ -309,6 +293,22 @@ Load = (function() {
 
 })();
 
+/* Merge properties of 2 dictionaries.
+*/
+var merge;
+
+merge = function(child, parent) {
+  var key;
+  for (key in parent) {
+    if (!(child[key] != null)) {
+      if (Object.prototype.hasOwnProperty.call(parent, key)) {
+        child[key] = parent[key];
+      }
+    }
+  }
+  return child;
+};
+
 /* Create file download with custom content.
 */
 var Exporter, PlainExporter,
@@ -424,56 +424,6 @@ factory = function(Backbone) {
   })();
   
 
-  /* Models underpinning Table Widget results.
-  */
-  var TableResults, TableRow,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  TableRow = (function(_super) {
-  
-    __extends(TableRow, _super);
-  
-    function TableRow() {
-      this.validate = __bind(this.validate, this);
-      TableRow.__super__.constructor.apply(this, arguments);
-    }
-  
-    TableRow.prototype.spec = {
-      "matches": type.isInteger,
-      "identifier": type.isInteger,
-      "descriptions": type.isArray
-    };
-  
-    TableRow.prototype.initialize = function(row, widget) {
-      this.widget = widget;
-      return this.validate(row);
-    };
-  
-    TableRow.prototype.validate = function(row) {
-      return this.widget.validateType(row, this.spec);
-    };
-  
-    return TableRow;
-  
-  })(Backbone.Model);
-  
-  TableResults = (function(_super) {
-  
-    __extends(TableResults, _super);
-  
-    function TableResults() {
-      TableResults.__super__.constructor.apply(this, arguments);
-    }
-  
-    TableResults.prototype.model = TableRow;
-  
-    return TableResults;
-  
-  })(Backbone.Collection);
-  
-
   /* Enrichment Widget table row.
   */
   var EnrichmentRowView,
@@ -539,6 +489,56 @@ factory = function(Backbone) {
     return EnrichmentRowView;
   
   })(Backbone.View);
+  
+
+  /* Models underpinning Table Widget results.
+  */
+  var TableResults, TableRow,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  TableRow = (function(_super) {
+  
+    __extends(TableRow, _super);
+  
+    function TableRow() {
+      this.validate = __bind(this.validate, this);
+      TableRow.__super__.constructor.apply(this, arguments);
+    }
+  
+    TableRow.prototype.spec = {
+      "matches": type.isInteger,
+      "identifier": type.isInteger,
+      "descriptions": type.isArray
+    };
+  
+    TableRow.prototype.initialize = function(row, widget) {
+      this.widget = widget;
+      return this.validate(row);
+    };
+  
+    TableRow.prototype.validate = function(row) {
+      return this.widget.validateType(row, this.spec);
+    };
+  
+    return TableRow;
+  
+  })(Backbone.Model);
+  
+  TableResults = (function(_super) {
+  
+    __extends(TableResults, _super);
+  
+    function TableResults() {
+      TableResults.__super__.constructor.apply(this, arguments);
+    }
+  
+    TableResults.prototype.model = TableRow;
+  
+    return TableResults;
+  
+  })(Backbone.Collection);
   
 
   /* Table Widget table row.
@@ -781,33 +781,6 @@ factory = function(Backbone) {
       ChartView.__super__.constructor.apply(this, arguments);
     }
   
-    ChartView.prototype.chartOptions = {
-      fontName: "Sans-Serif",
-      fontSize: 11,
-      width: 460,
-      height: 450,
-      colors: ["#2F72FF", "#9FC0FF"],
-      legend: {
-        position: "top"
-      },
-      chartArea: {
-        top: 30,
-        left: 50,
-        width: 400,
-        height: 305
-      },
-      hAxis: {
-        titleTextStyle: {
-          fontName: "Sans-Serif"
-        }
-      },
-      vAxis: {
-        titleTextStyle: {
-          fontName: "Sans-Serif"
-        }
-      }
-    };
-  
     ChartView.prototype.events = {
       "change div.form select": "formAction"
     };
@@ -822,8 +795,7 @@ factory = function(Backbone) {
     };
   
     ChartView.prototype.render = function() {
-      var chart,
-        _this = this;
+      var graph;
       $(this.el).html(this.template("chart.normal", {
         "title": this.options.title ? this.response.title : "",
         "description": this.options.description ? this.response.description : "",
@@ -837,40 +809,37 @@ factory = function(Backbone) {
         }));
       }
       if (this.response.results.length > 1) {
-        if (this.response.chartType in google.visualization) {
-          chart = new google.visualization[this.response.chartType]($(this.el).find("div.content")[0]);
-          chart.draw(google.visualization.arrayToDataTable(this.response.results, false), this.chartOptions);
-          if (this.response.pathQuery != null) {
-            return google.visualization.events.addListener(chart, "select", function() {
-              var item, pq, translate, _i, _len, _ref, _results;
-              translate = function(response, series) {
-                return response.seriesValues.split(',')[response.seriesLabels.split(',').indexOf(series)];
-              };
-              pq = _this.response.pathQuery;
-              _ref = chart.getSelection();
-              _results = [];
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                item = _ref[_i];
-                if (item.row != null) {
-                  pq = pq.replace("%category", _this.response.results[item.row + 1][0]);
-                  if (item.column != null) {
-                    pq = pq.replace("%series", translate(_this.response, _this.response.results[0][item.column]));
-                  }
-                  pq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(pq) : void 0;
-                  _results.push(_this.options.selectCb(pq));
-                } else {
-                  _results.push(void 0);
+        graph = new Rickshaw.Graph({
+          element: $(this.el).find("div.content")[0],
+          renderer: "bar",
+          series: [
+            {
+              data: [
+                {
+                  x: 0,
+                  y: 40
+                }, {
+                  x: 1,
+                  y: 49
                 }
-              }
-              return _results;
-            });
-          }
-        } else {
-          return this.error({
-            'title': this.response.chartType,
-            'text': "This chart type does not exist in Google Visualization API"
-          });
-        }
+              ],
+              color: "steelblue"
+            }, {
+              data: [
+                {
+                  x: 0,
+                  y: 20
+                }, {
+                  x: 1,
+                  y: 24
+                }
+              ],
+              color: "lightblue"
+            }
+          ]
+        });
+        graph.renderer.unstack = true;
+        return graph.render();
       } else {
         return $(this.el).find("div.content").html($(this.template("noresults")));
       }
@@ -1535,8 +1504,8 @@ factory = function(Backbone) {
   return {
 
     "InterMineWidget": InterMineWidget,
-    "TableResults": TableResults,
     "EnrichmentRowView": EnrichmentRowView,
+    "TableResults": TableResults,
     "TableRowView": TableRowView,
     "EnrichmentMatchesView": EnrichmentMatchesView,
     "TableView": TableView,
@@ -1580,8 +1549,18 @@ window.Widgets = (function() {
       path: "http://documentcloud.github.com/backbone/backbone-min.js",
       type: "js"
     }, {
-      name: "google",
-      path: "https://www.google.com/jsapi",
+      name: "d3",
+      path: "https://raw.github.com/shutterstock/rickshaw/master/vendor/d3.min.js",
+      type: "js",
+      wait: true
+    }, {
+      name: "d3.layout",
+      path: "https://raw.github.com/shutterstock/rickshaw/master/vendor/d3.layout.min.js",
+      type: "js",
+      wait: true
+    }, {
+      name: "Rickshaw",
+      path: "https://raw.github.com/shutterstock/rickshaw/master/rickshaw.min.js",
       type: "js"
     }
   ];
@@ -1611,16 +1590,11 @@ window.Widgets = (function() {
         return _this.chart.apply(_this, opts);
       }), 0);
     } else {
-      return google.load("visualization", "1.0", {
-        packages: ["corechart"],
-        callback: function() {
-          return (function(func, args, ctor) {
-            ctor.prototype = func.prototype;
-            var child = new ctor, result = func.apply(child, args);
-            return typeof result === "object" ? result : child;
-          })(o.ChartWidget, [_this.service, _this.token].concat(__slice.call(opts)), function() {});
-        }
-      });
+      return (function(func, args, ctor) {
+        ctor.prototype = func.prototype;
+        var child = new ctor, result = func.apply(child, args);
+        return typeof result === "object" ? result : child;
+      })(o.ChartWidget, [this.service, this.token].concat(__slice.call(opts)), function() {});
     }
   };
 

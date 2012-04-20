@@ -24,8 +24,18 @@ class window.Widgets
         path:  "http://documentcloud.github.com/backbone/backbone-min.js"
         type:  "js"
     ,
-        name:  "google"
-        path:  "https://www.google.com/jsapi"
+        name:  "d3"
+        path:  "https://raw.github.com/shutterstock/rickshaw/master/vendor/d3.min.js"
+        type:  "js"
+        wait:  true
+    ,
+        name:  "d3.layout"
+        path:  "https://raw.github.com/shutterstock/rickshaw/master/vendor/d3.layout.min.js"
+        type:  "js"
+        wait:  true
+    ,
+        name:  "Rickshaw"
+        path:  "https://raw.github.com/shutterstock/rickshaw/master/rickshaw.min.js"
         type:  "js"
     ]
 
@@ -50,12 +60,7 @@ class window.Widgets
     # 3. `el`:            #target
     # 4. `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {} }
     chart: (opts...) =>
-        if @wait then window.setTimeout((=> @chart(opts...)), 0)
-        else
-            # Load Google Visualization.
-            google.load "visualization", "1.0",
-                packages: [ "corechart" ]
-                callback: => new o.ChartWidget(@service, @token, opts...)
+        if @wait then window.setTimeout((=> @chart(opts...)), 0) else new o.ChartWidget(@service, @token, opts...)
     
     # Enrichment Widget.
     #
