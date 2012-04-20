@@ -45,6 +45,9 @@ class TableView extends Backbone.View
         @renderTableBody table
 
         # How tall should the table be? Whole height - header - faux header.
+        console.log "whole height", $(@el).height()
+        console.log "header height", $(@el).find('header').height()
+        console.log "content head height", $(@el).find('div.content div.head').height()
         height = $(@el).height() - $(@el).find('header').height() - $(@el).find('div.content div.head').height()
         $(@el).find("div.content div.wrapper").css 'height', "#{height}px"
 
