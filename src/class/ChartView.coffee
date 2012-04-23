@@ -43,18 +43,25 @@ class ChartView extends Backbone.View
             # Render with Rickshaw.
             graph = new Rickshaw.Graph(
                 'element':  $(@el).find("div.content div.graph")[0]
-                #'width':    235
-                #'height':   85
+                'height':   250
                 'renderer': 'bar'
                 'series':   series
             )
+            
+            # Provide axes.
+            new Rickshaw.Graph.Axis.Y(
+                'graph':      graph
+                'tickFormat': Rickshaw.Fixtures.Number.formatKMBT
+                'element':    $(@el).find("div.content div.axis.y")[0]
+            )
+
             graph.renderer.unstack = true
             graph.render()
 
             # Provide a legend.
-            legend = new Rickshaw.Graph.Legend(
-                graph:   graph
-                element: $(@el).find("div.content div.legend")[0]
+            new Rickshaw.Graph.Legend(
+                'graph':   graph
+                'element': $(@el).find("div.content div.legend")[0]
             )
         else
             # Render no results.
