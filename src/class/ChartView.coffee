@@ -54,6 +54,13 @@ class ChartView extends Backbone.View
                 'tickFormat': Rickshaw.Fixtures.Number.formatKMBT
                 'element':    $(@el).find("div.content div.axis.y")[0]
             )
+            annotator = new Rickshaw.Graph.Annotate(
+                'graph':   graph
+                'element': $(@el).find("div.content div.axis.x")[0]
+            )
+            timestamp = 1
+            message = 'bloody hell'
+            annotator.add timestamp, message            
 
             graph.renderer.unstack = true
             graph.render()

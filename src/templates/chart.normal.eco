@@ -15,5 +15,5 @@
     <div class="legend"></div>
     <div class="axis y"></div>
     <div class="graph"></div>
-    <div class="axis y"></div>
+    <div class="axis x"></div>
 </div>
