@@ -2,32 +2,31 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Widget Client (Rickshaw)</title>
+        <title>Widget Client (d3.js)</title>
 
         <!--[if lt IE 9]>
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
         <link href="css/bootstrap.css" rel="stylesheet">
-        <link href="css/rickshaw.css" rel="stylesheet">
         <style>
         .widget { margin:20px 10px; }
-        /* Rickshaw styling */
-        .widget div.axis { position:absolute; top:20px; bottom:0; width:40px; }
-        .widget div.graph { position:relative; left:40px; }
-        .widget div.rickshaw_legend ul { list-style-type:none; margin:0; }
-        .widget div.rickshaw_legend ul li { display:inline-block; }
-        .widget div.rickshaw_legend .swatch { display:inline-block; width:15px; height:15px; }
-        .widget div.rickshaw_legend .label { color:#555; background:#fff; text-shadow:none; line-height:17px; vertical-align:bottom; display:inline-block;
-            padding:0; font-size:13px; margin:0 10px 0 5px; }
+        /* d3.js charts */
+        .widget .chart { shape-rendering:crispEdges; }
+        .widget .chart rect { stroke:white; }
+        .widget .chart rect.first { fill:#387AA3; }
+        .widget .chart rect.second { fill:#649EB9; }
+        .widget .chart line { stroke:#CCC; }
+        .widget .chart line.axis.y { stroke:#555; }
+        .widget .chart text { font-family:Georgia; fill:#555; }
         </style>
 
         <!-- local lib cache -->
         <script src="js/vendor/jquery.js"></script>
-        <script src="js/vendor/d3.js"></script>
-        <script src="js/vendor/rickshaw.js"></script>
         <script src="js/vendor/underscore.js"></script>
         <script src="js/vendor/backbone.js"></script>
+        <script src="js/vendor/d3.js"></script>
+        <script src="js/vendor/d3.layout.js"></script>
 
         <!-- widget.js -->
         <script src="js/widgets.js"></script>
@@ -38,7 +37,7 @@
         <div class="navbar">
             <div class="navbar-inner">
                 <div class="container" style="width: auto;">
-                    <a class="brand" href="#">Widget Client (Rickshaw)</a>
+                    <a class="brand" href="#">Widget Client (d3.js)</a>
                     <ul class="nav pull-right">
                         <li class="divider-vertical"></li>
                         <li><a href="https://github.com/radekstepan/intermine-widget-client">Fork me on GitHub</a></li>

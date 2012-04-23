@@ -27,16 +27,6 @@ class window.Widgets
         name:  "d3"
         path:  "https://raw.github.com/shutterstock/rickshaw/master/vendor/d3.min.js"
         type:  "js"
-        wait:  true
-    ,
-        name:  "d3.layout"
-        path:  "https://raw.github.com/shutterstock/rickshaw/master/vendor/d3.layout.min.js"
-        type:  "js"
-        wait:  true
-    ,
-        name:  "Rickshaw"
-        path:  "https://raw.github.com/shutterstock/rickshaw/master/rickshaw.min.js"
-        type:  "js"
     ]
 
     # New Widgets client.

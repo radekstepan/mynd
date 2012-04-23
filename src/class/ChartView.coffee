@@ -37,39 +37,60 @@ class ChartView extends Backbone.View
             ]
             series[j]['data'].push { 'x': i-1, 'y': @response.results[i][j+1] } for j in [0, 1] for i in [1..@response.results.length-1]
 
-            # 'Fix' glitch in the library.
-            series[i]['data'].push { 'x': @response.results.length, 'y':0 } for i in [0, 1]
+            # d3.js
+            width = 420 ; height = 200 # size
+            data = [ 4, 8, 15, 16, 23, 42 ] # series
 
-            # Render with Rickshaw.
-            graph = new Rickshaw.Graph(
-                'element':  $(@el).find("div.content div.graph")[0]
-                'height':   250
-                'renderer': 'bar'
-                'series':   series
-            )
-            
-            # Provide axes.
-            new Rickshaw.Graph.Axis.Y(
-                'graph':      graph
-                'tickFormat': Rickshaw.Fixtures.Number.formatKMBT
-                'element':    $(@el).find("div.content div.axis.y")[0]
-            )
-            annotator = new Rickshaw.Graph.Annotate(
-                'graph':   graph
-                'element': $(@el).find("div.content div.axis.x")[0]
-            )
-            timestamp = 1
-            message = 'bloody hell'
-            annotator.add timestamp, message            
+            chart = d3.select(($(@el).find("div.content")[0]))
+            .append('svg:svg') # append svg
+            .attr('class', 'chart')
+            .attr('width', width)
+            .append("svg:g") # add a wrapping container
+            .attr("transform", "translate(10,15)")
 
-            graph.renderer.unstack = true
-            graph.render()
+            x = d3.scale.linear()
+            .domain([ 0, d3.max(data) ])
+            .range([ 0, width ])
+            y = d3.scale.ordinal()
+            .domain(data)
+            .rangeBands([ 0, height ])
 
-            # Provide a legend.
-            new Rickshaw.Graph.Legend(
-                'graph':   graph
-                'element': $(@el).find("div.content div.legend")[0]
-            )
+            # The grid.
+            chart.selectAll("line")
+            .data(x.ticks(10))
+            .enter()
+            .append("svg:line")
+            .attr("x1", x)
+            .attr("x2", x)
+            .attr("y1", 0)
+            .attr("y2", height)
+
+            # The grid values.
+            chart.selectAll(".rule")
+            .data(x.ticks(10))
+            .enter()
+            .append("svg:text")
+            .attr("class", "rule")
+            .attr("x", x)
+            .attr("y", 0)
+            .attr("dy", -3)
+            .attr("text-anchor", "middle")
+            .text(String)
+
+            # The bars.
+            chart.selectAll('rect')
+            .data(data)
+            .enter()
+            .append('svg:rect')
+            .attr('y', y)
+            .attr('width', x)
+            .attr('height', y.rangeBand())
+
+            # Single line for y-axis,
+            chart.append("svg:line")
+            .attr("class", "axis y")
+            .attr("y1", 0)
+            .attr("y2", height)
         else
             # Render no results.
             $(@el).find("div.content").html $ @template "noresults"
