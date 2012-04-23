@@ -15,7 +15,7 @@ JST["table.table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;re
 JST["enrichment.form.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f,g,h,i,j;b.push('<form style="margin:0">\n    <div class="group" style="display:inline-block;margin-right:5px">\n        <label>Test Correction</label>\n        <select name="errorCorrection" class="span2">\n            '),i=this.errorCorrections;for(e=0,g=i.length;e<g;e++)a=i[e],b.push('\n                <option value="'),b.push(d(a)),b.push('" '),this.options.errorCorrection===a&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(a)),b.push("\n            </option>\n            ");b.push('\n        </select>\n    </div>\n\n    <div class="group" style="display:inline-block;margin-right:5px">\n        <label>Max p-value</label>\n        <select name="pValue" class="span2">\n            '),j=this.pValues;for(f=0,h=j.length;f<h;f++)c=j[f],b.push('\n                <option value="'),b.push(d(c)),b.push('" '),this.options.pValue===c&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(c)),b.push("\n                </option>\n            ");b.push("\n        </select>\n    </div>\n</form>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.normal.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <!-- enrichment.form.eco -->\n    </div>\n\n    <div class="actions" style="padding:10px 0">\n        <!-- enrichment.actions.eco -->\n    </div>\n</header>\n<div class="content">\n    <!-- enrichment.table.eco -->\n</div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["loading.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<div class="loading" style="background:rgba(255,255,255,0.9);position:absolute;top:0;left:0;height:100%;width:100%;text-align:center;">\n    <p style="padding-top:50%;font-weight:bold;">Loading &hellip;</p>\n</div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["chart.normal.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <form style="margin:0">\n            <!-- chart.extra.eco -->\n        </form>\n    </div>\n</header>\n<div class="content"></div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
+JST["chart.normal.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <form style="margin:0">\n            <!-- chart.extra.eco -->\n        </form>\n    </div>\n</header>\n<div class="content">\n    <div class="legend"></div>\n    <div class="graph"></div>\n</div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.extra.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f;b.push('<div class="group" style="display:inline-block;margin-right:5px">\n    <label>'),b.push(d(this.label)),b.push('</label>\n    <select name="'),b.push(d(this.label)),b.push('" class="span2">\n        '),f=this.possible;for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n            <option value="'),b.push(d(a)),b.push('" '),this.selected===a&&b.push(d('selected="selected"')),b.push(">\n                "),b.push(d(a)),b.push("\n            </option>\n        ");b.push("\n    </select>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["invalidjsonkey.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<li style="vertical-align:bottom">\n    <span style="display:inline-block" class="label label-important">'),b.push(d(this.key)),b.push("</span> is "),b.push(d(this.actual)),b.push("; was expecting "),b.push(d(this.expected)),b.push("\n</li>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 /* Types in JS.
@@ -168,6 +168,22 @@ type.isUndefined = (function(_super) {
 
 })(type.Root);
 
+/* Merge properties of 2 dictionaries.
+*/
+var merge;
+
+merge = function(child, parent) {
+  var key;
+  for (key in parent) {
+    if (!(child[key] != null)) {
+      if (Object.prototype.hasOwnProperty.call(parent, key)) {
+        child[key] = parent[key];
+      }
+    }
+  }
+  return child;
+};
+
 /* Pure JS based JS script, CSS loader.
 */
 var CSSLoader, JSLoader, Load, Loader,
@@ -293,22 +309,6 @@ Load = (function() {
 
 })();
 
-/* Merge properties of 2 dictionaries.
-*/
-var merge;
-
-merge = function(child, parent) {
-  var key;
-  for (key in parent) {
-    if (!(child[key] != null)) {
-      if (Object.prototype.hasOwnProperty.call(parent, key)) {
-        child[key] = parent[key];
-      }
-    }
-  }
-  return child;
-};
-
 /* Create file download with custom content.
 */
 var Exporter, PlainExporter,
@@ -424,6 +424,56 @@ factory = function(Backbone) {
   })();
   
 
+  /* Models underpinning Table Widget results.
+  */
+  var TableResults, TableRow,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  TableRow = (function(_super) {
+  
+    __extends(TableRow, _super);
+  
+    function TableRow() {
+      this.validate = __bind(this.validate, this);
+      TableRow.__super__.constructor.apply(this, arguments);
+    }
+  
+    TableRow.prototype.spec = {
+      "matches": type.isInteger,
+      "identifier": type.isInteger,
+      "descriptions": type.isArray
+    };
+  
+    TableRow.prototype.initialize = function(row, widget) {
+      this.widget = widget;
+      return this.validate(row);
+    };
+  
+    TableRow.prototype.validate = function(row) {
+      return this.widget.validateType(row, this.spec);
+    };
+  
+    return TableRow;
+  
+  })(Backbone.Model);
+  
+  TableResults = (function(_super) {
+  
+    __extends(TableResults, _super);
+  
+    function TableResults() {
+      TableResults.__super__.constructor.apply(this, arguments);
+    }
+  
+    TableResults.prototype.model = TableRow;
+  
+    return TableResults;
+  
+  })(Backbone.Collection);
+  
+
   /* Enrichment Widget table row.
   */
   var EnrichmentRowView,
@@ -489,56 +539,6 @@ factory = function(Backbone) {
     return EnrichmentRowView;
   
   })(Backbone.View);
-  
-
-  /* Models underpinning Table Widget results.
-  */
-  var TableResults, TableRow,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  TableRow = (function(_super) {
-  
-    __extends(TableRow, _super);
-  
-    function TableRow() {
-      this.validate = __bind(this.validate, this);
-      TableRow.__super__.constructor.apply(this, arguments);
-    }
-  
-    TableRow.prototype.spec = {
-      "matches": type.isInteger,
-      "identifier": type.isInteger,
-      "descriptions": type.isArray
-    };
-  
-    TableRow.prototype.initialize = function(row, widget) {
-      this.widget = widget;
-      return this.validate(row);
-    };
-  
-    TableRow.prototype.validate = function(row) {
-      return this.widget.validateType(row, this.spec);
-    };
-  
-    return TableRow;
-  
-  })(Backbone.Model);
-  
-  TableResults = (function(_super) {
-  
-    __extends(TableResults, _super);
-  
-    function TableResults() {
-      TableResults.__super__.constructor.apply(this, arguments);
-    }
-  
-    TableResults.prototype.model = TableRow;
-  
-    return TableResults;
-  
-  })(Backbone.Collection);
   
 
   /* Table Widget table row.
@@ -731,9 +731,6 @@ factory = function(Backbone) {
         _fn(i);
       }
       this.renderTableBody(table);
-      console.log("whole height", $(this.el).height());
-      console.log("header height", $(this.el).find('header').height());
-      console.log("content head height", $(this.el).find('div.content div.head').height());
       height = $(this.el).height() - $(this.el).find('header').height() - $(this.el).find('div.content div.head').height();
       $(this.el).find("div.content div.wrapper").css('height', "" + height + "px");
       $(this.el).find("div.content div.head").css("width", $(this.el).find("div.content table").width() + "px");
@@ -795,7 +792,7 @@ factory = function(Backbone) {
     };
   
     ChartView.prototype.render = function() {
-      var graph;
+      var graph, i, j, legend, series, _i, _j, _len, _len2, _ref, _ref2, _ref3;
       $(this.el).html(this.template("chart.normal", {
         "title": this.options.title ? this.response.title : "",
         "description": this.options.description ? this.response.description : "",
@@ -809,37 +806,46 @@ factory = function(Backbone) {
         }));
       }
       if (this.response.results.length > 1) {
+        series = [
+          {
+            data: [],
+            color: '#2F72FF',
+            name: this.response.results[0][1]
+          }, {
+            data: [],
+            color: '#9FC0FF',
+            name: this.response.results[0][2]
+          }
+        ];
+        for (i = 1, _ref = this.response.results.length - 1; 1 <= _ref ? i <= _ref : i >= _ref; 1 <= _ref ? i++ : i--) {
+          _ref2 = [0, 1];
+          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+            j = _ref2[_i];
+            series[j]['data'].push({
+              'x': i - 1,
+              'y': this.response.results[i][j + 1]
+            });
+          }
+        }
+        _ref3 = [0, 1];
+        for (_j = 0, _len2 = _ref3.length; _j < _len2; _j++) {
+          i = _ref3[_j];
+          series[i]['data'].push({
+            'x': this.response.results.length,
+            'y': 0
+          });
+        }
         graph = new Rickshaw.Graph({
-          element: $(this.el).find("div.content")[0],
-          renderer: "bar",
-          series: [
-            {
-              data: [
-                {
-                  x: 0,
-                  y: 40
-                }, {
-                  x: 1,
-                  y: 49
-                }
-              ],
-              color: "steelblue"
-            }, {
-              data: [
-                {
-                  x: 0,
-                  y: 20
-                }, {
-                  x: 1,
-                  y: 24
-                }
-              ],
-              color: "lightblue"
-            }
-          ]
+          'element': $(this.el).find("div.content div.graph")[0],
+          'renderer': 'bar',
+          'series': series
         });
         graph.renderer.unstack = true;
-        return graph.render();
+        graph.render();
+        return legend = new Rickshaw.Graph.Legend({
+          graph: graph,
+          element: $(this.el).find("div.content div.legend")[0]
+        });
       } else {
         return $(this.el).find("div.content").html($(this.template("noresults")));
       }
@@ -1504,8 +1510,8 @@ factory = function(Backbone) {
   return {
 
     "InterMineWidget": InterMineWidget,
-    "EnrichmentRowView": EnrichmentRowView,
     "TableResults": TableResults,
+    "EnrichmentRowView": EnrichmentRowView,
     "TableRowView": TableRowView,
     "EnrichmentMatchesView": EnrichmentMatchesView,
     "TableView": TableView,

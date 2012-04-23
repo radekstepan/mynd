@@ -11,4 +11,7 @@
         </form>
     </div>
 </header>
-<div class="content"></div>
+<div class="content">
+    <div class="legend"></div>
+    <div class="graph"></div>
+</div>

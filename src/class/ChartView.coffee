@@ -25,19 +25,37 @@ class ChartView extends Backbone.View
 
         # Are the results empty?
         if @response.results.length > 1
+            # Form the series from Google Visualization formatted data.
+            series = [
+                data:  []
+                color: '#2F72FF'
+                name:  @response.results[0][1]
+            ,
+                data:  []
+                color: '#9FC0FF'
+                name:  @response.results[0][2]
+            ]
+            series[j]['data'].push { 'x': i-1, 'y': @response.results[i][j+1] } for j in [0, 1] for i in [1..@response.results.length-1]
+
+            # 'Fix' glitch in the library.
+            series[i]['data'].push { 'x': @response.results.length, 'y':0 } for i in [0, 1]
+
+            # Render with Rickshaw.
             graph = new Rickshaw.Graph(
-                element:  $(@el).find("div.content")[0]
-                renderer: "bar"
-                series: [
-                    data: [ {x:0, y:40}, {x:1, y:49} ]
-                    color: "steelblue"
-                ,
-                    data: [ {x:0, y:20}, {x:1, y:24} ]
-                    color: "lightblue"
-                ]
+                'element':  $(@el).find("div.content div.graph")[0]
+                #'width':    235
+                #'height':   85
+                'renderer': 'bar'
+                'series':   series
             )
             graph.renderer.unstack = true
             graph.render()
+
+            # Provide a legend.
+            legend = new Rickshaw.Graph.Legend(
+                graph:   graph
+                element: $(@el).find("div.content div.legend")[0]
+            )
         else
             # Render no results.
             $(@el).find("div.content").html $ @template "noresults"
