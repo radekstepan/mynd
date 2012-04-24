@@ -835,7 +835,9 @@ factory = function(Backbone) {
         y = d3.scale.ordinal().domain(data).rangeBands([0, height]);
         chart.selectAll("line").data(x.ticks(10)).enter().append("svg:line").attr("x1", x).attr("x2", x).attr("y1", 0).attr("y2", height);
         chart.selectAll(".rule").data(x.ticks(10)).enter().append("svg:text").attr("class", "rule").attr("x", x).attr("y", 0).attr("dy", -3).attr("text-anchor", "middle").text(String);
-        chart.selectAll('rect').data(data).enter().append('svg:rect').attr('y', y).attr('width', x).attr('height', y.rangeBand());
+        chart.selectAll('rect').data(data).enter().append('svg:rect').attr("class", function(d, i) {
+          return ['first', 'second'][i % 2];
+        }).attr('y', y).attr('width', x).attr('height', y.rangeBand());
         return chart.append("svg:line").attr("class", "axis y").attr("y1", 0).attr("y2", height);
       } else {
         return $(this.el).find("div.content").html($(this.template("noresults")));

@@ -82,6 +82,7 @@ class ChartView extends Backbone.View
             .data(data)
             .enter()
             .append('svg:rect')
+            .attr("class", (d, i) -> [ 'first', 'second' ][i % 2])
             .attr('y', y)
             .attr('width', x)
             .attr('height', y.rangeBand())
