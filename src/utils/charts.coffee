@@ -1,6 +1,6 @@
-Chart = {}
+Charts = {}
 
-class Chart.MultipleBars
+class Charts.MultipleBars
 
     # Size.
     width:  420
@@ -11,39 +11,55 @@ class Chart.MultipleBars
         @[k] = v for k, v of o
 
         # Create the chart wrapper.
-        @chart = d3.select(@el[0])
+        @canvas = d3.select(@el[0])
         .append('svg:svg') # append svg
-        .attr('class', 'chart')
+        .attr('class', 'canvas')
         .attr('width', @width)
-        .append("svg:g") # add a wrapping container
-        .attr("transform", "translate(10,15)")
 
     render: () ->
+        # How much padding from left?
+        padding = @_textLength() * 6
+
+        @width = @width - padding ; @height = @height - 15
+
+        @chart = @canvas.append("svg:g").attr("class", "chart").attr("transform", "translate(#{padding},15)")
+        
         # Get the domain.
         domain = @_domain()
 
         # Draw the grid.
-        @_grid domain
+        @grid domain            
 
         # The bars.
-        i = 0
-        for n, group of @series
+        for i, group of @series
             g = @chart
             .append("svg:g")
-            .attr("class", "group g#{n}")
-            for series, value of group
+            .attr("class", "group g#{i}")
+            
+            j = 0
+            
+            for series, value of group['data']
+                height = domain['y'].rangeBand() / 2
+                top =    domain['y'](i) + (j * height)
+                value =  domain['x'](value)
+
                 g.append("svg:rect")
-                .attr("class", series)
-                .attr('y', domain['y'](i))
-                .attr('width', domain['x'](value))
-                .attr('height', domain['y'].rangeBand())
+                .attr("class",  series)
+                .attr('y',      top)
+                .attr('width',  value)
+                .attr('height', height)
 
-                console.log i, domain['x'](i)
+                j++
 
-                i++
+            # Add description.
+            @canvas.append("svg:text")
+            .attr("class", "text")
+            .attr('y', top + height)
+            .text(group['text'])
+
 
     # Draw the grid.
-    _grid: (domain) ->
+    grid: (domain) ->
         g = @chart.append("svg:g").attr("class", "grid")
         
         g.selectAll("line")
@@ -69,16 +85,22 @@ class Chart.MultipleBars
 
     # Get the domain.
     _domain: () ->
-        # Get the domain.
         {
             'x': d3.scale.linear().domain([ 0, @_max() ]).range([ 0, @width ])
-            'y': d3.scale.ordinal().domain([0..(@series.length * 2) - 1]).rangeBands([ 0, @height ], .1)
+            'y': d3.scale.ordinal().domain([0..@series.length - 1]).rangeBands([ 0, @height ], .05)
         }
+
+    # Determine the maximum size of text we will need to accommodate.
+    _textLength: () ->
+        max = -Infinity
+        for group in @series
+            max = group['text'].length if group['text'].length > max
+        max        
 
     # Get a maximum value from series.
     _max: () ->
         max = -Infinity
-        for i in @series
-            for j in [ 'x', 'y' ]
-                max = i[j] if i[j] > max
+        for group in @series
+            for key, value of group['data']
+                max = value if value > max
         max

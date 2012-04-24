@@ -26,15 +26,17 @@ class ChartView extends Backbone.View
         # Are the results empty?
         if @response.results.length > 1
             # Form the series from Google Visualization formatted data.
-            series = [] ; labels = []
-            for i in [1..@response.results.length-1]
-                labels.push @response.results[i][0]
-                for j in [0, 1]
-                    series.push @response.results[i][j+1]
+            series = []
+            for i, v of @response.results
+                if i > 0 then series.push
+                    'text': v[0]
+                    'data':
+                        'x': v[1]
+                        'y': v[2]
 
-            chart = new Chart.MultipleBars(
-                'el':      $(@el).find("div.content")
-                'series':  [ { 'x': 1, 'y': 2 }, { 'x': 3, 'y': 4 } ]
+            chart = new Charts.MultipleBars(
+                'el':     $(@el).find("div.content")
+                'series': series
             )
             chart.render()
         else
