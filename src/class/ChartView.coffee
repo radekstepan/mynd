@@ -26,72 +26,17 @@ class ChartView extends Backbone.View
         # Are the results empty?
         if @response.results.length > 1
             # Form the series from Google Visualization formatted data.
-            series = [
-                data:  []
-                color: '#2F72FF'
-                name:  @response.results[0][1]
-            ,
-                data:  []
-                color: '#9FC0FF'
-                name:  @response.results[0][2]
-            ]
-            series[j]['data'].push { 'x': i-1, 'y': @response.results[i][j+1] } for j in [0, 1] for i in [1..@response.results.length-1]
+            series = [] ; labels = []
+            for i in [1..@response.results.length-1]
+                labels.push @response.results[i][0]
+                for j in [0, 1]
+                    series.push @response.results[i][j+1]
 
-            # d3.js
-            width = 420 ; height = 200 # size
-            data = [ 4, 8, 15, 16, 23, 42 ] # series
-
-            chart = d3.select(($(@el).find("div.content")[0]))
-            .append('svg:svg') # append svg
-            .attr('class', 'chart')
-            .attr('width', width)
-            .append("svg:g") # add a wrapping container
-            .attr("transform", "translate(10,15)")
-
-            x = d3.scale.linear()
-            .domain([ 0, d3.max(data) ])
-            .range([ 0, width ])
-            y = d3.scale.ordinal()
-            .domain(data)
-            .rangeBands([ 0, height ])
-
-            # The grid.
-            chart.selectAll("line")
-            .data(x.ticks(10))
-            .enter()
-            .append("svg:line")
-            .attr("x1", x)
-            .attr("x2", x)
-            .attr("y1", 0)
-            .attr("y2", height)
-
-            # The grid values.
-            chart.selectAll(".rule")
-            .data(x.ticks(10))
-            .enter()
-            .append("svg:text")
-            .attr("class", "rule")
-            .attr("x", x)
-            .attr("y", 0)
-            .attr("dy", -3)
-            .attr("text-anchor", "middle")
-            .text(String)
-
-            # The bars.
-            chart.selectAll('rect')
-            .data(data)
-            .enter()
-            .append('svg:rect')
-            .attr("class", (d, i) -> [ 'first', 'second' ][i % 2])
-            .attr('y', y)
-            .attr('width', x)
-            .attr('height', y.rangeBand())
-
-            # Single line for y-axis,
-            chart.append("svg:line")
-            .attr("class", "axis y")
-            .attr("y1", 0)
-            .attr("y2", height)
+            chart = new Chart.MultipleBars(
+                'el':      $(@el).find("div.content")
+                'series':  [ { 'x': 1, 'y': 2 }, { 'x': 3, 'y': 4 } ]
+            )
+            chart.render()
         else
             # Render no results.
             $(@el).find("div.content").html $ @template "noresults"
