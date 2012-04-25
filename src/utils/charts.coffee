@@ -17,32 +17,61 @@ class Charts.MultipleBars
         .attr('width', @width)
 
     render: () ->
-        # How much padding from left?
-        padding = @_textLength() * 6
+        # Place the description text to determine its width.
+        descWidth = -Infinity
+        descriptions = @canvas.append('svg:g').attr('class', 'descriptions')
+        for i, group of @series
+            text = descriptions.append("svg:text")
+                .attr("class", "text group g#{i}")
+                .text(group['text'])
 
-        @width = @width - padding ; @height = @height - 15
+            # Update the max width.
+            width = text.node().getComputedTextLength()
+            descWidth = width if width > descWidth
 
-        @chart = @canvas.append("svg:g").attr("class", "chart").attr("transform", "translate(#{padding},15)")
+        # Reduce the chart space for chart and add some extra padding for the grid.
+        @width = @width - descWidth - 10 ; @height = @height - 15
+
+        # Chart `g`.
+        @chart = @canvas.append("svg:g").attr("class", "chart").attr("transform", "translate(#{descWidth + 5},15)")
         
         # Get the domain.
         domain = @_domain()
 
         # Draw the grid.
-        @grid domain            
+        g = @chart.append("svg:g").attr("class", "grid")
+        
+        g.selectAll("line").data(domain['x'].ticks(10)).enter()
+        .append("svg:line")
+        .attr("x1", domain['x']).attr("x2", domain['x'])
+        .attr("y1", 0).attr("y2", @height)
+
+        # The grid values.
+        g.selectAll(".rule")
+        .data(domain['x'].ticks(10)).enter()
+        .append("svg:text")
+        .attr("class", "rule")
+        .attr("x", domain['x'])
+        .attr("y", 0)
+        .attr("dy", -3)
+        .attr("text-anchor", "middle")
+        .text(String)
 
         # The bars.
         for i, group of @series
+            # A wrapper group.
             g = @chart
             .append("svg:g")
             .attr("class", "group g#{i}")
             
             j = 0
-            
             for series, value of group['data']
+                # Calculate the distances.
                 height = domain['y'].rangeBand() / 2
                 top =    domain['y'](i) + (j * height)
                 value =  domain['x'](value)
 
+                # Append the actual rectangle.
                 g.append("svg:rect")
                 .attr("class",  series)
                 .attr('y',      top)
@@ -51,51 +80,15 @@ class Charts.MultipleBars
 
                 j++
 
-            # Add description.
-            @canvas.append("svg:text")
-            .attr("class", "text")
-            .attr('y', top + height)
-            .text(group['text'])
-
-
-    # Draw the grid.
-    grid: (domain) ->
-        g = @chart.append("svg:g").attr("class", "grid")
-        
-        g.selectAll("line")
-        .data(domain['x'].ticks(10))
-        .enter()
-        .append("svg:line")
-        .attr("x1", domain['x'])
-        .attr("x2", domain['x'])
-        .attr("y1", 0)
-        .attr("y2", @height)
-
-        # The grid values.
-        g.selectAll(".rule")
-        .data(domain['x'].ticks(10))
-        .enter()
-        .append("svg:text")
-        .attr("class", "rule")
-        .attr("x", domain['x'])
-        .attr("y", 0)
-        .attr("dy", -3)
-        .attr("text-anchor", "middle")
-        .text(String)       
+            # Update the distance from top (top for bar + bar height) for the description text.
+            descriptions.select(".g#{i}").attr('y', top + height)
 
     # Get the domain.
     _domain: () ->
         {
             'x': d3.scale.linear().domain([ 0, @_max() ]).range([ 0, @width ])
             'y': d3.scale.ordinal().domain([0..@series.length - 1]).rangeBands([ 0, @height ], .05)
-        }
-
-    # Determine the maximum size of text we will need to accommodate.
-    _textLength: () ->
-        max = -Infinity
-        for group in @series
-            max = group['text'].length if group['text'].length > max
-        max        
+        }   
 
     # Get a maximum value from series.
     _max: () ->
