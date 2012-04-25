@@ -4,8 +4,8 @@ var o = {};
 var JST = {};
 JST["table.normal.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push('</h3>\n    <p style="margin:0">'),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push('\n        <p style="margin:10px 0 0 0">Number of Genes in this list not analysed in this widget: <a>'),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n    <div>&nbsp;</div>\n</header>\n<div class="content">\n    <!-- table.table.eco -->\n</div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["chart.extra.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f;b.push('<div class="group" style="display:inline-block;margin-right:5px">\n    <label>'),b.push(d(this.label)),b.push('</label>\n    <select name="'),b.push(d(this.label)),b.push('" class="span3">\n        '),f=this.possible;for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n            <option value="'),b.push(d(a)),b.push('" '),this.selected===a&&b.push(d('selected="selected"')),b.push(">\n                "),b.push(d(a)),b.push("\n            </option>\n        ");b.push("\n    </select>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["error.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<div class="alert alert-block">\n    <h4 class="alert-heading">'),b.push(d(this.title)),b.push(" for "),b.push(d(this.name)),b.push("</h4>\n    <p>"),b.push(this.text),b.push("</p>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.matches.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f;b.push('<div class="popover" style="position:absolute;top:5px;right:0;z-index:1;display:block">\n    <div class="popover-inner" style="'),b.push(d(this.style)),b.push('">\n        <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>\n        <h3 class="popover-title">\n            '),b.push(d(this.description.slice(0,this.descriptionLimit-1+1||9e9))),b.push("\n            "),this.description.length>this.descriptionLimit&&b.push("&hellip;"),b.push('\n        </h3>\n        <div class="popover-content">\n            <h4>'),b.push(d(this.matches.length)),b.push(" "),b.push(d(this.type)),this.matches.length!==0&&b.push(d("s")),b.push(":</h4>\n            \n            "),f=this.matches.slice(0,this.matchesLimit-1+1||9e9);for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n                <a href="#" class="match">'),b.push(d(a.displayed)),b.push("</a>\n            ");b.push("\n            "),this.matches.length>this.matchesLimit&&b.push("&hellip;"),b.push('\n\n            <div style="margin-top:10px">\n                <a class="btn btn-small btn-primary results">View results</a>\n                <a class="btn btn-small list">Create list</a>\n            </div>\n        </div>\n    </div>\n</div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
+JST["error.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<div class="alert alert-block">\n    <h4 class="alert-heading">'),b.push(d(this.title)),b.push(" for "),b.push(d(this.name)),b.push("</h4>\n    <p>"),b.push(this.text),b.push("</p>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["table.row.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f;b.push('<td class="check"><input type="checkbox" '),this.row.selected&&b.push('checked="checked"'),b.push(" /></td>\n"),f=this.row.descriptions;for(c=0,e=f.length;c<e;c++)a=f[c],b.push("\n    <td>"),b.push(d(a)),b.push("</td>\n");b.push("\n<td>"),b.push(d(this.row.matches)),b.push("</td>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.actions.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<a class="btn btn-small '),this.disabled&&b.push("disabled"),b.push(' view">View</a>\n<a class="btn btn-small '),this.disabled&&b.push("disabled"),b.push(' export">Export</a>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.row.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<td class="check"><input type="checkbox" '),this.row.selected&&b.push('checked="checked"'),b.push(' /></td>\n<td class="description">\n    '),b.push(d(this.row.description)),b.push("\n    "),this.row.externalLink&&(b.push('\n        [<a href="'),b.push(this.row.externalLink),b.push('" target="_blank">Link</a>]\n    ')),b.push('\n</td>\n<td class="pValue">'),b.push(d(this.row["p-value"])),b.push('</td>\n<td class="matches">\n    <a class="count" style="cursor:pointer">'),b.push(d(this.row.matches.length)),b.push("</a>\n</td>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
@@ -16,8 +16,8 @@ JST["enrichment.form.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,
 JST["enrichment.normal.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <!-- enrichment.form.eco -->\n    </div>\n\n    <div class="actions" style="padding:10px 0">\n        <!-- enrichment.actions.eco -->\n    </div>\n</header>\n<div class="content">\n    <!-- enrichment.table.eco -->\n</div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["loading.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<div class="loading" style="background:rgba(255,255,255,0.9);position:absolute;top:0;left:0;height:100%;width:100%;text-align:center;">\n    <p style="padding-top:50%;font-weight:bold;">Loading &hellip;</p>\n</div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["chart.normal.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <form style="margin:0">\n            <!-- chart.extra.eco -->\n        </form>\n    </div>\n</header>\n<div class="content"></div>')})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["invalidjsonkey.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<li style="vertical-align:bottom">\n    <span style="display:inline-block" class="label label-important">'),b.push(d(this.key)),b.push("</span> is "),b.push(d(this.actual)),b.push("; was expecting "),b.push(d(this.expected)),b.push("\n</li>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.extra.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){var a,c,e,f;b.push('<div class="group" style="display:inline-block;margin-right:5px">\n    <label>'),b.push(d(this.label)),b.push('</label>\n    <select name="'),b.push(d(this.label)),b.push('" class="span2">\n        '),f=this.possible;for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n            <option value="'),b.push(d(a)),b.push('" '),this.selected===a&&b.push(d('selected="selected"')),b.push(">\n                "),b.push(d(a)),b.push("\n            </option>\n        ");b.push("\n    </select>\n</div>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
+JST["invalidjsonkey.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){((function(){b.push('<li style="vertical-align:bottom">\n    <span style="display:inline-block" class="label label-important">'),b.push(d(this.key)),b.push("</span> is "),b.push(d(this.actual)),b.push("; was expecting "),b.push(d(this.expected)),b.push("\n</li>")})).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 /* Types in JS.
 */
 var type,
@@ -184,6 +184,180 @@ merge = function(child, parent) {
   return child;
 };
 
+var Charts;
+
+Charts = {
+  'MultipleBars': {}
+};
+
+Charts.MultipleBars.Vertical = (function() {
+
+  Vertical.prototype.width = 420;
+
+  Vertical.prototype.height = 300;
+
+  function Vertical(o) {
+    var k, v;
+    for (k in o) {
+      v = o[k];
+      this[k] = v;
+    }
+    this.canvas = d3.select(this.el[0]).append('svg:svg').attr('class', 'canvas').attr('width', this.width);
+  }
+
+  Vertical.prototype.render = function() {
+    var descriptions, domain, g, group, height, i, j, left, margin, series, text, value, width, _ref, _ref2, _results,
+      _this = this;
+    margin = 10;
+    this.width = this.width - 15 - margin;
+    this.height = this.height - 10;
+    this.chart = this.canvas.append("svg:g").attr("class", "chart").attr("transform", "translate(15,10)");
+    domain = this._domain();
+    g = this.chart.append("svg:g").attr("class", "grid");
+    g.selectAll("line").data(domain['y'].ticks(10)).enter().append("svg:line").attr("y1", domain['y']).attr("y2", domain['y']).attr("x1", margin).attr("x2", this.width);
+    g.selectAll(".rule").data(domain['y'].ticks(10)).enter().append("svg:text").attr("class", "rule").attr("x", 0).attr("dx", -3).attr("y", function(d) {
+      return _this.height - domain['y'](d);
+    }).attr("text-anchor", "middle").text(function(d) {
+      return d.toFixed(1);
+    });
+    descriptions = this.canvas.append('svg:g').attr('class', 'descriptions');
+    _ref = this.series;
+    _results = [];
+    for (i in _ref) {
+      group = _ref[i];
+      g = this.chart.append("svg:g").attr("class", "group g" + i);
+      j = 0;
+      _ref2 = group['data'];
+      for (series in _ref2) {
+        value = _ref2[series];
+        width = domain['x'].rangeBand() / 2;
+        left = domain['x'](i) + (j * width);
+        height = domain['y'](value);
+        g.append("svg:rect").attr("class", series).attr('x', margin + left).attr('y', this.height - height).attr('width', width).attr('height', height);
+        j++;
+      }
+      _results.push(text = descriptions.append("svg:text").attr("class", "text group g" + i).attr('y', this.height + 20).attr('x', left + width).attr("text-anchor", "middle").attr("transform", "rotate(-45 " + (left + width) + " " + (this.height + 20) + ")").text(group['text']));
+    }
+    return _results;
+  };
+
+  Vertical.prototype._domain = function() {
+    var _i, _ref, _results;
+    return {
+      'x': d3.scale.ordinal().domain((function() {
+        _results = [];
+        for (var _i = 0, _ref = this.series.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
+        return _results;
+      }).apply(this)).rangeBands([0, this.width], .05),
+      'y': d3.scale.linear().domain([0, this._max()]).range([0, this.height])
+    };
+  };
+
+  Vertical.prototype._max = function() {
+    var group, key, max, value, _i, _len, _ref, _ref2;
+    max = -Infinity;
+    _ref = this.series;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      group = _ref[_i];
+      _ref2 = group['data'];
+      for (key in _ref2) {
+        value = _ref2[key];
+        if (value > max) max = value;
+      }
+    }
+    return max;
+  };
+
+  return Vertical;
+
+})();
+
+Charts.MultipleBars.Horizontal = (function() {
+
+  Horizontal.prototype.width = 420;
+
+  Horizontal.prototype.height = 200;
+
+  function Horizontal(o) {
+    var k, v;
+    for (k in o) {
+      v = o[k];
+      this[k] = v;
+    }
+    this.canvas = d3.select(this.el[0]).append('svg:svg').attr('class', 'canvas').attr('width', this.width);
+  }
+
+  Horizontal.prototype.render = function() {
+    var descWidth, descriptions, domain, g, group, height, i, j, series, text, top, value, width, _ref, _ref2, _ref3, _results;
+    descWidth = -Infinity;
+    descriptions = this.canvas.append('svg:g').attr('class', 'descriptions');
+    _ref = this.series;
+    for (i in _ref) {
+      group = _ref[i];
+      text = descriptions.append("svg:text").attr("class", "text group g" + i).text(group['text']);
+      width = text.node().getComputedTextLength();
+      if (width > descWidth) descWidth = width;
+    }
+    this.width = this.width - descWidth - 10;
+    this.height = this.height - 15;
+    this.chart = this.canvas.append("svg:g").attr("class", "chart").attr("transform", "translate(" + (descWidth + 5) + ",15)");
+    domain = this._domain();
+    g = this.chart.append("svg:g").attr("class", "grid");
+    g.selectAll("line").data(domain['x'].ticks(10)).enter().append("svg:line").attr("x1", domain['x']).attr("x2", domain['x']).attr("y1", 0).attr("y2", this.height);
+    g.selectAll(".rule").data(domain['x'].ticks(10)).enter().append("svg:text").attr("class", "rule").attr("x", domain['x']).attr("y", 0).attr("dy", -3).attr("text-anchor", "middle").text(function(d) {
+      return d.toFixed(1);
+    });
+    _ref2 = this.series;
+    _results = [];
+    for (i in _ref2) {
+      group = _ref2[i];
+      g = this.chart.append("svg:g").attr("class", "group g" + i);
+      j = 0;
+      _ref3 = group['data'];
+      for (series in _ref3) {
+        value = _ref3[series];
+        top = domain['y'](i) + (j * height);
+        width = domain['x'](value);
+        height = domain['y'].rangeBand() / 2;
+        g.append("svg:rect").attr("class", series).attr('y', top).attr('width', width).attr('height', height);
+        j++;
+      }
+      _results.push(descriptions.select(".g" + i).attr('y', top + height));
+    }
+    return _results;
+  };
+
+  Horizontal.prototype._domain = function() {
+    var _i, _ref, _results;
+    return {
+      'x': d3.scale.linear().domain([0, this._max()]).range([0, this.width]),
+      'y': d3.scale.ordinal().domain((function() {
+        _results = [];
+        for (var _i = 0, _ref = this.series.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
+        return _results;
+      }).apply(this)).rangeBands([0, this.height], .05)
+    };
+  };
+
+  Horizontal.prototype._max = function() {
+    var group, key, max, value, _i, _len, _ref, _ref2;
+    max = -Infinity;
+    _ref = this.series;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      group = _ref[_i];
+      _ref2 = group['data'];
+      for (key in _ref2) {
+        value = _ref2[key];
+        if (value > max) max = value;
+      }
+    }
+    return max;
+  };
+
+  return Horizontal;
+
+})();
+
 /* Pure JS based JS script, CSS loader.
 */
 var CSSLoader, JSLoader, Load, Loader,
@@ -306,94 +480,6 @@ Load = (function() {
   };
 
   return Load;
-
-})();
-
-var Charts;
-
-Charts = {};
-
-Charts.MultipleBars = (function() {
-
-  MultipleBars.prototype.width = 420;
-
-  MultipleBars.prototype.height = 200;
-
-  function MultipleBars(o) {
-    var k, v;
-    for (k in o) {
-      v = o[k];
-      this[k] = v;
-    }
-    this.canvas = d3.select(this.el[0]).append('svg:svg').attr('class', 'canvas').attr('width', this.width);
-  }
-
-  MultipleBars.prototype.render = function() {
-    var descWidth, descriptions, domain, g, group, height, i, j, series, text, top, value, width, _ref, _ref2, _ref3, _results;
-    descWidth = -Infinity;
-    descriptions = this.canvas.append('svg:g').attr('class', 'descriptions');
-    _ref = this.series;
-    for (i in _ref) {
-      group = _ref[i];
-      text = descriptions.append("svg:text").attr("class", "text group g" + i).text(group['text']);
-      width = text.node().getComputedTextLength();
-      if (width > descWidth) descWidth = width;
-    }
-    this.width = this.width - descWidth - 10;
-    this.height = this.height - 15;
-    this.chart = this.canvas.append("svg:g").attr("class", "chart").attr("transform", "translate(" + (descWidth + 5) + ",15)");
-    domain = this._domain();
-    g = this.chart.append("svg:g").attr("class", "grid");
-    g.selectAll("line").data(domain['x'].ticks(10)).enter().append("svg:line").attr("x1", domain['x']).attr("x2", domain['x']).attr("y1", 0).attr("y2", this.height);
-    g.selectAll(".rule").data(domain['x'].ticks(10)).enter().append("svg:text").attr("class", "rule").attr("x", domain['x']).attr("y", 0).attr("dy", -3).attr("text-anchor", "middle").text(String);
-    _ref2 = this.series;
-    _results = [];
-    for (i in _ref2) {
-      group = _ref2[i];
-      g = this.chart.append("svg:g").attr("class", "group g" + i);
-      j = 0;
-      _ref3 = group['data'];
-      for (series in _ref3) {
-        value = _ref3[series];
-        height = domain['y'].rangeBand() / 2;
-        top = domain['y'](i) + (j * height);
-        value = domain['x'](value);
-        g.append("svg:rect").attr("class", series).attr('y', top).attr('width', value).attr('height', height);
-        j++;
-      }
-      _results.push(descriptions.select(".g" + i).attr('y', top + height));
-    }
-    return _results;
-  };
-
-  MultipleBars.prototype._domain = function() {
-    var _i, _ref, _results;
-    return {
-      'x': d3.scale.linear().domain([0, this._max()]).range([0, this.width]),
-      'y': d3.scale.ordinal().domain((function() {
-        _results = [];
-        for (var _i = 0, _ref = this.series.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
-        return _results;
-      }).apply(this)).rangeBands([0, this.height], .05)
-    };
-  };
-
-  MultipleBars.prototype._max = function() {
-    var group, key, max, value, _i, _len, _ref, _ref2;
-    max = -Infinity;
-    _ref = this.series;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      group = _ref[_i];
-      _ref2 = group['data'];
-      for (key in _ref2) {
-        value = _ref2[key];
-        if (value > max) max = value;
-      }
-    }
-    return max;
-  };
-
-  return MultipleBars;
 
 })();
 
@@ -562,46 +648,6 @@ factory = function(Backbone) {
   })(Backbone.Collection);
   
 
-  /* Table Widget table row.
-  */
-  var TableRowView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  TableRowView = (function(_super) {
-  
-    __extends(TableRowView, _super);
-  
-    function TableRowView() {
-      this.render = __bind(this.render, this);
-      TableRowView.__super__.constructor.apply(this, arguments);
-    }
-  
-    TableRowView.prototype.tagName = "tr";
-  
-    TableRowView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      this.model.bind('change', this.render);
-      return this.render();
-    };
-  
-    TableRowView.prototype.render = function() {
-      $(this.el).html(this.template("table.row", {
-        "row": this.model.toJSON()
-      }));
-      return this;
-    };
-  
-    return TableRowView;
-  
-  })(Backbone.View);
-  
-
   /* Enrichment Widget table row.
   */
   var EnrichmentRowView,
@@ -665,6 +711,46 @@ factory = function(Backbone) {
     };
   
     return EnrichmentRowView;
+  
+  })(Backbone.View);
+  
+
+  /* Table Widget table row.
+  */
+  var TableRowView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  TableRowView = (function(_super) {
+  
+    __extends(TableRowView, _super);
+  
+    function TableRowView() {
+      this.render = __bind(this.render, this);
+      TableRowView.__super__.constructor.apply(this, arguments);
+    }
+  
+    TableRowView.prototype.tagName = "tr";
+  
+    TableRowView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      this.model.bind('change', this.render);
+      return this.render();
+    };
+  
+    TableRowView.prototype.render = function() {
+      $(this.el).html(this.template("table.row", {
+        "row": this.model.toJSON()
+      }));
+      return this;
+    };
+  
+    return TableRowView;
   
   })(Backbone.View);
   
@@ -908,7 +994,7 @@ factory = function(Backbone) {
             });
           }
         }
-        chart = new Charts.MultipleBars({
+        chart = new Charts.MultipleBars.Vertical({
           'el': $(this.el).find("div.content"),
           'series': series
         });
@@ -1578,8 +1664,8 @@ factory = function(Backbone) {
 
     "InterMineWidget": InterMineWidget,
     "TableResults": TableResults,
-    "TableRowView": TableRowView,
     "EnrichmentRowView": EnrichmentRowView,
+    "TableRowView": TableRowView,
     "EnrichmentMatchesView": EnrichmentMatchesView,
     "TableView": TableView,
     "ChartView": ChartView,

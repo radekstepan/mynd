@@ -34,7 +34,7 @@ class ChartView extends Backbone.View
                         'x': v[1]
                         'y': v[2]
 
-            chart = new Charts.MultipleBars(
+            chart = new Charts.MultipleBars.Vertical(
                 'el':     $(@el).find("div.content")
                 'series': series
             )

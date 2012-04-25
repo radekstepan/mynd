@@ -1,6 +1,106 @@
-Charts = {}
+Charts = { 'MultipleBars': {} }
 
-class Charts.MultipleBars
+
+class Charts.MultipleBars.Vertical
+
+    # Size.
+    width:  420
+    height: 300
+
+    # Expand object values on us.
+    constructor: (o) ->
+        @[k] = v for k, v of o
+
+        # Create the chart wrapper.
+        @canvas = d3.select(@el[0])
+        .append('svg:svg') # append svg
+        .attr('class', 'canvas')
+        .attr('width', @width)
+
+    render: () ->
+        margin = 10
+
+        # Reduce the chart space for chart and add some extra padding for the grid.
+        @width = @width - 15 - margin ; @height = @height - 10
+
+        # Chart `g`.
+        @chart = @canvas.append("svg:g").attr("class", "chart").attr("transform", "translate(15,10)")
+        
+        # Get the domain.
+        domain = @_domain()
+
+        # Draw the grid.
+        g = @chart.append("svg:g").attr("class", "grid")
+        
+        g.selectAll("line").data(domain['y'].ticks(10)).enter()
+        .append("svg:line")
+        .attr("y1", domain['y']).attr("y2", domain['y'])
+        .attr("x1", margin).attr("x2", @width)
+
+        # The grid values.
+        g.selectAll(".rule")
+        .data(domain['y'].ticks(10)).enter()
+        .append("svg:text")
+        .attr("class", "rule")
+        .attr("x", 0)
+        .attr("dx", -3)
+        .attr("y", (d) => @height - domain['y'](d))
+        .attr("text-anchor", "middle")
+        .text (d) -> d.toFixed(1)
+
+        # Descriptions wrapper.
+        descriptions = @canvas.append('svg:g').attr('class', 'descriptions')
+
+        # The bars.
+        for i, group of @series
+            # A wrapper group.
+            g = @chart
+            .append("svg:g")
+            .attr("class", "group g#{i}")
+            
+            j = 0
+            for series, value of group['data']
+                # Calculate the distances.
+                width =  domain['x'].rangeBand() / 2
+                left =   domain['x'](i) + (j * width)
+                height = domain['y'](value)
+
+                # Append the actual rectangle.
+                g.append("svg:rect")
+                .attr("class",  series)
+                .attr('x',      margin + left)
+                .attr('y',      @height - height)
+                .attr('width',  width)
+                .attr('height', height)
+
+                j++
+            
+            # Place the descriptions text.
+            text = descriptions.append("svg:text")
+                .attr("class", "text group g#{i}")
+                .attr('y', @height + 20)
+                .attr('x', left + width)
+                .attr("text-anchor", "middle")
+                .attr("transform", "rotate(-45 #{left + width} #{@height + 20})")
+                .text(group['text'])
+
+    # Get the domain.
+    _domain: () ->
+        {
+            'x': d3.scale.ordinal().domain([0..@series.length - 1]).rangeBands([ 0, @width ], .05)
+            'y': d3.scale.linear().domain([ 0, @_max() ]).range([ 0, @height ])
+        }   
+
+    # Get a maximum value from series.
+    _max: () ->
+        max = -Infinity
+        for group in @series
+            for key, value of group['data']
+                max = value if value > max
+        max
+
+
+class Charts.MultipleBars.Horizontal
 
     # Size.
     width:  420
@@ -55,7 +155,7 @@ class Charts.MultipleBars
         .attr("y", 0)
         .attr("dy", -3)
         .attr("text-anchor", "middle")
-        .text(String)
+        .text (d) -> d.toFixed(1)
 
         # The bars.
         for i, group of @series
@@ -67,15 +167,15 @@ class Charts.MultipleBars
             j = 0
             for series, value of group['data']
                 # Calculate the distances.
-                height = domain['y'].rangeBand() / 2
                 top =    domain['y'](i) + (j * height)
-                value =  domain['x'](value)
+                width =  domain['x'](value)
+                height = domain['y'].rangeBand() / 2
 
                 # Append the actual rectangle.
                 g.append("svg:rect")
                 .attr("class",  series)
                 .attr('y',      top)
-                .attr('width',  value)
+                .attr('width',  width)
                 .attr('height', height)
 
                 j++
