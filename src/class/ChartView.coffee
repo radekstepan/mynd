@@ -65,11 +65,13 @@ class ChartView extends Backbone.View
                         # Remove any previous.
                         if @barView? then @barView.close()
                         
-                        # Create `View`
-                        $(@el).find('div.content').append (@barView = new ChartBarView(
-                            "description": description
-                            "template":    @template
-                        )).el
+                        # We may have deselected a bar.
+                        if description
+                            # Create `View`
+                            $(@el).find('div.content').append (@barView = new ChartBarView(
+                                "description": description
+                                "template":    @template
+                            )).el
             else
                 # Undefined Google Visualization chart type.
                 @error 'title': @response.chartType, 'text': "This chart type does not exist in Google Visualization API"
