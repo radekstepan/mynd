@@ -52,7 +52,7 @@ class Charts.MultipleBars.Vertical
         descriptions = @canvas.append('svg:g').attr('class', 'descriptions')
 
         # The bars.
-        for i, group of @series
+        for i, group of @data
             # A wrapper group.
             g = @chart
             .append("svg:g")
@@ -87,14 +87,14 @@ class Charts.MultipleBars.Vertical
     # Get the domain.
     _domain: () ->
         {
-            'x': d3.scale.ordinal().domain([0..@series.length - 1]).rangeBands([ 0, @width ], .05)
+            'x': d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, @width ], .05)
             'y': d3.scale.linear().domain([ 0, @_max() ]).range([ 0, @height ])
         }   
 
     # Get a maximum value from series.
     _max: () ->
         max = -Infinity
-        for group in @series
+        for group in @data
             for key, value of group['data']
                 max = value if value > max
         max
@@ -120,7 +120,7 @@ class Charts.MultipleBars.Horizontal
         # Place the description text to determine its width.
         descWidth = -Infinity
         descriptions = @canvas.append('svg:g').attr('class', 'descriptions')
-        for i, group of @series
+        for i, group of @data
             text = descriptions.append("svg:text")
                 .attr("class", "text group g#{i}")
                 .text(group['text'])
@@ -158,7 +158,7 @@ class Charts.MultipleBars.Horizontal
         .text (d) -> d.toFixed(1)
 
         # The bars.
-        for i, group of @series
+        for i, group of @data
             # A wrapper group.
             g = @chart
             .append("svg:g")
@@ -187,13 +187,13 @@ class Charts.MultipleBars.Horizontal
     _domain: () ->
         {
             'x': d3.scale.linear().domain([ 0, @_max() ]).range([ 0, @width ])
-            'y': d3.scale.ordinal().domain([0..@series.length - 1]).rangeBands([ 0, @height ], .05)
+            'y': d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, @height ], .05)
         }   
 
     # Get a maximum value from series.
     _max: () ->
         max = -Infinity
-        for group in @series
+        for group in @data
             for key, value of group['data']
                 max = value if value > max
         max

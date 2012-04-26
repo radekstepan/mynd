@@ -26,9 +26,9 @@ class ChartView extends Backbone.View
         # Are the results empty?
         if @response.results.length > 1
             # Form the series from Google Visualization formatted data.
-            series = []
+            data = []
             for i, v of @response.results
-                if i > 0 then series.push
+                if i > 0 then data.push
                     'text': v[0]
                     'data':
                         'x': v[1]
@@ -36,7 +36,7 @@ class ChartView extends Backbone.View
 
             chart = new Charts.MultipleBars.Vertical(
                 'el':     $(@el).find("div.content")
-                'series': series
+                'data': data
             )
             chart.render()
         else
