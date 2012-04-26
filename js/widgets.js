@@ -731,9 +731,6 @@ factory = function(Backbone) {
         _fn(i);
       }
       this.renderTableBody(table);
-      console.log("whole height", $(this.el).height());
-      console.log("header height", $(this.el).find('header').height());
-      console.log("content head height", $(this.el).find('div.content div.head').height());
       height = $(this.el).height() - $(this.el).find('header').height() - $(this.el).find('div.content div.head').height();
       $(this.el).find("div.content div.wrapper").css('height', "" + height + "px");
       $(this.el).find("div.content div.head").css("width", $(this.el).find("div.content table").width() + "px");
