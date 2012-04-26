@@ -1,6 +1,5 @@
 <!-- actual fixed head -->
 <div class="head" style="display:table">
-    <div style="font-weight:bold;display:table-cell;padding:0 8px;"><input type="checkbox" class="check" /></div>
     <% for column in @columns: %>
         <div style="font-weight:bold;display:table-cell;padding:0 8px;"><%= column %></div>
     <% end %>
@@ -11,7 +10,6 @@
         <!-- head for proper cell width -->
         <thead style="visibility:hidden">
             <tr>
-                <th></th>
                 <% for column in @columns: %>
                     <th><%= column %></th>
                 <% end %>
