@@ -27,6 +27,18 @@ class window.Widgets
         name:  "google"
         path:  "https://www.google.com/jsapi"
         type:  "js"
+    ,
+        name:  "intermine.imjs.model"
+        path:  "https://raw.github.com/alexkalderimis/imjs/master/src/model.js"
+        type:  "js"
+    ,
+        name:  "intermine.imjs.query"
+        path:  "https://raw.github.com/alexkalderimis/imjs/master/src/query.js"
+        type:  "js"
+    ,
+        name:  "intermine.imjs.service"
+        path:  "https://raw.github.com/alexkalderimis/imjs/master/src/service.js"
+        type:  "js"
     ]
 
     # New Widgets client.
@@ -48,7 +60,7 @@ class window.Widgets
     # 1. `id`:            widgetId
     # 2. `bagName`:       myBag
     # 3. `el`:            #target
-    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {} }
+    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "resultsCb": function(pq) {} }
     chart: (opts...) =>
         if @wait then window.setTimeout((=> @chart(opts...)), 0)
         else
@@ -80,7 +92,7 @@ class window.Widgets
     # 1. `type`:          Gene, Protein
     # 2. `bagName`:       myBag
     # 3. `el`:            #target
-    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {}, "matchCb": function(id, type) {}, "resultsCb": function(pq) {}, "listCb": function(pq) {} }
+    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "resultsCb": function(pq) {}, "listCb": function(pq) {} }
     all: (type = "Gene", bagName, el, widgetOptions) =>
         if @wait then window.setTimeout((=> @all(type, bagName, el, widgetOptions)), 0)
         else

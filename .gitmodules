@@ -4,3 +4,6 @@
 [submodule "js/vendor/backbone"]
 	path = js/vendor/backbone
 	url = git://github.com/documentcloud/backbone.git
+[submodule "js/vendor/imjs"]
+	path = js/vendor/imjs
+	url = git://github.com/alexkalderimis/imjs.git

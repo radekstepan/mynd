@@ -7,6 +7,7 @@ Client for embedding InterMine widgets (ws_widgets branch only!).
 - jQuery (included)
 - underscore.js (included)
 - backbone.js (included)
+- InterMine imjs (included)
 
 ### To Compile:
 
@@ -73,19 +74,6 @@ INTERMINE =
 ### Where is documentation?
 
 Commented source code is in the `/docs` directory: [http://0.0.0.0:1111/docs/widgets.html](http://0.0.0.0:1111/docs/widgets.html).
-
-### I want to define a custom behavior when clicking on Chart Widget.
-
-Will run a PathQuery against a mine and display its results in HTML.
-
-```javascript
-var options = {
-    selectCb: function(pq) {
-        window.open(mineURL + "/service/query/results?query=" + encodeURIComponent(pq) + "&format=html");
-    }
-};
-widgets.chart('flyfish', 'myList', '#widget', options);
-```
 
 ### I want to define a custom behavior when clicking on one of the matches in Enrichment Widget.
 

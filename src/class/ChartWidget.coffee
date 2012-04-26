@@ -6,7 +6,7 @@ class ChartWidget extends InterMineWidget
     widgetOptions:
         "title":       true
         "description": true
-        selectCb: (pq) ->
+        resultsCb: (pq) ->
             console?.log pq
 
     formOptions: {}

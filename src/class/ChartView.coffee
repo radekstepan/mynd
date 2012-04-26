@@ -54,23 +54,42 @@ class ChartView extends Backbone.View
                 # Add event listener on click the chart bar.
                 if @response.pathQuery?
                     google.visualization.events.addListener chart, "select", =>
+                        # Translate view series into PathQuery series (Expressed/Not Expressed into true/false).
+                        translate = (response, series) ->
+                            response.seriesValues.split(',')[response.seriesLabels.split(',').indexOf(series)]
+
                         # Determine which bar we are in.
-                        description = ''
+                        description = '' ; resultsPq = @response.pathQuery ; quickPq = @response.simplePathQuery
                         for item in chart.getSelection()
                             if item.row?
-                                description += @response.results[item.row + 1][0]
+                                row = @response.results[item.row + 1][0]
+                                description += row
+                                # Replace `%category` in PathQueries.
+                                resultsPq = resultsPq.replace "%category", row ; quickPq = quickPq.replace "%category"
+                                # Replace `%series` in PathQuery.
                                 if item.column?
-                                    description += ' ' + @response.results[0][item.column]
+                                    column = @response.results[0][item.column]
+                                    description += ' ' + column
+                                    resultsPq = resultsPq.replace("%series", translate @response, column)
+                                    quickPq =     resultsPq.replace("%series", translate @response, column)
+                        
+                        # Turn into JSON object?
+                        resultsPq = JSON?.parse resultsPq ; quickPq = JSON?.parse quickPq
 
                         # Remove any previous.
                         if @barView? then @barView.close()
-                        
+
                         # We may have deselected a bar.
                         if description
                             # Create `View`
                             $(@el).find('div.content').append (@barView = new ChartBarView(
                                 "description": description
                                 "template":    @template
+                                "resultsPq":   resultsPq
+                                "resultsCb":   @options.resultsCb
+                                "quickPq":     quickPq
+                                "imjs":        new intermine.Service('root': @widget.service)
+                                "type":        @response.type
                             )).el
             else
                 # Undefined Google Visualization chart type.
