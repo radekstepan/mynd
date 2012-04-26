@@ -31,6 +31,7 @@ class ChartWidget extends InterMineWidget
             "filters":             type.isString
             "filterLabel":         type.isString
             "filterSelectedValue": type.isString
+            "simplePathQuery":     type.isString
 
     # Set the params on us and set Google load callback.
     #

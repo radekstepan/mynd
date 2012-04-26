@@ -54,24 +54,22 @@ class ChartView extends Backbone.View
                 # Add event listener on click the chart bar.
                 if @response.pathQuery?
                     google.visualization.events.addListener chart, "select", =>
-
-                        # Translate view series into PathQuery series (Expressed/Not Expressed into true/false).
-                        translate = (response, series) ->
-                            response.seriesValues.split(',')[response.seriesLabels.split(',').indexOf(series)]
-
-                        # PathQuery attr.
-                        pq = @response.pathQuery
+                        # Determine which bar we are in.
+                        description = ''
                         for item in chart.getSelection()
                             if item.row?
-                                # Replace `%category` in PathQuery.
-                                pq = pq.replace "%category", @response.results[item.row + 1][0]
-                                # Replace `%series` in PathQuery.
+                                description += @response.results[item.row + 1][0]
                                 if item.column?
-                                    pq = pq.replace("%series", translate @response, @response.results[0][item.column])
-                                # Turn into JSON object?
-                                pq = JSON?.parse pq
-                                # Make the callback.
-                                @options.selectCb pq
+                                    description += ' ' + @response.results[0][item.column]
+
+                        # Remove any previous.
+                        if @barView? then @barView.close()
+                        
+                        # Create `View`
+                        $(@el).find('div.content').append (@barView = new ChartBarView(
+                            "description": description
+                            "template":    @template
+                        )).el
             else
                 # Undefined Google Visualization chart type.
                 @error 'title': @response.chartType, 'text': "This chart type does not exist in Google Visualization API"
