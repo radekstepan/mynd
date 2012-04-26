@@ -1,0 +1,6 @@
+[submodule "js/vendor/underscore"]
+	path = js/vendor/underscore
+	url = git://github.com/documentcloud/underscore.git
+[submodule "js/vendor/backbone"]
+	path = js/vendor/backbone
+	url = git://github.com/documentcloud/backbone.git

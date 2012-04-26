@@ -11,17 +11,17 @@ class window.Widgets
     # JavaScript libraries as resources. Will be loaded if not present already.
     resources: [
         name:  "jQuery"
-        path:  "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+        path:  "http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"
         type:  "js"
         wait:  true
     ,
         name:  "_"
-        path:  "http://documentcloud.github.com/underscore/underscore.js"
+        path:  "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js"
         type:  "js"
         wait:  true
     ,
         name:  "Backbone"
-        path:  "http://documentcloud.github.com/backbone/backbone-min.js"
+        path:  "http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"
         type:  "js"
     ,
         name:  "google"
