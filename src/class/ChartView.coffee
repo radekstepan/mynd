@@ -56,6 +56,7 @@ class ChartView extends Backbone.View
                     google.visualization.events.addListener chart, "select", =>
                         # Translate view series into PathQuery series (Expressed/Not Expressed into true/false).
                         translate = (response, series) ->
+                            # TODO: at the moment Chromosome Distribution widget fails on this step not having `seriesValues`.
                             response.seriesValues.split(',')[response.seriesLabels.split(',').indexOf(series)]
 
                         # Determine which bar we are in.
@@ -87,6 +88,8 @@ class ChartView extends Backbone.View
                                 "template":    @template
                                 "resultsPq":   resultsPq
                                 "resultsCb":   @options.resultsCb
+                                "listCb":      @options.listCb
+                                "matchCb":     @options.matchCb
                                 "quickPq":     quickPq
                                 "imjs":        new intermine.Service('root': @widget.service)
                                 "type":        @response.type

@@ -43,7 +43,7 @@
 <li><code>id</code>:            widgetId</li>
 <li><code>bagName</code>:       myBag</li>
 <li><code>el</code>:            #target</li>
-<li><code>widgetOptions</code>: { "title": true/false, "description": true/false, "resultsCb": function(pq) {} }</li>
+<li><code>widgetOptions</code>: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "resultsCb": function(pq) {}, "listCb": function(pq) {} }</li>
 </ol>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">chart: </span><span class="p">(</span><span class="nx">opts</span><span class="p">...)</span> <span class="o">=&gt;</span>
         <span class="k">if</span> <span class="nx">@wait</span> <span class="k">then</span> <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">((</span><span class="o">=&gt;</span> <span class="nx">@chart</span><span class="p">(</span><span class="nx">opts</span><span class="p">...)),</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">else</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Load Google Visualization.</p>             </td>             <td class="code">               <div class="highlight"><pre>            <span class="nx">google</span><span class="p">.</span><span class="nx">load</span> <span class="s2">&quot;visualization&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0&quot;</span><span class="p">,</span>

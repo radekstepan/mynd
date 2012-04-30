@@ -60,7 +60,7 @@ class window.Widgets
     # 1. `id`:            widgetId
     # 2. `bagName`:       myBag
     # 3. `el`:            #target
-    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "resultsCb": function(pq) {} }
+    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "resultsCb": function(pq) {}, "listCb": function(pq) {} }
     chart: (opts...) =>
         if @wait then window.setTimeout((=> @chart(opts...)), 0)
         else

@@ -75,14 +75,36 @@ INTERMINE =
 
 Commented source code is in the `/docs` directory: [http://0.0.0.0:1111/docs/widgets.html](http://0.0.0.0:1111/docs/widgets.html).
 
-### I want to define a custom behavior when clicking on one of the matches in Enrichment Widget.
+### I want to define a custom behavior when clicking on an Enrichment or Chart widget.
 
-Will open a Report page on a given mine for the match selected.
+Clicking on an individual match (Gene, Protein etc.) in popover window:
 
 ```javascript
 var options = {
     matchCb: function(id, type) {
         window.open(mineURL + "/portal.do?class=" + type + "&externalids=" + id);
+    }
+};
+widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
+```
+
+Clicking on View results button in a popover window:
+
+```javascript
+var options = {
+    resultsCb: function(pq) {
+        ...
+    }
+};
+widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
+```
+
+Clicking on Create list button in a popover window:
+
+```javascript
+var options = {
+    listCb: function(pq) {
+        ...
     }
 };
 widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);

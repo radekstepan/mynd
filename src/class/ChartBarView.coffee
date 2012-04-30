@@ -9,7 +9,9 @@ class ChartBarView extends Backbone.View
     valuesLimit: 5
 
     events:
+        "click a.match":   "matchAction"
         "click a.results": "resultsAction"
+        "click a.list":    "listAction"
         "click a.close":   "close"
 
     initialize: (o) ->
@@ -41,8 +43,16 @@ class ChartBarView extends Backbone.View
     renderValues: (values) =>
         $(@el).find('div.values').html @template "chart.bar.values", 'values': values, 'type': @type, 'valuesLimit': @valuesLimit
 
+    # Onclick the individual match, execute the callback.
+    matchAction: (e) =>
+        @matchCb $(e.target).text(), @type
+        e.preventDefault()
+
     # View results action callback.
     resultsAction: => @resultsCb @resultsPq
+
+    # Create a list action.
+    listAction: => @listCb @resultsPq
 
     # Switch off.
     close: => $(@el).remove()
