@@ -25,7 +25,7 @@ class EnrichmentMatchesView extends Backbone.View
             "description":      @description
             "descriptionLimit": @descriptionLimit
             "type":             @response.type
-            "matches":          @collection.toJSON()
+            "matches":          @matches
             "matchesLimit":     @matchesLimit
             "style":            @style or "width:300px;margin-left:-300px"
 
@@ -44,7 +44,7 @@ class EnrichmentMatchesView extends Backbone.View
         @pq.where.push
             "path":   @response.pathConstraint
             "op":     "ONE OF"
-            "values": @collection.map (match) -> match.get 'id'
+            "values": @identifiers
 
     # Onclick the individual match, execute the callback.
     matchAction: (e) =>

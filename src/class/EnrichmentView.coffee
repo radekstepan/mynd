@@ -142,10 +142,9 @@ class EnrichmentView extends Backbone.View
     # Selecting table rows and clicking on **View** should create an EnrichmentMatches collection of all matches ids.
     viewAction: =>
         # Get all the matches in selected rows.
-        matches = []
-        descriptions = []
+        matches = [] ; descriptions = [] ; rowIdentifiers = []
         for model in @collection.selected()
-            descriptions.push model.get 'description'
+            descriptions.push model.get 'description' ; rowIdentifiers.push model.get 'identifier'
             for match in model.get 'matches'
                 matches.push match
 
@@ -155,7 +154,8 @@ class EnrichmentView extends Backbone.View
 
             # Append a new modal window with matches.
             $(@el).find('div.actions').after (@matchesView = new EnrichmentMatchesView(
-                "collection":  new EnrichmentMatches matches
+                "matches":     matches
+                "identifiers": rowIdentifiers
                 "description": descriptions.join(', ')
                 "template":    @template
                 "style":       "width:300px"

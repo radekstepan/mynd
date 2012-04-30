@@ -23,20 +23,18 @@ class window.Widgets
         name:  "Backbone"
         path:  "http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"
         type:  "js"
+        wait:  true
     ,
         name:  "google"
         path:  "https://www.google.com/jsapi"
         type:  "js"
     ,
-        name:  "intermine.imjs.model"
         path:  "https://raw.github.com/alexkalderimis/imjs/master/src/model.js"
         type:  "js"
     ,
-        name:  "intermine.imjs.query"
         path:  "https://raw.github.com/alexkalderimis/imjs/master/src/query.js"
         type:  "js"
     ,
-        name:  "intermine.imjs.service"
         path:  "https://raw.github.com/alexkalderimis/imjs/master/src/service.js"
         type:  "js"
     ]

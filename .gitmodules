@@ -7,3 +7,6 @@
 [submodule "js/vendor/imjs"]
 	path = js/vendor/imjs
 	url = git://github.com/alexkalderimis/imjs.git
+[submodule "js/vendor/imtables"]
+	path = js/vendor/imtables
+	url = git://github.com/alexkalderimis/im-tables.git

@@ -19,7 +19,7 @@ class JSLoader extends Loader
 
     constructor: (path, callback) ->
         script = document.createElement "script"
-        script.src = path;
+        script.src = path
         script.type = "text/javascript"
         @setCallback(script, callback) if callback
         @getHead().appendChild(script)
@@ -33,6 +33,7 @@ class CSSLoader extends Loader
         sheet.rel = "stylesheet"
         sheet.type = "text/css"
         sheet.href = path
+        # CSS callbacks are messy; http://www.phpied.com/when-is-a-stylesheet-really-loaded/
         @setCallback(sheet, callback) if callback
         @getHead().appendChild(sheet)
 
@@ -72,6 +73,9 @@ class Load
                             else new JSLoader(resource.path, => @done resource)
                         # Standard load.
                         else new JSLoader(resource.path, => @done resource)
+                    when "css"
+                        # Just load it.
+                        new CSSLoader resource.path ; @done resource
 
             # Call back when all is done.
             if @count or @wait then window.setTimeout((=> @load resources), 0) else @callback()

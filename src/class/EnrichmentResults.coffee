@@ -1,15 +1,5 @@
 ### Models underpinning Enrichment Widget results.###
 
-#### Enrichment Row Match Model
-class EnrichmentMatch extends Backbone.Model
-
-
-#### Enrichment Row Matches Collection
-class EnrichmentMatches extends Backbone.Collection
-
-    model: EnrichmentMatch
-
-
 #### Enrichment Row Model
 class EnrichmentRow extends Backbone.Model    
 
