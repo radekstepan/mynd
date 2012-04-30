@@ -75,6 +75,10 @@ INTERMINE =
 
 Commented source code is in the `/docs` directory: [http://0.0.0.0:1111/docs/widgets.html](http://0.0.0.0:1111/docs/widgets.html).
 
+### How do apply a CSS style to the widgets?
+
+Use or modify a [Twitter Bootstrap](http://twitter.github.com/bootstrap/) [theme](http://bootswatch.com/).
+
 ### I want to define a custom behavior when clicking on an Enrichment or Chart widget.
 
 Clicking on an individual match (Gene, Protein etc.) in popover window:
