@@ -112,28 +112,28 @@ class TableView extends Backbone.View
                 ex.destroy()
             ), 5000
 
-    # Selecting table rows and clicking on **View** should create an EnrichmentMatches collection of all matches ids.
+    # Selecting table rows and clicking on **View** should create an TableMatches collection of all matches ids.
     viewAction: =>
-        # Get all the matches in selected rows.
-        matches = [] ; descriptions = [] ; rowIdentifiers = []
+        # Get all the identifiers for selected rows.
+        descriptions = [] ; rowIdentifiers = []
         for model in @collection.selected()
-            descriptions.push model.get 'description' ; rowIdentifiers.push model.get 'identifier'
-            for match in model.get 'matches'
-                matches.push match
+            # Grab the first (only?) description.
+            descriptions.push model.get('descriptions')[0] ; rowIdentifiers.push model.get 'identifier'
 
-        if matches.length # Can be empty.
+        if rowIdentifiers.length # Can be empty.
             # Remove any previous matches modal window.
             @matchesView?.remove()
 
             # Append a new modal window with matches.
-            $(@el).find('div.actions').after (@matchesView = new EnrichmentMatchesView(
-                "matches":     matches
-                "identifiers": rowIdentifiers
-                "description": descriptions.join(', ')
-                "template":    @template
-                "style":       "width:300px"
-                "matchCb":     @options.matchCb
-                "resultsCb":   @options.resultsCb
-                "listCb":      @options.listCb
-                "response":    @response
+            $(@el).find('div.actions').after (@matchesView = new TableMatchesView(
+                "identifiers":    rowIdentifiers
+                "description":    descriptions.join(', ')
+                "template":       @template
+                "matchCb":        @options.matchCb
+                "resultsCb":      @options.resultsCb
+                "listCb":         @options.listCb
+                "pathQuery":      @response.pathQuery
+                "pathConstraint": @response.pathConstraint
+                "imjs":           new intermine.Service('root': @widget.service, 'token': @widget.token)
+                "type":           @response.type
             )).el

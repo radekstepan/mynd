@@ -6,6 +6,12 @@ class TableWidget extends InterMineWidget
     widgetOptions:
         "title":       true
         "description": true
+        matchCb:       (id, type) ->
+            console?.log id, type
+        resultsCb:     (pq) ->
+            console?.log pq
+        listCb:        (pq) ->
+            console?.log pq
 
     # Spec for a successful and correct JSON response.
     spec:
@@ -32,7 +38,7 @@ class TableWidget extends InterMineWidget
     # 3. `id`:            widgetId
     # 4. `bagName`:       myBag
     # 5. `el`:            #target
-    # 6. `widgetOptions`: { "title": true/false, "description": true/false }
+    # 6. `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "resultsCb": function(pq) {}, "listCb": function(pq) {} }
     constructor: (@service, @token, @id, @bagName, @el, widgetOptions = {}) ->
         # Merge `widgetOptions`.
         @widgetOptions = merge widgetOptions, @widgetOptions

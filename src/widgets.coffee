@@ -81,7 +81,7 @@ class window.Widgets
     # 1. `id`:            widgetId
     # 2. `bagName`:       myBag
     # 3. `el`:            #target
-    # 4. `widgetOptions`: { "title": true/false, "description": true/false }
+    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "resultsCb": function(pq) {}, "listCb": function(pq) {} }
     table: (opts...) =>
         if @wait then window.setTimeout((=> @table(opts...)), 0) else new o.TableWidget(@service, @token, opts...)
 
