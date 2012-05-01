@@ -6,7 +6,7 @@
             <%- '&hellip;' if @description.length > @descriptionLimit %>
         </h3>
         <div class="popover-content">
-            <h4><%= @matches.length %> <%= @type %><%= 's' if @matches.length != 0 %>:</h4>
+            <h4><%= @matches.length %> <%= @type %><%= 's' if @matches.length != 1 %>:</h4>
             
             <% for match in @matches[..@matchesLimit - 1]: %>
                 <a href="#" class="match"><%= match['displayed'] %></a>
