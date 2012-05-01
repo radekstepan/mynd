@@ -6,7 +6,7 @@ class EnrichmentMatchesView extends Backbone.View
     descriptionLimit: 50
 
     # How many matches do we show before ending with an ellipsis?
-    matchesLimit: 5
+    valuesLimit: 5
 
     events:
         "click a.match":   "matchAction"
@@ -24,10 +24,13 @@ class EnrichmentMatchesView extends Backbone.View
         $(@el).html @template "enrichment.matches",
             "description":      @description
             "descriptionLimit": @descriptionLimit
-            "type":             @response.type
-            "matches":          @matches
-            "matchesLimit":     @matchesLimit
             "style":            @style or "width:300px;margin-left:-300px"
+
+        # Fill in the values.
+        $(@el).find('div.values').html @template "values",
+            'values':      ( x['displayed'] for x in @matches )
+            'type':        @response.type
+            'valuesLimit': @valuesLimit
 
         @
 
