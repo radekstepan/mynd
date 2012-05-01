@@ -150,10 +150,10 @@ class EnrichmentView extends Backbone.View
 
         if matches.length # Can be empty.
             # Remove any previous matches modal window.
-            @matchesView?.remove()
+            @popoverView?.remove()
 
             # Append a new modal window with matches.
-            $(@el).find('div.actions').after (@matchesView = new EnrichmentMatchesView(
+            $(@el).find('div.actions').after (@popoverView = new EnrichmentPopoverView(
                 "matches":     matches
                 "identifiers": rowIdentifiers
                 "description": descriptions.join(', ')

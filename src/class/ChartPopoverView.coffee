@@ -1,6 +1,6 @@
-### Table Widget table row matches box.###
+### Chart Widget bar onclick box.###
 
-class TableMatchesView extends Backbone.View
+class ChartPopoverView extends Backbone.View
 
     # How many characters can we display in the description?
     descriptionLimit: 50
@@ -20,24 +20,15 @@ class TableMatchesView extends Backbone.View
         @render()
 
     render: =>
-        $(@el).css 'position':'relative'
+        # Skeleton.
         $(@el).html @template "popover",
             "description":      @description
             "descriptionLimit": @descriptionLimit
             "style":            'width:300px'
 
-        # Modify JSON to constrain on these matches.
-        @pathQuery = JSON.parse @pathQuery
-        # Add the ONE OF constraint.
-        @pathQuery.where.push
-            "path":   @pathConstraint
-            "op":     "ONE OF"
-            "values": @identifiers
-
-        # Grab the data.
+        # Grab the data for this bar.
         values = []
-        @imjs.query(@pathQuery, (q) =>
-            console.log q.toXML()
+        @imjs.query(@quickPq, (q) =>
             q.rows (response) =>
                 for object in response
                     values.push do (object) ->
@@ -51,7 +42,7 @@ class TableMatchesView extends Backbone.View
 
     # Render the values from imjs request.
     renderValues: (values) =>
-        $(@el).find('div.values').html @template "popover.values",
+        $(@el).find('div.values').html @template "popover.values"
             'values':      values
             'type':        @type
             'valuesLimit': @valuesLimit
@@ -62,10 +53,10 @@ class TableMatchesView extends Backbone.View
         e.preventDefault()
 
     # View results action callback.
-    resultsAction: => @resultsCb @pathQuery
+    resultsAction: => @resultsCb @resultsPq
 
     # Create a list action.
-    listAction: => @listCb @pathQuery
+    listAction: => @listCb @resultsPq
 
     # Switch off.
     close: => $(@el).remove()

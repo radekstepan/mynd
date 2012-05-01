@@ -1,6 +1,6 @@
 ### Enrichment Widget table row matches box.###
 
-class EnrichmentMatchesView extends Backbone.View
+class EnrichmentPopoverView extends Backbone.View
 
     # How many characters can we display in the description?
     descriptionLimit: 50

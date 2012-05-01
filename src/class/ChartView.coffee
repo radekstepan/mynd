@@ -84,7 +84,7 @@ class ChartView extends Backbone.View
                         # We may have deselected a bar.
                         if description
                             # Create `View`
-                            $(@el).find('div.content').append (@barView = new ChartBarView(
+                            $(@el).find('div.content').append (@barView = new ChartPopoverView(
                                 "description": description
                                 "template":    @template
                                 "resultsPq":   resultsPq

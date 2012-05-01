@@ -122,10 +122,10 @@ class TableView extends Backbone.View
 
         if rowIdentifiers.length # Can be empty.
             # Remove any previous matches modal window.
-            @matchesView?.remove()
+            @popoverView?.remove()
 
             # Append a new modal window with matches.
-            $(@el).find('div.actions').after (@matchesView = new TableMatchesView(
+            $(@el).find('div.actions').after (@popoverView = new TablePopoverView(
                 "identifiers":    rowIdentifiers
                 "description":    descriptions.join(', ')
                 "template":       @template
