@@ -21,9 +21,10 @@ class TableMatchesView extends Backbone.View
 
     render: =>
         $(@el).css 'position':'relative'
-        $(@el).html @template "table.matches",
+        $(@el).html @template "popover",
             "description":      @description
             "descriptionLimit": @descriptionLimit
+            "style":            'width:300px'
 
         # Modify JSON to constrain on these matches.
         @pathQuery = JSON.parse @pathQuery
@@ -50,7 +51,10 @@ class TableMatchesView extends Backbone.View
 
     # Render the values from imjs request.
     renderValues: (values) =>
-        $(@el).find('div.values').html @template "values", 'values': values, 'type': @type, 'valuesLimit': @valuesLimit
+        $(@el).find('div.values').html @template "popover.values",
+            'values':      values
+            'type':        @type
+            'valuesLimit': @valuesLimit
 
     # Onclick the individual match, execute the callback.
     matchAction: (e) =>

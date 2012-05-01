@@ -21,9 +21,10 @@ class ChartBarView extends Backbone.View
 
     render: =>
         # Skeleton.
-        $(@el).html @template "chart.bar",
+        $(@el).html @template "popover",
             "description":      @description
             "descriptionLimit": @descriptionLimit
+            "style":            'width:300px'
 
         # Grab the data for this bar.
         values = []
@@ -41,7 +42,10 @@ class ChartBarView extends Backbone.View
 
     # Render the values from imjs request.
     renderValues: (values) =>
-        $(@el).find('div.values').html @template "values", 'values': values, 'type': @type, 'valuesLimit': @valuesLimit
+        $(@el).find('div.values').html @template "popover.values"
+            'values':      values
+            'type':        @type
+            'valuesLimit': @valuesLimit
 
     # Onclick the individual match, execute the callback.
     matchAction: (e) =>

@@ -21,13 +21,13 @@ class EnrichmentMatchesView extends Backbone.View
 
     render: =>
         $(@el).css 'position':'relative'
-        $(@el).html @template "enrichment.matches",
+        $(@el).html @template "popover",
             "description":      @description
             "descriptionLimit": @descriptionLimit
             "style":            @style or "width:300px;margin-left:-300px"
 
         # Fill in the values.
-        $(@el).find('div.values').html @template "values",
+        $(@el).find('div.values').html @template "popover.values",
             'values':      ( x['displayed'] for x in @matches )
             'type':        @response.type
             'valuesLimit': @valuesLimit

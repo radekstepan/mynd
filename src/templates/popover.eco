@@ -1,5 +1,5 @@
 <div class="popover" style="position:absolute;top:5px;right:0;z-index:1;display:block">
-    <div class="popover-inner" style="width:300px">
+    <div class="popover-inner" style="<%= @style %>">
         <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>
         <h3 class="popover-title">
             <%= @description[..@descriptionLimit - 1] %>
@@ -7,7 +7,7 @@
         </h3>
         <div class="popover-content">
             <div class="values">
-                <!-- values.eco -->
+                <!-- popover.values.eco -->
             </div>
             <div style="margin-top:10px">
                 <a class="btn btn-small btn-primary results">View results</a>
