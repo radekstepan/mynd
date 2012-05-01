@@ -5,7 +5,7 @@
         [<a href="<%- @row["externalLink"] %>" target="_blank">Link</a>]
     <% end %>
 </td>
-<td class="pValue"><%= @row["p-value"] %></td>
+<td class="pValue"><%= @row["p-value"].toPrecision(5) %></td>
 <td class="matches">
     <a class="count" style="cursor:pointer"><%= @row["matches"].length %></a>
 </td>
