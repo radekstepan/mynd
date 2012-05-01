@@ -19,7 +19,7 @@ class EnrichmentView extends Backbone.View
 
     render: ->
         # Render the widget template.
-        $(@el).html @template "enrichment.normal",
+        $(@el).html @template "enrichment",
             "title":       if @options.title then @response.title else ""
             "description": if @options.description then @response.description else ""
             "notAnalysed": @response.notAnalysed
@@ -32,7 +32,7 @@ class EnrichmentView extends Backbone.View
 
         # Extra attributes (DataSets etc.)?
         if @response.filterLabel?
-            $(@el).find('div.form form').append @template "enrichment.extra",
+            $(@el).find('div.form form').append @template "extra",
                 "label":    @response.filterLabel
                 "possible": @response.filters.split(',') # Is a String unfortunately.
                 "selected": @response.filterSelectedValue

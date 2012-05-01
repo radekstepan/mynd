@@ -18,7 +18,7 @@ class TableView extends Backbone.View
 
     render: ->
         # Render the widget template.
-        $(@el).html @template "table.normal",
+        $(@el).html @template "table",
             "title":       if @options.title then @response.title else ""
             "description": if @options.description then @response.description else ""
             "notAnalysed": @response.notAnalysed
