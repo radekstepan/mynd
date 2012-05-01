@@ -52,7 +52,7 @@ class EnrichmentView extends Backbone.View
     # Render the actions toolbar based on how many collection model rows are selected.
     renderToolbar: =>
         $(@el).find("div.actions").html(
-            $ @template "enrichment.actions", "disabled": @collection.selected().length is 0
+            $ @template "actions", "disabled": @collection.selected().length is 0
         )
 
     # Render the table of results using Document Fragment to prevent browser reflows.
