@@ -54,6 +54,10 @@
                 <p>BDGP expression patterns loaded from <span class="label">ws_widgets</span> FlyMine branch.</p>
             </div>
 
+            <div class="row">
+                <div id="one" class="widget span6"></div>
+                <div id="two" class="widget span6"></div>
+            </div>
             <div id="widgets-genes" class="row"></div>
             <div id="widgets-proteins" class="row"></div>
 
@@ -100,8 +104,9 @@
                 };
 
                 /* Give us all available widgets. */
-                widgets.all('Gene', 'demo-genes', '#widgets-genes', callbacks);
-                widgets.all('Protein', 'demo-proteins', '#widgets-proteins', callbacks);
+                //widgets.all('Gene', 'demo-genes', '#widgets-genes', callbacks);
+                //widgets.all('Protein', 'demo-proteins', '#widgets-proteins', callbacks);
+                widgets.chart('chromosome_distribution_for_gene', 'demo-genes', '#one');
             })();
             </script>
 
