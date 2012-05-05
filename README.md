@@ -29,11 +29,13 @@ npm install -d
 You can either use the InterMine API Loader to always give you the latest version of the widgets:
 
 ```html
-<script src="http://radekstepan.github.com/intermine-api-loader/intermine.api.js">
-  intermine.load('widgets', function() {
+<script src="http://radekstepan.github.com/intermine-api-loader/intermine.api.js"></script>
+```
+
+```javascript
+intermine.load('widgets', function() {
     var Widgets = new intermine.widgets('http://flymine.org/service');
-  });
-</script>
+});
 ```
 
 Or you can include both the API Loader and Widgets JS files and use them immediately:
@@ -42,9 +44,11 @@ Or you can include both the API Loader and Widgets JS files and use them immedia
 // point to API, requirement for all InterMine client side JavaScript
 <script src="http://radekstepan.github.com/intermine-api-loader/intermine.api.js"></script>
 // include Widgets library locally, is immediately available on the `intermine` namespace
-<script src="js/intermine.widgets.js">
-  var Widgets = new intermine.widgets('http://flymine.org/service');
-</script>
+<script src="js/intermine.widgets.js"></script>
+```
+
+```javascript
+var Widgets = new intermine.widgets('http://flymine.org/service');
 ```
 
 Then, **choose which widgets** you want to load:
