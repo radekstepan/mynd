@@ -14,6 +14,7 @@ Initialize all submodules that this project depends on by running:
 ```bash
 git submodule init
 git submodule update
+git submodule foreach git pull origin master # to update to latest changes
 ```
 
 ### To Compile:
