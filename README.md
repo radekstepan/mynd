@@ -3,19 +3,15 @@ Client for embedding InterMine widgets (ws_widgets branch only!).
 ## Requirements:
 ### To Run:
 
-- Google API (included)
-- jQuery (included)
-- underscore.js (included)
-- backbone.js (included)
-- InterMine imjs (included)
+- [InterMine JavaScript API Loader](http://radekstepan.github.com/intermine-api-loader/intermine.api.js)
 
-Initialize all submodules that this project depends on by running:
+The following will be fetched automatically:
 
-```bash
-git submodule init
-git submodule update
-git submodule foreach git pull origin master # to update to latest changes
-```
+- Google Visualization API
+- jQuery
+- underscore.js
+- backbone.js
+- InterMine imjs
 
 ### To Compile:
 
@@ -33,7 +29,7 @@ npm install -d
 You can either use the InterMine API Loader to always give you the latest version of the widgets:
 
 ```html
-<script src="js/intermine.api.js">
+<script src="http://radekstepan.github.com/intermine-api-loader/intermine.api.js">
   intermine.load('widgets', function() {
     var Widgets = new intermine.widgets('http://flymine.org/service');
   });
@@ -44,7 +40,7 @@ Or you can include both the API Loader and Widgets JS files and use them immedia
 
 ```html
 // point to API, requirement for all InterMine client side JavaScript
-<script src="js/intermine.api.js"></script>
+<script src="http://radekstepan.github.com/intermine-api-loader/intermine.api.js"></script>
 // include Widgets library locally, is immediately available on the `intermine` namespace
 <script src="js/intermine.widgets.js">
   var Widgets = new intermine.widgets('http://flymine.org/service');
@@ -117,7 +113,7 @@ var options = {
         window.open(mineURL + "/portal.do?class=" + type + "&externalids=" + id);
     }
 };
-widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
+Widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
 ```
 
 Clicking on View results button in a popover window:
@@ -128,7 +124,7 @@ var options = {
         ...
     }
 };
-widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
+Widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
 ```
 
 Clicking on Create list button in a popover window:
@@ -139,7 +135,7 @@ var options = {
         ...
     }
 };
-widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
+Widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
 ```
 
 ### I want to hide the title or description of a widget.
@@ -149,5 +145,5 @@ var options = {
     "title": false,
     "description": false
 };
-widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
+Widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
 ```
