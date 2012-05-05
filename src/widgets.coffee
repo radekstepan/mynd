@@ -4,7 +4,7 @@
 $ = window.jQuery or window.Zepto
 
 # Public interface for the various InterMine Widgets.
-class window.Widgets
+class Widgets
 
     wait: true
 
@@ -44,7 +44,7 @@ class window.Widgets
     # 1. `service`: [http://aragorn:8080/flymine/service/](http://aragorn:8080/flymine/service/)
     # 2. `token`:   token for accessing user's lists 
     constructor: (@service, @token = "") ->
-        new Load @resources, =>
+        intermine.load @resources, =>
             # All libraries loaded, welcome jQuery, export classes.
             $ = window.jQuery
             # Enable Cross-Origin Resource Sharing (for Opera, IE).
@@ -119,3 +119,10 @@ class window.Widgets
                 error: (xhr, opts, err) => $(el).html $ '<div/>',
                     class: "alert alert-error"
                     html:  "#{xhr.statusText} for <a href='#{@service}widgets'>#{@service}widgets</a>"
+
+
+# Do we have the InterMine API Loader?
+if not window.intermine
+    throw 'You need to include the InterMine API Loader first!'
+else
+    window.intermine.widgets = Widgets

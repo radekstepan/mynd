@@ -30,7 +30,6 @@ class EnrichmentWidget extends InterMineWidget
             "results":             type.isArray
             "label":               type.isString
             "statusCode":          type.isHTTPSuccess
-            "title":               type.isString
             "type":                type.isString
             "wasSuccessful":       type.isBoolean
             "filters":             type.isString

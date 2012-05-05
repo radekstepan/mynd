@@ -1,4 +1,4 @@
-### Parent for both Widgets, handling templating, validation and errors.###
+### Parent for all Widgets, handling templating, validation and errors.###
 
 class InterMineWidget
 

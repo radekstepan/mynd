@@ -9,31 +9,58 @@ Client for embedding InterMine widgets (ws_widgets branch only!).
 - backbone.js (included)
 - InterMine imjs (included)
 
+Initialize all submodules that this project depends on by running:
+
+```bash
+git submodule init
+git submodule update
+```
+
 ### To Compile:
 
-You can install all the following dependencies by running `npm install -d`:
+You can install all the following dependencies by running:
+
+```bash
+npm install -d
+```
 
 - [CoffeeScript](http://coffeescript.org/) & [eco](https://github.com/sstephenson/eco) templating.
 - [uglify-js](https://github.com/mishoo/UglifyJS) to compress templates.
 
 ## Configure:
-**Create a new Widgets** instance in `index.html` pointing to a service:
 
-```javascript
-var widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");
+You can either use the InterMine API Loader to always give you the latest version of the widgets:
+
+```html
+<script src="js/intermine.api.js">
+  intermine.load('widgets', function() {
+    var Widgets = new intermine.widgets('http://flymine.org/service');
+  });
+</script>
 ```
 
-**Choose which widgets** you want to load:
+Or you can include both the API Loader and Widgets JS files and use them immediately:
+
+```html
+// point to API, requirement for all InterMine client side JavaScript
+<script src="js/intermine.api.js"></script>
+// include Widgets library locally, is immediately available on the `intermine` namespace
+<script src="js/intermine.widgets.js">
+  var Widgets = new intermine.widgets('http://flymine.org/service');
+</script>
+```
+
+Then, **choose which widgets** you want to load:
 
 ```javascript
 // Load all Widgets:
-widgets.all('Gene', 'myList', '#all-widgets');
+Widgets.all('Gene', 'myList', '#all-widgets');
 // Load a specific Chart Widget:
-widgets.chart('flyfish', 'myList', '#widget-1');
+Widgets.chart('flyfish', 'myList', '#widget-1');
 // Load a specific Enrichment Widget:
-widgets.enrichment('pathway_enrichment', 'myList', '#widget-2');
+Widgets.enrichment('pathway_enrichment', 'myList', '#widget-2');
 // Load a specific Table Widget:
-widgets.table('interactions', 'myList', '#widget-3');
+Widgets.table('interactions', 'myList', '#widget-3');
 ```
 
 ## Use:

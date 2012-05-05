@@ -10,3 +10,6 @@
 [submodule "js/vendor/imtables"]
 	path = js/vendor/imtables
 	url = git://github.com/alexkalderimis/im-tables.git
+[submodule "js/vendor/loader"]
+	path = js/vendor/loader
+	url = git://github.com/radekstepan/intermine-api-loader.git
