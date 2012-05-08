@@ -124,22 +124,47 @@ class EnrichmentView extends Backbone.View
 
     # Export selected rows into a file.
     exportAction: (e) =>
-        # Create a tab delimited string.
-        result = []
+        # Get column identifiers to constrain on.
+        rowIdentifiers = []
         for model in @collection.selected()
-            result.push [ model.get('description'), model.get('p-value') ].join("\t") + "\t" + model.get('matches')
-        
-        if result.length # Can be empty.
-            # Create.
-            try
-                ex = new Exporter $(e.target), result.join("\n"), "#{@widget.bagName} #{@widget.id}.tsv"
-            catch TypeError
-                ex = new PlainExporter result.join("\n")
-            
-            # Cleanup.
-            window.setTimeout (->
-                ex.destroy()
-            ), 5000
+            rowIdentifiers.push model.get 'identifier'
+
+        # PathQuery for matches values.
+        pq = JSON?.parse @response['pathQueryForMatches']
+        pq.where.push
+            "path":   @response.pathConstraint
+            "op":     "ONE OF"
+            "values": rowIdentifiers
+
+        # Get the actual data.
+        new intermine.Service('root': @widget.service, 'token': @widget.token).query(pq, (q) =>
+            q.rows (response) =>
+                # Assume the first column is the table column, while second is the matches object identifier (Gene).
+                # Form 'publication -> genes' object.
+                dict = {}
+                for object in response
+                    if not dict[object[0]]? then dict[object[0]] = []
+                    dict[object[0]].push object[1]
+
+                # Create a tab delimited string.
+                result = []
+                for model in @collection.selected()
+                    result.push [ model.get('description'), model.get('p-value') ].join("\t") + "\t" + dict[model.get('identifier')].join(',')
+
+                if result.length # Can be empty.
+                    # Create.
+                    #try
+                    #    ex = new Exporter $(e.target), result.join("\n"), "#{@widget.bagName} #{@widget.id}.tsv"
+                    #catch TypeError
+                    #    ex = new PlainExporter result.join("\n")
+                    ex = new PlainExporter result.join("\n")
+
+                    # Cleanup.
+                    window.setTimeout (->
+                        ex.destroy()
+                    ), 5000
+
+        )
 
     # Selecting table rows and clicking on **View** should create an EnrichmentMatches collection of all matches ids.
     viewAction: =>

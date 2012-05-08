@@ -1549,7 +1549,6 @@ factory = function(Backbone) {
     };
   
     EnrichmentPopoverView.prototype.renderValues = function(values) {
-      console.log(values);
       return $(this.el).find('div.values').html(this.template("popover.values", {
         'values': values,
         'type': this.response.type,
@@ -1746,23 +1745,48 @@ factory = function(Backbone) {
     };
   
     EnrichmentView.prototype.exportAction = function(e) {
-      var ex, model, result, _i, _len, _ref;
-      result = [];
+      var model, pq, rowIdentifiers, _i, _len, _ref,
+        _this = this;
+      rowIdentifiers = [];
       _ref = this.collection.selected();
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         model = _ref[_i];
-        result.push([model.get('description'), model.get('p-value')].join("\t") + "\t" + model.get('matches'));
+        rowIdentifiers.push(model.get('identifier'));
       }
-      if (result.length) {
-        try {
-          ex = new Exporter($(e.target), result.join("\n"), "" + this.widget.bagName + " " + this.widget.id + ".tsv");
-        } catch (TypeError) {
-          ex = new PlainExporter(result.join("\n"));
-        }
-        return window.setTimeout((function() {
-          return ex.destroy();
-        }), 5000);
-      }
+      pq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(this.response['pathQueryForMatches']) : void 0;
+      pq.where.push({
+        "path": this.response.pathConstraint,
+        "op": "ONE OF",
+        "values": rowIdentifiers
+      });
+      return new intermine.Service({
+        'root': this.widget.service,
+        'token': this.widget.token
+      }).query(pq, function(q) {
+        return q.rows(function(response) {
+          var dict, ex, model, object, result, _j, _k, _len1, _len2, _ref1;
+          dict = {};
+          for (_j = 0, _len1 = response.length; _j < _len1; _j++) {
+            object = response[_j];
+            if (!(dict[object[0]] != null)) {
+              dict[object[0]] = [];
+            }
+            dict[object[0]].push(object[1]);
+          }
+          result = [];
+          _ref1 = _this.collection.selected();
+          for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
+            model = _ref1[_k];
+            result.push([model.get('description'), model.get('p-value')].join("\t") + "\t" + dict[model.get('identifier')].join(','));
+          }
+          if (result.length) {
+            ex = new PlainExporter(result.join("\n"));
+            return window.setTimeout((function() {
+              return ex.destroy();
+            }), 5000);
+          }
+        });
+      });
     };
   
     EnrichmentView.prototype.viewAction = function() {
