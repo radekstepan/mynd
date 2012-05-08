@@ -32,7 +32,7 @@ WATCH = [ "src", "src/templates", "src/utils", "src/class" ]
 # Path to InterMine SVN output.
 INTERMINE =
     ROOT: "/home/rs676/svn/ws_widgets"
-    OUTPUT: "intermine/webapp/main/resources/webapp/js/widget.js"
+    OUTPUT: "intermine/webapp/main/resources/webapp/js/intermine.widgets.js"
 
 # ANSI Terminal colors.
 COLORS =
