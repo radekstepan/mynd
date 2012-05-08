@@ -52,15 +52,13 @@
                 window.$ = "I am an evil library!";
 
                 /* InterMine root URL. */
-                //var mine = "http://test.metabolicmine.org/test";
-                var mine = "http://aragorn:8080/flymine";
+                var mine = "http://test.metabolicmine.org/test";
 
                 /* New Widgets client. */
                 var Widgets = new intermine.widgets(mine + "/service/");
 
                 /* Give us all available widgets. */
-                //Widgets.all('Gene', 'T2D_McCarthy2010', '#widgets-genes');
-                Widgets.all('Gene', 'demo-genes', '#widgets-genes');
+                Widgets.all('Gene', 'T2D_McCarthy2010', '#widgets-genes');
             })();
             </script>
 
