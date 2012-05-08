@@ -1532,9 +1532,10 @@ factory = function(Backbone) {
           for (_i = 0, _len = response.length; _i < _len; _i++) {
             object = response[_i];
             values.push((function(object) {
-              var column, _j, _len1;
-              for (_j = 0, _len1 = object.length; _j < _len1; _j++) {
-                column = object[_j];
+              var column, _j, _len1, _ref;
+              _ref = object.reverse();
+              for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+                column = _ref[_j];
                 if (column.length > 0) {
                   return column;
                 }
@@ -1548,6 +1549,7 @@ factory = function(Backbone) {
     };
   
     EnrichmentPopoverView.prototype.renderValues = function(values) {
+      console.log(values);
       return $(this.el).find('div.values').html(this.template("popover.values", {
         'values': values,
         'type': this.response.type,

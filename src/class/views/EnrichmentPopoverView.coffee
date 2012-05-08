@@ -39,7 +39,8 @@ class EnrichmentPopoverView extends Backbone.View
             q.rows (response) =>
                 for object in response
                     values.push do (object) ->
-                        for column in object
+                        # Show the first available identifier, start @ end because PQ has a View constraint in [0].
+                        for column in object.reverse()
                             return column if column.length > 0
 
                 @renderValues values
