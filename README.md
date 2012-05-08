@@ -21,7 +21,7 @@ You can install all the following dependencies by running:
 npm install -d
 ```
 
-- [CoffeeScript](http://coffeescript.org/) & [eco](https://github.com/sstephenson/eco) templating.
+- [CoffeeScript](http://coffeescript.org/) 1.3.1+ & [eco](https://github.com/sstephenson/eco) templating.
 - [uglify-js](https://github.com/mishoo/UglifyJS) to compress templates.
 
 ## Configure:
