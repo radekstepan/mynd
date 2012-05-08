@@ -151,3 +151,7 @@ var options = {
 };
 Widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
 ```
+
+### I am clicking on Download after selecting a few Enrichment Widget rows and nothing happens.
+
+Make sure you run widgets through the `http://` protocol instead of `file://`.

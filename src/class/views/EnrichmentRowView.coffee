@@ -34,5 +34,6 @@ class EnrichmentRowView extends Backbone.View
                 "resultsCb":   @callbacks.resultsCb
                 "listCb":      @callbacks.listCb
                 "response":    @response
+                "imjs":        @imjs
             )).el
         else @popoverView.toggle()

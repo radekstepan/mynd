@@ -11,7 +11,7 @@ JST["invalidjsonkey.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d
 JST["popover.values.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f;b.push("<h4>"),b.push(d(this.values.length)),b.push(" "),b.push(d(this.type)),this.values.length!==1&&b.push(d("s")),b.push(":</h4>\n\n"),f=this.values.slice(0,this.valuesLimit-1+1||9e9);for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n    <a href="#" class="match">'),b.push(d(a)),b.push("</a>\n");b.push("\n"),this.values.length>this.valuesLimit&&b.push("&hellip;")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["popover.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="popover" style="position:absolute;top:5px;right:0;z-index:1;display:block">\n    <div class="popover-inner" style="'),b.push(d(this.style)),b.push('">\n        <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>\n        <h3 class="popover-title">\n            '),b.push(d(this.description.slice(0,this.descriptionLimit-1+1||9e9))),b.push("\n            "),this.description.length>this.descriptionLimit&&b.push("&hellip;"),b.push('\n        </h3>\n        <div class="popover-content">\n            <div class="values">\n                <!-- popover.values.eco -->\n            </div>\n            <div style="margin-top:10px">\n                <a class="btn btn-small btn-primary results">View results</a>\n                <a class="btn btn-small list disabled">Create list</a>\n            </div>\n        </div>\n    </div>\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["chart.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <form style="margin:0">\n            <!-- extra.eco -->\n        </form>\n    </div>\n</header>\n<div class="content"></div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["enrichment.row.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<td class="check"><input type="checkbox" '),this.row.selected&&b.push('checked="checked"'),b.push(' /></td>\n<td class="description">\n    '),b.push(d(this.row.description)),b.push("\n    "),this.row.externalLink&&(b.push('\n        [<a href="'),b.push(this.row.externalLink),b.push('" target="_blank">Link</a>]\n    ')),b.push('\n</td>\n<td class="pValue">'),b.push(d(this.row["p-value"].toPrecision(5))),b.push('</td>\n<td class="matches">\n    <a class="count" style="cursor:pointer">'),b.push(d(this.row.matches.length)),b.push("</a>\n</td>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
+JST["enrichment.row.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<td class="check"><input type="checkbox" '),this.row.selected&&b.push('checked="checked"'),b.push(' /></td>\n<td class="description">\n    '),b.push(d(this.row.description)),b.push("\n    "),this.row.externalLink&&(b.push('\n        [<a href="'),b.push(this.row.externalLink),b.push('" target="_blank">Link</a>]\n    ')),b.push('\n</td>\n<td class="pValue">'),b.push(d(this.row["p-value"].toPrecision(5))),b.push('</td>\n<td class="matches">\n    <a class="count" style="cursor:pointer">'),b.push(d(this.row.matches)),b.push("</a>\n</td>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <!-- enrichment.form.eco -->\n    </div>\n\n    <div class="actions" style="padding:10px 0">\n        <!-- actions.eco -->\n    </div>\n</header>\n<div class="content">\n    <!-- enrichment.table.eco -->\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<!-- actual fixed head -->\n<div class="head" style="display:table">\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;"><input type="checkbox" class="check" /></div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">'),b.push(d(this.label)),b.push('</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">p-Value</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">Matches</div>\n    <div style="clear:both"></div>\n</div>\n<div class="wrapper" style="overflow:auto;overflow-x:hidden">\n    <table class="table table-striped">\n        <!-- head for proper cell width -->\n        <thead style="visibility:hidden">\n            <tr>\n                <th></th>\n                <th>'),b.push(d(this.label)),b.push("</th>\n                <th>p-Value</th>\n                <th>Matches</th>\n            </tr>\n        </thead>\n        <tbody>\n            <!-- loop enrichment.row.eco -->\n        </tbody>\n    </table>\n</div>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.form.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f,g,h,i,j;b.push('<form style="margin:0">\n    <div class="group" style="display:inline-block;margin-right:5px">\n        <label>Test Correction</label>\n        <select name="errorCorrection" class="span2">\n            '),i=this.errorCorrections;for(e=0,g=i.length;e<g;e++)a=i[e],b.push('\n                <option value="'),b.push(d(a)),b.push('" '),this.options.errorCorrection===a&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(a)),b.push("\n            </option>\n            ");b.push('\n        </select>\n    </div>\n\n    <div class="group" style="display:inline-block;margin-right:5px">\n        <label>Max p-value</label>\n        <select name="pValue" class="span2">\n            '),j=this.pValues;for(f=0,h=j.length;f<h;f++)c=j[f],b.push('\n                <option value="'),b.push(d(c)),b.push('" '),this.options.pValue===c&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(c)),b.push("\n                </option>\n            ");b.push("\n        </select>\n    </div>\n</form>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
@@ -624,7 +624,8 @@ factory = function(Backbone) {
         "filters": type.isString,
         "filterLabel": type.isString,
         "filterSelectedValue": type.isString,
-        "externalLink": type.isString
+        "externalLink": type.isString,
+        "pathQueryForMatches": type.isString
       }
     };
   
@@ -821,7 +822,7 @@ factory = function(Backbone) {
     EnrichmentRow.prototype.spec = {
       "description": type.isString,
       "identifier": type.isString,
-      "matches": type.isArray,
+      "matches": type.isInteger,
       "p-value": type.isInteger,
       "selected": type.isBoolean,
       "externalLink": type.isString
@@ -950,7 +951,8 @@ factory = function(Backbone) {
           "matchCb": this.callbacks.matchCb,
           "resultsCb": this.callbacks.resultsCb,
           "listCb": this.callbacks.listCb,
-          "response": this.response
+          "response": this.response,
+          "imjs": this.imjs
         })).el);
       } else {
         return this.popoverView.toggle();
@@ -1480,6 +1482,8 @@ factory = function(Backbone) {
   
       this.toggle = __bind(this.toggle, this);
   
+      this.renderValues = __bind(this.renderValues, this);
+  
       this.render = __bind(this.render, this);
       return EnrichmentPopoverView.__super__.constructor.apply(this, arguments);
     }
@@ -1505,7 +1509,8 @@ factory = function(Backbone) {
     };
   
     EnrichmentPopoverView.prototype.render = function() {
-      var x;
+      var pq, values,
+        _this = this;
       $(this.el).css({
         'position': 'relative'
       });
@@ -1514,21 +1519,40 @@ factory = function(Backbone) {
         "descriptionLimit": this.descriptionLimit,
         "style": this.style || "width:300px;margin-left:-300px"
       }));
-      $(this.el).find('div.values').html(this.template("popover.values", {
-        'values': (function() {
-          var _i, _len, _ref, _results;
-          _ref = this.matches;
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            x = _ref[_i];
-            _results.push(x['displayed']);
+      pq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(this.response['pathQueryForMatches']) : void 0;
+      pq.where.push({
+        "path": this.response.pathConstraint,
+        "op": "ONE OF",
+        "values": this.identifiers
+      });
+      values = [];
+      this.imjs.query(pq, function(q) {
+        return q.rows(function(response) {
+          var object, _i, _len;
+          for (_i = 0, _len = response.length; _i < _len; _i++) {
+            object = response[_i];
+            values.push((function(object) {
+              var column, _j, _len1;
+              for (_j = 0, _len1 = object.length; _j < _len1; _j++) {
+                column = object[_j];
+                if (column.length > 0) {
+                  return column;
+                }
+              }
+            })(object));
           }
-          return _results;
-        }).call(this),
+          return _this.renderValues(values);
+        });
+      });
+      return this;
+    };
+  
+    EnrichmentPopoverView.prototype.renderValues = function(values) {
+      return $(this.el).find('div.values').html(this.template("popover.values", {
+        'values': values,
         'type': this.response.type,
         'valuesLimit': this.valuesLimit
       }));
-      return this;
     };
   
     EnrichmentPopoverView.prototype.toggle = function() {
@@ -1698,7 +1722,11 @@ factory = function(Backbone) {
             "resultsCb": this.options.resultsCb,
             "listCb": this.options.listCb
           },
-          "response": this.response
+          "response": this.response,
+          "imjs": new intermine.Service({
+            'root': this.widget.service,
+            'token': this.widget.token
+          })
         }).el);
       }
       return table.find('tbody').html(fragment);
@@ -1716,21 +1744,12 @@ factory = function(Backbone) {
     };
   
     EnrichmentView.prototype.exportAction = function(e) {
-      var ex, match, model, result, _i, _len, _ref;
+      var ex, model, result, _i, _len, _ref;
       result = [];
       _ref = this.collection.selected();
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         model = _ref[_i];
-        result.push([model.get('description'), model.get('p-value')].join("\t") + "\t" + ((function() {
-          var _j, _len1, _ref1, _results;
-          _ref1 = model.get('matches');
-          _results = [];
-          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-            match = _ref1[_j];
-            _results.push(match.displayed);
-          }
-          return _results;
-        })()).join());
+        result.push([model.get('description'), model.get('p-value')].join("\t") + "\t" + model.get('matches'));
       }
       if (result.length) {
         try {
@@ -1745,8 +1764,7 @@ factory = function(Backbone) {
     };
   
     EnrichmentView.prototype.viewAction = function() {
-      var descriptions, match, matches, model, rowIdentifiers, _i, _j, _len, _len1, _ref, _ref1, _ref2;
-      matches = [];
+      var descriptions, model, rowIdentifiers, _i, _len, _ref, _ref1;
       descriptions = [];
       rowIdentifiers = [];
       _ref = this.collection.selected();
@@ -1754,18 +1772,12 @@ factory = function(Backbone) {
         model = _ref[_i];
         descriptions.push(model.get('description'));
         rowIdentifiers.push(model.get('identifier'));
-        _ref1 = model.get('matches');
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          match = _ref1[_j];
-          matches.push(match);
-        }
       }
-      if (matches.length) {
-        if ((_ref2 = this.popoverView) != null) {
-          _ref2.remove();
+      if (rowIdentifiers.length) {
+        if ((_ref1 = this.popoverView) != null) {
+          _ref1.remove();
         }
         return $(this.el).find('div.actions').after((this.popoverView = new EnrichmentPopoverView({
-          "matches": matches,
           "identifiers": rowIdentifiers,
           "description": descriptions.join(', '),
           "template": this.template,
@@ -1773,7 +1785,11 @@ factory = function(Backbone) {
           "matchCb": this.options.matchCb,
           "resultsCb": this.options.resultsCb,
           "listCb": this.options.listCb,
-          "response": this.response
+          "response": this.response,
+          "imjs": new intermine.Service({
+            'root': this.widget.service,
+            'token': this.widget.token
+          })
         })).el);
       }
     };

@@ -26,13 +26,33 @@ class EnrichmentPopoverView extends Backbone.View
             "descriptionLimit": @descriptionLimit
             "style":            @style or "width:300px;margin-left:-300px"
 
-        # Fill in the values.
-        $(@el).find('div.values').html @template "popover.values",
-            'values':      ( x['displayed'] for x in @matches )
-            'type':        @response.type
-            'valuesLimit': @valuesLimit
+        # PathQuery for matches values.
+        pq = JSON?.parse @response['pathQueryForMatches']
+        pq.where.push
+            "path":   @response.pathConstraint
+            "op":     "ONE OF"
+            "values": @identifiers
+
+        # Grab the data for the selected row(s).
+        values = []
+        @imjs.query(pq, (q) =>
+            q.rows (response) =>
+                for object in response
+                    values.push do (object) ->
+                        for column in object
+                            return column if column.length > 0
+
+                @renderValues values
+        )
 
         @
+
+    # Render the values from imjs request.
+    renderValues: (values) =>
+        $(@el).find('div.values').html @template "popover.values"
+            'values':      values
+            'type':        @response.type
+            'valuesLimit': @valuesLimit
 
     # Toggle me on/off.
     toggle: => $(@el).toggle()

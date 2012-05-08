@@ -105,6 +105,7 @@ class EnrichmentView extends Backbone.View
                 "type":      @response.type
                 "callbacks": { "matchCb": @options.matchCb, "resultsCb": @options.resultsCb, "listCb": @options.listCb }
                 "response":  @response
+                "imjs":      new intermine.Service('root': @widget.service, 'token': @widget.token)
             ).el
 
         # Append the fragment to trigger the browser reflow.
@@ -126,14 +127,15 @@ class EnrichmentView extends Backbone.View
         # Create a tab delimited string.
         result = []
         for model in @collection.selected()
-            result.push [ model.get('description'), model.get('p-value') ].join("\t") + "\t" + ( match.displayed for match in model.get('matches') ).join()
-
+            result.push [ model.get('description'), model.get('p-value') ].join("\t") + "\t" + model.get('matches')
+        
         if result.length # Can be empty.
             # Create.
             try
                 ex = new Exporter $(e.target), result.join("\n"), "#{@widget.bagName} #{@widget.id}.tsv"
             catch TypeError
                 ex = new PlainExporter result.join("\n")
+            
             # Cleanup.
             window.setTimeout (->
                 ex.destroy()
@@ -142,19 +144,16 @@ class EnrichmentView extends Backbone.View
     # Selecting table rows and clicking on **View** should create an EnrichmentMatches collection of all matches ids.
     viewAction: =>
         # Get all the matches in selected rows.
-        matches = [] ; descriptions = [] ; rowIdentifiers = []
+        descriptions = [] ; rowIdentifiers = []
         for model in @collection.selected()
             descriptions.push model.get 'description' ; rowIdentifiers.push model.get 'identifier'
-            for match in model.get 'matches'
-                matches.push match
 
-        if matches.length # Can be empty.
+        if rowIdentifiers.length # Can be empty.
             # Remove any previous matches modal window.
             @popoverView?.remove()
 
             # Append a new modal window with matches.
             $(@el).find('div.actions').after (@popoverView = new EnrichmentPopoverView(
-                "matches":     matches
                 "identifiers": rowIdentifiers
                 "description": descriptions.join(', ')
                 "template":    @template
@@ -163,4 +162,5 @@ class EnrichmentView extends Backbone.View
                 "resultsCb":   @options.resultsCb
                 "listCb":      @options.listCb
                 "response":    @response
+                "imjs":        new intermine.Service('root': @widget.service, 'token': @widget.token)
             )).el

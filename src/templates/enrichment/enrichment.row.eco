@@ -7,5 +7,5 @@
 </td>
 <td class="pValue"><%= @row["p-value"].toPrecision(5) %></td>
 <td class="matches">
-    <a class="count" style="cursor:pointer"><%= @row["matches"].length %></a>
+    <a class="count" style="cursor:pointer"><%= @row["matches"] %></a>
 </td>

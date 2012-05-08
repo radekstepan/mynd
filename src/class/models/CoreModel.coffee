@@ -43,7 +43,7 @@ class EnrichmentRow extends CoreModel
     spec:
         "description":  type.isString
         "identifier":   type.isString
-        "matches":      type.isArray
+        "matches":      type.isInteger
         "p-value":      type.isInteger
         "selected":     type.isBoolean
         "externalLink": type.isString
