@@ -1,12 +1,12 @@
 ### Enrichment Widget table row matches box.###
 
-class EnrichmentMatchesView extends Backbone.View
+class EnrichmentPopoverView extends Backbone.View
 
     # How many characters can we display in the description?
     descriptionLimit: 50
 
     # How many matches do we show before ending with an ellipsis?
-    matchesLimit: 5
+    valuesLimit: 5
 
     events:
         "click a.match":   "matchAction"
@@ -21,15 +21,42 @@ class EnrichmentMatchesView extends Backbone.View
 
     render: =>
         $(@el).css 'position':'relative'
-        $(@el).html @template "enrichment.matches",
+        $(@el).html @template "popover",
             "description":      @description
             "descriptionLimit": @descriptionLimit
-            "type":             @response.type
-            "matches":          @collection.toJSON()
-            "matchesLimit":     @matchesLimit
             "style":            @style or "width:300px;margin-left:-300px"
 
+        # PathQuery for matches values.
+        pq = JSON?.parse @response['pathQueryForMatches']
+        pq.where.push
+            "path":   @response.pathConstraint
+            "op":     "ONE OF"
+            "values": @identifiers
+
+        # Grab the data for the selected row(s).
+        values = []
+        @imService.query(pq, (q) =>
+            q.rows (response) =>
+                for object in response
+                    value = do (object) ->
+                        # Show the first available identifier, start @ end because PQ has a View constraint in [0].
+                        for column in object.reverse()
+                            return column if column.length > 0
+                    
+                    # Filter out duplicates by saving to a dict.
+                    values.push value unless value in values
+
+                @renderValues values
+        )
+
         @
+
+    # Render the values from imjs request.
+    renderValues: (values) =>
+        $(@el).find('div.values').html @template "popover.values"
+            'values':      values
+            'type':        @response.type
+            'valuesLimit': @valuesLimit
 
     # Toggle me on/off.
     toggle: => $(@el).toggle()
@@ -44,7 +71,7 @@ class EnrichmentMatchesView extends Backbone.View
         @pq.where.push
             "path":   @response.pathConstraint
             "op":     "ONE OF"
-            "values": @collection.map (match) -> match.get 'id'
+            "values": @identifiers
 
     # Onclick the individual match, execute the callback.
     matchAction: (e) =>

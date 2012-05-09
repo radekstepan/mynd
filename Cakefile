@@ -12,7 +12,7 @@ exec = require('child_process').exec # execute custom commands
 # Main input/output.
 MAIN =
     INPUT: "src/widgets.coffee"
-    OUTPUT: "js/widgets.js"
+    OUTPUT: "js/intermine.widgets.js"
 
 # Tests input/output and runner.
 TESTS =
@@ -32,16 +32,16 @@ WATCH = [ "src", "src/templates", "src/utils", "src/class" ]
 # Path to InterMine SVN output.
 INTERMINE =
     ROOT: "/home/rs676/svn/ws_widgets"
-    OUTPUT: "intermine/webapp/main/resources/webapp/js/widget.js"
+    OUTPUT: "intermine/webapp/main/resources/webapp/js/intermine.widgets.js"
 
 # ANSI Terminal colors.
 COLORS =
-    BOLD: '\033[0;1m'
-    RED: '\033[0;31m'
-    GREEN: '\033[0;32m'
-    BLUE: '\033[0;34m'
-    YELLOW: '\033[0;33m'
-    DEFAULT: '\033[0m'
+  BOLD:    '\u001b[0;1m'
+  RED:     '\u001b[0;31m'
+  GREEN:   '\u001b[0;32m'
+  BLUE:    '\u001b[0;34m'
+  YELLOW:  '\u001b[0;33m'
+  DEFAULT: '\u001b[0m'
 
 # --------------------------------------------
 
@@ -143,6 +143,7 @@ main = (callback) ->
                 match = /\.eco$/
                 for file in files
                     if file.match match
+                        console.log file
                         # Read in, precompile & compress.
                         js = eco.precompile fs.readFileSync file, "utf-8"
                         name = file.split('/').pop()
@@ -156,6 +157,7 @@ main = (callback) ->
             if err then throw new Error('problem walking utils')
             else
                 for file in files
+                    console.log file
                     # Read in, compile.
                     utils.push cs.compile fs.readFileSync(file, "utf-8"), bare: "on"
                 cb utils
@@ -168,10 +170,14 @@ main = (callback) ->
             else
                 names = []
                 for file in files
+                    console.log file
                     # Read in, compile.
                     source = cs.compile fs.readFileSync(file, "utf-8"), bare: "on"
                     # Insert spaces as we are inside the factory function (nicety).
-                    classes.push ( "  #{line}\n" for line in source.split("\n") ).join('')
+                    source = ( "  #{line}\n" for line in source.split("\n") ).join('')
+                    # `InterMineWidget.coffee` needs to go first...
+                    if file.match /InterMineWidget\.coffee$/ then classes.splice 1, 0, source
+                    else classes.push source
                     # Get the class name (it better match).
                     names.push file.split('/').pop().split('.')[0]
                 
@@ -184,6 +190,7 @@ main = (callback) ->
 
     # Compile the public library.
     widgets = (cb) ->
+        console.log MAIN.INPUT
         compiled = cs.compile fs.readFileSync(MAIN.INPUT, "utf-8"), bare: "on"
         cb compiled
 
@@ -255,7 +262,7 @@ walk = (path, callback) ->
 
 # Append to existing file.
 write = (path, text, mode = "w") ->
-    fs.open path, mode, 0666, (e, id) ->
+    fs.open path, mode, 0o0666, (e, id) ->
         if e then throw new Error(e)
         fs.write id, text, null, "utf8"
 

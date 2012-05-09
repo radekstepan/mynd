@@ -1,2 +1,0 @@
-<a class="btn btn-small <% if @disabled: %>disabled<% end %> view">View</a>
-<a class="btn btn-small <% if @disabled: %>disabled<% end %> export">Export</a>

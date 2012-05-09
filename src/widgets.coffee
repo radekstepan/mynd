@@ -4,28 +4,38 @@
 $ = window.jQuery or window.Zepto
 
 # Public interface for the various InterMine Widgets.
-class window.Widgets
+class Widgets
 
     wait: true
 
     # JavaScript libraries as resources. Will be loaded if not present already.
     resources: [
         name:  "jQuery"
-        path:  "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+        path:  "http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"
         type:  "js"
         wait:  true
     ,
         name:  "_"
-        path:  "http://documentcloud.github.com/underscore/underscore.js"
+        path:  "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js"
         type:  "js"
         wait:  true
     ,
         name:  "Backbone"
-        path:  "http://documentcloud.github.com/backbone/backbone-min.js"
+        path:  "http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"
         type:  "js"
+        wait:  true
     ,
         name:  "d3"
         path:  "https://raw.github.com/shutterstock/rickshaw/master/vendor/d3.min.js"
+        type:  "js"
+    ,
+        path:  "https://raw.github.com/alexkalderimis/imjs/master/src/model.js"
+        type:  "js"
+    ,
+        path:  "https://raw.github.com/alexkalderimis/imjs/master/src/query.js"
+        type:  "js"
+    ,
+        path:  "https://raw.github.com/alexkalderimis/imjs/master/src/service.js"
         type:  "js"
     ]
 
@@ -34,7 +44,7 @@ class window.Widgets
     # 1. `service`: [http://aragorn:8080/flymine/service/](http://aragorn:8080/flymine/service/)
     # 2. `token`:   token for accessing user's lists 
     constructor: (@service, @token = "") ->
-        new Load @resources, =>
+        intermine.load @resources, =>
             # All libraries loaded, welcome jQuery, export classes.
             $ = window.jQuery
             # Enable Cross-Origin Resource Sharing (for Opera, IE).
@@ -48,7 +58,7 @@ class window.Widgets
     # 1. `id`:            widgetId
     # 2. `bagName`:       myBag
     # 3. `el`:            #target
-    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {} }
+    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "resultsCb": function(pq) {}, "listCb": function(pq) {} }
     chart: (opts...) =>
         if @wait then window.setTimeout((=> @chart(opts...)), 0) else new o.ChartWidget(@service, @token, opts...)
     
@@ -66,7 +76,7 @@ class window.Widgets
     # 1. `id`:            widgetId
     # 2. `bagName`:       myBag
     # 3. `el`:            #target
-    # 4. `widgetOptions`: { "title": true/false, "description": true/false }
+    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "resultsCb": function(pq) {}, "listCb": function(pq) {} }
     table: (opts...) =>
         if @wait then window.setTimeout((=> @table(opts...)), 0) else new o.TableWidget(@service, @token, opts...)
 
@@ -75,7 +85,7 @@ class window.Widgets
     # 1. `type`:          Gene, Protein
     # 2. `bagName`:       myBag
     # 3. `el`:            #target
-    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {}, "matchCb": function(id, type) {}, "resultsCb": function(pq) {}, "listCb": function(pq) {} }
+    # 4. `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "resultsCb": function(pq) {}, "listCb": function(pq) {} }
     all: (type = "Gene", bagName, el, widgetOptions) =>
         if @wait then window.setTimeout((=> @all(type, bagName, el, widgetOptions)), 0)
         else
@@ -104,3 +114,10 @@ class window.Widgets
                 error: (xhr, opts, err) => $(el).html $ '<div/>',
                     class: "alert alert-error"
                     html:  "#{xhr.statusText} for <a href='#{@service}widgets'>#{@service}widgets</a>"
+
+
+# Do we have the InterMine API Loader?
+if not window.intermine
+    throw 'You need to include the InterMine API Loader first!'
+else
+    window.intermine.widgets = Widgets

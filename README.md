@@ -3,36 +3,65 @@ Client for embedding InterMine widgets (ws_widgets branch only!).
 ## Requirements:
 ### To Run:
 
-- Google API (included)
-- jQuery (included)
-- underscore.js (included)
-- backbone.js (included)
+- [InterMine JavaScript API Loader](http://radekstepan.github.com/intermine-api-loader/intermine.api.js)
+
+The following will be fetched automatically:
+
+- Google Visualization API
+- jQuery
+- underscore.js
+- backbone.js
+- InterMine imjs
 
 ### To Compile:
 
-You can install all the following dependencies by running `npm install -d`:
+You can install all the following dependencies by running:
 
-- [CoffeeScript](http://coffeescript.org/) & [eco](https://github.com/sstephenson/eco) templating.
+```bash
+npm install -d
+```
+
+- [CoffeeScript](http://coffeescript.org/) 1.3.1+ & [eco](https://github.com/sstephenson/eco) templating.
 - [uglify-js](https://github.com/mishoo/UglifyJS) to compress templates.
 
 ## Configure:
-**Create a new Widgets** instance in `index.html` pointing to a service:
 
-```javascript
-var widgets = new Widgets("http://aragorn.flymine.org:8080/flymine/service/");
+You can either use the InterMine API Loader to always give you the latest version of the widgets:
+
+```html
+<script src="http://radekstepan.github.com/intermine-api-loader/intermine.api.js"></script>
 ```
 
-**Choose which widgets** you want to load:
+```javascript
+intermine.load('widgets', function() {
+    var Widgets = new intermine.widgets('http://flymine.org/service');
+});
+```
+
+Or you can include both the API Loader and Widgets JS files and use them immediately:
+
+```html
+// point to API, requirement for all InterMine client side JavaScript
+<script src="http://radekstepan.github.com/intermine-api-loader/intermine.api.js"></script>
+// include Widgets library locally, is immediately available on the `intermine` namespace
+<script src="js/intermine.widgets.js"></script>
+```
+
+```javascript
+var Widgets = new intermine.widgets('http://flymine.org/service');
+```
+
+Then, **choose which widgets** you want to load:
 
 ```javascript
 // Load all Widgets:
-widgets.all('Gene', 'myList', '#all-widgets');
+Widgets.all('Gene', 'myList', '#all-widgets');
 // Load a specific Chart Widget:
-widgets.chart('flyfish', 'myList', '#widget-1');
+Widgets.chart('flyfish', 'myList', '#widget-1');
 // Load a specific Enrichment Widget:
-widgets.enrichment('pathway_enrichment', 'myList', '#widget-2');
+Widgets.enrichment('pathway_enrichment', 'myList', '#widget-2');
 // Load a specific Table Widget:
-widgets.table('interactions', 'myList', '#widget-3');
+Widgets.table('interactions', 'myList', '#widget-3');
 ```
 
 ## Use:
@@ -74,22 +103,13 @@ INTERMINE =
 
 Commented source code is in the `/docs` directory: [http://0.0.0.0:1111/docs/widgets.html](http://0.0.0.0:1111/docs/widgets.html).
 
-### I want to define a custom behavior when clicking on Chart Widget.
+### How do apply a CSS style to the widgets?
 
-Will run a PathQuery against a mine and display its results in HTML.
+Use or modify a [Twitter Bootstrap](http://twitter.github.com/bootstrap/) [theme](http://bootswatch.com/).
 
-```javascript
-var options = {
-    selectCb: function(pq) {
-        window.open(mineURL + "/service/query/results?query=" + encodeURIComponent(pq) + "&format=html");
-    }
-};
-widgets.chart('flyfish', 'myList', '#widget', options);
-```
+### I want to define a custom behavior when clicking on an Enrichment or Chart widget.
 
-### I want to define a custom behavior when clicking on one of the matches in Enrichment Widget.
-
-Will open a Report page on a given mine for the match selected.
+Clicking on an individual match (Gene, Protein etc.) in popover window:
 
 ```javascript
 var options = {
@@ -97,7 +117,29 @@ var options = {
         window.open(mineURL + "/portal.do?class=" + type + "&externalids=" + id);
     }
 };
-widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
+Widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
+```
+
+Clicking on View results button in a popover window:
+
+```javascript
+var options = {
+    resultsCb: function(pq) {
+        ...
+    }
+};
+Widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
+```
+
+Clicking on Create list button in a popover window:
+
+```javascript
+var options = {
+    listCb: function(pq) {
+        ...
+    }
+};
+Widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
 ```
 
 ### I want to hide the title or description of a widget.
@@ -107,5 +149,9 @@ var options = {
     "title": false,
     "description": false
 };
-widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
+Widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
 ```
+
+### I am clicking on Download after selecting a few Enrichment Widget rows and nothing happens.
+
+Make sure you run widgets through the `http://` protocol instead of `file://`.

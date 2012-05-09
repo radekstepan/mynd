@@ -10,25 +10,20 @@
 
         <link href="css/bootstrap.css" rel="stylesheet">
         <style>
-        .widget { margin:20px 10px; }
-        /* d3.js charts */
-        .widget .canvas { shape-rendering:crispEdges; }
-        .widget .canvas rect { stroke:#FFF; }
-        .widget .canvas rect.x { fill:#4682B4; }
-        .widget .canvas rect.y { fill:#9CC1E0; }
-        .widget .canvas line { stroke:#CCC; }
-        .widget .canvas text { font-family:Georgia; fill:#555; font-size:11px; }
+            .widget { margin:20px 10px; }
+            /* d3.js charts */
+            .widget .canvas { shape-rendering:crispEdges; }
+            .widget .canvas rect { stroke:#FFF; }
+            .widget .canvas rect.x { fill:#4682B4; }
+            .widget .canvas rect.y { fill:#9CC1E0; }
+            .widget .canvas line { stroke:#CCC; }
+            .widget .canvas text { font-family:Georgia; fill:#555; font-size:11px; }
         </style>
 
-        <!-- local lib cache -->
-        <script src="js/vendor/jquery.js"></script>
-        <script src="js/vendor/underscore.js"></script>
-        <script src="js/vendor/backbone.js"></script>
-        <script src="js/vendor/d3.js"></script>
-        <script src="js/vendor/d3.layout.js"></script>
-
-        <!-- widget.js -->
-        <script src="js/widgets.js"></script>
+        <!-- intermine api loader -->
+        <script src="http://radekstepan.github.com/intermine-api-loader/intermine.api.js"></script>
+        <!-- widgets -->
+        <script src="js/intermine.widgets.js"></script>
     </head>
 
     <body>
@@ -49,7 +44,6 @@
 
             <div class="row">
                 <h2>Example Widgets</h2>
-                <p>BDGP expression patterns loaded from <span class="label">ws_widgets</span> FlyMine branch.</p>
             </div>
 
             <div class="row">
@@ -65,16 +59,14 @@
                 window.$ = "I am an evil library!";
 
                 /* InterMine root URL. */
+                //var mine = "http://test.metabolicmine.org/test";
                 var mine = "http://aragorn:8080/flymine";
 
                 /* New Widgets client. */
-                var widgets = new Widgets(mine + "/service/");
+                var Widgets = new intermine.widgets(mine + "/service/");
 
-                /* Give us all available widgets. */
-                //widgets.all('Gene', 'demo-genes', '#widgets-genes');
-                //widgets.all('Protein', 'demo-proteins', '#widgets-proteins');
-                widgets.chart('flyfish', 'demo-genes', '#one');
-                widgets.chart('chromosome_distribution_for_gene', 'demo-genes', '#two');
+                Widgets.chart('flyfish', 'demo-genes', '#one');
+                Widgets.chart('chromosome_distribution_for_gene', 'demo-genes', '#two');
             })();
             </script>
 

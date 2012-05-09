@@ -11,14 +11,14 @@ class ChartView extends Backbone.View
 
     render: ->
         # Render the widget template.
-        $(@el).html @template "chart.normal",
+        $(@el).html @template "chart",
             "title":       if @options.title then @response.title else ""
             "description": if @options.description then @response.description else ""
             "notAnalysed": @response.notAnalysed
 
         # Extra attributes (DataSets etc.)?
         if @response.filterLabel?
-            $(@el).find('div.form form').append @template "chart.extra",
+            $(@el).find('div.form form').append @template "extra",
                 "label":    @response.filterLabel
                 "possible": @response.filters.split(',') # Is a String unfortunately.
                 "selected": @response.filterSelectedValue
@@ -39,6 +39,7 @@ class ChartView extends Backbone.View
                 'data': data
             )
             chart.render()
+
         else
             # Render no results.
             $(@el).find("div.content").html $ @template "noresults"

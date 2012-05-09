@@ -1,0 +1,6 @@
+<h4><%= @values.length %> <%= @type %><%= 's' if @values.length != 1 %>:</h4>
+
+<% for object in @values[..@valuesLimit - 1]: %>
+    <a href="#" class="match"><%= object %></a>
+<% end %>
+<%- '&hellip;' if @values.length > @valuesLimit %>

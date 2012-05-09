@@ -6,7 +6,11 @@ class ChartWidget extends InterMineWidget
     widgetOptions:
         "title":       true
         "description": true
-        selectCb: (pq) ->
+        matchCb:       (id, type) ->
+            console?.log id, type
+        resultsCb:     (pq) ->
+            console?.log pq
+        listCb:        (pq) ->
             console?.log pq
 
     formOptions: {}
@@ -31,6 +35,7 @@ class ChartWidget extends InterMineWidget
             "filters":             type.isString
             "filterLabel":         type.isString
             "filterSelectedValue": type.isString
+            "simplePathQuery":     type.isString
 
     # Set the params on us and set Google load callback.
     #
@@ -39,7 +44,7 @@ class ChartWidget extends InterMineWidget
     # 3. `id`:            widgetId
     # 4. `bagName`:       myBag
     # 5. `el`:            #target
-    # 6. `widgetOptions`: { "title": true/false, "description": true/false, "selectCb": function(pq) {} }
+    # 6. `widgetOptions`: { "title": true/false, "description": true/false, "matchCb": function(id, type) {}, "resultsCb": function(pq) {}, "listCb": function(pq) {} }
     constructor: (@service, @token, @id, @bagName, @el, widgetOptions = {}) ->
         # Merge `widgetOptions`.
         @widgetOptions = merge widgetOptions, @widgetOptions

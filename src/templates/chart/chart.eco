@@ -1,0 +1,14 @@
+<header>
+    <h3><%= @title if @title %></h3>
+    <p><%- @description if @description %></p>
+    <% if @notAnalysed: %>
+        <p>Number of Genes in this list not analysed in this widget: <a><%= @notAnalysed %></a></p>
+    <% end %>
+
+    <div class="form">
+        <form style="margin:0">
+            <!-- extra.eco -->
+        </form>
+    </div>
+</header>
+<div class="content"></div>

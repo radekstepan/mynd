@@ -1,47 +1,32 @@
-### View maintaining Enrichment Widget.###
+### View maintaining Table Widget.###
 
-class EnrichmentView extends Backbone.View
+class TableView extends Backbone.View
 
     events:
         "click div.actions a.view":      "viewAction"
         "click div.actions a.export":    "exportAction"
-        "change div.form select":        "formAction"
         "click div.content input.check": "selectAllAction"
 
     initialize: (o) ->
         @[k] = v for k, v of o
 
         # New **Collection**.
-        @collection = new EnrichmentResults()
+        @collection = new TableResults()
         @collection.bind('change', @renderToolbar) # Re-render toolbar on change.
 
         @render()
 
     render: ->
         # Render the widget template.
-        $(@el).html @template "enrichment.normal",
+        $(@el).html @template "table",
             "title":       if @options.title then @response.title else ""
             "description": if @options.description then @response.description else ""
             "notAnalysed": @response.notAnalysed
 
-        # Form options.
-        $(@el).find("div.form").html @template "enrichment.form",
-            "options":          @form.options
-            "pValues":          @form.pValues
-            "errorCorrections": @form.errorCorrections
-
-        # Extra attributes (DataSets etc.)?
-        if @response.filterLabel?
-            $(@el).find('div.form form').append @template "enrichment.extra",
-                "label":    @response.filterLabel
-                "possible": @response.filters.split(',') # Is a String unfortunately.
-                "selected": @response.filterSelectedValue
-
         # Results?
         if @response.results.length > 0
-            # Render the actions toolbar, we have results.
+            # Render the toolbar & table, we have results.
             @renderToolbar()
-
             @renderTable()
         else
             # Render no results
@@ -52,26 +37,21 @@ class EnrichmentView extends Backbone.View
     # Render the actions toolbar based on how many collection model rows are selected.
     renderToolbar: =>
         $(@el).find("div.actions").html(
-            $ @template "enrichment.actions", "disabled": @collection.selected().length is 0
+            $ @template "actions", "disabled": @collection.selected().length is 0
         )
 
     # Render the table of results using Document Fragment to prevent browser reflows.
     renderTable: =>
         # Render the table.
         $(@el).find("div.content").html(
-            $ @template "enrichment.table", "label": @response.label
+            $ @template "table.table", "columns": @response.columns.split(',')
         )
 
         # Table rows **Models** and a subsequent **Collection**.
         table = $(@el).find("div.content table")
-        for i in [0...@response.results.length] then do (i) =>
-            # Form the data.
-            data = @response.results[i]
-            # External link through simple append.
-            if @response.externalLink then data.externalLink = @response.externalLink + data.identifier
-            
+        for i in [0...@response.results.length] then do (i) =>            
             # New **Model**.
-            row = new EnrichmentRow data, @widget
+            row = new TableRow @response.results[i], @widget
             @collection.add row
 
         # Render row **Views**.
@@ -99,21 +79,14 @@ class EnrichmentView extends Backbone.View
         # Table rows.
         for row in @collection.models
             # Render.
-            fragment.appendChild new EnrichmentRowView(
+            fragment.appendChild new TableRowView(
                 "model":     row
                 "template":  @template
-                "type":      @response.type
-                "callbacks": { "matchCb": @options.matchCb, "resultsCb": @options.resultsCb, "listCb": @options.listCb }
                 "response":  @response
             ).el
 
         # Append the fragment to trigger the browser reflow.
         table.find('tbody').html fragment
-
-    # On form select option change, set the new options and re-render.
-    formAction: (e) =>
-        @widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value")
-        @widget.render()
 
     # (De-)select all.
     selectAllAction: =>
@@ -123,10 +96,10 @@ class EnrichmentView extends Backbone.View
 
     # Export selected rows into a file.
     exportAction: (e) =>
-        # Create a tab delimited string.
-        result = []
+        # Create a tab delimited string of the table as it is.
+        result = [ @response.columns.replace(/,/g, "\t") ]
         for model in @collection.selected()
-            result.push [ model.get('description'), model.get('p-value') ].join("\t") + "\t" + ( match.displayed for match in model.get('matches') ).join()
+            result.push model.get('descriptions').join("\t") + "\t" + model.get('matches')
 
         if result.length # Can be empty.
             # Create.
@@ -139,28 +112,28 @@ class EnrichmentView extends Backbone.View
                 ex.destroy()
             ), 5000
 
-    # Selecting table rows and clicking on **View** should create an EnrichmentMatches collection of all matches ids.
+    # Selecting table rows and clicking on **View** should create an TableMatches collection of all matches ids.
     viewAction: =>
-        # Get all the matches in selected rows.
-        matches = []
-        descriptions = []
+        # Get all the identifiers for selected rows.
+        descriptions = [] ; rowIdentifiers = []
         for model in @collection.selected()
-            descriptions.push model.get 'description'
-            for match in model.get 'matches'
-                matches.push match
+            # Grab the first (only?) description.
+            descriptions.push model.get('descriptions')[0] ; rowIdentifiers.push model.get 'identifier'
 
-        if matches.length # Can be empty.
+        if rowIdentifiers.length # Can be empty.
             # Remove any previous matches modal window.
-            @matchesView?.remove()
+            @popoverView?.remove()
 
             # Append a new modal window with matches.
-            $(@el).find('div.actions').after (@matchesView = new EnrichmentMatchesView(
-                "collection":  new EnrichmentMatches matches
-                "description": descriptions.join(', ')
-                "template":    @template
-                "style":       "width:300px"
-                "matchCb":     @options.matchCb
-                "resultsCb":   @options.resultsCb
-                "listCb":      @options.listCb
-                "response":    @response
+            $(@el).find('div.actions').after (@popoverView = new TablePopoverView(
+                "identifiers":    rowIdentifiers
+                "description":    descriptions.join(', ')
+                "template":       @template
+                "matchCb":        @options.matchCb
+                "resultsCb":      @options.resultsCb
+                "listCb":         @options.listCb
+                "pathQuery":      @response.pathQuery
+                "pathConstraint": @response.pathConstraint
+                "imService":      @widget.imService()
+                "type":           @response.type
             )).el
