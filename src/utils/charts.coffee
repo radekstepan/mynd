@@ -74,9 +74,10 @@ class Charts.MultipleBars.Vertical
             .attr("style", "stroke-dasharray: 10, 5;")
 
         # The bars.
+        bars = @chart.append("svg:g").attr("class", "bars") ; values = @chart.append("svg:g").attr("class", "values")
         for i, group of @data
             # A wrapper group.
-            g = @chart
+            g = bars
             .append("svg:g")
             .attr("class", "group g#{i}")
             
@@ -99,6 +100,14 @@ class Charts.MultipleBars.Vertical
                 .attr('y',      @height - height)
                 .attr('width',  width)
                 .attr('height', height)
+
+                # Add a text value.
+                values.append("svg:text")
+                .attr("class", "value")
+                .attr('x', margin + left + (width / 2))
+                .attr('y', @height - height - 1)
+                .attr("text-anchor", "middle")
+                .text value
 
                 # Attach onclick event.
                 if @onclick?
