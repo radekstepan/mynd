@@ -3,6 +3,9 @@ Charts = { 'MultipleBars': {} }
 
 class Charts.MultipleBars.Vertical
 
+    # Number of ColorBrewer classes.
+    colorbrewer: 4
+
     # Expand object values on us.
     constructor: (o) ->
         @[k] = v for k, v of o
@@ -45,11 +48,13 @@ class Charts.MultipleBars.Vertical
 
         for tick in domain['y'].ticks(10)
             if (parseInt(tick) is tick) or (!isWhole)
+                # Horizontal line.
                 g.append("svg:line")
                 .attr("class", "line")
                 .attr("y1", domain['y'](tick)).attr("y2", domain['y'](tick))
                 .attr("x1", margin).attr("x2", @width)
 
+                # Description
                 g.append("svg:text")
                 .attr("class", "rule")
                 .attr("x", 0)
@@ -57,6 +62,16 @@ class Charts.MultipleBars.Vertical
                 .attr("y", @height - domain['y'](tick))
                 .attr("text-anchor", "middle")
                 .text tick.toFixed(0)
+
+        # Vertical lines.
+        for i, group of @data
+            left = margin + domain['x'](i) + domain['x'].rangeBand() / 2
+
+            g.append("svg:line")
+            .attr("class", "line dashed")
+            .attr("x1", left).attr("x2", left)
+            .attr("y1", 0).attr("y2", @height)
+            .attr("style", "stroke-dasharray: 10, 5;")
 
         # The bars.
         for i, group of @data
@@ -71,16 +86,15 @@ class Charts.MultipleBars.Vertical
                 width =  domain['x'].rangeBand() / 2
                 left =   domain['x'](i) + (j * width)
                 height = domain['y'](value)
-                # ColorBrewer band (out of 9).
+                # ColorBrewer band.
                 color =  domain['color'](value).toFixed(0)
 
                 # Create a wrapper for series so we can use ColorBrewer.
-                s = g.append("svg:g")
-                    .attr("class", "series #{series}")
+                s = g.append("svg:g").attr("class", "series #{series}")
 
                 # Append the actual rectangle.
                 bar = s.append("svg:rect")
-                .attr("class",  "bar q#{color}-9")
+                .attr("class",  "bar q#{color}-#{@colorbrewer}")
                 .attr('x',      margin + left)
                 .attr('y',      @height - height)
                 .attr('width',  width)
@@ -106,7 +120,7 @@ class Charts.MultipleBars.Vertical
         {
             'x':     d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, @width ], .05)
             'y':     d3.scale.linear().domain([ 0, @_max() ]).range([ 0, @height ])
-            'color': d3.scale.linear().domain([ 0, @_max() ]).range([ 0, 8 ])
+            'color': d3.scale.linear().domain([ 0, @_max() ]).range([ 0, @colorbrewer - 1 ])
         }   
 
     # Get a maximum value from series.

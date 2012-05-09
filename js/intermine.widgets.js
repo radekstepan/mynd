@@ -216,6 +216,8 @@ Charts.MultipleBars.Vertical = (function() {
 
   Vertical.name = 'Vertical';
 
+  Vertical.prototype.colorbrewer = 4;
+
   function Vertical(o) {
     var k, v;
     for (k in o) {
@@ -226,7 +228,7 @@ Charts.MultipleBars.Vertical = (function() {
   }
 
   Vertical.prototype.render = function() {
-    var bar, color, desc, descWidth, descriptions, domain, g, group, height, i, isWhole, j, left, margin, s, series, text, tick, value, width, _i, _len, _ref, _ref1, _ref2, _ref3, _results,
+    var bar, color, desc, descWidth, descriptions, domain, g, group, height, i, isWhole, j, left, margin, s, series, text, tick, value, width, _i, _len, _ref, _ref1, _ref2, _ref3, _ref4, _results,
       _this = this;
     margin = 10;
     this.chart = this.canvas.append("svg:g").attr("class", "chart").attr("transform", "translate(15,10)");
@@ -255,20 +257,26 @@ Charts.MultipleBars.Vertical = (function() {
       }
     }
     _ref2 = this.data;
-    _results = [];
     for (i in _ref2) {
       group = _ref2[i];
+      left = margin + domain['x'](i) + domain['x'].rangeBand() / 2;
+      g.append("svg:line").attr("class", "line dashed").attr("x1", left).attr("x2", left).attr("y1", 0).attr("y2", this.height).attr("style", "stroke-dasharray: 10, 5;");
+    }
+    _ref3 = this.data;
+    _results = [];
+    for (i in _ref3) {
+      group = _ref3[i];
       g = this.chart.append("svg:g").attr("class", "group g" + i);
       j = 0;
-      _ref3 = group['data'];
-      for (series in _ref3) {
-        value = _ref3[series];
+      _ref4 = group['data'];
+      for (series in _ref4) {
+        value = _ref4[series];
         width = domain['x'].rangeBand() / 2;
         left = domain['x'](i) + (j * width);
         height = domain['y'](value);
         color = domain['color'](value).toFixed(0);
         s = g.append("svg:g").attr("class", "series " + series);
-        bar = s.append("svg:rect").attr("class", "bar q" + color + "-9").attr('x', margin + left).attr('y', this.height - height).attr('width', width).attr('height', height);
+        bar = s.append("svg:rect").attr("class", "bar q" + color + "-" + this.colorbrewer).attr('x', margin + left).attr('y', this.height - height).attr('width', width).attr('height', height);
         if (this.onclick != null) {
           (function(bar, series, group, j, value) {
             return bar.on('click', function() {
@@ -297,7 +305,7 @@ Charts.MultipleBars.Vertical = (function() {
         return _results;
       }).apply(this)).rangeBands([0, this.width], .05),
       'y': d3.scale.linear().domain([0, this._max()]).range([0, this.height]),
-      'color': d3.scale.linear().domain([0, this._max()]).range([0, 8])
+      'color': d3.scale.linear().domain([0, this._max()]).range([0, this.colorbrewer - 1])
     };
   };
 
@@ -1339,125 +1347,6 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
-  /* View maintaining Chart Widget.
-  */
-  
-  var ChartView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  ChartView = (function(_super) {
-  
-    __extends(ChartView, _super);
-  
-    ChartView.name = 'ChartView';
-  
-    function ChartView() {
-      this.formAction = __bind(this.formAction, this);
-  
-      this.barAction = __bind(this.barAction, this);
-      return ChartView.__super__.constructor.apply(this, arguments);
-    }
-  
-    ChartView.prototype.events = {
-      "change div.form select": "formAction"
-    };
-  
-    ChartView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      return this.render();
-    };
-  
-    ChartView.prototype.render = function() {
-      var chart, data, height, i, v, _ref;
-      $(this.el).html(this.template("chart", {
-        "title": this.options.title ? this.response.title : "",
-        "description": this.options.description ? this.response.description : "",
-        "notAnalysed": this.response.notAnalysed
-      }));
-      if (this.response.filterLabel != null) {
-        $(this.el).find('div.form form').append(this.template("extra", {
-          "label": this.response.filterLabel,
-          "possible": this.response.filters.split(','),
-          "selected": this.response.filterSelectedValue
-        }));
-      }
-      if (this.response.results.length > 1) {
-        data = [];
-        _ref = this.response.results;
-        for (i in _ref) {
-          v = _ref[i];
-          if (i > 0) {
-            data.push({
-              'text': v[0],
-              'data': {
-                'Blues': v[1],
-                'Greens': v[2]
-              }
-            });
-          }
-        }
-        height = $(this.widget.el).height() - $(this.widget.el).find('header').height();
-        chart = new Charts.MultipleBars.Vertical({
-          'el': $(this.el).find("div.content"),
-          'data': data,
-          'width': 420,
-          'height': height,
-          'onclick': this.barAction
-        });
-        return chart.render();
-      } else {
-        return $(this.el).find("div.content").html($(this.template("noresults")));
-      }
-    };
-  
-    ChartView.prototype.barAction = function(color, category, seriesIndex, value) {
-      var description, quickPq, resultsPq, series, _ref;
-      description = '';
-      resultsPq = this.response.pathQuery;
-      quickPq = this.response.simplePathQuery;
-      description += category;
-      resultsPq = resultsPq.replace("%category", category);
-      quickPq = quickPq.replace("%category", category);
-      description += ' ' + this.response.seriesLabels.split(',')[seriesIndex];
-      series = (_ref = this.response.seriesValues) != null ? _ref.split(',')[seriesIndex] : void 0;
-      resultsPq = resultsPq.replace("%series", series);
-      quickPq = resultsPq.replace("%series", series);
-      resultsPq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(resultsPq) : void 0;
-      quickPq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(quickPq) : void 0;
-      if (this.barView != null) {
-        this.barView.close();
-      }
-      if (description) {
-        return $(this.el).find('div.content').append((this.barView = new ChartPopoverView({
-          "description": description,
-          "template": this.template,
-          "resultsPq": resultsPq,
-          "resultsCb": this.options.resultsCb,
-          "listCb": this.options.listCb,
-          "matchCb": this.options.matchCb,
-          "quickPq": quickPq,
-          "imService": this.widget.imService(),
-          "type": this.response.type
-        })).el);
-      }
-    };
-  
-    ChartView.prototype.formAction = function(e) {
-      this.widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value");
-      return this.widget.render();
-    };
-  
-    return ChartView;
-  
-  })(Backbone.View);
-  
-
   /* Enrichment Widget table row matches box.
   */
   
@@ -1596,6 +1485,123 @@ factory = function(Backbone) {
     };
   
     return EnrichmentPopoverView;
+  
+  })(Backbone.View);
+  
+
+  /* View maintaining Chart Widget.
+  */
+  
+  var ChartView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  ChartView = (function(_super) {
+  
+    __extends(ChartView, _super);
+  
+    ChartView.name = 'ChartView';
+  
+    function ChartView() {
+      this.formAction = __bind(this.formAction, this);
+  
+      this.barAction = __bind(this.barAction, this);
+      return ChartView.__super__.constructor.apply(this, arguments);
+    }
+  
+    ChartView.prototype.events = {
+      "change div.form select": "formAction"
+    };
+  
+    ChartView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      return this.render();
+    };
+  
+    ChartView.prototype.render = function() {
+      var chart, data, height, v, _i, _len, _ref;
+      $(this.el).html(this.template("chart", {
+        "title": this.options.title ? this.response.title : "",
+        "description": this.options.description ? this.response.description : "",
+        "notAnalysed": this.response.notAnalysed
+      }));
+      if (this.response.filterLabel != null) {
+        $(this.el).find('div.form form').append(this.template("extra", {
+          "label": this.response.filterLabel,
+          "possible": this.response.filters.split(','),
+          "selected": this.response.filterSelectedValue
+        }));
+      }
+      if (this.response.results.length > 1) {
+        data = [];
+        _ref = this.response.results.slice(1);
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          v = _ref[_i];
+          data.push({
+            'text': v[0],
+            'data': {
+              'Blues': v[1],
+              'Greens': v[2]
+            }
+          });
+        }
+        height = $(this.widget.el).height() - $(this.widget.el).find('header').height();
+        chart = new Charts.MultipleBars.Vertical({
+          'el': $(this.el).find("div.content"),
+          'data': data,
+          'width': 420,
+          'height': height,
+          'onclick': this.barAction
+        });
+        return chart.render();
+      } else {
+        return $(this.el).find("div.content").html($(this.template("noresults")));
+      }
+    };
+  
+    ChartView.prototype.barAction = function(color, category, seriesIndex, value) {
+      var description, quickPq, resultsPq, series, _ref;
+      description = '';
+      resultsPq = this.response.pathQuery;
+      quickPq = this.response.simplePathQuery;
+      description += category;
+      resultsPq = resultsPq.replace("%category", category);
+      quickPq = quickPq.replace("%category", category);
+      description += ' ' + this.response.seriesLabels.split(',')[seriesIndex];
+      series = (_ref = this.response.seriesValues) != null ? _ref.split(',')[seriesIndex] : void 0;
+      resultsPq = resultsPq.replace("%series", series);
+      quickPq = resultsPq.replace("%series", series);
+      resultsPq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(resultsPq) : void 0;
+      quickPq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(quickPq) : void 0;
+      if (this.barView != null) {
+        this.barView.close();
+      }
+      if (description) {
+        return $(this.el).find('div.content').append((this.barView = new ChartPopoverView({
+          "description": description,
+          "template": this.template,
+          "resultsPq": resultsPq,
+          "resultsCb": this.options.resultsCb,
+          "listCb": this.options.listCb,
+          "matchCb": this.options.matchCb,
+          "quickPq": quickPq,
+          "imService": this.widget.imService(),
+          "type": this.response.type
+        })).el);
+      }
+    };
+  
+    ChartView.prototype.formAction = function(e) {
+      this.widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value");
+      return this.widget.render();
+    };
+  
+    return ChartView;
   
   })(Backbone.View);
   
@@ -1940,8 +1946,8 @@ factory = function(Backbone) {
     "TableRowView": TableRowView,
     "TableView": TableView,
     "TablePopoverView": TablePopoverView,
-    "ChartView": ChartView,
     "EnrichmentPopoverView": EnrichmentPopoverView,
+    "ChartView": ChartView,
     "EnrichmentView": EnrichmentView,
     "ChartPopoverView": ChartPopoverView,
 

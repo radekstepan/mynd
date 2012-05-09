@@ -27,8 +27,8 @@ class ChartView extends Backbone.View
         if @response.results.length > 1
             # Form the series from Google Visualization formatted data.
             data = []
-            for i, v of @response.results
-                if i > 0 then data.push
+            for v in @response.results[1..]
+                data.push
                     'text': v[0]
                     'data':
                         # Two series specifying ColorBrewer classes.
