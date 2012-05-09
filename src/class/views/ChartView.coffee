@@ -31,8 +31,8 @@ class ChartView extends Backbone.View
                 if i > 0 then data.push
                     'text': v[0]
                     'data':
-                        'x': v[1]
-                        'y': v[2]
+                        'Blues':  v[1]
+                        'Greens': v[2]
 
             # Determine the height of the svg canvas it should occupy.
             height = $(@widget.el).height() - $(@widget.el).find('header').height()

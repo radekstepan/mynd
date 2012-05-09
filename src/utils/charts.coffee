@@ -42,7 +42,7 @@ class Charts.MultipleBars.Vertical
         # Draw the grid of whole numbers.
         g = @chart.append("svg:g").attr("class", "grid")
         isWhole = @_isWhole()
-        
+
         for tick in domain['y'].ticks(10)
             if (parseInt(tick) is tick) or (!isWhole)
                 g.append("svg:line")
@@ -71,10 +71,16 @@ class Charts.MultipleBars.Vertical
                 width =  domain['x'].rangeBand() / 2
                 left =   domain['x'](i) + (j * width)
                 height = domain['y'](value)
+                # ColorBrewer band (out of 9).
+                color =  domain['color'](value).toFixed(0)
+
+                # Create a wrapper for series so we can use ColorBrewer.
+                s = g.append("svg:g")
+                    .attr("class", "series #{series}")
 
                 # Append the actual rectangle.
-                g.append("svg:rect")
-                .attr("class",  series)
+                s.append("svg:rect")
+                .attr("class",  "bar q#{color}-9")
                 .attr('x',      margin + left)
                 .attr('y',      @height - height)
                 .attr('width',  width)
@@ -93,8 +99,9 @@ class Charts.MultipleBars.Vertical
     # Get the domain.
     _domain: () ->
         {
-            'x': d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, @width ], .05)
-            'y': d3.scale.linear().domain([ 0, @_max() ]).range([ 0, @height ])
+            'x':     d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, @width ], .05)
+            'y':     d3.scale.linear().domain([ 0, @_max() ]).range([ 0, @height ])
+            'color': d3.scale.linear().domain([ 0, @_max() ]).range([ 0, 8 ])
         }   
 
     # Get a maximum value from series.

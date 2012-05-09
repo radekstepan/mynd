@@ -8,14 +8,17 @@
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
+        <!-- Twitter Bootstrap -->
         <link href="css/bootstrap.css" rel="stylesheet">
+
+        <!-- ColorBrewer -->
+        <link href="css/colorbrewer.css" rel="stylesheet">
+        
         <style>
             .widget { margin:20px 10px; }
             /* d3.js charts */
             .widget .canvas { shape-rendering:crispEdges; }
             .widget .canvas rect { stroke:#FFF; }
-            .widget .canvas rect.x { fill:#4682B4; }
-            .widget .canvas rect.y { fill:#9CC1E0; }
             .widget .canvas line { stroke:#CCC; }
             .widget .canvas text { font-family:Georgia; fill:#555; font-size:11px; }
         </style>
@@ -47,8 +50,8 @@
             </div>
 
             <div class="row">
-                <div id="one" class="widget span6"></div>
-                <div id="two" class="widget span6"></div>
+                <div id="one" class="widget blues span6"></div>
+                <div id="two" class="widget blues span6"></div>
             </div>
             <div id="widgets-genes" class="row"></div>
             <div id="widgets-proteins" class="row"></div>
