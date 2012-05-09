@@ -21,7 +21,7 @@ class Charts.MultipleBars.Vertical
         @chart = @canvas.append("svg:g").attr("class", "chart").attr("transform", "translate(15,10)")
 
         # Descriptions.
-        descWidth = -Infinity ; totalWidth = 0
+        descWidth = -Infinity
         descriptions = @canvas.append('svg:g').attr('class', 'descriptions')
         for i, group of @data
             text = descriptions.append("svg:text")
@@ -30,7 +30,7 @@ class Charts.MultipleBars.Vertical
                 .text(group['text'])
 
             # Update the max width.
-            (width = text.node().getComputedTextLength()) and (totalWidth = totalWidth + width)
+            width = text.node().getComputedTextLength()
             descWidth = width if width > descWidth
 
         # Reduce the chart space for chart and add some extra padding for the grid.
@@ -87,8 +87,8 @@ class Charts.MultipleBars.Vertical
             .attr('x', margin + left + width + 10)
             .attr('y', @height + 20)
             
-            # Naive fce to determine if we should rotate the text.
-            if totalWidth + left > @width then desc.attr("transform", "rotate(-30 #{margin + left + width + 10} #{@height + 20})")
+            # (A better) naive fce to determine if we should rotate the text.
+            if descWidth > width then desc.attr("transform", "rotate(-30 #{margin + left + width + 10} #{@height + 20})")
 
     # Get the domain.
     _domain: () ->
