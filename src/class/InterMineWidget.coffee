@@ -43,3 +43,8 @@ class InterMineWidget
 
         # Throw an error so we do not process further.
         throw new Error type
+
+    # Init, return an IMJS service instance.
+    imService: () =>
+        if not @imjs? then @imjs = new intermine.Service('root': @service, 'token': @token)
+        @imjs

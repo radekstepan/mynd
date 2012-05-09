@@ -134,6 +134,6 @@ class TableView extends Backbone.View
                 "listCb":         @options.listCb
                 "pathQuery":      @response.pathQuery
                 "pathConstraint": @response.pathConstraint
-                "imjs":           new intermine.Service('root': @widget.service, 'token': @widget.token)
+                "imService":      @widget.imService()
                 "type":           @response.type
             )).el

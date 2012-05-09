@@ -92,7 +92,7 @@ class ChartView extends Backbone.View
                                 "listCb":      @options.listCb
                                 "matchCb":     @options.matchCb
                                 "quickPq":     quickPq
-                                "imjs":        new intermine.Service('root': @widget.service, 'token': @widget.token)
+                                "imService":   @widget.imService()
                                 "type":        @response.type
                             )).el
             else

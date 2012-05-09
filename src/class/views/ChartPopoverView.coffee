@@ -28,7 +28,7 @@ class ChartPopoverView extends Backbone.View
 
         # Grab the data for this bar.
         values = []
-        @imjs.query(@quickPq, (q) =>
+        @imService.query(@quickPq, (q) =>
             q.rows (response) =>
                 for object in response
                     values.push do (object) ->

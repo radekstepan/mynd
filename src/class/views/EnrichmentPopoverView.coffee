@@ -35,7 +35,7 @@ class EnrichmentPopoverView extends Backbone.View
 
         # Grab the data for the selected row(s).
         values = []
-        @imjs.query(pq, (q) =>
+        @imService.query(pq, (q) =>
             q.rows (response) =>
                 for object in response
                     values.push do (object) ->
