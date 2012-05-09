@@ -1469,7 +1469,8 @@ factory = function(Backbone) {
   var EnrichmentPopoverView,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
+    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
   
   EnrichmentPopoverView = (function(_super) {
   
@@ -1534,10 +1535,10 @@ factory = function(Backbone) {
       values = [];
       this.imService.query(pq, function(q) {
         return q.rows(function(response) {
-          var object, _i, _len;
+          var object, value, _i, _len;
           for (_i = 0, _len = response.length; _i < _len; _i++) {
             object = response[_i];
-            values.push((function(object) {
+            value = (function(object) {
               var column, _j, _len1, _ref;
               _ref = object.reverse();
               for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
@@ -1546,7 +1547,10 @@ factory = function(Backbone) {
                   return column;
                 }
               }
-            })(object));
+            })(object);
+            if (__indexOf.call(values, value) < 0) {
+              values.push(value);
+            }
           }
           return _this.renderValues(values);
         });

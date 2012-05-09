@@ -38,10 +38,13 @@ class EnrichmentPopoverView extends Backbone.View
         @imService.query(pq, (q) =>
             q.rows (response) =>
                 for object in response
-                    values.push do (object) ->
+                    value = do (object) ->
                         # Show the first available identifier, start @ end because PQ has a View constraint in [0].
                         for column in object.reverse()
                             return column if column.length > 0
+                    
+                    # Filter out duplicates by saving to a dict.
+                    values.push value unless value in values
 
                 @renderValues values
         )
