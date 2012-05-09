@@ -39,24 +39,24 @@ class Charts.MultipleBars.Vertical
         # Get the domain.
         domain = @_domain()
 
-        # Draw the grid.
+        # Draw the grid of whole numbers.
         g = @chart.append("svg:g").attr("class", "grid")
+        isWhole = @_isWhole()
         
-        g.selectAll("line").data(domain['y'].ticks(10)).enter()
-        .append("svg:line")
-        .attr("y1", domain['y']).attr("y2", domain['y'])
-        .attr("x1", margin).attr("x2", @width)
+        for tick in domain['y'].ticks(10)
+            if (parseInt(tick) is tick) or (!isWhole)
+                g.append("svg:line")
+                .attr("class", "line")
+                .attr("y1", domain['y'](tick)).attr("y2", domain['y'](tick))
+                .attr("x1", margin).attr("x2", @width)
 
-        # The grid values.
-        g.selectAll(".rule")
-        .data(domain['y'].ticks(10)).enter()
-        .append("svg:text")
-        .attr("class", "rule")
-        .attr("x", 0)
-        .attr("dx", -3)
-        .attr("y", (d) => @height - domain['y'](d))
-        .attr("text-anchor", "middle")
-        .text (d) -> d.toFixed(1)
+                g.append("svg:text")
+                .attr("class", "rule")
+                .attr("x", 0)
+                .attr("dx", -3)
+                .attr("y", @height - domain['y'](tick))
+                .attr("text-anchor", "middle")
+                .text tick.toFixed(0)
 
         # The bars.
         for i, group of @data
@@ -102,3 +102,10 @@ class Charts.MultipleBars.Vertical
             for key, value of group['data']
                 max = value if value > max
         max
+
+    # Does the chart only contain whole numbers?
+    _isWhole: () ->
+        for group in @data
+            for key, value of group['data']
+                return false if parseInt(value) isnt value
+        true
