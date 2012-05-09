@@ -10,11 +10,11 @@ JST["loading.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return
 JST["invalidjsonkey.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<li style="vertical-align:bottom">\n    <span style="display:inline-block" class="label label-important">'),b.push(d(this.key)),b.push("</span> is "),b.push(d(this.actual)),b.push("; was expecting "),b.push(d(this.expected)),b.push("\n</li>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["popover.values.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f;b.push("<h4>"),b.push(d(this.values.length)),b.push(" "),b.push(d(this.type)),this.values.length!==1&&b.push(d("s")),b.push(":</h4>\n\n"),f=this.values.slice(0,this.valuesLimit-1+1||9e9);for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n    <a href="#" class="match">'),b.push(d(a)),b.push("</a>\n");b.push("\n"),this.values.length>this.valuesLimit&&b.push("&hellip;")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["popover.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="popover" style="position:absolute;top:5px;right:0;z-index:1;display:block">\n    <div class="popover-inner" style="'),b.push(d(this.style)),b.push('">\n        <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>\n        <h3 class="popover-title">\n            '),b.push(d(this.description.slice(0,this.descriptionLimit-1+1||9e9))),b.push("\n            "),this.description.length>this.descriptionLimit&&b.push("&hellip;"),b.push('\n        </h3>\n        <div class="popover-content">\n            <div class="values">\n                <!-- popover.values.eco -->\n            </div>\n            <div style="margin-top:10px">\n                <a class="btn btn-small btn-primary results">View results</a>\n                <a class="btn btn-small list disabled">Create list</a>\n            </div>\n        </div>\n    </div>\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["chart.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <form style="margin:0">\n            <!-- extra.eco -->\n        </form>\n    </div>\n</header>\n<div class="content"></div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.row.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<td class="check"><input type="checkbox" '),this.row.selected&&b.push('checked="checked"'),b.push(' /></td>\n<td class="description">\n    '),b.push(d(this.row.description)),b.push("\n    "),this.row.externalLink&&(b.push('\n        [<a href="'),b.push(this.row.externalLink),b.push('" target="_blank">Link</a>]\n    ')),b.push('\n</td>\n<td class="pValue">'),b.push(d(this.row["p-value"].toPrecision(5))),b.push('</td>\n<td class="matches">\n    <a class="count" style="cursor:pointer">'),b.push(d(this.row.matches)),b.push("</a>\n</td>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <!-- enrichment.form.eco -->\n    </div>\n\n    <div class="actions" style="padding:10px 0">\n        <!-- actions.eco -->\n    </div>\n</header>\n<div class="content">\n    <!-- enrichment.table.eco -->\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<!-- actual fixed head -->\n<div class="head" style="display:table">\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;"><input type="checkbox" class="check" /></div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">'),b.push(d(this.label)),b.push('</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">p-Value</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">Matches</div>\n    <div style="clear:both"></div>\n</div>\n<div class="wrapper" style="overflow:auto;overflow-x:hidden">\n    <table class="table table-striped">\n        <!-- head for proper cell width -->\n        <thead style="visibility:hidden">\n            <tr>\n                <th></th>\n                <th>'),b.push(d(this.label)),b.push("</th>\n                <th>p-Value</th>\n                <th>Matches</th>\n            </tr>\n        </thead>\n        <tbody>\n            <!-- loop enrichment.row.eco -->\n        </tbody>\n    </table>\n</div>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.form.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f,g,h,i,j;b.push('<form style="margin:0">\n    <div class="group" style="display:inline-block;margin-right:5px">\n        <label>Test Correction</label>\n        <select name="errorCorrection" class="span2">\n            '),i=this.errorCorrections;for(e=0,g=i.length;e<g;e++)a=i[e],b.push('\n                <option value="'),b.push(d(a)),b.push('" '),this.options.errorCorrection===a&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(a)),b.push("\n            </option>\n            ");b.push('\n        </select>\n    </div>\n\n    <div class="group" style="display:inline-block;margin-right:5px">\n        <label>Max p-value</label>\n        <select name="pValue" class="span2">\n            '),j=this.pValues;for(f=0,h=j.length;f<h;f++)c=j[f],b.push('\n                <option value="'),b.push(d(c)),b.push('" '),this.options.pValue===c&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(c)),b.push("\n                </option>\n            ");b.push("\n        </select>\n    </div>\n</form>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
+JST["chart.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <form style="margin:0">\n            <!-- extra.eco -->\n        </form>\n    </div>\n</header>\n<div class="content"></div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["table.row.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f;b.push('<td class="check"><input type="checkbox" '),this.row.selected&&b.push('checked="checked"'),b.push(" /></td>\n"),f=this.row.descriptions;for(c=0,e=f.length;c<e;c++)a=f[c],b.push("\n    <td>"),b.push(d(a)),b.push("</td>\n");b.push("\n<td>"),b.push(d(this.row.matches)),b.push("</td>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="actions" style="padding:10px 0">\n        <!-- actions.eco -->\n    </div>\n</header>\n<div class="content">\n    <!-- table.table.eco -->\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["table.table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f,g,h,i;b.push('<!-- actual fixed head -->\n<div class="head" style="display:table">\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;"><input type="checkbox" class="check" /></div>\n    '),h=this.columns;for(c=0,f=h.length;c<f;c++)a=h[c],b.push('\n        <div style="font-weight:bold;display:table-cell;padding:0 8px;">'),b.push(d(a)),b.push("</div>\n    ");b.push('\n    <div style="clear:both"></div>\n</div>\n<div class="wrapper" style="overflow:auto;overflow-x:hidden">\n    <table class="table table-striped">\n        <!-- head for proper cell width -->\n        <thead style="visibility:hidden">\n            <tr>\n                <th></th>\n                '),i=this.columns;for(e=0,g=i.length;e<g;e++)a=i[e],b.push("\n                    <th>"),b.push(d(a)),b.push("</th>\n                ");b.push("\n            </tr>\n        </thead>\n        <tbody>\n            <!-- loop table.row.eco -->\n        </tbody>\n    </table>\n</div>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
@@ -216,26 +216,33 @@ Charts.MultipleBars.Vertical = (function() {
 
   Vertical.name = 'Vertical';
 
-  Vertical.prototype.width = 420;
-
-  Vertical.prototype.height = 300;
-
   function Vertical(o) {
     var k, v;
     for (k in o) {
       v = o[k];
       this[k] = v;
     }
-    this.canvas = d3.select(this.el[0]).append('svg:svg').attr('class', 'canvas').attr('width', this.width);
+    this.canvas = d3.select(this.el[0]).append('svg:svg').attr('class', 'canvas').attr('width', this.width).attr('height', this.height);
   }
 
   Vertical.prototype.render = function() {
-    var descriptions, domain, g, group, height, i, j, left, margin, series, text, value, width, _ref, _ref1, _results,
+    var descWidth, descriptions, domain, g, group, height, i, j, left, margin, series, text, value, width, _ref, _ref1, _ref2, _results,
       _this = this;
     margin = 10;
-    this.width = this.width - 15 - margin;
-    this.height = this.height - 10;
     this.chart = this.canvas.append("svg:g").attr("class", "chart").attr("transform", "translate(15,10)");
+    descWidth = -Infinity;
+    descriptions = this.canvas.append('svg:g').attr('class', 'descriptions');
+    _ref = this.data;
+    for (i in _ref) {
+      group = _ref[i];
+      text = descriptions.append("svg:text").attr("class", "text group g" + i).attr("text-anchor", "end").text(group['text']);
+      width = text.node().getComputedTextLength();
+      if (width > descWidth) {
+        descWidth = width;
+      }
+    }
+    this.width = this.width - 15 - margin;
+    this.height = this.height - 25 - (descWidth * 0.707107);
     domain = this._domain();
     g = this.chart.append("svg:g").attr("class", "grid");
     g.selectAll("line").data(domain['y'].ticks(10)).enter().append("svg:line").attr("y1", domain['y']).attr("y2", domain['y']).attr("x1", margin).attr("x2", this.width);
@@ -244,23 +251,22 @@ Charts.MultipleBars.Vertical = (function() {
     }).attr("text-anchor", "middle").text(function(d) {
       return d.toFixed(1);
     });
-    descriptions = this.canvas.append('svg:g').attr('class', 'descriptions');
-    _ref = this.data;
+    _ref1 = this.data;
     _results = [];
-    for (i in _ref) {
-      group = _ref[i];
+    for (i in _ref1) {
+      group = _ref1[i];
       g = this.chart.append("svg:g").attr("class", "group g" + i);
       j = 0;
-      _ref1 = group['data'];
-      for (series in _ref1) {
-        value = _ref1[series];
+      _ref2 = group['data'];
+      for (series in _ref2) {
+        value = _ref2[series];
         width = domain['x'].rangeBand() / 2;
         left = domain['x'](i) + (j * width);
         height = domain['y'](value);
         g.append("svg:rect").attr("class", series).attr('x', margin + left).attr('y', this.height - height).attr('width', width).attr('height', height);
         j++;
       }
-      _results.push(text = descriptions.append("svg:text").attr("class", "text group g" + i).attr('y', this.height + 20).attr('x', left + width).attr("text-anchor", "middle").attr("transform", "rotate(-45 " + (left + width) + " " + (this.height + 20) + ")").text(group['text']));
+      _results.push(descriptions.select(".g" + i).attr('x', margin + left + width).attr('y', this.height + 15).attr("transform", "rotate(-45 " + (margin + left + width) + " " + (this.height + 15) + ")"));
     }
     return _results;
   };
@@ -295,98 +301,6 @@ Charts.MultipleBars.Vertical = (function() {
   };
 
   return Vertical;
-
-})();
-
-Charts.MultipleBars.Horizontal = (function() {
-
-  Horizontal.name = 'Horizontal';
-
-  Horizontal.prototype.width = 420;
-
-  Horizontal.prototype.height = 200;
-
-  function Horizontal(o) {
-    var k, v;
-    for (k in o) {
-      v = o[k];
-      this[k] = v;
-    }
-    this.canvas = d3.select(this.el[0]).append('svg:svg').attr('class', 'canvas').attr('width', this.width);
-  }
-
-  Horizontal.prototype.render = function() {
-    var descWidth, descriptions, domain, g, group, height, i, j, series, text, top, value, width, _ref, _ref1, _ref2, _results;
-    descWidth = -Infinity;
-    descriptions = this.canvas.append('svg:g').attr('class', 'descriptions');
-    _ref = this.data;
-    for (i in _ref) {
-      group = _ref[i];
-      text = descriptions.append("svg:text").attr("class", "text group g" + i).text(group['text']);
-      width = text.node().getComputedTextLength();
-      if (width > descWidth) {
-        descWidth = width;
-      }
-    }
-    this.width = this.width - descWidth - 10;
-    this.height = this.height - 15;
-    this.chart = this.canvas.append("svg:g").attr("class", "chart").attr("transform", "translate(" + (descWidth + 5) + ",15)");
-    domain = this._domain();
-    g = this.chart.append("svg:g").attr("class", "grid");
-    g.selectAll("line").data(domain['x'].ticks(10)).enter().append("svg:line").attr("x1", domain['x']).attr("x2", domain['x']).attr("y1", 0).attr("y2", this.height);
-    g.selectAll(".rule").data(domain['x'].ticks(10)).enter().append("svg:text").attr("class", "rule").attr("x", domain['x']).attr("y", 0).attr("dy", -3).attr("text-anchor", "middle").text(function(d) {
-      return d.toFixed(1);
-    });
-    _ref1 = this.data;
-    _results = [];
-    for (i in _ref1) {
-      group = _ref1[i];
-      g = this.chart.append("svg:g").attr("class", "group g" + i);
-      j = 0;
-      _ref2 = group['data'];
-      for (series in _ref2) {
-        value = _ref2[series];
-        top = domain['y'](i) + (j * height);
-        width = domain['x'](value);
-        height = domain['y'].rangeBand() / 2;
-        g.append("svg:rect").attr("class", series).attr('y', top).attr('width', width).attr('height', height);
-        j++;
-      }
-      _results.push(descriptions.select(".g" + i).attr('y', top + height));
-    }
-    return _results;
-  };
-
-  Horizontal.prototype._domain = function() {
-    var _i, _ref, _results;
-    return {
-      'x': d3.scale.linear().domain([0, this._max()]).range([0, this.width]),
-      'y': d3.scale.ordinal().domain((function() {
-        _results = [];
-        for (var _i = 0, _ref = this.data.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
-        return _results;
-      }).apply(this)).rangeBands([0, this.height], .05)
-    };
-  };
-
-  Horizontal.prototype._max = function() {
-    var group, key, max, value, _i, _len, _ref, _ref1;
-    max = -Infinity;
-    _ref = this.data;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      group = _ref[_i];
-      _ref1 = group['data'];
-      for (key in _ref1) {
-        value = _ref1[key];
-        if (value > max) {
-          max = value;
-        }
-      }
-    }
-    return max;
-  };
-
-  return Horizontal;
 
 })();
 
@@ -792,116 +706,6 @@ factory = function(Backbone) {
     };
   
     return EnrichmentWidget;
-  
-  })(InterMineWidget);
-  
-
-  /* Table Widget main class.
-  */
-  
-  var TableWidget,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  TableWidget = (function(_super) {
-  
-    __extends(TableWidget, _super);
-  
-    TableWidget.name = 'TableWidget';
-  
-    TableWidget.prototype.widgetOptions = {
-      "title": true,
-      "description": true,
-      matchCb: function(id, type) {
-        return typeof console !== "undefined" && console !== null ? console.log(id, type) : void 0;
-      },
-      resultsCb: function(pq) {
-        return typeof console !== "undefined" && console !== null ? console.log(pq) : void 0;
-      },
-      listCb: function(pq) {
-        return typeof console !== "undefined" && console !== null ? console.log(pq) : void 0;
-      }
-    };
-  
-    TableWidget.prototype.spec = {
-      response: {
-        "columnTitle": type.isString,
-        "title": type.isString,
-        "description": type.isString,
-        "pathQuery": type.isString,
-        "columns": type.isString,
-        "pathConstraint": type.isString,
-        "requestedAt": type.isString,
-        "list": type.isString,
-        "type": type.isString,
-        "notAnalysed": type.isInteger,
-        "results": type.isArray,
-        "wasSuccessful": type.isBoolean,
-        "error": type.isNull,
-        "statusCode": type.isHTTPSuccess
-      }
-    };
-  
-    function TableWidget(service, token, id, bagName, el, widgetOptions) {
-      this.service = service;
-      this.token = token;
-      this.id = id;
-      this.bagName = bagName;
-      this.el = el;
-      if (widgetOptions == null) {
-        widgetOptions = {};
-      }
-      this.render = __bind(this.render, this);
-  
-      this.widgetOptions = merge(widgetOptions, this.widgetOptions);
-      TableWidget.__super__.constructor.call(this);
-      this.render();
-    }
-  
-    TableWidget.prototype.render = function() {
-      var data, timeout, _ref,
-        _this = this;
-      timeout = window.setTimeout((function() {
-        return $(_this.el).append(_this.loading = $(_this.template('loading')));
-      }), 400);
-      if ((_ref = this.view) != null) {
-        _ref.undelegateEvents();
-      }
-      data = {
-        'widget': this.id,
-        'list': this.bagName,
-        'token': this.token
-      };
-      return $.ajax({
-        url: "" + this.service + "list/table",
-        dataType: "jsonp",
-        data: data,
-        success: function(response) {
-          var _ref1;
-          window.clearTimeout(timeout);
-          if ((_ref1 = _this.loading) != null) {
-            _ref1.remove();
-          }
-          _this.validateType(response, _this.spec.response);
-          if (response.wasSuccessful) {
-            _this.name = response.title;
-            return _this.view = new TableView({
-              "widget": _this,
-              "el": _this.el,
-              "template": _this.template,
-              "response": response,
-              "options": _this.widgetOptions
-            });
-          }
-        },
-        error: function(err) {
-          return _this.error(err, "AJAXTransport");
-        }
-      });
-    };
-  
-    return TableWidget;
   
   })(InterMineWidget);
   
@@ -1534,7 +1338,7 @@ factory = function(Backbone) {
     };
   
     ChartView.prototype.render = function() {
-      var chart, data, i, v, _ref;
+      var chart, data, height, i, v, _ref;
       $(this.el).html(this.template("chart", {
         "title": this.options.title ? this.response.title : "",
         "description": this.options.description ? this.response.description : "",
@@ -1562,9 +1366,12 @@ factory = function(Backbone) {
             });
           }
         }
+        height = $(this.widget.el).height() - $(this.widget.el).find('header').height();
         chart = new Charts.MultipleBars.Vertical({
           'el': $(this.el).find("div.content"),
-          'data': data
+          'data': data,
+          'width': 420,
+          'height': height
         });
         return chart.render();
       } else {
@@ -2059,7 +1866,6 @@ factory = function(Backbone) {
     "InterMineWidget": InterMineWidget,
     "ChartWidget": ChartWidget,
     "EnrichmentWidget": EnrichmentWidget,
-    "TableWidget": TableWidget,
     "CoreModel": CoreModel,
     "EnrichmentRowView": EnrichmentRowView,
     "TableRowView": TableRowView,

@@ -34,9 +34,14 @@ class ChartView extends Backbone.View
                         'x': v[1]
                         'y': v[2]
 
+            # Determine the height of the svg canvas it should occupy.
+            height = $(@widget.el).height() - $(@widget.el).find('header').height()
+
             chart = new Charts.MultipleBars.Vertical(
                 'el':     $(@el).find("div.content")
-                'data': data
+                'data':   data
+                'width':  420
+                'height': height
             )
             chart.render()
 
