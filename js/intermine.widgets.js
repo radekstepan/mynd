@@ -1347,6 +1347,123 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
+  /* View maintaining Chart Widget.
+  */
+  
+  var ChartView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  ChartView = (function(_super) {
+  
+    __extends(ChartView, _super);
+  
+    ChartView.name = 'ChartView';
+  
+    function ChartView() {
+      this.formAction = __bind(this.formAction, this);
+  
+      this.barAction = __bind(this.barAction, this);
+      return ChartView.__super__.constructor.apply(this, arguments);
+    }
+  
+    ChartView.prototype.events = {
+      "change div.form select": "formAction"
+    };
+  
+    ChartView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      return this.render();
+    };
+  
+    ChartView.prototype.render = function() {
+      var chart, data, height, v, _i, _len, _ref;
+      $(this.el).html(this.template("chart", {
+        "title": this.options.title ? this.response.title : "",
+        "description": this.options.description ? this.response.description : "",
+        "notAnalysed": this.response.notAnalysed
+      }));
+      if (this.response.filterLabel != null) {
+        $(this.el).find('div.form form').append(this.template("extra", {
+          "label": this.response.filterLabel,
+          "possible": this.response.filters.split(','),
+          "selected": this.response.filterSelectedValue
+        }));
+      }
+      if (this.response.results.length > 1) {
+        data = [];
+        _ref = this.response.results.slice(1);
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          v = _ref[_i];
+          data.push({
+            'text': v[0],
+            'data': {
+              'Blues': v[1],
+              'Greens': v[2]
+            }
+          });
+        }
+        height = $(this.widget.el).height() - $(this.widget.el).find('header').height();
+        chart = new Charts.MultipleBars.Vertical({
+          'el': $(this.el).find("div.content"),
+          'data': data,
+          'width': 420,
+          'height': height,
+          'onclick': this.barAction
+        });
+        return chart.render();
+      } else {
+        return $(this.el).find("div.content").html($(this.template("noresults")));
+      }
+    };
+  
+    ChartView.prototype.barAction = function(color, category, seriesIndex, value) {
+      var description, quickPq, resultsPq, series, _ref;
+      description = '';
+      resultsPq = this.response.pathQuery;
+      quickPq = this.response.simplePathQuery;
+      description += category;
+      resultsPq = resultsPq.replace("%category", category);
+      quickPq = quickPq.replace("%category", category);
+      description += ' ' + this.response.seriesLabels.split(',')[seriesIndex];
+      series = (_ref = this.response.seriesValues) != null ? _ref.split(',')[seriesIndex] : void 0;
+      resultsPq = resultsPq.replace("%series", series);
+      quickPq = resultsPq.replace("%series", series);
+      resultsPq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(resultsPq) : void 0;
+      quickPq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(quickPq) : void 0;
+      if (this.barView != null) {
+        this.barView.close();
+      }
+      if (description) {
+        return $(this.el).find('div.content').append((this.barView = new ChartPopoverView({
+          "description": description,
+          "template": this.template,
+          "resultsPq": resultsPq,
+          "resultsCb": this.options.resultsCb,
+          "listCb": this.options.listCb,
+          "matchCb": this.options.matchCb,
+          "quickPq": quickPq,
+          "imService": this.widget.imService(),
+          "type": this.response.type
+        })).el);
+      }
+    };
+  
+    ChartView.prototype.formAction = function(e) {
+      this.widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value");
+      return this.widget.render();
+    };
+  
+    return ChartView;
+  
+  })(Backbone.View);
+  
+
   /* Enrichment Widget table row matches box.
   */
   
@@ -1489,32 +1606,47 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
-  /* View maintaining Chart Widget.
+  /* Chart Widget bar onclick box.
   */
   
-  var ChartView,
+  var ChartPopoverView,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
   
-  ChartView = (function(_super) {
+  ChartPopoverView = (function(_super) {
   
-    __extends(ChartView, _super);
+    __extends(ChartPopoverView, _super);
   
-    ChartView.name = 'ChartView';
+    ChartPopoverView.name = 'ChartPopoverView';
   
-    function ChartView() {
-      this.formAction = __bind(this.formAction, this);
+    function ChartPopoverView() {
+      this.close = __bind(this.close, this);
   
-      this.barAction = __bind(this.barAction, this);
-      return ChartView.__super__.constructor.apply(this, arguments);
+      this.listAction = __bind(this.listAction, this);
+  
+      this.resultsAction = __bind(this.resultsAction, this);
+  
+      this.matchAction = __bind(this.matchAction, this);
+  
+      this.renderValues = __bind(this.renderValues, this);
+  
+      this.render = __bind(this.render, this);
+      return ChartPopoverView.__super__.constructor.apply(this, arguments);
     }
   
-    ChartView.prototype.events = {
-      "change div.form select": "formAction"
+    ChartPopoverView.prototype.descriptionLimit = 50;
+  
+    ChartPopoverView.prototype.valuesLimit = 5;
+  
+    ChartPopoverView.prototype.events = {
+      "click a.match": "matchAction",
+      "click a.results": "resultsAction",
+      "click a.list": "listAction",
+      "click a.close": "close"
     };
   
-    ChartView.prototype.initialize = function(o) {
+    ChartPopoverView.prototype.initialize = function(o) {
       var k, v;
       for (k in o) {
         v = o[k];
@@ -1523,85 +1655,62 @@ factory = function(Backbone) {
       return this.render();
     };
   
-    ChartView.prototype.render = function() {
-      var chart, data, height, v, _i, _len, _ref;
-      $(this.el).html(this.template("chart", {
-        "title": this.options.title ? this.response.title : "",
-        "description": this.options.description ? this.response.description : "",
-        "notAnalysed": this.response.notAnalysed
+    ChartPopoverView.prototype.render = function() {
+      var values,
+        _this = this;
+      $(this.el).html(this.template("popover", {
+        "description": this.description,
+        "descriptionLimit": this.descriptionLimit,
+        "style": 'width:300px'
       }));
-      if (this.response.filterLabel != null) {
-        $(this.el).find('div.form form').append(this.template("extra", {
-          "label": this.response.filterLabel,
-          "possible": this.response.filters.split(','),
-          "selected": this.response.filterSelectedValue
-        }));
-      }
-      if (this.response.results.length > 1) {
-        data = [];
-        _ref = this.response.results.slice(1);
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          v = _ref[_i];
-          data.push({
-            'text': v[0],
-            'data': {
-              'Blues': v[1],
-              'Greens': v[2]
-            }
-          });
-        }
-        height = $(this.widget.el).height() - $(this.widget.el).find('header').height();
-        chart = new Charts.MultipleBars.Vertical({
-          'el': $(this.el).find("div.content"),
-          'data': data,
-          'width': 420,
-          'height': height,
-          'onclick': this.barAction
+      values = [];
+      this.imService.query(this.quickPq, function(q) {
+        return q.rows(function(response) {
+          var object, _i, _len;
+          for (_i = 0, _len = response.length; _i < _len; _i++) {
+            object = response[_i];
+            values.push((function(object) {
+              var column, _j, _len1;
+              for (_j = 0, _len1 = object.length; _j < _len1; _j++) {
+                column = object[_j];
+                if (column.length > 0) {
+                  return column;
+                }
+              }
+            })(object));
+          }
+          return _this.renderValues(values);
         });
-        return chart.render();
-      } else {
-        return $(this.el).find("div.content").html($(this.template("noresults")));
-      }
+      });
+      return this;
     };
   
-    ChartView.prototype.barAction = function(color, category, seriesIndex, value) {
-      var description, quickPq, resultsPq, series, _ref;
-      description = '';
-      resultsPq = this.response.pathQuery;
-      quickPq = this.response.simplePathQuery;
-      description += category;
-      resultsPq = resultsPq.replace("%category", category);
-      quickPq = quickPq.replace("%category", category);
-      description += ' ' + this.response.seriesLabels.split(',')[seriesIndex];
-      series = (_ref = this.response.seriesValues) != null ? _ref.split(',')[seriesIndex] : void 0;
-      resultsPq = resultsPq.replace("%series", series);
-      quickPq = resultsPq.replace("%series", series);
-      resultsPq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(resultsPq) : void 0;
-      quickPq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(quickPq) : void 0;
-      if (this.barView != null) {
-        this.barView.close();
-      }
-      if (description) {
-        return $(this.el).find('div.content').append((this.barView = new ChartPopoverView({
-          "description": description,
-          "template": this.template,
-          "resultsPq": resultsPq,
-          "resultsCb": this.options.resultsCb,
-          "listCb": this.options.listCb,
-          "matchCb": this.options.matchCb,
-          "quickPq": quickPq,
-          "imService": this.widget.imService(),
-          "type": this.response.type
-        })).el);
-      }
+    ChartPopoverView.prototype.renderValues = function(values) {
+      return $(this.el).find('div.values').html(this.template("popover.values", {
+        'values': values,
+        'type': this.type,
+        'valuesLimit': this.valuesLimit
+      }));
     };
   
-    ChartView.prototype.formAction = function(e) {
-      this.widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value");
-      return this.widget.render();
+    ChartPopoverView.prototype.matchAction = function(e) {
+      this.matchCb($(e.target).text(), this.type);
+      return e.preventDefault();
     };
   
-    return ChartView;
+    ChartPopoverView.prototype.resultsAction = function() {
+      return this.resultsCb(this.resultsPq);
+    };
+  
+    ChartPopoverView.prototype.listAction = function() {
+      return this.listCb(this.resultsPq);
+    };
+  
+    ChartPopoverView.prototype.close = function() {
+      return $(this.el).remove();
+    };
+  
+    return ChartPopoverView;
   
   })(Backbone.View);
   
@@ -1827,115 +1936,6 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
-  /* Chart Widget bar onclick box.
-  */
-  
-  var ChartPopoverView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  ChartPopoverView = (function(_super) {
-  
-    __extends(ChartPopoverView, _super);
-  
-    ChartPopoverView.name = 'ChartPopoverView';
-  
-    function ChartPopoverView() {
-      this.close = __bind(this.close, this);
-  
-      this.listAction = __bind(this.listAction, this);
-  
-      this.resultsAction = __bind(this.resultsAction, this);
-  
-      this.matchAction = __bind(this.matchAction, this);
-  
-      this.renderValues = __bind(this.renderValues, this);
-  
-      this.render = __bind(this.render, this);
-      return ChartPopoverView.__super__.constructor.apply(this, arguments);
-    }
-  
-    ChartPopoverView.prototype.descriptionLimit = 50;
-  
-    ChartPopoverView.prototype.valuesLimit = 5;
-  
-    ChartPopoverView.prototype.events = {
-      "click a.match": "matchAction",
-      "click a.results": "resultsAction",
-      "click a.list": "listAction",
-      "click a.close": "close"
-    };
-  
-    ChartPopoverView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      return this.render();
-    };
-  
-    ChartPopoverView.prototype.render = function() {
-      var values,
-        _this = this;
-      $(this.el).html(this.template("popover", {
-        "description": this.description,
-        "descriptionLimit": this.descriptionLimit,
-        "style": 'width:300px'
-      }));
-      values = [];
-      this.imService.query(this.quickPq, function(q) {
-        return q.rows(function(response) {
-          var object, _i, _len;
-          for (_i = 0, _len = response.length; _i < _len; _i++) {
-            object = response[_i];
-            values.push((function(object) {
-              var column, _j, _len1;
-              for (_j = 0, _len1 = object.length; _j < _len1; _j++) {
-                column = object[_j];
-                if (column.length > 0) {
-                  return column;
-                }
-              }
-            })(object));
-          }
-          return _this.renderValues(values);
-        });
-      });
-      return this;
-    };
-  
-    ChartPopoverView.prototype.renderValues = function(values) {
-      return $(this.el).find('div.values').html(this.template("popover.values", {
-        'values': values,
-        'type': this.type,
-        'valuesLimit': this.valuesLimit
-      }));
-    };
-  
-    ChartPopoverView.prototype.matchAction = function(e) {
-      this.matchCb($(e.target).text(), this.type);
-      return e.preventDefault();
-    };
-  
-    ChartPopoverView.prototype.resultsAction = function() {
-      return this.resultsCb(this.resultsPq);
-    };
-  
-    ChartPopoverView.prototype.listAction = function() {
-      return this.listCb(this.resultsPq);
-    };
-  
-    ChartPopoverView.prototype.close = function() {
-      return $(this.el).remove();
-    };
-  
-    return ChartPopoverView;
-  
-  })(Backbone.View);
-  
-
   return {
 
     "InterMineWidget": InterMineWidget,
@@ -1946,10 +1946,10 @@ factory = function(Backbone) {
     "TableRowView": TableRowView,
     "TableView": TableView,
     "TablePopoverView": TablePopoverView,
-    "EnrichmentPopoverView": EnrichmentPopoverView,
     "ChartView": ChartView,
-    "EnrichmentView": EnrichmentView,
+    "EnrichmentPopoverView": EnrichmentPopoverView,
     "ChartPopoverView": ChartPopoverView,
+    "EnrichmentView": EnrichmentView,
 
   };
 };
