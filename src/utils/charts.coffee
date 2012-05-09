@@ -34,7 +34,7 @@ class Charts.MultipleBars.Vertical
             descWidth = width if width > descWidth
 
         # Reduce the chart space for chart and add some extra padding for the grid.
-        @width = @width - 15 - margin ; @height = @height - 25 - (descWidth * 0.707107)
+        @width = @width - 15 - margin ; @height = @height - 30 - (descWidth * 0.5)
 
         # Get the domain.
         domain = @_domain()
@@ -85,8 +85,8 @@ class Charts.MultipleBars.Vertical
             # Update the distance from left for description text.
             descriptions.select(".g#{i}")
             .attr('x', margin + left + width)
-            .attr('y', @height + 15)
-            .attr("transform", "rotate(-45 #{margin + left + width} #{@height + 15})")
+            .attr('y', @height + 20)
+            .attr("transform", "rotate(-30 #{margin + left + width} #{@height + 20})")
 
     # Get the domain.
     _domain: () ->

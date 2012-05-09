@@ -241,7 +241,7 @@ Charts.MultipleBars.Vertical = (function() {
       }
     }
     this.width = this.width - 15 - margin;
-    this.height = this.height - 25 - (descWidth * 0.707107);
+    this.height = this.height - 30 - (descWidth * 0.5);
     domain = this._domain();
     g = this.chart.append("svg:g").attr("class", "grid");
     isWhole = this._isWhole();
@@ -268,7 +268,7 @@ Charts.MultipleBars.Vertical = (function() {
         g.append("svg:rect").attr("class", series).attr('x', margin + left).attr('y', this.height - height).attr('width', width).attr('height', height);
         j++;
       }
-      _results.push(descriptions.select(".g" + i).attr('x', margin + left + width).attr('y', this.height + 15).attr("transform", "rotate(-45 " + (margin + left + width) + " " + (this.height + 15) + ")"));
+      _results.push(descriptions.select(".g" + i).attr('x', margin + left + width).attr('y', this.height + 20).attr("transform", "rotate(-30 " + (margin + left + width) + " " + (this.height + 20) + ")"));
     }
     return _results;
   };
