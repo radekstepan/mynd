@@ -79,12 +79,17 @@ class Charts.MultipleBars.Vertical
                     .attr("class", "series #{series}")
 
                 # Append the actual rectangle.
-                s.append("svg:rect")
+                bar = s.append("svg:rect")
                 .attr("class",  "bar q#{color}-9")
                 .attr('x',      margin + left)
                 .attr('y',      @height - height)
                 .attr('width',  width)
                 .attr('height', height)
+
+                # Attach onclick event.
+                if @onclick?
+                    do (bar, series, group, j, value) =>
+                        bar.on 'click', => @onclick series, group['text'], j, value
 
                 j++
             
