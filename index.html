@@ -10,18 +10,24 @@
 
         <!-- Twitter Bootstrap -->
         <link href="css/bootstrap.css" rel="stylesheet">
-
-        <!-- ColorBrewer -->
-        <link href="css/colorbrewer.css" rel="stylesheet">
         
         <style>
-            .widget { margin:20px 10px; }
+            .widget { margin:20px 10px; border-bottom:1px dashed #DDD; }
             /* d3.js charts */
             .widget .canvas { shape-rendering:crispEdges; }
             .widget .canvas rect { stroke:#FFF; }
             .widget .canvas line { stroke:#CCC; }
             .widget .canvas line.dashed { stroke:#EEE; }
             .widget .canvas text { font-family:Georgia; fill:#555; font-size:11px; }
+            /* ColorBrewer Blues, Greens */
+            .widget .canvas rect.bar.a.q0-4 { fill:#eff3ff }
+            .widget .canvas rect.bar.a.q1-4 { fill:#bdd7e7 }
+            .widget .canvas rect.bar.a.q2-4 { fill:#6baed6 }
+            .widget .canvas rect.bar.a.q3-4 { fill:#2171b5 }
+            .widget .canvas rect.bar.b.q0-4 { fill:#edf8e9 }
+            .widget .canvas rect.bar.b.q1-4 { fill:#bae4b3 }
+            .widget .canvas rect.bar.b.q2-4 { fill:#74c476 }
+            .widget .canvas rect.bar.b.q3-4 { fill:#238b45 }
         </style>
 
         <!-- intermine api loader -->

@@ -90,12 +90,9 @@ class Charts.MultipleBars.Vertical
                 # ColorBrewer band.
                 color =  domain['color'](value).toFixed(0)
 
-                # Create a wrapper for series so we can use ColorBrewer.
-                s = g.append("svg:g").attr("class", "series #{series}")
-
                 # Append the actual rectangle.
-                bar = s.append("svg:rect")
-                .attr("class",  "bar q#{color}-#{@colorbrewer}")
+                bar = g.append("svg:rect")
+                .attr("class",  "bar #{series} q#{color}-#{@colorbrewer}")
                 .attr('x',      margin + left)
                 .attr('y',      @height - height)
                 .attr('width',  width)
@@ -111,8 +108,8 @@ class Charts.MultipleBars.Vertical
 
                 # Attach onclick event.
                 if @onclick?
-                    do (bar, series, group, j, value) =>
-                        bar.on 'click', => @onclick series, group['text'], j, value
+                    do (bar, group, j, value) =>
+                        bar.on 'click', => @onclick group['text'], j, value
 
                 j++
             

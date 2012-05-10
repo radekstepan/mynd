@@ -31,9 +31,8 @@ class ChartView extends Backbone.View
                 data.push
                     'text': v[0]
                     'data':
-                        # Two series specifying ColorBrewer classes.
-                        'Blues':  v[1]
-                        'Greens': v[2]
+                        'a': v[1]
+                        'b': v[2]
 
             # Determine the height of the svg canvas it should occupy.
             height = $(@widget.el).height() - $(@widget.el).find('header').height()
@@ -53,7 +52,7 @@ class ChartView extends Backbone.View
             $(@el).find("div.content").html $ @template "noresults"
 
     # Event listener on bar chart click.
-    barAction: (color, category, seriesIndex, value) =>
+    barAction: (category, seriesIndex, value) =>
         # Determine which bar we are in.
         description = '' ; resultsPq = @response.pathQuery ; quickPq = @response.simplePathQuery
         
