@@ -1,6 +1,6 @@
 Charts = { }
 
-class Charts.TwoBars
+class Charts.Bars
 
     # Number of ColorBrewer classes.
     colorbrewer: 4
@@ -116,9 +116,6 @@ class Charts.TwoBars
                 .attr("text-anchor", "middle")
                 .text value
 
-                # Add an onhover showing tooltip description text.
-                g.append("svg:title").text group['text']
-
                 # Attach onclick event.
                 if @onclick?
                     do (bar, group, j, value) =>
@@ -129,6 +126,9 @@ class Charts.TwoBars
 
                 j++
             
+            # Add an onhover showing tooltip description text.
+            g.append("svg:title").text group['text']
+
             # Update the position of the description text wrapping `g` element.
             x = margin + left + width + 10 ; y = @height + 20
             descG = descriptions.select(".g#{i}")
