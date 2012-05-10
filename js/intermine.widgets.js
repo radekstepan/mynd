@@ -360,16 +360,34 @@ Charts.Legend = (function() {
   }
 
   Legend.prototype.render = function() {
-    var ul;
+    var ul,
+      _this = this;
     $(this.el).append(ul = $('<ul/>'));
     ul.append($('<li/>', {
       'class': 'a',
-      'html': this.series['a']
+      'html': this.series['a'],
+      'click': function(e) {
+        return _this._clickAction(e.target, 'a');
+      }
     }));
     return ul.append($('<li/>', {
       'class': 'b',
-      'html': this.series['b']
+      'html': this.series['b'],
+      'click': function(e) {
+        return _this._clickAction(e.target, 'b');
+      }
     }));
+  };
+
+  Legend.prototype._clickAction = function(el, series) {
+    $(el).toggleClass('disabled');
+    return d3.select(this.chart[0]).selectAll("rect.bar." + series).attr('fill-opacity', function() {
+      if ($(el).hasClass('disabled')) {
+        return 0.2;
+      } else {
+        return 1;
+      }
+    });
   };
 
   return Legend;
@@ -1550,6 +1568,7 @@ factory = function(Backbone) {
         }
         legend = new Charts.Legend({
           'el': $(this.el).find("div.content div.legend"),
+          'chart': $(this.el).find("div.content div.chart"),
           'series': {
             'a': this.response.results[0][1],
             'b': this.response.results[0][2]
@@ -1557,7 +1576,6 @@ factory = function(Backbone) {
         });
         legend.render();
         height = $(this.widget.el).height() - $(this.widget.el).find('header').height() - $(this.widget.el).find('div.content div.legend').height();
-        console.log($(this.widget.el).height(), $(this.widget.el).find('header').height(), $(this.widget.el).find('div.content div.legend').height());
         chart = new Charts.TwoBars({
           'el': $(this.el).find("div.content div.chart"),
           'data': data,

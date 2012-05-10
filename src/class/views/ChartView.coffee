@@ -36,7 +36,8 @@ class ChartView extends Backbone.View
 
             # Render the chart legend
             legend = new Charts.Legend(
-                'el': $(@el).find("div.content div.legend")
+                'el':     $(@el).find("div.content div.legend")
+                'chart' : $(@el).find("div.content div.chart")
                 'series':
                     'a': @response.results[0][1]
                     'b': @response.results[0][2]
@@ -45,8 +46,6 @@ class ChartView extends Backbone.View
 
             # Determine the height of the svg canvas it should occupy.
             height = $(@widget.el).height() - $(@widget.el).find('header').height() - $(@widget.el).find('div.content div.legend').height()
-
-            console.log $(@widget.el).height(), $(@widget.el).find('header').height(), $(@widget.el).find('div.content div.legend').height()
 
             # Render the chart using d3.js
             chart = new Charts.TwoBars(

@@ -158,8 +158,19 @@ class Charts.Legend
         ul.append $('<li/>',
             'class': 'a'
             'html':  @series['a']
+            'click': (e) => @_clickAction e.target, 'a'
         )
         ul.append $('<li/>',
             'class': 'b'
             'html':  @series['b']
+            'click': (e) => @_clickAction e.target, 'b'
         )
+
+    # Onclick on legend series.
+    _clickAction: (el, series) ->
+        # Toggle the disabled state.
+        $(el).toggleClass 'disabled'
+
+        # Change the opacity to 'toggle' the series bars.
+        d3.select(@chart[0]).selectAll("rect.bar.#{series}")
+        .attr('fill-opacity', () -> if $(el).hasClass 'disabled' then 0.2 else 1 )
