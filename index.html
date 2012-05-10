@@ -12,13 +12,19 @@
         <link href="css/bootstrap.css" rel="stylesheet">
         
         <style>
-            .widget { margin:20px 10px; border-bottom:1px dashed #DDD; }
+            .widget { margin:20px 10px; }
             /* d3.js charts */
             .widget .canvas { shape-rendering:crispEdges; }
             .widget .canvas rect { stroke:#FFF; }
             .widget .canvas line { stroke:#CCC; }
             .widget .canvas line.dashed { stroke:#EEE; }
             .widget .canvas text { font-family:Georgia; fill:#555; font-size:11px; }
+            /* legend */
+            .widget .legend ul { margin:0; text-align:center; }
+            .widget .legend ul li { display:inline; margin:0 10px; }
+            .widget .legend ul li:before { content:" "; display:inline-block; width:10px; height:10px; margin-right:4px; }
+            .widget .legend ul li.a:before { background:#2171b5; }
+            .widget .legend ul li.b:before { background:#238b45; }
             /* ColorBrewer Blues, Greens */
             .widget .canvas rect.bar.a.q0-4 { fill:#eff3ff }
             .widget .canvas rect.bar.a.q1-4 { fill:#bdd7e7 }

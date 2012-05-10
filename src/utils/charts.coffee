@@ -1,7 +1,6 @@
-Charts = { 'MultipleBars': {} }
+Charts = { }
 
-
-class Charts.MultipleBars.Vertical
+class Charts.TwoBars
 
     # Number of ColorBrewer classes.
     colorbrewer: 4
@@ -9,6 +8,9 @@ class Charts.MultipleBars.Vertical
     # Expand object values on us.
     constructor: (o) ->
         @[k] = v for k, v of o
+
+        # Update the height of the outer element.
+        $(@el).css 'height', @height
 
         # Create the chart wrapper.
         @canvas = d3.select(@el[0])
@@ -143,3 +145,21 @@ class Charts.MultipleBars.Vertical
             for key, value of group['data']
                 return false if parseInt(value) isnt value
         true
+
+
+class Charts.Legend
+
+    # Expand object values on us.
+    constructor: (o) ->
+        @[k] = v for k, v of o
+
+    render: () ->
+        $(@el).append ul = $('<ul/>')
+        ul.append $('<li/>',
+            'class': 'a'
+            'html':  @series['a']
+        )
+        ul.append $('<li/>',
+            'class': 'b'
+            'html':  @series['b']
+        )
