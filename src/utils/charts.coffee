@@ -5,6 +5,9 @@ class Charts.Bars
     # Number of ColorBrewer classes.
     colorbrewer: 4
 
+    # Assumed height of text.
+    textHeight: 10
+
     # Expand object values on us.
     constructor: (o) ->
         @[k] = v for k, v of o
@@ -16,14 +19,9 @@ class Charts.Bars
         @canvas = d3.select(@el[0])
         .append('svg:svg') # append svg
         .attr('class', 'canvas')
-        .attr('width', @width)
-        .attr('height', @height)
 
     render: () ->
         margin = 10
-
-        # Chart `g`.
-        @chart = @canvas.append("svg:g").attr("class", "chart").attr("transform", "translate(15,10)")
 
         # Descriptions.
         descWidth = -Infinity
@@ -47,41 +45,42 @@ class Charts.Bars
             g.append("svg:title").text group['text']
 
         # Reduce the chart space for chart and add some extra padding for the grid.
-        @width = @width - 15 - margin ; @height = @height - 23 - (descWidth * 0.5)
+        @width = @width - 15 - margin ; @height = @height - @textHeight - (descWidth * 0.5)
 
         # Get the domain.
         domain = @_domain()
 
         # Draw the grid of whole numbers.
-        g = @chart.append("svg:g").attr("class", "grid")
+        g = @canvas.append("svg:g").attr("class", "grid")
         isWhole = @_isWhole()
 
+        # Axis numbers
+        numberWidth = -Infinity
         for tick in domain['y'].ticks(10)
             if (parseInt(tick) is tick) or (!isWhole)
-                # Horizontal line.
-                g.append("svg:line")
-                .attr("class", "line")
-                .attr("y1", domain['y'](tick)).attr("y2", domain['y'](tick))
-                .attr("x1", margin).attr("x2", @width)
-
-                # Description
-                g.append("svg:text")
-                .attr("class", "rule")
+                text = g.append("svg:text")
+                .attr("class", "tick")
                 .attr("x", 0)
-                .attr("dx", -3)
                 .attr("y", @height - domain['y'](tick))
-                .attr("text-anchor", "middle")
+                .attr("text-anchor", "begin")
                 .text tick.toFixed(0)
 
-        # Vertical lines.
-        for i, group of @data
-            left = margin + domain['x'](i) + domain['x'].rangeBand() / 2
+                # Update the max width.
+                width = text.node().getComputedTextLength()
+                numberWidth = width if width > numberWidth
 
-            g.append("svg:line")
-            .attr("class", "line dashed")
-            .attr("x1", left).attr("x2", left)
-            .attr("y1", 0).attr("y2", @height)
-            .attr("style", "stroke-dasharray: 10, 5;")
+        # Horizontal lines.
+        for tick in domain['y'].ticks(10)
+            if (parseInt(tick) is tick) or (!isWhole)
+                y = @height - domain['y'](tick)
+                
+                g.append("svg:line")
+                .attr("class", "line")
+                .attr("y1", y).attr("y2", y)
+                .attr("x1", numberWidth).attr("x2", @width)
+
+        # Chart `g`.
+        @chart = @canvas.append("svg:g").attr("class", "chart")
 
         # The bars.
         bars = @chart.append("svg:g").attr("class", "bars") ; values = @chart.append("svg:g").attr("class", "values")
@@ -91,6 +90,15 @@ class Charts.Bars
             .append("svg:g")
             .attr("class", "group g#{i}")
             
+            # Place vertical line.
+            left = margin + domain['x'](i) + domain['x'].rangeBand() / 2
+
+            g.append("svg:line")
+            .attr("class", "line dashed")
+            .attr("x1", left).attr("x2", left)
+            .attr("y1", 0).attr("y2", @height)
+            .attr("style", "stroke-dasharray: 10, 5;")
+
             j = 0 ; end = 0
             for series, value of group['data']
                 # Calculate the distances.
@@ -109,12 +117,25 @@ class Charts.Bars
                 .attr('height', height)
 
                 # Add a text value.
-                values.append("svg:text")
-                .attr("class", "value")
+                w = values.append("svg:g").attr('class', "value g#{i} #{series}")
+
+                y = parseFloat @height - height - 1
+                
+                text = w.append("svg:text")
                 .attr('x', margin + left + (width / 2))
-                .attr('y', @height - height - 1)
                 .attr("text-anchor", "middle")
                 .text value
+
+                # Maybe the value is too 'high' and would be left off the grid?
+                if y < 15
+                    text.attr('y', y + 15)
+                    text.attr("class", "value on")
+                else
+                    text.attr('y', y)
+                    text.attr("class", "value above")
+
+                # Add a title element for the value.
+                w.append("svg:title").text value
 
                 # Attach onclick event.
                 if @onclick?
@@ -130,7 +151,7 @@ class Charts.Bars
             g.append("svg:title").text group['text']
 
             # Update the position of the description text wrapping `g` element.
-            x = margin + left + width + 10 ; y = @height + 20
+            x = numberWidth + left + width ; y = @height + @textHeight
             descG = descriptions.select(".g#{i}")
             .attr('transform', "translate(#{x},#{y})")
             
@@ -139,7 +160,7 @@ class Charts.Bars
                 desc = descG.select("text")
                 desc.attr("transform", "rotate(-30 0 0)")
                 # Maybe still, it is one of the first descriptions and is longer than the distance from left (margin + x + width + translate).
-                while (desc.node().getComputedTextLength() * 0.866025) > (end + 10)
+                while (desc.node().getComputedTextLength() * 0.866025) > end
                     # Trim the text.
                     desc.text desc.text().replace('...', '').split('').reverse()[1..].reverse().join('') + '...'
 

@@ -189,6 +189,23 @@ type.isUndefined = (function(_super) {
 
 })(type.Root);
 
+/* Merge properties of 2 dictionaries.
+*/
+
+var merge;
+
+merge = function(child, parent) {
+  var key;
+  for (key in parent) {
+    if (!(child[key] != null)) {
+      if (Object.prototype.hasOwnProperty.call(parent, key)) {
+        child[key] = parent[key];
+      }
+    }
+  }
+  return child;
+};
+
 var Charts;
 
 Charts = {};
@@ -199,6 +216,8 @@ Charts.Bars = (function() {
 
   Bars.prototype.colorbrewer = 4;
 
+  Bars.prototype.textHeight = 10;
+
   function Bars(o) {
     var k, v;
     for (k in o) {
@@ -206,14 +225,13 @@ Charts.Bars = (function() {
       this[k] = v;
     }
     $(this.el).css('height', this.height);
-    this.canvas = d3.select(this.el[0]).append('svg:svg').attr('class', 'canvas').attr('width', this.width).attr('height', this.height);
+    this.canvas = d3.select(this.el[0]).append('svg:svg').attr('class', 'canvas');
   }
 
   Bars.prototype.render = function() {
-    var bar, bars, color, desc, descG, descWidth, descriptions, domain, end, g, group, height, i, isWhole, j, left, margin, series, text, tick, value, values, width, x, y, _i, _len, _ref, _ref1, _ref2, _ref3, _ref4, _results,
+    var bar, bars, color, desc, descG, descWidth, descriptions, domain, end, g, group, height, i, isWhole, j, left, margin, numberWidth, series, text, tick, value, values, w, width, x, y, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4, _results,
       _this = this;
     margin = 10;
-    this.chart = this.canvas.append("svg:g").attr("class", "chart").attr("transform", "translate(15,10)");
     descWidth = -Infinity;
     descriptions = this.canvas.append('svg:g').attr('class', 'descriptions');
     _ref = this.data;
@@ -228,24 +246,31 @@ Charts.Bars = (function() {
       g.append("svg:title").text(group['text']);
     }
     this.width = this.width - 15 - margin;
-    this.height = this.height - 23 - (descWidth * 0.5);
+    this.height = this.height - this.textHeight - (descWidth * 0.5);
     domain = this._domain();
-    g = this.chart.append("svg:g").attr("class", "grid");
+    g = this.canvas.append("svg:g").attr("class", "grid");
     isWhole = this._isWhole();
+    numberWidth = -Infinity;
     _ref1 = domain['y'].ticks(10);
     for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
       tick = _ref1[_i];
       if ((parseInt(tick) === tick) || (!isWhole)) {
-        g.append("svg:line").attr("class", "line").attr("y1", domain['y'](tick)).attr("y2", domain['y'](tick)).attr("x1", margin).attr("x2", this.width);
-        g.append("svg:text").attr("class", "rule").attr("x", 0).attr("dx", -3).attr("y", this.height - domain['y'](tick)).attr("text-anchor", "middle").text(tick.toFixed(0));
+        text = g.append("svg:text").attr("class", "tick").attr("x", 0).attr("y", this.height - domain['y'](tick)).attr("text-anchor", "begin").text(tick.toFixed(0));
+        width = text.node().getComputedTextLength();
+        if (width > numberWidth) {
+          numberWidth = width;
+        }
       }
     }
-    _ref2 = this.data;
-    for (i in _ref2) {
-      group = _ref2[i];
-      left = margin + domain['x'](i) + domain['x'].rangeBand() / 2;
-      g.append("svg:line").attr("class", "line dashed").attr("x1", left).attr("x2", left).attr("y1", 0).attr("y2", this.height).attr("style", "stroke-dasharray: 10, 5;");
+    _ref2 = domain['y'].ticks(10);
+    for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+      tick = _ref2[_j];
+      if ((parseInt(tick) === tick) || (!isWhole)) {
+        y = this.height - domain['y'](tick);
+        g.append("svg:line").attr("class", "line").attr("y1", y).attr("y2", y).attr("x1", numberWidth).attr("x2", this.width);
+      }
     }
+    this.chart = this.canvas.append("svg:g").attr("class", "chart");
     bars = this.chart.append("svg:g").attr("class", "bars");
     values = this.chart.append("svg:g").attr("class", "values");
     _ref3 = this.data;
@@ -253,6 +278,8 @@ Charts.Bars = (function() {
     for (i in _ref3) {
       group = _ref3[i];
       g = bars.append("svg:g").attr("class", "group g" + i);
+      left = margin + domain['x'](i) + domain['x'].rangeBand() / 2;
+      g.append("svg:line").attr("class", "line dashed").attr("x1", left).attr("x2", left).attr("y1", 0).attr("y2", this.height).attr("style", "stroke-dasharray: 10, 5;");
       j = 0;
       end = 0;
       _ref4 = group['data'];
@@ -263,7 +290,17 @@ Charts.Bars = (function() {
         height = domain['y'](value);
         color = domain['color'](value).toFixed(0);
         bar = g.append("svg:rect").attr("class", "bar " + series + " q" + color + "-" + this.colorbrewer).attr('x', margin + left).attr('y', this.height - height).attr('width', width).attr('height', height);
-        values.append("svg:text").attr("class", "value").attr('x', margin + left + (width / 2)).attr('y', this.height - height - 1).attr("text-anchor", "middle").text(value);
+        w = values.append("svg:g").attr('class', "value g" + i + " " + series);
+        y = parseFloat(this.height - height - 1);
+        text = w.append("svg:text").attr('x', margin + left + (width / 2)).attr("text-anchor", "middle").text(value);
+        if (y < 15) {
+          text.attr('y', y + 15);
+          text.attr("class", "value on");
+        } else {
+          text.attr('y', y);
+          text.attr("class", "value above");
+        }
+        w.append("svg:title").text(value);
         if (this.onclick != null) {
           (function(bar, group, j, value) {
             return bar.on('click', function() {
@@ -275,8 +312,8 @@ Charts.Bars = (function() {
         j++;
       }
       g.append("svg:title").text(group['text']);
-      x = margin + left + width + 10;
-      y = this.height + 20;
+      x = numberWidth + left + width;
+      y = this.height + this.textHeight;
       descG = descriptions.select(".g" + i).attr('transform', "translate(" + x + "," + y + ")");
       if (descWidth > width) {
         desc = descG.select("text");
@@ -284,7 +321,7 @@ Charts.Bars = (function() {
         _results.push((function() {
           var _results1;
           _results1 = [];
-          while ((desc.node().getComputedTextLength() * 0.866025) > (end + 10)) {
+          while ((desc.node().getComputedTextLength() * 0.866025) > end) {
             _results1.push(desc.text(desc.text().replace('...', '').split('').reverse().slice(1).reverse().join('') + '...'));
           }
           return _results1;
@@ -392,23 +429,6 @@ Charts.Legend = (function() {
   return Legend;
 
 })();
-
-/* Merge properties of 2 dictionaries.
-*/
-
-var merge;
-
-merge = function(child, parent) {
-  var key;
-  for (key in parent) {
-    if (!(child[key] != null)) {
-      if (Object.prototype.hasOwnProperty.call(parent, key)) {
-        child[key] = parent[key];
-      }
-    }
-  }
-  return child;
-};
 
 /* Create file download with custom content.
 */
@@ -1595,7 +1615,7 @@ factory = function(Backbone) {
         chart = new Charts.Bars({
           'el': $(this.el).find("div.content div.chart"),
           'data': data,
-          'width': 420,
+          'width': 460,
           'height': height,
           'onclick': this.barAction
         });

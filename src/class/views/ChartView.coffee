@@ -51,7 +51,7 @@ class ChartView extends Backbone.View
             chart = new Charts.Bars(
                 'el':      $(@el).find("div.content div.chart")
                 'data':    data
-                'width':   420
+                'width':   460
                 'height':  height
                 'onclick': @barAction
             )
