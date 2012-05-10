@@ -227,7 +227,7 @@ Charts.TwoBars = (function() {
   }
 
   TwoBars.prototype.render = function() {
-    var bar, bars, color, desc, descWidth, descriptions, domain, g, group, height, i, isWhole, j, left, margin, series, text, tick, value, values, width, _i, _len, _ref, _ref1, _ref2, _ref3, _ref4, _results,
+    var bar, bars, color, desc, descG, descWidth, descriptions, domain, end, g, group, height, i, isWhole, j, left, margin, series, text, tick, value, values, width, x, y, _i, _len, _ref, _ref1, _ref2, _ref3, _ref4, _results,
       _this = this;
     margin = 10;
     this.chart = this.canvas.append("svg:g").attr("class", "chart").attr("transform", "translate(15,10)");
@@ -236,14 +236,16 @@ Charts.TwoBars = (function() {
     _ref = this.data;
     for (i in _ref) {
       group = _ref[i];
-      text = descriptions.append("svg:text").attr("class", "text group g" + i).attr("text-anchor", "end").text(group['text']);
+      g = descriptions.append("svg:g").attr("class", "group g" + i);
+      text = g.append("svg:text").attr("class", "text").attr("text-anchor", "end").text(group['text']);
       width = text.node().getComputedTextLength();
       if (width > descWidth) {
         descWidth = width;
       }
+      g.append("svg:title").text(group['text']);
     }
     this.width = this.width - 15 - margin;
-    this.height = this.height - 30 - (descWidth * 0.5);
+    this.height = this.height - 23 - (descWidth * 0.5);
     domain = this._domain();
     g = this.chart.append("svg:g").attr("class", "grid");
     isWhole = this._isWhole();
@@ -269,6 +271,7 @@ Charts.TwoBars = (function() {
       group = _ref3[i];
       g = bars.append("svg:g").attr("class", "group g" + i);
       j = 0;
+      end = 0;
       _ref4 = group['data'];
       for (series in _ref4) {
         value = _ref4[series];
@@ -278,6 +281,7 @@ Charts.TwoBars = (function() {
         color = domain['color'](value).toFixed(0);
         bar = g.append("svg:rect").attr("class", "bar " + series + " q" + color + "-" + this.colorbrewer).attr('x', margin + left).attr('y', this.height - height).attr('width', width).attr('height', height);
         values.append("svg:text").attr("class", "value").attr('x', margin + left + (width / 2)).attr('y', this.height - height - 1).attr("text-anchor", "middle").text(value);
+        g.append("svg:title").text(group['text']);
         if (this.onclick != null) {
           (function(bar, group, j, value) {
             return bar.on('click', function() {
@@ -285,11 +289,23 @@ Charts.TwoBars = (function() {
             });
           })(bar, group, j, value);
         }
+        end = left + width + margin;
         j++;
       }
-      desc = descriptions.select(".g" + i).attr('x', margin + left + width + 10).attr('y', this.height + 20);
+      x = margin + left + width + 10;
+      y = this.height + 20;
+      descG = descriptions.select(".g" + i).attr('transform', "translate(" + x + "," + y + ")");
       if (descWidth > width) {
-        _results.push(desc.attr("transform", "rotate(-30 " + (margin + left + width + 10) + " " + (this.height + 20) + ")"));
+        desc = descG.select("text");
+        desc.attr("transform", "rotate(-30 0 0)");
+        _results.push((function() {
+          var _results1;
+          _results1 = [];
+          while ((desc.node().getComputedTextLength() * 0.866025) > (end + 10)) {
+            _results1.push(desc.text(desc.text().replace('...', '').split('').reverse().slice(1).reverse().join('') + '...'));
+          }
+          return _results1;
+        })());
       } else {
         _results.push(void 0);
       }

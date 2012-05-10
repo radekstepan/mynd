@@ -12,10 +12,10 @@
         <link href="css/bootstrap.css" rel="stylesheet">
         
         <style>
-            .widget { margin:20px 10px; }
+            .widget { margin:20px 10px; border-bottom:1px solid #EEE; }
             /* d3.js charts */
             .widget .canvas { shape-rendering:crispEdges; }
-            .widget .canvas rect { stroke:#FFF; }
+            .widget .canvas rect { stroke:#FFF; cursor:pointer; }
             .widget .canvas line { stroke:#CCC; }
             .widget .canvas line.dashed { stroke:#EEE; }
             .widget .canvas text { font-family:Georgia; fill:#555; font-size:11px; }
@@ -64,8 +64,8 @@
             </div>
 
             <div class="row">
-                <div id="one" class="widget blues span6"></div>
-                <div id="two" class="widget blues span6"></div>
+                <div id="one" class="widget span6"></div>
+                <div id="two" class="widget span6"></div>
             </div>
             <div id="widgets-genes" class="row"></div>
             <div id="widgets-proteins" class="row"></div>
@@ -82,8 +82,8 @@
                 /* New Widgets client. */
                 var Widgets = new intermine.widgets(mine + "/service/");
 
-                Widgets.chart('flyfish', 'demo-genes', '#one');
-                Widgets.chart('chromosome_distribution_for_gene', 'demo-genes', '#two');
+                Widgets.chart('bdgp', 'demo-genes', '#one');
+                Widgets.chart('flyatlas_for_gene', 'demo-genes', '#two');
             })();
             </script>
 

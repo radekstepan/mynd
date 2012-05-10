@@ -29,8 +29,13 @@ class Charts.TwoBars
         descWidth = -Infinity
         descriptions = @canvas.append('svg:g').attr('class', 'descriptions')
         for i, group of @data
-            text = descriptions.append("svg:text")
-                .attr("class", "text group g#{i}")
+            # Wrapper for the text and title.
+            g = descriptions.append("svg:g")
+            .attr("class", "group g#{i}")
+            
+            # Text.
+            text = g.append("svg:text")
+                .attr("class", "text")
                 .attr("text-anchor", "end")
                 .text(group['text'])
 
@@ -38,8 +43,11 @@ class Charts.TwoBars
             width = text.node().getComputedTextLength()
             descWidth = width if width > descWidth
 
+            # Add an onhover description title.
+            g.append("svg:title").text group['text']
+
         # Reduce the chart space for chart and add some extra padding for the grid.
-        @width = @width - 15 - margin ; @height = @height - 30 - (descWidth * 0.5)
+        @width = @width - 15 - margin ; @height = @height - 23 - (descWidth * 0.5)
 
         # Get the domain.
         domain = @_domain()
@@ -83,7 +91,7 @@ class Charts.TwoBars
             .append("svg:g")
             .attr("class", "group g#{i}")
             
-            j = 0
+            j = 0 ; end = 0
             for series, value of group['data']
                 # Calculate the distances.
                 width =  domain['x'].rangeBand() / 2
@@ -108,20 +116,32 @@ class Charts.TwoBars
                 .attr("text-anchor", "middle")
                 .text value
 
+                # Add an onhover showing tooltip description text.
+                g.append("svg:title").text group['text']
+
                 # Attach onclick event.
                 if @onclick?
                     do (bar, group, j, value) =>
                         bar.on 'click', => @onclick group['text'], j, value
 
+                # Save the total distance from the left till the (right) end of the bar.
+                end = left + width + margin
+
                 j++
             
-            # Update the distance from left for description text.
-            desc = descriptions.select(".g#{i}")
-            .attr('x', margin + left + width + 10)
-            .attr('y', @height + 20)
+            # Update the position of the description text wrapping `g` element.
+            x = margin + left + width + 10 ; y = @height + 20
+            descG = descriptions.select(".g#{i}")
+            .attr('transform', "translate(#{x},#{y})")
             
             # (A better) naive fce to determine if we should rotate the text.
-            if descWidth > width then desc.attr("transform", "rotate(-30 #{margin + left + width + 10} #{@height + 20})")
+            if descWidth > width
+                desc = descG.select("text")
+                desc.attr("transform", "rotate(-30 0 0)")
+                # Maybe still, it is one of the first descriptions and is longer than the distance from left (margin + x + width + translate).
+                while (desc.node().getComputedTextLength() * 0.866025) > (end + 10)
+                    # Trim the text.
+                    desc.text desc.text().replace('...', '').split('').reverse()[1..].reverse().join('') + '...'
 
     # Get the domain.
     _domain: () ->
