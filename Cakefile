@@ -205,9 +205,14 @@ main = (callback) ->
             for index, item of result
                 if item instanceof Array then output.push sub for sub in item else output.push item
         
-        # Write them all at once
-        write MAIN.OUTPUT, output.join "\n"
+        output = output.join "\n"
+
+        # Write them all at once.
+        write MAIN.OUTPUT, output
         
+        # Minify.
+        write MAIN.OUTPUT.replace('.js', '.min.js'), uglify output
+
         # We are done.
         console.log "#{COLORS.GREEN}Done#{COLORS.DEFAULT}"
 
