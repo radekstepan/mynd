@@ -216,9 +216,13 @@ Chart.Column = (function() {
 
   Column.name = 'Column';
 
+  Column.prototype.isStacked = false;
+
   Column.prototype.colorbrewer = 4;
 
   Column.prototype.textHeight = 10;
+
+  Column.prototype.pisvejc = 2;
 
   Column.prototype.ticks = {
     'maxWidth': -Infinity,
@@ -236,24 +240,43 @@ Chart.Column = (function() {
   };
 
   function Column(o) {
-    var group, k, key, v, value, _i, _len, _ref, _ref1;
+    var group, groupValue, k, key, v, value, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3;
     for (k in o) {
       v = o[k];
       this[k] = v;
     }
     this.useWholeNumbers = true;
     this.maxValue = -Infinity;
-    _ref = this.data;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      group = _ref[_i];
-      _ref1 = group.data;
-      for (key in _ref1) {
-        value = _ref1[key];
-        if (parseInt(value) !== value) {
-          this.useWholeNumbers = false;
+    if (this.isStacked) {
+      _ref = this.data;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        group = _ref[_i];
+        groupValue = 0;
+        _ref1 = group.data;
+        for (key in _ref1) {
+          value = _ref1[key];
+          if (parseInt(value) !== value) {
+            this.useWholeNumbers = false;
+          }
+          groupValue = groupValue + value;
         }
-        if (value > this.maxValue) {
-          this.maxValue = value;
+        if (groupValue > this.maxValue) {
+          this.maxValue = groupValue;
+        }
+      }
+    } else {
+      _ref2 = this.data;
+      for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+        group = _ref2[_j];
+        _ref3 = group.data;
+        for (key in _ref3) {
+          value = _ref3[key];
+          if (parseInt(value) !== value) {
+            this.useWholeNumbers = false;
+          }
+          if (value > this.maxValue) {
+            this.maxValue = value;
+          }
         }
       }
     }
@@ -262,7 +285,7 @@ Chart.Column = (function() {
   }
 
   Column.prototype.render = function() {
-    var bar, barHeight, barWidth, bars, color, desc, descG, domain, g, group, index, series, t, text, tick, value, values, w, width, x, y, _fn, _i, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1,
+    var bar, barHeight, barWidth, bars, color, desc, descG, domain, g, group, index, previousHeight, series, t, text, tick, value, values, w, width, x, y, _i, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1,
       _this = this;
     this.descriptions = this.canvas.append('svg:g').attr('class', 'descriptions');
     _ref = this.data;
@@ -324,37 +347,63 @@ Chart.Column = (function() {
     bars = this.chart.append("svg:g").attr("class", "bars");
     values = this.chart.append("svg:g").attr("class", "values");
     _ref4 = this.data;
-    _fn = function() {
-      var x;
-      x = _this.ticks.maxWidth + domain['x'](index) + barWidth;
-      return g.append("svg:line").attr("class", "line dashed").attr("style", "stroke-dasharray: 10, 5;").attr("x1", x).attr("x2", x).attr("y1", 0).attr("y2", _this.height);
-    };
     _results1 = [];
     for (index in _ref4) {
       group = _ref4[index];
       g = bars.append("svg:g").attr("class", "g" + index);
-      barWidth = domain['x'].rangeBand() / group['data'].length;
-      _fn();
+      barWidth = domain['x'].rangeBand();
+      if (!this.isStacked) {
+        barWidth = barWidth / group['data'].length;
+      }
+      if (!this.isStacked && group['data'].length === 2) {
+        (function() {
+          var x;
+          x = _this.ticks.maxWidth + domain['x'](index) + barWidth;
+          return g.append("svg:line").attr("class", "line dashed").attr("style", "stroke-dasharray: 10, 5;").attr("x1", x).attr("x2", x).attr("y1", 0).attr("y2", _this.height);
+        })();
+      }
+      barHeight = 0;
       _ref5 = group.data;
       for (series in _ref5) {
         value = _ref5[series];
-        x = domain['x'](index) + (series * barWidth) + this.ticks.maxWidth;
+        previousHeight = barHeight;
         barHeight = domain['y'](value);
+        x = domain['x'](index) + this.ticks.maxWidth;
+        if (!this.isStacked) {
+          x = x + (series * barWidth);
+        }
+        y = this.height - barHeight;
+        if (this.isStacked) {
+          y = y - previousHeight;
+        }
         color = domain['color'](value).toFixed(0);
-        bar = g.append("svg:rect").attr("class", "bar " + Chart.series[series] + " q" + color + "-" + this.colorbrewer).attr('x', x).attr('y', this.height - barHeight).attr('width', barWidth).attr('height', barHeight);
+        bar = g.append("svg:rect").attr("class", "bar " + Chart.series[series] + " q" + color + "-" + this.colorbrewer).attr('x', x).attr('y', y).attr('width', barWidth).attr('height', barHeight);
         w = values.append("svg:g").attr('class', "g" + index + " " + Chart.series[series]);
         text = w.append("svg:text").attr('x', x + (barWidth / 2)).attr("text-anchor", "middle").text(value);
-        y = parseFloat(this.height - barHeight - 2);
-        if (y < 15) {
-          text.attr('y', y + 15);
+        if (this.isStacked) {
+          y = y + this.textHeight + this.pisvejc;
+        } else {
+          y = y - this.pisvejc;
+        }
+        if (this.isStacked) {
+          text.attr('y', y);
           if (text.node().getComputedTextLength() > barWidth) {
             text.attr("class", "value on beyond");
           } else {
             text.attr("class", "value on");
           }
         } else {
-          text.attr('y', y);
-          text.attr("class", "value above");
+          if (y < 15) {
+            text.attr('y', y + 15);
+            if (text.node().getComputedTextLength() > barWidth) {
+              text.attr("class", "value on beyond");
+            } else {
+              text.attr("class", "value on");
+            }
+          } else {
+            text.attr('y', y);
+            text.attr("class", "value above");
+          }
         }
         w.append("svg:title").text(value);
         if (this.onclick != null) {
@@ -1614,7 +1663,8 @@ factory = function(Backbone) {
           'data': data,
           'width': 460,
           'height': height,
-          'onclick': this.barAction
+          'onclick': this.barAction,
+          'isStacked': this.response.chartType === 'BarChart' ? true : false
         });
         return chart.render();
       } else {

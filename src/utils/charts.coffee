@@ -6,11 +6,17 @@ Chart =
 # A vertical bar chart that is rendered within the browser using SVG.
 class Chart.Column
 
+    # Are we drawing a stacked chart?
+    isStacked:         false
+
     # Number of ColorBrewer classes.
     colorbrewer:       4
 
     # Assumed height of text.
     textHeight:        10
+
+    # Constant to nudge text above/below bar.
+    pisvejc:           2
 
     # The ticks/the numbers axis.
     ticks:
@@ -37,12 +43,23 @@ class Chart.Column
 
         # Get a better understanding of the datasets we are dealing with.
         @useWholeNumbers = true ; @maxValue = -Infinity
-        for group in @data
-            for key, value of group.data
-                # Does the chart only contain whole numbers?
-                @useWholeNumbers = false if parseInt(value) isnt value
-                # Get a maximum value from series.
-                @maxValue = value if value > @maxValue
+        if @isStacked
+            for group in @data
+                groupValue = 0
+                for key, value of group.data
+                    # Does the chart only contain whole numbers?
+                    @useWholeNumbers = false if parseInt(value) isnt value
+                    groupValue = groupValue + value
+                
+                # Get a maximum value as a sum from a group.
+                @maxValue = groupValue if groupValue > @maxValue
+        else
+            for group in @data
+                for key, value of group.data
+                    # Does the chart only contain whole numbers?
+                    @useWholeNumbers = false if parseInt(value) isnt value
+                    # Get a maximum value from all series.
+                    @maxValue = value if value > @maxValue
 
         # Update the height of the outer element.
         $(@el).css 'height', @height
@@ -147,39 +164,51 @@ class Chart.Column
             .append("svg:g")
             .attr("class", "g#{index}")
             
-            # The width of the bar based on how many series we have.
-            barWidth = domain['x'].rangeBand() / group['data'].length
+            # The width of the bar.
+            barWidth = domain['x'].rangeBand()
+            # Split among the number of series we have.
+            if !@isStacked then barWidth = barWidth / group['data'].length
 
             # -------------------------------------------------------------------
-            # Place vertical line.
-            do () =>
-                # Get the distance 'x' from left for the vertical line.
-                x = @ticks.maxWidth + domain['x'](index) + barWidth
-                
-                # The actual line.
-                g.append("svg:line")
-                .attr("class", "line dashed")
-                .attr("style", "stroke-dasharray: 10, 5;")
-                .attr("x1",    x)
-                .attr("x2",    x)
-                .attr("y1",    0)
-                .attr("y2",    @height)
+            # Place vertical line on unstacked chart of two series.
+            if !@isStacked and group['data'].length is 2
+                do () =>
+                    # Get the distance 'x' from left for the vertical line.
+                    x = @ticks.maxWidth + domain['x'](index) + barWidth
+                    
+                    # The actual line.
+                    g.append("svg:line")
+                    .attr("class", "line dashed")
+                    .attr("style", "stroke-dasharray: 10, 5;")
+                    .attr("x1",    x)
+                    .attr("x2",    x)
+                    .attr("y1",    0)
+                    .attr("y2",    @height)
 
             # -------------------------------------------------------------------
             # Traverse the data in the series.
+            barHeight = 0
             for series, value of group.data
-                # Calculate the measurements, distances.
-                x =         domain['x'](index) + (series * barWidth) + @ticks.maxWidth
-                barHeight = domain['y'](value)
+                # Height.
+                previousHeight = barHeight ; barHeight = domain['y'](value)
+
+                # From the left.
+                x = domain['x'](index) + @ticks.maxWidth
+                if !@isStacked then x = x + (series * barWidth)
+                
+                # From the top.
+                y = @height - barHeight
+                if @isStacked then y = y - previousHeight
+                
                 # ColorBrewer band.
-                color =     domain['color'](value).toFixed(0)
+                color = domain['color'](value).toFixed(0)
 
                 # -------------------------------------------------------------------
                 # Append the actual rectangle.
                 bar = g.append("svg:rect")
                 .attr("class",  "bar #{Chart.series[series]} q#{color}-#{@colorbrewer}")
                 .attr('x',      x)
-                .attr('y',      @height - barHeight)
+                .attr('y',      y)
                 .attr('width',  barWidth)
                 .attr('height', barHeight)
 
@@ -194,20 +223,30 @@ class Chart.Column
 
                 # -------------------------------------------------------------------
 
-                # Distance from top for the value (pisvejc used to nudge it slightly above the bar).
-                y = parseFloat @height - barHeight - 2
+                if @isStacked
+                    y = y + @textHeight + @pisvejc
+                else
+                    # Distance from top for the value.
+                    y = y - @pisvejc
 
-                # Maybe the value is too 'high' and would be left off the grid?
-                if y < 15
-                    text.attr('y', y + 15)
-                    # Maybe it is also too wide and thus stretches beyond the bar?
+                if @isStacked
+                    text.attr('y', y)
                     if text.node().getComputedTextLength() > barWidth
                         text.attr("class", "value on beyond")
                     else
                         text.attr("class", "value on")
                 else
-                    text.attr('y', y)
-                    text.attr("class", "value above")
+                    # Maybe the value is too 'high' and would be left off the grid?
+                    if y < 15
+                        text.attr('y', y + 15)
+                        # Maybe it is also too wide and thus stretches beyond the bar?
+                        if text.node().getComputedTextLength() > barWidth
+                            text.attr("class", "value on beyond")
+                        else
+                            text.attr("class", "value on")
+                    else
+                        text.attr('y', y)
+                        text.attr("class", "value above")
 
                 # Add a title element for the value.
                 w.append("svg:title").text value

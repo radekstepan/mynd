@@ -45,11 +45,12 @@ class ChartView extends Backbone.View
 
             # Render the chart using d3.js
             chart = new Chart.Column(
-                'el':      $(@el).find("div.content div.chart")
-                'data':    data
-                'width':   460
-                'height':  height
-                'onclick': @barAction
+                'el':        $(@el).find("div.content div.chart")
+                'data':      data
+                'width':     460
+                'height':    height
+                'onclick':   @barAction
+                'isStacked': if @response.chartType is 'BarChart' then true else false
             )
             chart.render()
 
