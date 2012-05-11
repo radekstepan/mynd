@@ -212,20 +212,20 @@ Chart = {
   'series': ['first', 'second', 'third', 'fourth', 'fifth']
 };
 
-Chart.Bars = (function() {
+Chart.Column = (function() {
 
-  Bars.name = 'Bars';
+  Column.name = 'Column';
 
-  Bars.prototype.colorbrewer = 4;
+  Column.prototype.colorbrewer = 4;
 
-  Bars.prototype.textHeight = 10;
+  Column.prototype.textHeight = 10;
 
-  Bars.prototype.ticks = {
+  Column.prototype.ticks = {
     'maxWidth': -Infinity,
     'count': 10
   };
 
-  Bars.prototype.description = {
+  Column.prototype.description = {
     'maxWidth': -Infinity,
     'totalWidth': 0,
     'triangle': {
@@ -235,7 +235,7 @@ Chart.Bars = (function() {
     }
   };
 
-  function Bars(o) {
+  function Column(o) {
     var group, k, key, v, value, _i, _len, _ref, _ref1;
     for (k in o) {
       v = o[k];
@@ -246,7 +246,7 @@ Chart.Bars = (function() {
     _ref = this.data;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       group = _ref[_i];
-      _ref1 = group['data'];
+      _ref1 = group.data;
       for (key in _ref1) {
         value = _ref1[key];
         if (parseInt(value) !== value) {
@@ -261,15 +261,15 @@ Chart.Bars = (function() {
     this.canvas = d3.select(this.el[0]).append('svg:svg').attr('class', 'canvas');
   }
 
-  Bars.prototype.render = function() {
-    var bar, bars, color, desc, descG, domain, g, group, height, index, series, t, text, tick, value, values, w, width, x, y, _fn, _i, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1,
+  Column.prototype.render = function() {
+    var bar, barHeight, barWidth, bars, color, desc, descG, domain, g, group, index, series, t, text, tick, value, values, w, width, x, y, _fn, _i, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1,
       _this = this;
     this.descriptions = this.canvas.append('svg:g').attr('class', 'descriptions');
     _ref = this.data;
     for (index in _ref) {
       group = _ref[index];
       g = this.descriptions.append("svg:g").attr("class", "g" + index);
-      text = g.append("svg:text").attr("class", "text").attr("text-anchor", "end").text(group['description']);
+      text = g.append("svg:text").attr("class", "text").attr("text-anchor", "end").text(group.description);
       width = text.node().getComputedTextLength();
       if (width > this.description.maxWidth) {
         this.description.maxWidth = width;
@@ -326,28 +326,28 @@ Chart.Bars = (function() {
     _ref4 = this.data;
     _fn = function() {
       var x;
-      x = _this.ticks.maxWidth + domain['x'](index) + width;
+      x = _this.ticks.maxWidth + domain['x'](index) + barWidth;
       return g.append("svg:line").attr("class", "line dashed").attr("style", "stroke-dasharray: 10, 5;").attr("x1", x).attr("x2", x).attr("y1", 0).attr("y2", _this.height);
     };
     _results1 = [];
     for (index in _ref4) {
       group = _ref4[index];
       g = bars.append("svg:g").attr("class", "g" + index);
-      width = domain['x'].rangeBand() / group['data'].length;
+      barWidth = domain['x'].rangeBand() / group['data'].length;
       _fn();
       _ref5 = group.data;
       for (series in _ref5) {
         value = _ref5[series];
-        x = domain['x'](index) + (series * width);
-        height = domain['y'](value);
+        x = domain['x'](index) + (series * barWidth) + this.ticks.maxWidth;
+        barHeight = domain['y'](value);
         color = domain['color'](value).toFixed(0);
-        bar = g.append("svg:rect").attr("class", "bar " + Chart.series[series] + " q" + color + "-" + this.colorbrewer).attr('x', this.ticks.maxWidth + x).attr('y', this.height - height).attr('width', width).attr('height', height);
+        bar = g.append("svg:rect").attr("class", "bar " + Chart.series[series] + " q" + color + "-" + this.colorbrewer).attr('x', x).attr('y', this.height - barHeight).attr('width', barWidth).attr('height', barHeight);
         w = values.append("svg:g").attr('class', "g" + index + " " + Chart.series[series]);
-        y = parseFloat(this.height - height - 1);
-        text = w.append("svg:text").attr('x', this.ticks.maxWidth + x + (width / 2)).attr("text-anchor", "middle").text(value);
+        text = w.append("svg:text").attr('x', x + (barWidth / 2)).attr("text-anchor", "middle").text(value);
+        y = parseFloat(this.height - barHeight - 2);
         if (y < 15) {
           text.attr('y', y + 15);
-          if (text.node().getComputedTextLength() > width) {
+          if (text.node().getComputedTextLength() > barWidth) {
             text.attr("class", "value on beyond");
           } else {
             text.attr("class", "value on");
@@ -360,16 +360,15 @@ Chart.Bars = (function() {
         if (this.onclick != null) {
           (function(bar, group, series, value) {
             return bar.on('click', function() {
-              return _this.onclick(group['description'], series, value);
+              return _this.onclick(group.description, series, value);
             });
           })(bar, group, series, value);
         }
       }
-      g.append("svg:title").text(group['description']);
-      x = x + this.ticks.maxWidth + width;
-      y = this.height + this.textHeight;
-      descG = this.descriptions.select(".g" + index).attr('transform', "translate(" + x + "," + y + ")");
-      if (this.description.maxWidth > width) {
+      g.append("svg:title").text(group.description);
+      x = x + barWidth;
+      descG = this.descriptions.select(".g" + index).attr('transform', "translate(" + x + "," + (this.height + this.textHeight) + ")");
+      if (this.description.maxWidth > barWidth) {
         desc = descG.select("text");
         desc.attr("transform", "rotate(-" + this.description.triangle.degrees + " 0 0)");
         _results1.push((function() {
@@ -387,7 +386,7 @@ Chart.Bars = (function() {
     return _results1;
   };
 
-  return Bars;
+  return Column;
 
 })();
 
@@ -415,14 +414,14 @@ Chart.Legend = (function() {
         'class': Chart.series[index],
         'html': name,
         'click': function(e) {
-          return _this._clickAction(e.target, index);
+          return _this.clickAction(e.target, index);
         }
       })));
     }
     return _results;
   };
 
-  Legend.prototype._clickAction = function(el, series) {
+  Legend.prototype.clickAction = function(el, series) {
     $(el).toggleClass('disabled');
     return d3.select(this.chart[0]).selectAll("rect.bar." + Chart.series[series]).attr('fill-opacity', function() {
       if ($(el).hasClass('disabled')) {
@@ -1613,7 +1612,7 @@ factory = function(Backbone) {
         });
         legend.render();
         height = $(this.widget.el).height() - $(this.widget.el).find('header').height() - $(this.widget.el).find('div.content div.legend').height();
-        chart = new Chart.Bars({
+        chart = new Chart.Column({
           'el': $(this.el).find("div.content div.chart"),
           'data': data,
           'width': 460,

@@ -3,7 +3,8 @@ Chart =
     'series': [ 'first', 'second', 'third', 'fourth', 'fifth' ]
 
 
-class Chart.Bars
+# A vertical bar chart that is rendered within the browser using SVG.
+class Chart.Column
 
     # Number of ColorBrewer classes.
     colorbrewer:       4
@@ -37,7 +38,7 @@ class Chart.Bars
         # Get a better understanding of the datasets we are dealing with.
         @useWholeNumbers = true ; @maxValue = -Infinity
         for group in @data
-            for key, value of group['data']
+            for key, value of group.data
                 # Does the chart only contain whole numbers?
                 @useWholeNumbers = false if parseInt(value) isnt value
                 # Get a maximum value from series.
@@ -52,6 +53,7 @@ class Chart.Bars
         .attr('class', 'canvas')
 
     render: () ->
+        # -------------------------------------------------------------------
         # Descriptions.
         @descriptions = @canvas.append('svg:g').attr('class', 'descriptions')
         for index, group of @data
@@ -61,9 +63,9 @@ class Chart.Bars
             
             # Text.
             text = g.append("svg:text")
-                .attr("class", "text")
+                .attr("class",       "text")
                 .attr("text-anchor", "end")
-                .text(group['description'])
+                .text group.description
 
             # Update the max width.
             width = text.node().getComputedTextLength()
@@ -74,6 +76,8 @@ class Chart.Bars
             # Add an onhover description title.
             g.append("svg:title").text group.description
 
+        # -------------------------------------------------------------------
+        
         # Reduce the chart space by accomodating the description.
         @height = @height - @textHeight
 
@@ -86,6 +90,7 @@ class Chart.Bars
             # Modify ticks to use whole numbers where appropriate.
             ( t for t in d3.scale.linear().domain([ 0, @maxValue ]).ticks(@ticks.count) when ( (parseInt(t) is t) or !@useWholeNumbers ) )
 
+        # -------------------------------------------------------------------
         # Render the tick numbers so we can get the @ticks.maxWidth.
         for index, tick of domain.ticks
             t = @grid.append("svg:g").attr('class', "t#{index}")
@@ -100,6 +105,8 @@ class Chart.Bars
             width = text.node().getComputedTextLength()
             @ticks.maxWidth = width if width > @ticks.maxWidth
 
+        # -------------------------------------------------------------------
+        
         # Now that we know the width of the axis, reduce the width.
         @width = @width - @ticks.maxWidth
 
@@ -111,6 +118,7 @@ class Chart.Bars
         domain.y =     d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, @height ])
         domain.color = d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, @colorbrewer - 1 ])
 
+        # -------------------------------------------------------------------
         # Horizontal lines among ticks.
         for index, tick of domain.ticks
             # Get the wrapping `g`.
@@ -125,9 +133,12 @@ class Chart.Bars
             # Update the position of the wrapping `g` to shift both ticks and lines.
             t.attr 'transform', "translate(0,#{@height - domain['y'](tick)})"
 
+        # -------------------------------------------------------------------
+
         # Chart `g`.
         @chart = @canvas.append("svg:g").attr("class", "chart")
 
+        # -------------------------------------------------------------------
         # The bars.
         bars = @chart.append("svg:g").attr("class", "bars") ; values = @chart.append("svg:g").attr("class", "values")
         for index, group of @data
@@ -137,12 +148,13 @@ class Chart.Bars
             .attr("class", "g#{index}")
             
             # The width of the bar based on how many series we have.
-            width = domain['x'].rangeBand() / group['data'].length
+            barWidth = domain['x'].rangeBand() / group['data'].length
 
+            # -------------------------------------------------------------------
             # Place vertical line.
             do () =>
                 # Get the distance 'x' from left for the vertical line.
-                x = @ticks.maxWidth + domain['x'](index) + width
+                x = @ticks.maxWidth + domain['x'](index) + barWidth
                 
                 # The actual line.
                 g.append("svg:line")
@@ -153,37 +165,43 @@ class Chart.Bars
                 .attr("y1",    0)
                 .attr("y2",    @height)
 
+            # -------------------------------------------------------------------
             # Traverse the data in the series.
             for series, value of group.data
-                # Calculate the distances.
-                x =      domain['x'](index) + (series * width)
-                height = domain['y'](value)
+                # Calculate the measurements, distances.
+                x =         domain['x'](index) + (series * barWidth) + @ticks.maxWidth
+                barHeight = domain['y'](value)
                 # ColorBrewer band.
-                color =  domain['color'](value).toFixed(0)
+                color =     domain['color'](value).toFixed(0)
 
+                # -------------------------------------------------------------------
                 # Append the actual rectangle.
                 bar = g.append("svg:rect")
                 .attr("class",  "bar #{Chart.series[series]} q#{color}-#{@colorbrewer}")
-                .attr('x',      @ticks.maxWidth + x)
-                .attr('y',      @height - height)
-                .attr('width',  width)
-                .attr('height', height)
+                .attr('x',      x)
+                .attr('y',      @height - barHeight)
+                .attr('width',  barWidth)
+                .attr('height', barHeight)
 
                 # Add a text value.
                 w = values.append("svg:g").attr('class', "g#{index} #{Chart.series[series]}")
-
-                y = parseFloat @height - height - 1
                 
+                # Add a text in the middle of the bar.
                 text = w.append("svg:text")
-                .attr('x', @ticks.maxWidth + x + (width / 2))
+                .attr('x',           x + (barWidth / 2))
                 .attr("text-anchor", "middle")
                 .text value
+
+                # -------------------------------------------------------------------
+
+                # Distance from top for the value (pisvejc used to nudge it slightly above the bar).
+                y = parseFloat @height - barHeight - 2
 
                 # Maybe the value is too 'high' and would be left off the grid?
                 if y < 15
                     text.attr('y', y + 15)
                     # Maybe it is also too wide and thus stretches beyond the bar?
-                    if text.node().getComputedTextLength() > width
+                    if text.node().getComputedTextLength() > barWidth
                         text.attr("class", "value on beyond")
                     else
                         text.attr("class", "value on")
@@ -194,21 +212,21 @@ class Chart.Bars
                 # Add a title element for the value.
                 w.append("svg:title").text value
 
-                # Attach onclick event.
+                # Attach onclick event for the bar.
                 if @onclick?
                     do (bar, group, series, value) =>
-                        bar.on 'click', => @onclick group['description'], series, value
+                        bar.on 'click', => @onclick group.description, series, value
             
             # Add an onhover showing tooltip description text.
-            g.append("svg:title").text group['description']
+            g.append("svg:title").text group.description
 
-            # Update the position of the description text wrapping `g` element (ticks margin, width of a bar, x of last bar).
-            x = x + @ticks.maxWidth + width ; y = @height + @textHeight
+            # Update the position of the description text wrapping `g` element (width of a bar, x of last bar).
+            x = x + barWidth
             descG = @descriptions.select(".g#{index}")
-            .attr('transform', "translate(#{x},#{y})")
+            .attr('transform', "translate(#{x},#{@height + @textHeight})")
             
             # (A better) naive fce to determine if we should rotate the text.
-            if @description.maxWidth > width
+            if @description.maxWidth > barWidth
                 desc = descG.select("text")
                 desc.attr("transform", "rotate(-#{@description.triangle.degrees} 0 0)")
                 # Maybe still, it is one of the first descriptions and is longer than the distance from left (margin + x + width + translate).
@@ -230,11 +248,11 @@ class Chart.Legend
             ul.append $('<li/>',
                 'class': Chart.series[index]
                 'html':  name
-                'click': (e) => @_clickAction e.target, index
+                'click': (e) => @clickAction e.target, index
             )
 
-    # Onclick on legend series.
-    _clickAction: (el, series) ->
+    # Onclick on series legend.
+    clickAction: (el, series) ->
         # Toggle the disabled state.
         $(el).toggleClass 'disabled'
 

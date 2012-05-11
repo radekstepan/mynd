@@ -44,7 +44,7 @@ class ChartView extends Backbone.View
             height = $(@widget.el).height() - $(@widget.el).find('header').height() - $(@widget.el).find('div.content div.legend').height()
 
             # Render the chart using d3.js
-            chart = new Chart.Bars(
+            chart = new Chart.Column(
                 'el':      $(@el).find("div.content div.chart")
                 'data':    data
                 'width':   460
