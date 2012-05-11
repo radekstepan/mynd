@@ -12,6 +12,15 @@ class Charts.Bars
     constructor: (o) ->
         @[k] = v for k, v of o
 
+        # Get a better understanding of the datasets we are dealing with.
+        @useWholeNumbers = true ; @maxValue = -Infinity
+        for group in @data
+            for key, value of group['data']
+                # Does the chart only contain whole numbers?
+                @useWholeNumbers = false if parseInt(value) isnt value
+                # Get a maximum value from series.
+                @maxValue = value if value > @maxValue
+
         # Update the height of the outer element.
         $(@el).css 'height', @height
 
@@ -52,12 +61,11 @@ class Charts.Bars
 
         # Draw the grid of whole numbers.
         g = @canvas.append("svg:g").attr("class", "grid")
-        isWhole = @_isWhole()
 
         # Axis numbers
         numberWidth = -Infinity
         for tick in domain['y'].ticks(10)
-            if (parseInt(tick) is tick) or (!isWhole)
+            if (parseInt(tick) is tick) or (!@useWholeNumbers)
                 text = g.append("svg:text")
                 .attr("class", "tick")
                 .attr("x", 0)
@@ -71,7 +79,7 @@ class Charts.Bars
 
         # Horizontal lines.
         for tick in domain['y'].ticks(10)
-            if (parseInt(tick) is tick) or (!isWhole)
+            if (parseInt(tick) is tick) or (!@useWholeNumbers)
                 y = @height - domain['y'](tick)
                 
                 g.append("svg:line")
@@ -172,24 +180,9 @@ class Charts.Bars
     _domain: () ->
         {
             'x':     d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, @width ], .05)
-            'y':     d3.scale.linear().domain([ 0, @_max() ]).range([ 0, @height ])
-            'color': d3.scale.linear().domain([ 0, @_max() ]).range([ 0, @colorbrewer - 1 ])
-        }   
-
-    # Get a maximum value from series.
-    _max: () ->
-        max = -Infinity
-        for group in @data
-            for key, value of group['data']
-                max = value if value > max
-        max
-
-    # Does the chart only contain whole numbers?
-    _isWhole: () ->
-        for group in @data
-            for key, value of group['data']
-                return false if parseInt(value) isnt value
-        true
+            'y':     d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, @height ])
+            'color': d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, @colorbrewer - 1 ])
+        }
 
 
 class Charts.Legend

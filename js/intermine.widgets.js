@@ -219,17 +219,33 @@ Charts.Bars = (function() {
   Bars.prototype.textHeight = 10;
 
   function Bars(o) {
-    var k, v;
+    var group, k, key, v, value, _i, _len, _ref, _ref1;
     for (k in o) {
       v = o[k];
       this[k] = v;
+    }
+    this.useWholeNumbers = true;
+    this.maxValue = -Infinity;
+    _ref = this.data;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      group = _ref[_i];
+      _ref1 = group['data'];
+      for (key in _ref1) {
+        value = _ref1[key];
+        if (parseInt(value) !== value) {
+          this.useWholeNumbers = false;
+        }
+        if (value > this.maxValue) {
+          this.maxValue = value;
+        }
+      }
     }
     $(this.el).css('height', this.height);
     this.canvas = d3.select(this.el[0]).append('svg:svg').attr('class', 'canvas');
   }
 
   Bars.prototype.render = function() {
-    var bar, bars, color, desc, descG, descWidth, descriptions, domain, end, g, group, height, i, isWhole, j, left, margin, numberWidth, series, text, tick, value, values, w, width, x, y, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4, _results,
+    var bar, bars, color, desc, descG, descWidth, descriptions, domain, end, g, group, height, i, j, left, margin, numberWidth, series, text, tick, value, values, w, width, x, y, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4, _results,
       _this = this;
     margin = 10;
     descWidth = -Infinity;
@@ -249,12 +265,11 @@ Charts.Bars = (function() {
     this.height = this.height - this.textHeight - (descWidth * 0.5);
     domain = this._domain();
     g = this.canvas.append("svg:g").attr("class", "grid");
-    isWhole = this._isWhole();
     numberWidth = -Infinity;
     _ref1 = domain['y'].ticks(10);
     for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
       tick = _ref1[_i];
-      if ((parseInt(tick) === tick) || (!isWhole)) {
+      if ((parseInt(tick) === tick) || (!this.useWholeNumbers)) {
         text = g.append("svg:text").attr("class", "tick").attr("x", 0).attr("y", this.height - domain['y'](tick)).attr("text-anchor", "begin").text(tick.toFixed(0));
         width = text.node().getComputedTextLength();
         if (width > numberWidth) {
@@ -265,7 +280,7 @@ Charts.Bars = (function() {
     _ref2 = domain['y'].ticks(10);
     for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
       tick = _ref2[_j];
-      if ((parseInt(tick) === tick) || (!isWhole)) {
+      if ((parseInt(tick) === tick) || (!this.useWholeNumbers)) {
         y = this.height - domain['y'](tick);
         g.append("svg:line").attr("class", "line").attr("y1", y).attr("y2", y).attr("x1", numberWidth).attr("x2", this.width);
       }
@@ -345,42 +360,9 @@ Charts.Bars = (function() {
         for (var _i = 0, _ref = this.data.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
         return _results;
       }).apply(this)).rangeBands([0, this.width], .05),
-      'y': d3.scale.linear().domain([0, this._max()]).range([0, this.height]),
-      'color': d3.scale.linear().domain([0, this._max()]).range([0, this.colorbrewer - 1])
+      'y': d3.scale.linear().domain([0, this.maxValue]).range([0, this.height]),
+      'color': d3.scale.linear().domain([0, this.maxValue]).range([0, this.colorbrewer - 1])
     };
-  };
-
-  Bars.prototype._max = function() {
-    var group, key, max, value, _i, _len, _ref, _ref1;
-    max = -Infinity;
-    _ref = this.data;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      group = _ref[_i];
-      _ref1 = group['data'];
-      for (key in _ref1) {
-        value = _ref1[key];
-        if (value > max) {
-          max = value;
-        }
-      }
-    }
-    return max;
-  };
-
-  Bars.prototype._isWhole = function() {
-    var group, key, value, _i, _len, _ref, _ref1;
-    _ref = this.data;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      group = _ref[_i];
-      _ref1 = group['data'];
-      for (key in _ref1) {
-        value = _ref1[key];
-        if (parseInt(value) !== value) {
-          return false;
-        }
-      }
-    }
-    return true;
   };
 
   return Bars;
