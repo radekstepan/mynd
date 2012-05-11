@@ -72,7 +72,7 @@ class Chart.Bars
             @description.totalWidth = @description.totalWidth + width
 
             # Add an onhover description title.
-            g.append("svg:title").text group['description']
+            g.append("svg:title").text group.description
 
         # Reduce the chart space by accomodating the description.
         @height = @height - @textHeight
@@ -88,18 +88,17 @@ class Chart.Bars
 
         # Render the tick numbers so we can get the @ticks.maxWidth.
         for index, tick of domain.ticks
-            if (parseInt(tick) is tick) or (!@useWholeNumbers)
-                t = @grid.append("svg:g").attr('class', "t#{index}")
-                
-                text = t.append("svg:text")
-                .attr("class", "tick")
-                .attr("x", 0)
-                .attr("text-anchor", "begin")
-                .text tick.toFixed(0)
+            t = @grid.append("svg:g").attr('class', "t#{index}")
+            
+            text = t.append("svg:text")
+            .attr("class",       "tick")
+            .attr("text-anchor", "begin")
+            .attr("x",           0)
+            .text tick
 
-                # Update the max width.
-                width = text.node().getComputedTextLength()
-                @ticks.maxWidth = width if width > @ticks.maxWidth
+            # Update the max width.
+            width = text.node().getComputedTextLength()
+            @ticks.maxWidth = width if width > @ticks.maxWidth
 
         # Now that we know the width of the axis, reduce the width.
         @width = @width - @ticks.maxWidth
@@ -114,18 +113,17 @@ class Chart.Bars
 
         # Horizontal lines among ticks.
         for index, tick of domain.ticks
-            if (parseInt(tick) is tick) or (!@useWholeNumbers)
-                # Get the wrapping `g`.
-                t = @grid.select(".t#{index}")
+            # Get the wrapping `g`.
+            t = @grid.select(".t#{index}")
 
-                # Draw the line
-                t.append("svg:line")
-                .attr("class", "line")
-                .attr("x1",    @ticks.maxWidth)
-                .attr("x2",    @width)
+            # Draw the line
+            t.append("svg:line")
+            .attr("class", "line")
+            .attr("x1",    @ticks.maxWidth)
+            .attr("x2",    @width)
 
-                # Update the position of the wrapping `g`.
-                t.attr 'transform', "translate(0,#{@height - domain['y'](tick)})"
+            # Update the position of the wrapping `g` to shift both ticks and lines.
+            t.attr 'transform', "translate(0,#{@height - domain['y'](tick)})"
 
         # Chart `g`.
         @chart = @canvas.append("svg:g").attr("class", "chart")
@@ -138,21 +136,27 @@ class Chart.Bars
             .append("svg:g")
             .attr("class", "g#{index}")
             
+            # The width of the bar based on how many series we have.
+            width = domain['x'].rangeBand() / group['data'].length
+
             # Place vertical line.
-            left = @ticks.maxWidth + domain['x'](index) + domain['x'].rangeBand() / 2
+            do () =>
+                # Get the distance 'x' from left for the vertical line.
+                x = @ticks.maxWidth + domain['x'](index) + width
+                
+                # The actual line.
+                g.append("svg:line")
+                .attr("class", "line dashed")
+                .attr("style", "stroke-dasharray: 10, 5;")
+                .attr("x1",    x)
+                .attr("x2",    x)
+                .attr("y1",    0)
+                .attr("y2",    @height)
 
-            g.append("svg:line")
-            .attr("class", "line dashed")
-            .attr("x1", left).attr("x2", left)
-            .attr("y1", 0).attr("y2", @height)
-            .attr("style", "stroke-dasharray: 10, 5;")
-
-            # Traverse the a, b series.
-            j = 0 ; end = 0
-            for series, value of group['data']
+            # Traverse the data in the series.
+            for series, value of group.data
                 # Calculate the distances.
-                width =  domain['x'].rangeBand() / group['data'].length
-                left =   domain['x'](index) + (j * width)
+                x =      domain['x'](index) + (series * width)
                 height = domain['y'](value)
                 # ColorBrewer band.
                 color =  domain['color'](value).toFixed(0)
@@ -160,7 +164,7 @@ class Chart.Bars
                 # Append the actual rectangle.
                 bar = g.append("svg:rect")
                 .attr("class",  "bar #{Chart.series[series]} q#{color}-#{@colorbrewer}")
-                .attr('x',      @ticks.maxWidth + left)
+                .attr('x',      @ticks.maxWidth + x)
                 .attr('y',      @height - height)
                 .attr('width',  width)
                 .attr('height', height)
@@ -171,7 +175,7 @@ class Chart.Bars
                 y = parseFloat @height - height - 1
                 
                 text = w.append("svg:text")
-                .attr('x', @ticks.maxWidth + left + (width / 2))
+                .attr('x', @ticks.maxWidth + x + (width / 2))
                 .attr("text-anchor", "middle")
                 .text value
 
@@ -192,19 +196,14 @@ class Chart.Bars
 
                 # Attach onclick event.
                 if @onclick?
-                    do (bar, group, j, value) =>
-                        bar.on 'click', => @onclick group['description'], j, value
-
-                # Save the total distance from the left till the (right) end of the bar.
-                end = left + width + @ticks.maxWidth
-
-                j++
+                    do (bar, group, series, value) =>
+                        bar.on 'click', => @onclick group['description'], series, value
             
             # Add an onhover showing tooltip description text.
             g.append("svg:title").text group['description']
 
-            # Update the position of the description text wrapping `g` element.
-            x = @ticks.maxWidth + left + width ; y = @height + @textHeight
+            # Update the position of the description text wrapping `g` element (ticks margin, width of a bar, x of last bar).
+            x = x + @ticks.maxWidth + width ; y = @height + @textHeight
             descG = @descriptions.select(".g#{index}")
             .attr('transform', "translate(#{x},#{y})")
             
@@ -213,7 +212,7 @@ class Chart.Bars
                 desc = descG.select("text")
                 desc.attr("transform", "rotate(-#{@description.triangle.degrees} 0 0)")
                 # Maybe still, it is one of the first descriptions and is longer than the distance from left (margin + x + width + translate).
-                while (desc.node().getComputedTextLength() * @description.triangle.sideB) > end
+                while (desc.node().getComputedTextLength() * @description.triangle.sideB) > x
                     # Trim the text.
                     desc.text desc.text().replace('...', '').split('').reverse()[1..].reverse().join('') + '...'
 
