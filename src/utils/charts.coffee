@@ -118,7 +118,7 @@ class Chart.Bars
             j = 0 ; end = 0
             for series, value of group['data']
                 # Calculate the distances.
-                width =  domain['x'].rangeBand() / 2
+                width =  domain['x'].rangeBand() / group['data'].length
                 left =   domain['x'](index) + (j * width)
                 height = domain['y'](value)
                 # ColorBrewer band.
@@ -193,16 +193,13 @@ class Chart.Legend
 
     render: () ->
         $(@el).append ul = $('<ul/>')
-        ul.append $('<li/>',
-            'class': Chart.series[0]
-            'html':  @series[0]
-            'click': (e) => @_clickAction e.target, 0
-        )
-        ul.append $('<li/>',
-            'class': Chart.series[1]
-            'html':  @series[1]
-            'click': (e) => @_clickAction e.target, 1
-        )
+
+        for index, name of @series
+            ul.append $('<li/>',
+                'class': Chart.series[index]
+                'html':  name
+                'click': (e) => @_clickAction e.target, index
+            )
 
     # Onclick on legend series.
     _clickAction: (el, series) ->
