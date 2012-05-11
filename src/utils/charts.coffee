@@ -1,6 +1,9 @@
-Charts = { }
+Chart =
+    # The names of consecutive series.
+    'series': [ 'first', 'second', 'third', 'fourth', 'fifth' ]
 
-class Charts.Bars
+
+class Chart.Bars
 
     # Number of ColorBrewer classes.
     colorbrewer: 4
@@ -33,23 +36,23 @@ class Charts.Bars
         # Descriptions.
         descWidth = -Infinity
         descriptions = @canvas.append('svg:g').attr('class', 'descriptions')
-        for i, group of @data
+        for index, group of @data
             # Wrapper for the text and title.
             g = descriptions.append("svg:g")
-            .attr("class", "group g#{i}")
+            .attr("class", "g#{index}")
             
             # Text.
             text = g.append("svg:text")
                 .attr("class", "text")
                 .attr("text-anchor", "end")
-                .text(group['text'])
+                .text(group['description'])
 
             # Update the max width.
             width = text.node().getComputedTextLength()
             descWidth = width if width > descWidth
 
             # Add an onhover description title.
-            g.append("svg:title").text group['text']
+            g.append("svg:title").text group['description']
 
         # Reduce the chart space for chart and add some extra padding for the grid.
         @height = @height - @textHeight - (descWidth * 0.5)
@@ -96,14 +99,14 @@ class Charts.Bars
 
         # The bars.
         bars = @chart.append("svg:g").attr("class", "bars") ; values = @chart.append("svg:g").attr("class", "values")
-        for i, group of @data
+        for index, group of @data
             # A wrapper group.
             g = bars
             .append("svg:g")
-            .attr("class", "group g#{i}")
+            .attr("class", "g#{index}")
             
             # Place vertical line.
-            left = @axisMargin + domain['x'](i) + domain['x'].rangeBand() / 2
+            left = @axisMargin + domain['x'](index) + domain['x'].rangeBand() / 2
 
             g.append("svg:line")
             .attr("class", "line dashed")
@@ -111,25 +114,26 @@ class Charts.Bars
             .attr("y1", 0).attr("y2", @height)
             .attr("style", "stroke-dasharray: 10, 5;")
 
+            # Traverse the a, b series.
             j = 0 ; end = 0
             for series, value of group['data']
                 # Calculate the distances.
                 width =  domain['x'].rangeBand() / 2
-                left =   domain['x'](i) + (j * width)
+                left =   domain['x'](index) + (j * width)
                 height = domain['y'](value)
                 # ColorBrewer band.
                 color =  domain['color'](value).toFixed(0)
 
                 # Append the actual rectangle.
                 bar = g.append("svg:rect")
-                .attr("class",  "bar #{series} q#{color}-#{@colorbrewer}")
+                .attr("class",  "bar #{Chart.series[series]} q#{color}-#{@colorbrewer}")
                 .attr('x',      @axisMargin + left)
                 .attr('y',      @height - height)
                 .attr('width',  width)
                 .attr('height', height)
 
                 # Add a text value.
-                w = values.append("svg:g").attr('class', "value g#{i} #{series}")
+                w = values.append("svg:g").attr('class', "g#{index} #{Chart.series[series]}")
 
                 y = parseFloat @height - height - 1
                 
@@ -156,7 +160,7 @@ class Charts.Bars
                 # Attach onclick event.
                 if @onclick?
                     do (bar, group, j, value) =>
-                        bar.on 'click', => @onclick group['text'], j, value
+                        bar.on 'click', => @onclick group['description'], j, value
 
                 # Save the total distance from the left till the (right) end of the bar.
                 end = left + width + @axisMargin
@@ -164,11 +168,11 @@ class Charts.Bars
                 j++
             
             # Add an onhover showing tooltip description text.
-            g.append("svg:title").text group['text']
+            g.append("svg:title").text group['description']
 
             # Update the position of the description text wrapping `g` element.
             x = @axisMargin + left + width ; y = @height + @textHeight
-            descG = descriptions.select(".g#{i}")
+            descG = descriptions.select(".g#{index}")
             .attr('transform', "translate(#{x},#{y})")
             
             # (A better) naive fce to determine if we should rotate the text.
@@ -181,7 +185,7 @@ class Charts.Bars
                     desc.text desc.text().replace('...', '').split('').reverse()[1..].reverse().join('') + '...'
 
 
-class Charts.Legend
+class Chart.Legend
 
     # Expand object values on us.
     constructor: (o) ->
@@ -190,14 +194,14 @@ class Charts.Legend
     render: () ->
         $(@el).append ul = $('<ul/>')
         ul.append $('<li/>',
-            'class': 'a'
-            'html':  @series['a']
-            'click': (e) => @_clickAction e.target, 'a'
+            'class': Chart.series[0]
+            'html':  @series[0]
+            'click': (e) => @_clickAction e.target, 0
         )
         ul.append $('<li/>',
-            'class': 'b'
-            'html':  @series['b']
-            'click': (e) => @_clickAction e.target, 'b'
+            'class': Chart.series[1]
+            'html':  @series[1]
+            'click': (e) => @_clickAction e.target, 1
         )
 
     # Onclick on legend series.
@@ -206,5 +210,5 @@ class Charts.Legend
         $(el).toggleClass 'disabled'
 
         # Change the opacity to 'toggle' the series bars.
-        d3.select(@chart[0]).selectAll("rect.bar.#{series}")
+        d3.select(@chart[0]).selectAll("rect.bar.#{Chart.series[series]}")
         .attr('fill-opacity', () -> if $(el).hasClass 'disabled' then 0.2 else 1 )
