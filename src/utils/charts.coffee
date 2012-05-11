@@ -219,20 +219,30 @@ class Chart.Column
             
             # Add an onhover showing tooltip description text.
             g.append("svg:title").text group.description
-
-            # Update the position of the description text wrapping `g` element (width of a bar, x of last bar).
-            x = x + barWidth
-            descG = @descriptions.select(".g#{index}")
-            .attr('transform', "translate(#{x},#{@height + @textHeight})")
             
+            # -------------------------------------------------------------------
             # (A better) naive fce to determine if we should rotate the text.
+            descG = @descriptions.select(".g#{index}")
+            desc =  descG.select("text")
             if @description.maxWidth > barWidth
-                desc = descG.select("text")
                 desc.attr("transform", "rotate(-#{@description.triangle.degrees} 0 0)")
+
+                # The text will be pointing towards the end of the group.
+                x = x + barWidth
+
                 # Maybe still, it is one of the first descriptions and is longer than the distance from left (margin + x + width + translate).
                 while (desc.node().getComputedTextLength() * @description.triangle.sideB) > x
                     # Trim the text.
                     desc.text desc.text().replace('...', '').split('').reverse()[1..].reverse().join('') + '...'
+            else
+                # The text will be in the middle of the group.
+                x = (x + barWidth) - 0.5 * ( barWidth * group.data.length )
+
+                # Update the anchor.
+                desc.attr("text-anchor", "middle")
+            
+            # Update the position of the description text wrapping `g` element.
+            descG.attr('transform', "translate(#{x},#{@height + @textHeight})")
 
 
 class Chart.Legend
