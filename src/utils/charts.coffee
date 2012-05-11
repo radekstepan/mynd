@@ -6,23 +6,28 @@ Chart =
 class Chart.Bars
 
     # Number of ColorBrewer classes.
-    colorbrewer:      4
+    colorbrewer:       4
 
     # Assumed height of text.
-    textHeight:       10
+    textHeight:        10
 
     # The margin (from left) to be left for axis numbers.
-    axisMargin:       -Infinity
+    axisMargin:        -Infinity
 
     # Description...
     description:
         # ... maximum width.
-        'maxWidth':   -Infinity
+        'maxWidth':    -Infinity
         # ... total width.
-        'totalWidth': 0
+        'totalWidth':  0
+        # ... rotation triangle (http://www.calculatorsoup.com/calculators/geometry-plane/triangle-theorems.php).
+        'triangle':
+            'degrees': 30
+            'sideA':   0.5
+            'sideB':   0.866025
 
     # The number of ticks axis should have (roughly).
-    ticks:            10
+    ticks:             10
 
     # Expand object values on us.
     constructor: (o) ->
@@ -72,12 +77,12 @@ class Chart.Bars
         @height = @height - @textHeight
 
         # Add a wrapping `g` for the grid ticks and lines.
-        grid = @canvas.append("svg:g").attr("class", "grid")
+        @grid = @canvas.append("svg:g").attr("class", "grid")
 
-        # Render the tick numbers so we can get the @axisMargin (slightly inaccurate as the @height might change)
+        # Render the tick numbers so we can get the @axisMargin (slightly inaccurate as the @height might change).
         for index, tick of d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, @height ]).ticks(@ticks)
             if (parseInt(tick) is tick) or (!@useWholeNumbers)
-                t = grid.append("svg:g").attr('class', "t#{index}")
+                t = @grid.append("svg:g").attr('class', "t#{index}")
                 
                 text = t.append("svg:text")
                 .attr("class", "tick")
@@ -92,8 +97,8 @@ class Chart.Bars
         # Now that we know the width of the axis, reduce the width.
         @width = @width - @axisMargin
 
-        # Will we (probably) need to rotate the descriptions? Then reduce it by the height of one side of the triangle created by a 30 deg rotation.
-        if @description.totalWidth > @width then @height = @height - (@description.maxWidth * 0.5)
+        # Will we (probably) need to rotate the descriptions? Then reduce the @height by the height of one side of the triangle created by a 30 deg rotation.
+        if @description.totalWidth > @width then @height = @height - (@description.maxWidth * @description.triangle.sideA)
 
         # Get the domain as @width & @height are fixed now.
         domain =
@@ -105,7 +110,7 @@ class Chart.Bars
         for index, tick of domain['y'].ticks(@ticks)
             if (parseInt(tick) is tick) or (!@useWholeNumbers)
                 # Get the wrapping `g`.
-                t = grid.select(".t#{index}")
+                t = @grid.select(".t#{index}")
 
                 # Draw the line
                 t.append("svg:line")
@@ -200,9 +205,9 @@ class Chart.Bars
             # (A better) naive fce to determine if we should rotate the text.
             if @description.maxWidth > width
                 desc = descG.select("text")
-                desc.attr("transform", "rotate(-30 0 0)")
+                desc.attr("transform", "rotate(-#{@description.triangle.degrees} 0 0)")
                 # Maybe still, it is one of the first descriptions and is longer than the distance from left (margin + x + width + translate).
-                while (desc.node().getComputedTextLength() * 0.866025) > end
+                while (desc.node().getComputedTextLength() * @description.triangle.sideB) > end
                     # Trim the text.
                     desc.text desc.text().replace('...', '').split('').reverse()[1..].reverse().join('') + '...'
 

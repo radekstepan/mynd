@@ -224,7 +224,12 @@ Chart.Bars = (function() {
 
   Bars.prototype.description = {
     'maxWidth': -Infinity,
-    'totalWidth': 0
+    'totalWidth': 0,
+    'triangle': {
+      'degrees': 30,
+      'sideA': 0.5,
+      'sideB': 0.866025
+    }
   };
 
   Bars.prototype.ticks = 10;
@@ -256,7 +261,7 @@ Chart.Bars = (function() {
   }
 
   Bars.prototype.render = function() {
-    var bar, bars, color, desc, descG, descriptions, domain, end, g, grid, group, height, index, j, left, series, t, text, tick, value, values, w, width, x, y, _i, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1,
+    var bar, bars, color, desc, descG, descriptions, domain, end, g, group, height, index, j, left, series, t, text, tick, value, values, w, width, x, y, _i, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1,
       _this = this;
     descriptions = this.canvas.append('svg:g').attr('class', 'descriptions');
     _ref = this.data;
@@ -272,12 +277,12 @@ Chart.Bars = (function() {
       g.append("svg:title").text(group['description']);
     }
     this.height = this.height - this.textHeight;
-    grid = this.canvas.append("svg:g").attr("class", "grid");
+    this.grid = this.canvas.append("svg:g").attr("class", "grid");
     _ref1 = d3.scale.linear().domain([0, this.maxValue]).range([0, this.height]).ticks(this.ticks);
     for (index in _ref1) {
       tick = _ref1[index];
       if ((parseInt(tick) === tick) || (!this.useWholeNumbers)) {
-        t = grid.append("svg:g").attr('class', "t" + index);
+        t = this.grid.append("svg:g").attr('class', "t" + index);
         text = t.append("svg:text").attr("class", "tick").attr("x", 0).attr("text-anchor", "begin").text(tick.toFixed(0));
         width = text.node().getComputedTextLength();
         if (width > this.axisMargin) {
@@ -287,7 +292,7 @@ Chart.Bars = (function() {
     }
     this.width = this.width - this.axisMargin;
     if (this.description.totalWidth > this.width) {
-      this.height = this.height - (this.description.maxWidth * 0.5);
+      this.height = this.height - (this.description.maxWidth * this.description.triangle.sideA);
     }
     domain = {
       'x': d3.scale.ordinal().domain((function() {
@@ -302,7 +307,7 @@ Chart.Bars = (function() {
     for (index in _ref3) {
       tick = _ref3[index];
       if ((parseInt(tick) === tick) || (!this.useWholeNumbers)) {
-        t = grid.select(".t" + index);
+        t = this.grid.select(".t" + index);
         t.append("svg:line").attr("class", "line").attr("x1", this.axisMargin).attr("x2", this.width);
         t.attr('transform', "translate(0," + (this.height - domain['y'](tick)) + ")");
       }
@@ -358,15 +363,15 @@ Chart.Bars = (function() {
       descG = descriptions.select(".g" + index).attr('transform', "translate(" + x + "," + y + ")");
       if (this.description.maxWidth > width) {
         desc = descG.select("text");
-        desc.attr("transform", "rotate(-30 0 0)");
+        desc.attr("transform", "rotate(-" + this.description.triangle.degrees + " 0 0)");
         _results1.push((function() {
           var _results2;
           _results2 = [];
-          while ((desc.node().getComputedTextLength() * 0.866025) > end) {
+          while ((desc.node().getComputedTextLength() * this.description.triangle.sideB) > end) {
             _results2.push(desc.text(desc.text().replace('...', '').split('').reverse().slice(1).reverse().join('') + '...'));
           }
           return _results2;
-        })());
+        }).call(this));
       } else {
         _results1.push(void 0);
       }
