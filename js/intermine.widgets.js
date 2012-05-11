@@ -189,23 +189,6 @@ type.isUndefined = (function(_super) {
 
 })(type.Root);
 
-/* Merge properties of 2 dictionaries.
-*/
-
-var merge;
-
-merge = function(child, parent) {
-  var key;
-  for (key in parent) {
-    if (!(child[key] != null)) {
-      if (Object.prototype.hasOwnProperty.call(parent, key)) {
-        child[key] = parent[key];
-      }
-    }
-  }
-  return child;
-};
-
 var Chart;
 
 Chart = {
@@ -219,6 +202,12 @@ Chart.Bars = (function() {
   Bars.prototype.colorbrewer = 4;
 
   Bars.prototype.textHeight = 10;
+
+  Bars.prototype.axisMargin = -Infinity;
+
+  Bars.prototype.descriptionWidth = -Infinity;
+
+  Bars.prototype.ticks = 10;
 
   function Bars(o) {
     var group, k, key, v, value, _i, _len, _ref, _ref1;
@@ -247,9 +236,8 @@ Chart.Bars = (function() {
   }
 
   Bars.prototype.render = function() {
-    var bar, bars, color, desc, descG, descWidth, descriptions, domain, end, g, group, height, index, j, left, series, text, tick, value, values, w, width, x, y, _i, _j, _k, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1,
+    var bar, bars, color, desc, descG, descriptions, domain, end, g, group, height, index, j, left, series, t, text, tick, value, values, w, width, x, y, _i, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1,
       _this = this;
-    descWidth = -Infinity;
     descriptions = this.canvas.append('svg:g').attr('class', 'descriptions');
     _ref = this.data;
     for (index in _ref) {
@@ -257,23 +245,26 @@ Chart.Bars = (function() {
       g = descriptions.append("svg:g").attr("class", "g" + index);
       text = g.append("svg:text").attr("class", "text").attr("text-anchor", "end").text(group['description']);
       width = text.node().getComputedTextLength();
-      if (width > descWidth) {
-        descWidth = width;
+      if (width > this.descriptionWidth) {
+        this.descriptionWidth = width;
       }
       g.append("svg:title").text(group['description']);
     }
-    this.height = this.height - this.textHeight - (descWidth * 0.5);
+    this.height = this.height - this.textHeight;
+    if (true) {
+      this.height = this.height - (this.descriptionWidth * 0.5);
+    }
     domain = {
       'y': d3.scale.linear().domain([0, this.maxValue]).range([0, this.height]),
       'color': d3.scale.linear().domain([0, this.maxValue]).range([0, this.colorbrewer - 1])
     };
     g = this.canvas.append("svg:g").attr("class", "grid");
-    this.axisMargin = -Infinity;
-    _ref1 = domain['y'].ticks(10);
-    for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-      tick = _ref1[_i];
+    _ref1 = domain['y'].ticks(this.ticks);
+    for (index in _ref1) {
+      tick = _ref1[index];
       if ((parseInt(tick) === tick) || (!this.useWholeNumbers)) {
-        text = g.append("svg:text").attr("class", "tick").attr("x", 0).attr("y", this.height - domain['y'](tick)).attr("text-anchor", "begin").text(tick.toFixed(0));
+        t = g.append("svg:g").attr('class', "t" + index);
+        text = t.append("svg:text").attr("class", "tick").attr("x", 0).attr("y", this.height - domain['y'](tick)).attr("text-anchor", "begin").text(tick.toFixed(0));
         width = text.node().getComputedTextLength();
         if (width > this.axisMargin) {
           this.axisMargin = width;
@@ -283,15 +274,16 @@ Chart.Bars = (function() {
     this.width = this.width - this.axisMargin;
     domain['x'] = d3.scale.ordinal().domain((function() {
       _results = [];
-      for (var _j = 0, _ref2 = this.data.length - 1; 0 <= _ref2 ? _j <= _ref2 : _j >= _ref2; 0 <= _ref2 ? _j++ : _j--){ _results.push(_j); }
+      for (var _i = 0, _ref2 = this.data.length - 1; 0 <= _ref2 ? _i <= _ref2 : _i >= _ref2; 0 <= _ref2 ? _i++ : _i--){ _results.push(_i); }
       return _results;
     }).apply(this)).rangeBands([0, this.width], .05);
-    _ref3 = domain['y'].ticks(10);
-    for (_k = 0, _len1 = _ref3.length; _k < _len1; _k++) {
-      tick = _ref3[_k];
+    _ref3 = domain['y'].ticks(this.ticks);
+    for (index in _ref3) {
+      tick = _ref3[index];
       if ((parseInt(tick) === tick) || (!this.useWholeNumbers)) {
         y = this.height - domain['y'](tick);
-        g.append("svg:line").attr("class", "line").attr("y1", y).attr("y2", y).attr("x1", this.axisMargin).attr("x2", this.width);
+        t = g.select(".t" + index);
+        t.append("svg:line").attr("class", "line").attr("y1", y).attr("y2", y).attr("x1", this.axisMargin).attr("x2", this.width);
       }
     }
     this.chart = this.canvas.append("svg:g").attr("class", "chart");
@@ -343,7 +335,7 @@ Chart.Bars = (function() {
       x = this.axisMargin + left + width;
       y = this.height + this.textHeight;
       descG = descriptions.select(".g" + index).attr('transform', "translate(" + x + "," + y + ")");
-      if (descWidth > width) {
+      if (this.descriptionWidth > width) {
         desc = descG.select("text");
         desc.attr("transform", "rotate(-30 0 0)");
         _results1.push((function() {
@@ -410,6 +402,23 @@ Chart.Legend = (function() {
   return Legend;
 
 })();
+
+/* Merge properties of 2 dictionaries.
+*/
+
+var merge;
+
+merge = function(child, parent) {
+  var key;
+  for (key in parent) {
+    if (!(child[key] != null)) {
+      if (Object.prototype.hasOwnProperty.call(parent, key)) {
+        child[key] = parent[key];
+      }
+    }
+  }
+  return child;
+};
 
 /* Create file download with custom content.
 */
@@ -1577,13 +1586,13 @@ factory = function(Backbone) {
           v = _ref[_i];
           data.push({
             'description': v[0],
-            'data': [v[1], v[2], Math.floor(Math.random() * (15 - 1))]
+            'data': [v[1], v[2]]
           });
         }
         legend = new Chart.Legend({
           'el': $(this.el).find("div.content div.legend"),
           'chart': $(this.el).find("div.content div.chart"),
-          'series': [this.response.results[0][1], this.response.results[0][2], 'Radíkov']
+          'series': [this.response.results[0][1], this.response.results[0][2]]
         });
         legend.render();
         height = $(this.widget.el).height() - $(this.widget.el).find('header').height() - $(this.widget.el).find('div.content div.legend').height();

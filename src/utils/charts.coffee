@@ -6,10 +6,19 @@ Chart =
 class Chart.Bars
 
     # Number of ColorBrewer classes.
-    colorbrewer: 4
+    colorbrewer:      4
 
     # Assumed height of text.
-    textHeight: 10
+    textHeight:       10
+
+    # The margin (from left) to be left for axis numbers.
+    axisMargin:       -Infinity
+
+    # Description width.
+    descriptionWidth: -Infinity
+
+    # The number of ticks axis should have (roughly).
+    ticks:            10
 
     # Expand object values on us.
     constructor: (o) ->
@@ -34,7 +43,6 @@ class Chart.Bars
 
     render: () ->
         # Descriptions.
-        descWidth = -Infinity
         descriptions = @canvas.append('svg:g').attr('class', 'descriptions')
         for index, group of @data
             # Wrapper for the text and title.
@@ -49,13 +57,15 @@ class Chart.Bars
 
             # Update the max width.
             width = text.node().getComputedTextLength()
-            descWidth = width if width > descWidth
+            @descriptionWidth = width if width > @descriptionWidth
 
             # Add an onhover description title.
             g.append("svg:title").text group['description']
 
-        # Reduce the chart space for chart and add some extra padding for the grid.
-        @height = @height - @textHeight - (descWidth * 0.5)
+        # Reduce the chart space by accomodating the description.
+        @height = @height - @textHeight
+        # Will we need to rotate the descriptions? Then reduce it by the height of one side of the triangle created by a 30 deg rotation.
+        if true then @height = @height - (@descriptionWidth * 0.5)
 
         # Get the domain.
         domain =
@@ -66,10 +76,11 @@ class Chart.Bars
         g = @canvas.append("svg:g").attr("class", "grid")
 
         # Axis numbers
-        @axisMargin = -Infinity
-        for tick in domain['y'].ticks(10)
+        for index, tick of domain['y'].ticks(@ticks)
             if (parseInt(tick) is tick) or (!@useWholeNumbers)
-                text = g.append("svg:text")
+                t = g.append("svg:g").attr('class', "t#{index}")
+                
+                text = t.append("svg:text")
                 .attr("class", "tick")
                 .attr("x", 0)
                 .attr("y", @height - domain['y'](tick))
@@ -85,11 +96,13 @@ class Chart.Bars
         domain['x'] = d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, @width ], .05)
 
         # Horizontal lines.
-        for tick in domain['y'].ticks(10)
+        for index, tick of domain['y'].ticks(@ticks)
             if (parseInt(tick) is tick) or (!@useWholeNumbers)
                 y = @height - domain['y'](tick)
                 
-                g.append("svg:line")
+                t = g.select(".t#{index}")
+
+                t.append("svg:line")
                 .attr("class", "line")
                 .attr("y1", y).attr("y2", y)
                 .attr("x1", @axisMargin).attr("x2", @width)
@@ -176,7 +189,7 @@ class Chart.Bars
             .attr('transform', "translate(#{x},#{y})")
             
             # (A better) naive fce to determine if we should rotate the text.
-            if descWidth > width
+            if @descriptionWidth > width
                 desc = descG.select("text")
                 desc.attr("transform", "rotate(-30 0 0)")
                 # Maybe still, it is one of the first descriptions and is longer than the distance from left (margin + x + width + translate).

@@ -30,13 +30,13 @@ class ChartView extends Backbone.View
             for v in @response.results[1..]
                 data.push
                     'description': v[0]
-                    'data':      [ v[1], v[2], Math.floor(Math.random() * (15 - 1)) ]
+                    'data':      [ v[1], v[2] ]
 
             # Render the chart legend
             legend = new Chart.Legend(
                 'el':     $(@el).find("div.content div.legend")
                 'chart' : $(@el).find("div.content div.chart")
-                'series': [ @response.results[0][1], @response.results[0][2], 'Radíkov' ]
+                'series': [ @response.results[0][1], @response.results[0][2] ]
             )
             legend.render()
 
