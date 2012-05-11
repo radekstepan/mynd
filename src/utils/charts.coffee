@@ -30,8 +30,6 @@ class Charts.Bars
         .attr('class', 'canvas')
 
     render: () ->
-        margin = 10
-
         # Descriptions.
         descWidth = -Infinity
         descriptions = @canvas.append('svg:g').attr('class', 'descriptions')
@@ -54,16 +52,18 @@ class Charts.Bars
             g.append("svg:title").text group['text']
 
         # Reduce the chart space for chart and add some extra padding for the grid.
-        @width = @width - 15 - margin ; @height = @height - @textHeight - (descWidth * 0.5)
+        @height = @height - @textHeight - (descWidth * 0.5)
 
         # Get the domain.
-        domain = @_domain()
+        domain =
+            'y':     d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, @height ])
+            'color': d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, @colorbrewer - 1 ])
 
         # Draw the grid of whole numbers.
         g = @canvas.append("svg:g").attr("class", "grid")
 
         # Axis numbers
-        numberWidth = -Infinity
+        @axisMargin = -Infinity
         for tick in domain['y'].ticks(10)
             if (parseInt(tick) is tick) or (!@useWholeNumbers)
                 text = g.append("svg:text")
@@ -75,7 +75,11 @@ class Charts.Bars
 
                 # Update the max width.
                 width = text.node().getComputedTextLength()
-                numberWidth = width if width > numberWidth
+                @axisMargin = width if width > @axisMargin
+
+        # Reduce the chart space for chart and add some extra padding for the grid.
+        @width = @width - @axisMargin
+        domain['x'] = d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, @width ], .05)
 
         # Horizontal lines.
         for tick in domain['y'].ticks(10)
@@ -85,7 +89,7 @@ class Charts.Bars
                 g.append("svg:line")
                 .attr("class", "line")
                 .attr("y1", y).attr("y2", y)
-                .attr("x1", numberWidth).attr("x2", @width)
+                .attr("x1", @axisMargin).attr("x2", @width)
 
         # Chart `g`.
         @chart = @canvas.append("svg:g").attr("class", "chart")
@@ -99,7 +103,7 @@ class Charts.Bars
             .attr("class", "group g#{i}")
             
             # Place vertical line.
-            left = margin + domain['x'](i) + domain['x'].rangeBand() / 2
+            left = @axisMargin + domain['x'](i) + domain['x'].rangeBand() / 2
 
             g.append("svg:line")
             .attr("class", "line dashed")
@@ -119,7 +123,7 @@ class Charts.Bars
                 # Append the actual rectangle.
                 bar = g.append("svg:rect")
                 .attr("class",  "bar #{series} q#{color}-#{@colorbrewer}")
-                .attr('x',      margin + left)
+                .attr('x',      @axisMargin + left)
                 .attr('y',      @height - height)
                 .attr('width',  width)
                 .attr('height', height)
@@ -130,7 +134,7 @@ class Charts.Bars
                 y = parseFloat @height - height - 1
                 
                 text = w.append("svg:text")
-                .attr('x', margin + left + (width / 2))
+                .attr('x', @axisMargin + left + (width / 2))
                 .attr("text-anchor", "middle")
                 .text value
 
@@ -155,7 +159,7 @@ class Charts.Bars
                         bar.on 'click', => @onclick group['text'], j, value
 
                 # Save the total distance from the left till the (right) end of the bar.
-                end = left + width + margin
+                end = left + width + @axisMargin
 
                 j++
             
@@ -163,7 +167,7 @@ class Charts.Bars
             g.append("svg:title").text group['text']
 
             # Update the position of the description text wrapping `g` element.
-            x = numberWidth + left + width ; y = @height + @textHeight
+            x = @axisMargin + left + width ; y = @height + @textHeight
             descG = descriptions.select(".g#{i}")
             .attr('transform', "translate(#{x},#{y})")
             
@@ -175,14 +179,6 @@ class Charts.Bars
                 while (desc.node().getComputedTextLength() * 0.866025) > end
                     # Trim the text.
                     desc.text desc.text().replace('...', '').split('').reverse()[1..].reverse().join('') + '...'
-
-    # Get the domain.
-    _domain: () ->
-        {
-            'x':     d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, @width ], .05)
-            'y':     d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, @height ])
-            'color': d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, @colorbrewer - 1 ])
-        }
 
 
 class Charts.Legend

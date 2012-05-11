@@ -245,9 +245,8 @@ Charts.Bars = (function() {
   }
 
   Bars.prototype.render = function() {
-    var bar, bars, color, desc, descG, descWidth, descriptions, domain, end, g, group, height, i, j, left, margin, numberWidth, series, text, tick, value, values, w, width, x, y, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4, _results,
+    var bar, bars, color, desc, descG, descWidth, descriptions, domain, end, g, group, height, i, j, left, series, text, tick, value, values, w, width, x, y, _i, _j, _k, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1,
       _this = this;
-    margin = 10;
     descWidth = -Infinity;
     descriptions = this.canvas.append('svg:g').attr('class', 'descriptions');
     _ref = this.data;
@@ -261,53 +260,61 @@ Charts.Bars = (function() {
       }
       g.append("svg:title").text(group['text']);
     }
-    this.width = this.width - 15 - margin;
     this.height = this.height - this.textHeight - (descWidth * 0.5);
-    domain = this._domain();
+    domain = {
+      'y': d3.scale.linear().domain([0, this.maxValue]).range([0, this.height]),
+      'color': d3.scale.linear().domain([0, this.maxValue]).range([0, this.colorbrewer - 1])
+    };
     g = this.canvas.append("svg:g").attr("class", "grid");
-    numberWidth = -Infinity;
+    this.axisMargin = -Infinity;
     _ref1 = domain['y'].ticks(10);
     for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
       tick = _ref1[_i];
       if ((parseInt(tick) === tick) || (!this.useWholeNumbers)) {
         text = g.append("svg:text").attr("class", "tick").attr("x", 0).attr("y", this.height - domain['y'](tick)).attr("text-anchor", "begin").text(tick.toFixed(0));
         width = text.node().getComputedTextLength();
-        if (width > numberWidth) {
-          numberWidth = width;
+        if (width > this.axisMargin) {
+          this.axisMargin = width;
         }
       }
     }
-    _ref2 = domain['y'].ticks(10);
-    for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-      tick = _ref2[_j];
+    this.width = this.width - this.axisMargin;
+    domain['x'] = d3.scale.ordinal().domain((function() {
+      _results = [];
+      for (var _j = 0, _ref2 = this.data.length - 1; 0 <= _ref2 ? _j <= _ref2 : _j >= _ref2; 0 <= _ref2 ? _j++ : _j--){ _results.push(_j); }
+      return _results;
+    }).apply(this)).rangeBands([0, this.width], .05);
+    _ref3 = domain['y'].ticks(10);
+    for (_k = 0, _len1 = _ref3.length; _k < _len1; _k++) {
+      tick = _ref3[_k];
       if ((parseInt(tick) === tick) || (!this.useWholeNumbers)) {
         y = this.height - domain['y'](tick);
-        g.append("svg:line").attr("class", "line").attr("y1", y).attr("y2", y).attr("x1", numberWidth).attr("x2", this.width);
+        g.append("svg:line").attr("class", "line").attr("y1", y).attr("y2", y).attr("x1", this.axisMargin).attr("x2", this.width);
       }
     }
     this.chart = this.canvas.append("svg:g").attr("class", "chart");
     bars = this.chart.append("svg:g").attr("class", "bars");
     values = this.chart.append("svg:g").attr("class", "values");
-    _ref3 = this.data;
-    _results = [];
-    for (i in _ref3) {
-      group = _ref3[i];
+    _ref4 = this.data;
+    _results1 = [];
+    for (i in _ref4) {
+      group = _ref4[i];
       g = bars.append("svg:g").attr("class", "group g" + i);
-      left = margin + domain['x'](i) + domain['x'].rangeBand() / 2;
+      left = this.axisMargin + domain['x'](i) + domain['x'].rangeBand() / 2;
       g.append("svg:line").attr("class", "line dashed").attr("x1", left).attr("x2", left).attr("y1", 0).attr("y2", this.height).attr("style", "stroke-dasharray: 10, 5;");
       j = 0;
       end = 0;
-      _ref4 = group['data'];
-      for (series in _ref4) {
-        value = _ref4[series];
+      _ref5 = group['data'];
+      for (series in _ref5) {
+        value = _ref5[series];
         width = domain['x'].rangeBand() / 2;
         left = domain['x'](i) + (j * width);
         height = domain['y'](value);
         color = domain['color'](value).toFixed(0);
-        bar = g.append("svg:rect").attr("class", "bar " + series + " q" + color + "-" + this.colorbrewer).attr('x', margin + left).attr('y', this.height - height).attr('width', width).attr('height', height);
+        bar = g.append("svg:rect").attr("class", "bar " + series + " q" + color + "-" + this.colorbrewer).attr('x', this.axisMargin + left).attr('y', this.height - height).attr('width', width).attr('height', height);
         w = values.append("svg:g").attr('class', "value g" + i + " " + series);
         y = parseFloat(this.height - height - 1);
-        text = w.append("svg:text").attr('x', margin + left + (width / 2)).attr("text-anchor", "middle").text(value);
+        text = w.append("svg:text").attr('x', this.axisMargin + left + (width / 2)).attr("text-anchor", "middle").text(value);
         if (y < 15) {
           text.attr('y', y + 15);
           if (text.node().getComputedTextLength() > width) {
@@ -327,42 +334,29 @@ Charts.Bars = (function() {
             });
           })(bar, group, j, value);
         }
-        end = left + width + margin;
+        end = left + width + this.axisMargin;
         j++;
       }
       g.append("svg:title").text(group['text']);
-      x = numberWidth + left + width;
+      x = this.axisMargin + left + width;
       y = this.height + this.textHeight;
       descG = descriptions.select(".g" + i).attr('transform', "translate(" + x + "," + y + ")");
       if (descWidth > width) {
         desc = descG.select("text");
         desc.attr("transform", "rotate(-30 0 0)");
-        _results.push((function() {
-          var _results1;
-          _results1 = [];
+        _results1.push((function() {
+          var _results2;
+          _results2 = [];
           while ((desc.node().getComputedTextLength() * 0.866025) > end) {
-            _results1.push(desc.text(desc.text().replace('...', '').split('').reverse().slice(1).reverse().join('') + '...'));
+            _results2.push(desc.text(desc.text().replace('...', '').split('').reverse().slice(1).reverse().join('') + '...'));
           }
-          return _results1;
+          return _results2;
         })());
       } else {
-        _results.push(void 0);
+        _results1.push(void 0);
       }
     }
-    return _results;
-  };
-
-  Bars.prototype._domain = function() {
-    var _i, _ref, _results;
-    return {
-      'x': d3.scale.ordinal().domain((function() {
-        _results = [];
-        for (var _i = 0, _ref = this.data.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
-        return _results;
-      }).apply(this)).rangeBands([0, this.width], .05),
-      'y': d3.scale.linear().domain([0, this.maxValue]).range([0, this.height]),
-      'color': d3.scale.linear().domain([0, this.maxValue]).range([0, this.colorbrewer - 1])
-    };
+    return _results1;
   };
 
   return Bars;
