@@ -53,10 +53,10 @@ class Chart.Bars
 
     render: () ->
         # Descriptions.
-        descriptions = @canvas.append('svg:g').attr('class', 'descriptions')
+        @descriptions = @canvas.append('svg:g').attr('class', 'descriptions')
         for index, group of @data
             # Wrapper for the text and title.
-            g = descriptions.append("svg:g")
+            g = @descriptions.append("svg:g")
             .attr("class", "g#{index}")
             
             # Text.
@@ -200,7 +200,7 @@ class Chart.Bars
 
             # Update the position of the description text wrapping `g` element.
             x = @ticks.maxWidth + left + width ; y = @height + @textHeight
-            descG = descriptions.select(".g#{index}")
+            descG = @descriptions.select(".g#{index}")
             .attr('transform', "translate(#{x},#{y})")
             
             # (A better) naive fce to determine if we should rotate the text.

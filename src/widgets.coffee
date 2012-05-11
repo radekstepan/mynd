@@ -26,16 +26,16 @@ class Widgets
         wait:  true
     ,
         name:  "d3"
-        path:  "https://raw.github.com/shutterstock/rickshaw/master/vendor/d3.min.js"
+        path:  "http://d3js.org/d3.v2.min.js"
         type:  "js"
     ,
-        path:  "https://raw.github.com/alexkalderimis/imjs/master/src/model.js"
+        path:  "http://alexkalderimis.github.com/im-tables/lib/imjs/src/model.js"
         type:  "js"
     ,
-        path:  "https://raw.github.com/alexkalderimis/imjs/master/src/query.js"
+        path:  "http://alexkalderimis.github.com/im-tables/lib/imjs/src/query.js"
         type:  "js"
     ,
-        path:  "https://raw.github.com/alexkalderimis/imjs/master/src/service.js"
+        path:  "http://alexkalderimis.github.com/im-tables/lib/imjs/src/service.js"
         type:  "js"
     ]
 
