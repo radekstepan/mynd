@@ -80,8 +80,14 @@ class Chart.Bars
         # Add a wrapping `g` for the grid ticks and lines.
         @grid = @canvas.append("svg:g").attr("class", "grid")
 
-        # Render the tick numbers so we can get the @ticks.maxWidth (slightly inaccurate as the @height might change).
-        for index, tick of d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, @height ]).ticks(@ticks.count)
+        # Init the domain, with ticks for now.
+        domain = {}
+        domain.ticks = do () =>
+            # Modify ticks to use whole numbers where appropriate.
+            ( t for t in d3.scale.linear().domain([ 0, @maxValue ]).ticks(@ticks.count) when ( (parseInt(t) is t) or !@useWholeNumbers ) )
+
+        # Render the tick numbers so we can get the @ticks.maxWidth.
+        for index, tick of domain.ticks
             if (parseInt(tick) is tick) or (!@useWholeNumbers)
                 t = @grid.append("svg:g").attr('class', "t#{index}")
                 
@@ -102,13 +108,12 @@ class Chart.Bars
         if @description.totalWidth > @width then @height = @height - (@description.maxWidth * @description.triangle.sideA)
 
         # Get the domain as @width & @height are fixed now.
-        domain =
-            'x':     d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, @width ], .05)
-            'y':     d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, @height ])
-            'color': d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, @colorbrewer - 1 ])
+        domain.x =     d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, @width ], .05)
+        domain.y =     d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, @height ])
+        domain.color = d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, @colorbrewer - 1 ])
 
-        # Horizontal lines.
-        for index, tick of domain['y'].ticks(@ticks.count)
+        # Horizontal lines among ticks.
+        for index, tick of domain.ticks
             if (parseInt(tick) is tick) or (!@useWholeNumbers)
                 # Get the wrapping `g`.
                 t = @grid.select(".t#{index}")
