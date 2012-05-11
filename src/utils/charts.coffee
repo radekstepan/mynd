@@ -128,7 +128,7 @@ class Chart.Column
             t.append("svg:line")
             .attr("class", "line")
             .attr("x1",    @ticks.maxWidth)
-            .attr("x2",    @width)
+            .attr("x2",    @width + @ticks.maxWidth)
 
             # Update the position of the wrapping `g` to shift both ticks and lines.
             t.attr 'transform', "translate(0,#{@height - domain['y'](tick)})"
