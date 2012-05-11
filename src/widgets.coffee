@@ -6,7 +6,9 @@ $ = window.jQuery or window.Zepto
 # Public interface for the various InterMine Widgets.
 class Widgets
 
-    wait: true
+    VERSION: '1.0.0'
+
+    wait:    true
 
     # JavaScript libraries as resources. Will be loaded if not present already.
     resources: [
