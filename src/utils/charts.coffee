@@ -213,7 +213,7 @@ class Chart.Column
                 .attr('height', barHeight)
 
                 # Add a text value.
-                w = values.append("svg:g").attr('class', "g#{index} #{Chart.series[series]}")
+                w = values.append("svg:g").attr('class', "g#{index} #{Chart.series[series]} q#{color}-#{@colorbrewer}")
                 
                 # Add a text in the middle of the bar.
                 text = w.append("svg:text")
@@ -293,7 +293,7 @@ class Chart.Legend
     render: () ->
         $(@el).append ul = $('<ul/>')
 
-        for index, name of @series
+        for index, name of @series then do (index, name) =>
             ul.append $('<li/>',
                 'class': Chart.series[index]
                 'html':  name
@@ -306,5 +306,5 @@ class Chart.Legend
         $(el).toggleClass 'disabled'
 
         # Change the opacity to 'toggle' the series bars.
-        d3.select(@chart[0]).selectAll("rect.bar.#{Chart.series[series]}")
-        .attr('fill-opacity', () -> if $(el).hasClass 'disabled' then 0.2 else 1 )
+        d3.select(@chart[0]).selectAll(".#{Chart.series[series]}")
+        .attr('fill-opacity', () -> if $(el).hasClass 'disabled' then 0.1 else 1 )

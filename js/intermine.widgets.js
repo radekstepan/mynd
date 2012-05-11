@@ -378,7 +378,7 @@ Chart.Column = (function() {
         }
         color = domain['color'](value).toFixed(0);
         bar = g.append("svg:rect").attr("class", "bar " + Chart.series[series] + " q" + color + "-" + this.colorbrewer).attr('x', x).attr('y', y).attr('width', barWidth).attr('height', barHeight);
-        w = values.append("svg:g").attr('class', "g" + index + " " + Chart.series[series]);
+        w = values.append("svg:g").attr('class', "g" + index + " " + Chart.series[series] + " q" + color + "-" + this.colorbrewer);
         text = w.append("svg:text").attr('x', x + (barWidth / 2)).attr("text-anchor", "middle").text(value);
         if (this.isStacked) {
           y = y + this.textHeight + this.pisvejc;
@@ -456,22 +456,25 @@ Chart.Legend = (function() {
     _results = [];
     for (index in _ref) {
       name = _ref[index];
-      _results.push(ul.append($('<li/>', {
-        'class': Chart.series[index],
-        'html': name,
-        'click': function(e) {
-          return _this.clickAction(e.target, index);
-        }
-      })));
+      _results.push((function(index, name) {
+        return ul.append($('<li/>', {
+          'class': Chart.series[index],
+          'html': name,
+          'click': function(e) {
+            return _this.clickAction(e.target, index);
+          }
+        }));
+      })(index, name));
     }
     return _results;
   };
 
   Legend.prototype.clickAction = function(el, series) {
     $(el).toggleClass('disabled');
-    return d3.select(this.chart[0]).selectAll("rect.bar." + Chart.series[series]).attr('fill-opacity', function() {
+    console.log("hide " + series);
+    return d3.select(this.chart[0]).selectAll("." + Chart.series[series]).attr('fill-opacity', function() {
       if ($(el).hasClass('disabled')) {
-        return 0.2;
+        return 0.1;
       } else {
         return 1;
       }

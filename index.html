@@ -19,16 +19,6 @@
             .widget .canvas line { stroke:#CCC; }
             .widget .canvas line.dashed { stroke:#EEE; }
             .widget .canvas text { font-family:Georgia; fill:#555; font-size:11px; }
-            .widget .canvas text.value.on { fill:#fff; }
-            .widget .canvas text.value.on.beyond { fill:#000; }
-            /* legend */
-            .widget .legend ul { margin:0; text-align:center; font-family:Georgia; color:#555; }
-            .widget .legend ul li { display:inline; margin:0 10px; cursor:pointer; }
-            .widget .legend ul li:before { content:" "; display:inline-block; width:10px; height:10px; margin-right:4px; opacity:1; }
-            .widget .legend ul li.first:before { background:#2171b5; }
-            .widget .legend ul li.second:before { background:#238b45; }
-            .widget .legend ul li.third:before { background:#cb181d; }
-            .widget .legend ul li.disabled:before { opacity:0.2; }
             /* ColorBrewer Blues, Greens */
             .widget .canvas rect.bar.first.q0-4 { fill:#eff3ff }
             .widget .canvas rect.bar.first.q1-4 { fill:#bdd7e7 }
@@ -42,6 +32,20 @@
             .widget .canvas rect.bar.third.q1-4 { fill:#fcae91 }
             .widget .canvas rect.bar.third.q2-4 { fill:#fb6a4a }
             .widget .canvas rect.bar.third.q3-4 { fill:#cb181d }
+            /* values */
+            .widget .canvas .q0-4 text.value.on,
+            .widget .canvas .q1-4 text.value.on { fill:#555; }
+            .widget .canvas .q2-4 text.value.on,
+            .widget .canvas .q3-4 text.value.on { fill:#fff; }
+            .widget .canvas text.value.on.beyond { fill:#000; }
+            /* legend */
+            .widget .legend ul { margin:0; text-align:center; font-family:Georgia; color:#555; }
+            .widget .legend ul li { display:inline; margin:0 10px; cursor:pointer; }
+            .widget .legend ul li:before { content:" "; display:inline-block; width:10px; height:10px; margin-right:4px; opacity:1; }
+            .widget .legend ul li.first:before { background:#2171b5; }
+            .widget .legend ul li.second:before { background:#238b45; }
+            .widget .legend ul li.third:before { background:#cb181d; }
+            .widget .legend ul li.disabled:before { opacity:0.2; }
         </style>
 
         <!-- intermine api loader -->
