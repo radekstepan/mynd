@@ -131,9 +131,9 @@ class Chart.Column
         if @description.totalWidth > @width then @height = @height - (@description.maxWidth * @description.triangle.sideA)
 
         # Get the domain as @width & @height are fixed now.
-        domain.x =     d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, @width ], .05)
-        domain.y =     d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, @height ])
-        domain.color = d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, @colorbrewer - 1 ])
+        domain.x =     d3.scale.ordinal().domain([0..@data.length - 1]).rangeRoundBands([ 0, @width ], .05)
+        domain.y =     d3.scale.linear().domain([ 0, @maxValue ]).rangeRound([ 0, @height ])
+        domain.color = d3.scale.linear().domain([ 0, @maxValue ]).rangeRound([ 0, @colorbrewer - 1 ])
 
         # -------------------------------------------------------------------
         # Horizontal lines among ticks.

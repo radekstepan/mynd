@@ -206,6 +206,62 @@ merge = function(child, parent) {
   return child;
 };
 
+/* Create file download with custom content.
+*/
+
+var Exporter, PlainExporter,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+Exporter = (function() {
+
+  Exporter.name = 'Exporter';
+
+  Exporter.prototype.mime = 'text/plain';
+
+  Exporter.prototype.charset = 'UTF-8';
+
+  Exporter.prototype.url = window.webkitURL || window.URL;
+
+  function Exporter(a, data, filename) {
+    var builder;
+    if (filename == null) {
+      filename = 'widget.tsv';
+    }
+    this.destroy = __bind(this.destroy, this);
+
+    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
+    builder.append(data);
+    a.attr('download', filename);
+    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
+    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
+  }
+
+  Exporter.prototype.destroy = function() {
+    return this.url.revokeObjectURL(this.href);
+  };
+
+  return Exporter;
+
+})();
+
+PlainExporter = (function() {
+
+  PlainExporter.name = 'PlainExporter';
+
+  function PlainExporter(data) {
+    var w;
+    w = window.open();
+    w.document.open();
+    w.document.write(data);
+    w.document.close();
+  }
+
+  PlainExporter.prototype.destroy = function() {};
+
+  return PlainExporter;
+
+})();
+
 var Chart;
 
 Chart = {
@@ -333,9 +389,9 @@ Chart.Column = (function() {
       _results = [];
       for (var _i = 0, _ref2 = this.data.length - 1; 0 <= _ref2 ? _i <= _ref2 : _i >= _ref2; 0 <= _ref2 ? _i++ : _i--){ _results.push(_i); }
       return _results;
-    }).apply(this)).rangeBands([0, this.width], .05);
-    domain.y = d3.scale.linear().domain([0, this.maxValue]).range([0, this.height]);
-    domain.color = d3.scale.linear().domain([0, this.maxValue]).range([0, this.colorbrewer - 1]);
+    }).apply(this)).rangeRoundBands([0, this.width], .05);
+    domain.y = d3.scale.linear().domain([0, this.maxValue]).rangeRound([0, this.height]);
+    domain.color = d3.scale.linear().domain([0, this.maxValue]).rangeRound([0, this.colorbrewer - 1]);
     _ref3 = domain.ticks;
     for (index in _ref3) {
       tick = _ref3[index];
@@ -471,7 +527,6 @@ Chart.Legend = (function() {
 
   Legend.prototype.clickAction = function(el, series) {
     $(el).toggleClass('disabled');
-    console.log("hide " + series);
     return d3.select(this.chart[0]).selectAll("." + Chart.series[series]).attr('fill-opacity', function() {
       if ($(el).hasClass('disabled')) {
         return 0.1;
@@ -482,62 +537,6 @@ Chart.Legend = (function() {
   };
 
   return Legend;
-
-})();
-
-/* Create file download with custom content.
-*/
-
-var Exporter, PlainExporter,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-Exporter = (function() {
-
-  Exporter.name = 'Exporter';
-
-  Exporter.prototype.mime = 'text/plain';
-
-  Exporter.prototype.charset = 'UTF-8';
-
-  Exporter.prototype.url = window.webkitURL || window.URL;
-
-  function Exporter(a, data, filename) {
-    var builder;
-    if (filename == null) {
-      filename = 'widget.tsv';
-    }
-    this.destroy = __bind(this.destroy, this);
-
-    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
-    builder.append(data);
-    a.attr('download', filename);
-    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
-    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
-  }
-
-  Exporter.prototype.destroy = function() {
-    return this.url.revokeObjectURL(this.href);
-  };
-
-  return Exporter;
-
-})();
-
-PlainExporter = (function() {
-
-  PlainExporter.name = 'PlainExporter';
-
-  function PlainExporter(data) {
-    var w;
-    w = window.open();
-    w.document.open();
-    w.document.write(data);
-    w.document.close();
-  }
-
-  PlainExporter.prototype.destroy = function() {};
-
-  return PlainExporter;
 
 })();
 
@@ -999,186 +998,6 @@ factory = function(Backbone) {
     return EnrichmentWidget;
   
   })(InterMineWidget);
-  
-
-  /* Core Model for Enrichment and Table Models.
-  */
-  
-  var CoreCollection, CoreModel, EnrichmentResults, EnrichmentRow, TableResults, TableRow,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  CoreModel = (function(_super) {
-  
-    __extends(CoreModel, _super);
-  
-    CoreModel.name = 'CoreModel';
-  
-    function CoreModel() {
-      this.toggleSelected = __bind(this.toggleSelected, this);
-  
-      this.validate = __bind(this.validate, this);
-      return CoreModel.__super__.constructor.apply(this, arguments);
-    }
-  
-    CoreModel.prototype.defaults = {
-      "selected": false
-    };
-  
-    CoreModel.prototype.initialize = function(row, widget) {
-      this.widget = widget;
-      return this.validate(row);
-    };
-  
-    CoreModel.prototype.validate = function(row) {
-      return this.widget.validateType(row, this.spec);
-    };
-  
-    CoreModel.prototype.toggleSelected = function() {
-      return this.set({
-        selected: !this.get("selected")
-      });
-    };
-  
-    return CoreModel;
-  
-  })(Backbone.Model);
-  
-  CoreCollection = (function(_super) {
-  
-    __extends(CoreCollection, _super);
-  
-    CoreCollection.name = 'CoreCollection';
-  
-    function CoreCollection() {
-      return CoreCollection.__super__.constructor.apply(this, arguments);
-    }
-  
-    CoreCollection.prototype.model = CoreModel;
-  
-    CoreCollection.prototype.selected = function() {
-      return this.filter(function(row) {
-        return row.get("selected");
-      });
-    };
-  
-    CoreCollection.prototype.toggleSelected = function() {
-      var model, _i, _j, _len, _len1, _ref, _ref1, _results, _results1;
-      if (this.models.length - this.selected().length) {
-        _ref = this.models;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          model = _ref[_i];
-          _results.push(model.set({
-            "selected": true
-          }, {
-            'silent': true
-          }));
-        }
-        return _results;
-      } else {
-        _ref1 = this.models;
-        _results1 = [];
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          model = _ref1[_j];
-          _results1.push(model.set({
-            "selected": false
-          }, {
-            'silent': true
-          }));
-        }
-        return _results1;
-      }
-    };
-  
-    return CoreCollection;
-  
-  })(Backbone.Collection);
-  
-  /* Models underpinning Enrichment Widget results.
-  */
-  
-  
-  EnrichmentRow = (function(_super) {
-  
-    __extends(EnrichmentRow, _super);
-  
-    EnrichmentRow.name = 'EnrichmentRow';
-  
-    function EnrichmentRow() {
-      return EnrichmentRow.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentRow.prototype.spec = {
-      "description": type.isString,
-      "identifier": type.isString,
-      "matches": type.isInteger,
-      "p-value": type.isInteger,
-      "selected": type.isBoolean,
-      "externalLink": type.isString
-    };
-  
-    return EnrichmentRow;
-  
-  })(CoreModel);
-  
-  EnrichmentResults = (function(_super) {
-  
-    __extends(EnrichmentResults, _super);
-  
-    EnrichmentResults.name = 'EnrichmentResults';
-  
-    function EnrichmentResults() {
-      return EnrichmentResults.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentResults.prototype.model = EnrichmentRow;
-  
-    return EnrichmentResults;
-  
-  })(CoreCollection);
-  
-  /* Models underpinning Table Widget results.
-  */
-  
-  
-  TableRow = (function(_super) {
-  
-    __extends(TableRow, _super);
-  
-    TableRow.name = 'TableRow';
-  
-    function TableRow() {
-      return TableRow.__super__.constructor.apply(this, arguments);
-    }
-  
-    TableRow.prototype.spec = {
-      "matches": type.isInteger,
-      "identifier": type.isInteger,
-      "descriptions": type.isArray,
-      "selected": type.isBoolean
-    };
-  
-    return TableRow;
-  
-  })(CoreModel);
-  
-  TableResults = (function(_super) {
-  
-    __extends(TableResults, _super);
-  
-    TableResults.name = 'TableResults';
-  
-    function TableResults() {
-      return TableResults.__super__.constructor.apply(this, arguments);
-    }
-  
-    TableResults.prototype.model = TableRow;
-  
-    return TableResults;
-  
-  })(CoreCollection);
   
 
   /* Enrichment Widget table row.
@@ -1667,7 +1486,7 @@ factory = function(Backbone) {
           'width': 460,
           'height': height,
           'onclick': this.barAction,
-          'isStacked': this.response.chartType === 'BarChart' ? true : false
+          'isStacked': this.response.chartType === 'BarChart'
         });
         return chart.render();
       } else {
@@ -2189,13 +2008,192 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
+  /* Core Model for Enrichment and Table Models.
+  */
+  
+  var CoreCollection, CoreModel, EnrichmentResults, EnrichmentRow, TableResults, TableRow,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  CoreModel = (function(_super) {
+  
+    __extends(CoreModel, _super);
+  
+    CoreModel.name = 'CoreModel';
+  
+    function CoreModel() {
+      this.toggleSelected = __bind(this.toggleSelected, this);
+  
+      this.validate = __bind(this.validate, this);
+      return CoreModel.__super__.constructor.apply(this, arguments);
+    }
+  
+    CoreModel.prototype.defaults = {
+      "selected": false
+    };
+  
+    CoreModel.prototype.initialize = function(row, widget) {
+      this.widget = widget;
+      return this.validate(row);
+    };
+  
+    CoreModel.prototype.validate = function(row) {
+      return this.widget.validateType(row, this.spec);
+    };
+  
+    CoreModel.prototype.toggleSelected = function() {
+      return this.set({
+        selected: !this.get("selected")
+      });
+    };
+  
+    return CoreModel;
+  
+  })(Backbone.Model);
+  
+  CoreCollection = (function(_super) {
+  
+    __extends(CoreCollection, _super);
+  
+    CoreCollection.name = 'CoreCollection';
+  
+    function CoreCollection() {
+      return CoreCollection.__super__.constructor.apply(this, arguments);
+    }
+  
+    CoreCollection.prototype.model = CoreModel;
+  
+    CoreCollection.prototype.selected = function() {
+      return this.filter(function(row) {
+        return row.get("selected");
+      });
+    };
+  
+    CoreCollection.prototype.toggleSelected = function() {
+      var model, _i, _j, _len, _len1, _ref, _ref1, _results, _results1;
+      if (this.models.length - this.selected().length) {
+        _ref = this.models;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          model = _ref[_i];
+          _results.push(model.set({
+            "selected": true
+          }, {
+            'silent': true
+          }));
+        }
+        return _results;
+      } else {
+        _ref1 = this.models;
+        _results1 = [];
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          model = _ref1[_j];
+          _results1.push(model.set({
+            "selected": false
+          }, {
+            'silent': true
+          }));
+        }
+        return _results1;
+      }
+    };
+  
+    return CoreCollection;
+  
+  })(Backbone.Collection);
+  
+  /* Models underpinning Enrichment Widget results.
+  */
+  
+  
+  EnrichmentRow = (function(_super) {
+  
+    __extends(EnrichmentRow, _super);
+  
+    EnrichmentRow.name = 'EnrichmentRow';
+  
+    function EnrichmentRow() {
+      return EnrichmentRow.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentRow.prototype.spec = {
+      "description": type.isString,
+      "identifier": type.isString,
+      "matches": type.isInteger,
+      "p-value": type.isInteger,
+      "selected": type.isBoolean,
+      "externalLink": type.isString
+    };
+  
+    return EnrichmentRow;
+  
+  })(CoreModel);
+  
+  EnrichmentResults = (function(_super) {
+  
+    __extends(EnrichmentResults, _super);
+  
+    EnrichmentResults.name = 'EnrichmentResults';
+  
+    function EnrichmentResults() {
+      return EnrichmentResults.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentResults.prototype.model = EnrichmentRow;
+  
+    return EnrichmentResults;
+  
+  })(CoreCollection);
+  
+  /* Models underpinning Table Widget results.
+  */
+  
+  
+  TableRow = (function(_super) {
+  
+    __extends(TableRow, _super);
+  
+    TableRow.name = 'TableRow';
+  
+    function TableRow() {
+      return TableRow.__super__.constructor.apply(this, arguments);
+    }
+  
+    TableRow.prototype.spec = {
+      "matches": type.isInteger,
+      "identifier": type.isInteger,
+      "descriptions": type.isArray,
+      "selected": type.isBoolean
+    };
+  
+    return TableRow;
+  
+  })(CoreModel);
+  
+  TableResults = (function(_super) {
+  
+    __extends(TableResults, _super);
+  
+    TableResults.name = 'TableResults';
+  
+    function TableResults() {
+      return TableResults.__super__.constructor.apply(this, arguments);
+    }
+  
+    TableResults.prototype.model = TableRow;
+  
+    return TableResults;
+  
+  })(CoreCollection);
+  
+
   return {
 
     "InterMineWidget": InterMineWidget,
     "ChartWidget": ChartWidget,
     "TableWidget": TableWidget,
     "EnrichmentWidget": EnrichmentWidget,
-    "CoreModel": CoreModel,
     "EnrichmentRowView": EnrichmentRowView,
     "TableRowView": TableRowView,
     "TableView": TableView,
@@ -2204,6 +2202,7 @@ factory = function(Backbone) {
     "EnrichmentPopoverView": EnrichmentPopoverView,
     "EnrichmentView": EnrichmentView,
     "ChartPopoverView": ChartPopoverView,
+    "CoreModel": CoreModel,
 
   };
 };

@@ -32,6 +32,7 @@ class ChartView extends Backbone.View
                     'description': v[0]
                     'data':      [ v[1], v[2] ]
 
+
             # Render the chart legend
             legend = new Chart.Legend(
                 'el':     $(@el).find("div.content div.legend")
@@ -50,7 +51,7 @@ class ChartView extends Backbone.View
                 'width':     460
                 'height':    height
                 'onclick':   @barAction
-                'isStacked': if @response.chartType is 'BarChart' then true else false
+                'isStacked': @response.chartType is 'BarChart'
             )
             chart.render()
 
