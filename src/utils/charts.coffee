@@ -129,7 +129,11 @@ class Charts.Bars
                 # Maybe the value is too 'high' and would be left off the grid?
                 if y < 15
                     text.attr('y', y + 15)
-                    text.attr("class", "value on")
+                    # Maybe it is also too wide and thus stretches beyond the bar?
+                    if text.node().getComputedTextLength() > width
+                        text.attr("class", "value on beyond")
+                    else
+                        text.attr("class", "value on")
                 else
                     text.attr('y', y)
                     text.attr("class", "value above")

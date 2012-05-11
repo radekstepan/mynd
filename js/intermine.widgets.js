@@ -295,7 +295,11 @@ Charts.Bars = (function() {
         text = w.append("svg:text").attr('x', margin + left + (width / 2)).attr("text-anchor", "middle").text(value);
         if (y < 15) {
           text.attr('y', y + 15);
-          text.attr("class", "value on");
+          if (text.node().getComputedTextLength() > width) {
+            text.attr("class", "value on beyond");
+          } else {
+            text.attr("class", "value on");
+          }
         } else {
           text.attr('y', y);
           text.attr("class", "value above");
