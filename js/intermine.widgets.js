@@ -189,6 +189,23 @@ type.isUndefined = (function(_super) {
 
 })(type.Root);
 
+/* Merge properties of 2 dictionaries.
+*/
+
+var merge;
+
+merge = function(child, parent) {
+  var key;
+  for (key in parent) {
+    if (!(child[key] != null)) {
+      if (Object.prototype.hasOwnProperty.call(parent, key)) {
+        child[key] = parent[key];
+      }
+    }
+  }
+  return child;
+};
+
 var Chart;
 
 Chart = {
@@ -205,7 +222,10 @@ Chart.Bars = (function() {
 
   Bars.prototype.axisMargin = -Infinity;
 
-  Bars.prototype.descriptionWidth = -Infinity;
+  Bars.prototype.description = {
+    'maxWidth': -Infinity,
+    'totalWidth': 0
+  };
 
   Bars.prototype.ticks = 10;
 
@@ -236,7 +256,7 @@ Chart.Bars = (function() {
   }
 
   Bars.prototype.render = function() {
-    var bar, bars, color, desc, descG, descriptions, domain, end, g, group, height, index, j, left, series, t, text, tick, value, values, w, width, x, y, _i, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1,
+    var bar, bars, color, desc, descG, descriptions, domain, end, g, grid, group, height, index, j, left, series, t, text, tick, value, values, w, width, x, y, _i, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1,
       _this = this;
     descriptions = this.canvas.append('svg:g').attr('class', 'descriptions');
     _ref = this.data;
@@ -245,26 +265,20 @@ Chart.Bars = (function() {
       g = descriptions.append("svg:g").attr("class", "g" + index);
       text = g.append("svg:text").attr("class", "text").attr("text-anchor", "end").text(group['description']);
       width = text.node().getComputedTextLength();
-      if (width > this.descriptionWidth) {
-        this.descriptionWidth = width;
+      if (width > this.description.maxWidth) {
+        this.description.maxWidth = width;
       }
+      this.description.totalWidth = this.description.totalWidth + width;
       g.append("svg:title").text(group['description']);
     }
     this.height = this.height - this.textHeight;
-    if (true) {
-      this.height = this.height - (this.descriptionWidth * 0.5);
-    }
-    domain = {
-      'y': d3.scale.linear().domain([0, this.maxValue]).range([0, this.height]),
-      'color': d3.scale.linear().domain([0, this.maxValue]).range([0, this.colorbrewer - 1])
-    };
-    g = this.canvas.append("svg:g").attr("class", "grid");
-    _ref1 = domain['y'].ticks(this.ticks);
+    grid = this.canvas.append("svg:g").attr("class", "grid");
+    _ref1 = d3.scale.linear().domain([0, this.maxValue]).range([0, this.height]).ticks(this.ticks);
     for (index in _ref1) {
       tick = _ref1[index];
       if ((parseInt(tick) === tick) || (!this.useWholeNumbers)) {
-        t = g.append("svg:g").attr('class', "t" + index);
-        text = t.append("svg:text").attr("class", "tick").attr("x", 0).attr("y", this.height - domain['y'](tick)).attr("text-anchor", "begin").text(tick.toFixed(0));
+        t = grid.append("svg:g").attr('class', "t" + index);
+        text = t.append("svg:text").attr("class", "tick").attr("x", 0).attr("text-anchor", "begin").text(tick.toFixed(0));
         width = text.node().getComputedTextLength();
         if (width > this.axisMargin) {
           this.axisMargin = width;
@@ -272,18 +286,25 @@ Chart.Bars = (function() {
       }
     }
     this.width = this.width - this.axisMargin;
-    domain['x'] = d3.scale.ordinal().domain((function() {
-      _results = [];
-      for (var _i = 0, _ref2 = this.data.length - 1; 0 <= _ref2 ? _i <= _ref2 : _i >= _ref2; 0 <= _ref2 ? _i++ : _i--){ _results.push(_i); }
-      return _results;
-    }).apply(this)).rangeBands([0, this.width], .05);
+    if (this.description.totalWidth > this.width) {
+      this.height = this.height - (this.description.maxWidth * 0.5);
+    }
+    domain = {
+      'x': d3.scale.ordinal().domain((function() {
+        _results = [];
+        for (var _i = 0, _ref2 = this.data.length - 1; 0 <= _ref2 ? _i <= _ref2 : _i >= _ref2; 0 <= _ref2 ? _i++ : _i--){ _results.push(_i); }
+        return _results;
+      }).apply(this)).rangeBands([0, this.width], .05),
+      'y': d3.scale.linear().domain([0, this.maxValue]).range([0, this.height]),
+      'color': d3.scale.linear().domain([0, this.maxValue]).range([0, this.colorbrewer - 1])
+    };
     _ref3 = domain['y'].ticks(this.ticks);
     for (index in _ref3) {
       tick = _ref3[index];
       if ((parseInt(tick) === tick) || (!this.useWholeNumbers)) {
-        y = this.height - domain['y'](tick);
-        t = g.select(".t" + index);
-        t.append("svg:line").attr("class", "line").attr("y1", y).attr("y2", y).attr("x1", this.axisMargin).attr("x2", this.width);
+        t = grid.select(".t" + index);
+        t.append("svg:line").attr("class", "line").attr("x1", this.axisMargin).attr("x2", this.width);
+        t.attr('transform', "translate(0," + (this.height - domain['y'](tick)) + ")");
       }
     }
     this.chart = this.canvas.append("svg:g").attr("class", "chart");
@@ -335,7 +356,7 @@ Chart.Bars = (function() {
       x = this.axisMargin + left + width;
       y = this.height + this.textHeight;
       descG = descriptions.select(".g" + index).attr('transform', "translate(" + x + "," + y + ")");
-      if (this.descriptionWidth > width) {
+      if (this.description.maxWidth > width) {
         desc = descG.select("text");
         desc.attr("transform", "rotate(-30 0 0)");
         _results1.push((function() {
@@ -402,23 +423,6 @@ Chart.Legend = (function() {
   return Legend;
 
 })();
-
-/* Merge properties of 2 dictionaries.
-*/
-
-var merge;
-
-merge = function(child, parent) {
-  var key;
-  for (key in parent) {
-    if (!(child[key] != null)) {
-      if (Object.prototype.hasOwnProperty.call(parent, key)) {
-        child[key] = parent[key];
-      }
-    }
-  }
-  return child;
-};
 
 /* Create file download with custom content.
 */
