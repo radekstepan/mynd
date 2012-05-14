@@ -246,7 +246,7 @@ Chart.Column = (function() {
   }
 
   Column.prototype.render = function() {
-    var bar, barHeight, barWidth, bars, canvas, color, desc, descG, descriptions, domain, g, group, groupValue, height, index, key, previousHeight, series, t, text, tick, value, values, w, width, x, y, _i, _j, _k, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results, _results1,
+    var bar, barHeight, barWidth, bars, canvas, color, desc, descG, descriptions, domain, g, group, groupValue, height, index, key, series, t, text, tick, ty, value, values, w, width, x, y, _i, _j, _k, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results, _results1,
       _this = this;
     $(this.el).empty();
     canvas = d3.select(this.el[0]).append('svg:svg').attr('class', 'canvas');
@@ -334,8 +334,8 @@ Chart.Column = (function() {
       _results = [];
       for (var _k = 0, _ref6 = this.data.length - 1; 0 <= _ref6 ? _k <= _ref6 : _k >= _ref6; 0 <= _ref6 ? _k++ : _k--){ _results.push(_k); }
       return _results;
-    }).apply(this)).rangeRoundBands([0, width], .05);
-    domain.y = d3.scale.linear().domain([0, this.maxValue]).rangeRound([0, height]);
+    }).apply(this)).rangeBands([0, width], .05);
+    domain.y = d3.scale.linear().domain([0, this.maxValue]).range([0, height]);
     domain.color = d3.scale.linear().domain([0, this.maxValue]).rangeRound([0, this.colorbrewer - 1]);
     _ref7 = domain.ticks;
     for (index in _ref7) {
@@ -363,46 +363,45 @@ Chart.Column = (function() {
           return g.append("svg:line").attr("class", "line dashed").attr("style", "stroke-dasharray: 10, 5;").attr("x1", x).attr("x2", x).attr("y1", 0).attr("y2", height);
         })();
       }
-      barHeight = 0;
+      y = height;
       _ref9 = group.data;
       for (series in _ref9) {
         value = _ref9[series];
-        previousHeight = barHeight;
         barHeight = domain['y'](value);
+        if (!barHeight && this.isStacked) {
+          continue;
+        }
         x = domain['x'](index) + this.ticks.maxWidth;
         if (!this.isStacked) {
           x = x + (series * barWidth);
         }
-        y = height - barHeight;
-        if (this.isStacked) {
-          y = y - previousHeight;
+        if (!this.isStacked) {
+          y = height;
         }
+        y = y - barHeight;
         color = domain['color'](value).toFixed(0);
         bar = g.append("svg:rect").attr("class", "bar " + Chart.series[series] + " q" + color + "-" + this.colorbrewer).attr('x', x).attr('y', y).attr('width', barWidth).attr('height', barHeight);
         w = values.append("svg:g").attr('class', "g" + index + " " + Chart.series[series] + " q" + color + "-" + this.colorbrewer);
         text = w.append("svg:text").attr('x', x + (barWidth / 2)).attr("text-anchor", "middle").text(value);
         if (this.isStacked) {
-          y = y + this.textHeight + this.pisvejc;
-        } else {
-          y = y - this.pisvejc;
-        }
-        if (this.isStacked) {
-          text.attr('y', y);
+          ty = y + this.textHeight + this.pisvejc;
+          text.attr('y', ty);
           if (text.node().getComputedTextLength() > barWidth) {
             text.attr("class", "value on beyond");
           } else {
             text.attr("class", "value on");
           }
         } else {
-          if (y < 15) {
-            text.attr('y', y + 15);
+          ty = y - this.pisvejc;
+          if (ty < 15) {
+            text.attr('y', ty + 15);
             if (text.node().getComputedTextLength() > barWidth) {
               text.attr("class", "value on beyond");
             } else {
               text.attr("class", "value on");
             }
           } else {
-            text.attr('y', y);
+            text.attr('y', ty);
             text.attr("class", "value above");
           }
         }

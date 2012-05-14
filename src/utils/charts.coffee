@@ -132,8 +132,8 @@ class Chart.Column
         if @description.totalWidth > width then height = height - (@description.maxWidth * @description.triangle.sideA)
 
         # Get the domain as @width & @height are fixed now.
-        domain.x =     d3.scale.ordinal().domain([0..@data.length - 1]).rangeRoundBands([ 0, width ], .05)
-        domain.y =     d3.scale.linear().domain([ 0, @maxValue ]).rangeRound([ 0, height ])
+        domain.x =     d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, width ], .05)
+        domain.y =     d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, height ])
         domain.color = d3.scale.linear().domain([ 0, @maxValue ]).rangeRound([ 0, @colorbrewer - 1 ])
 
         # -------------------------------------------------------------------
@@ -188,18 +188,22 @@ class Chart.Column
 
             # -------------------------------------------------------------------
             # Traverse the data in the series.
-            barHeight = 0
+            y = height
             for series, value of group.data
                 # Height.
-                previousHeight = barHeight ; barHeight = domain['y'](value)
+                barHeight = domain['y'](value)
+
+                # Skip bars that do not show anything if we are a stacked chart.
+                if not barHeight and @isStacked then continue
 
                 # From the left.
                 x = domain['x'](index) + @ticks.maxWidth
                 if !@isStacked then x = x + (series * barWidth)
                 
-                # From the top.
-                y = height - barHeight
-                if @isStacked then y = y - previousHeight
+                # For unstacked bars, always from the bottom...
+                if !@isStacked then y = height
+                # ...otherwise adjust from the last position.
+                y = y - barHeight
                 
                 # ColorBrewer band.
                 color = domain['color'](value).toFixed(0)
@@ -225,28 +229,26 @@ class Chart.Column
                 # -------------------------------------------------------------------
 
                 if @isStacked
-                    y = y + @textHeight + @pisvejc
-                else
-                    # Distance from top for the value.
-                    y = y - @pisvejc
+                    ty = y + @textHeight + @pisvejc
 
-                if @isStacked
-                    text.attr('y', y)
+                    text.attr('y', ty)
                     if text.node().getComputedTextLength() > barWidth
                         text.attr("class", "value on beyond")
                     else
                         text.attr("class", "value on")
                 else
+                    ty = y - @pisvejc
+
                     # Maybe the value is too 'high' and would be left off the grid?
-                    if y < 15
-                        text.attr('y', y + 15)
+                    if ty < 15
+                        text.attr('y', ty + 15)
                         # Maybe it is also too wide and thus stretches beyond the bar?
                         if text.node().getComputedTextLength() > barWidth
                             text.attr("class", "value on beyond")
                         else
                             text.attr("class", "value on")
                     else
-                        text.attr('y', y)
+                        text.attr('y', ty)
                         text.attr("class", "value above")
 
                 # Add a title element for the value.
