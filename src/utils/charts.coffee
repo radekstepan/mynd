@@ -321,9 +321,12 @@ class Chart.Settings
         # Is the chart stacked?
         stacked = $(@el).append $('<a/>',
             'class': "btn btn-mini stacked #{if @isStacked then 'active' else ''}"
-            'text':  'Stacked'
+            'text':  if @isStacked then 'Unstack' else 'Stack'
             'click': (e) =>
                 $(e.target).toggleClass 'active'
-                @chart.isStacked = $(e.target).hasClass 'active'
+                if $(e.target).hasClass 'active'
+                    @chart.isStacked = true ; $(e.target).text('Unstack')
+                else
+                    @chart.isStacked = false ; $(e.target).text('Stack')
                 @chart.render()
         )

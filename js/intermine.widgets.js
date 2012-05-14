@@ -502,10 +502,16 @@ Chart.Settings = (function() {
       _this = this;
     return stacked = $(this.el).append($('<a/>', {
       'class': "btn btn-mini stacked " + (this.isStacked ? 'active' : ''),
-      'text': 'Stacked',
+      'text': this.isStacked ? 'Unstack' : 'Stack',
       'click': function(e) {
         $(e.target).toggleClass('active');
-        _this.chart.isStacked = $(e.target).hasClass('active');
+        if ($(e.target).hasClass('active')) {
+          _this.chart.isStacked = true;
+          $(e.target).text('Unstack');
+        } else {
+          _this.chart.isStacked = false;
+          $(e.target).text('Stack');
+        }
         return _this.chart.render();
       }
     }));
