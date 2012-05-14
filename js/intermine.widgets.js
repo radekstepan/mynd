@@ -189,6 +189,23 @@ type.isUndefined = (function(_super) {
 
 })(type.Root);
 
+/* Merge properties of 2 dictionaries.
+*/
+
+var merge;
+
+merge = function(child, parent) {
+  var key;
+  for (key in parent) {
+    if (!(child[key] != null)) {
+      if (Object.prototype.hasOwnProperty.call(parent, key)) {
+        child[key] = parent[key];
+      }
+    }
+  }
+  return child;
+};
+
 var Chart;
 
 Chart = {
@@ -231,7 +248,7 @@ Chart.Column = (function() {
   }
 
   Column.prototype.render = function() {
-    var bar, barHeight, barWidth, bars, canvas, chart, color, desc, descG, descriptionTextHeight, descriptions, domain, g, grid, group, groupValue, height, index, key, labels, series, t, text, textWidth, tick, ty, value, values, verticalAxisLabelHeight, w, width, x, y, _i, _j, _k, _len, _len1, _ref, _ref1, _ref10, _ref11, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results,
+    var bar, barHeight, barValueHeight, barWidth, bars, canvas, chart, color, desc, descG, descriptionTextHeight, descriptions, domain, g, grid, group, groupValue, height, index, key, labels, series, t, text, textWidth, tick, ty, value, values, verticalAxisLabelHeight, w, width, x, y, _i, _j, _k, _len, _len1, _ref, _ref1, _ref10, _ref11, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results,
       _this = this;
     height = this.height;
     width = this.width;
@@ -387,6 +404,7 @@ Chart.Column = (function() {
         y = y - barHeight;
         color = domain['color'](value).toFixed(0);
         bar = g.append("svg:rect").attr("class", "bar " + Chart.series[series] + " q" + color + "-" + this.colorbrewer).attr('x', x).attr('y', y).attr('width', barWidth).attr('height', barHeight);
+        bar.transition().attr('opacity', 1);
         w = values.append("svg:g").attr('class', "g" + index + " " + Chart.series[series] + " q" + color + "-" + this.colorbrewer);
         text = w.append("svg:text").attr('x', x + (barWidth / 2)).attr("text-anchor", "middle").text(value);
         if (this.isStacked) {
@@ -399,8 +417,9 @@ Chart.Column = (function() {
           }
         } else {
           ty = y - this.padding.barValue;
-          if (ty < 15) {
-            text.attr('y', ty + 15);
+          barValueHeight = text.node().getBBox().height;
+          if (ty < barValueHeight) {
+            text.attr('y', ty + barValueHeight);
             if (text.node().getComputedTextLength() > barWidth) {
               text.attr("class", "value on beyond");
             } else {
@@ -481,7 +500,7 @@ Chart.Legend = (function() {
 
   Legend.prototype.clickAction = function(el, series) {
     $(el).toggleClass('disabled');
-    return d3.select(this.chart[0]).selectAll("." + Chart.series[series]).attr('fill-opacity', function() {
+    return d3.select(this.chart[0]).selectAll("." + Chart.series[series]).transition().attr('fill-opacity', function() {
       if ($(el).hasClass('disabled')) {
         return 0.1;
       } else {
@@ -529,23 +548,6 @@ Chart.Settings = (function() {
   return Settings;
 
 })();
-
-/* Merge properties of 2 dictionaries.
-*/
-
-var merge;
-
-merge = function(child, parent) {
-  var key;
-  for (key in parent) {
-    if (!(child[key] != null)) {
-      if (Object.prototype.hasOwnProperty.call(parent, key)) {
-        child[key] = parent[key];
-      }
-    }
-  }
-  return child;
-};
 
 /* Create file download with custom content.
 */

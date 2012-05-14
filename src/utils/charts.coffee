@@ -260,6 +260,8 @@ class Chart.Column
                 .attr('y',      y)
                 .attr('width',  barWidth)
                 .attr('height', barHeight)
+                
+                bar.transition().attr('opacity', 1)
 
                 # Add a text value.
                 w = values.append("svg:g").attr('class', "g#{index} #{Chart.series[series]} q#{color}-#{@colorbrewer}")
@@ -283,9 +285,11 @@ class Chart.Column
                 else
                     ty = y - @padding.barValue
 
+                    barValueHeight = text.node().getBBox().height
+
                     # Maybe the value is too 'high' and would be left off the grid?
-                    if ty < 15
-                        text.attr('y', ty + 15)
+                    if ty < barValueHeight
+                        text.attr('y', ty + barValueHeight)
                         # Maybe it is also too wide and thus stretches beyond the bar?
                         if text.node().getComputedTextLength() > barWidth
                             text.attr("class", "value on beyond")
@@ -360,7 +364,7 @@ class Chart.Legend
 
         # Change the opacity to 'toggle' the series bars.
         d3.select(@chart[0]).selectAll(".#{Chart.series[series]}")
-        .attr('fill-opacity', () -> if $(el).hasClass 'disabled' then 0.1 else 1 )
+        .transition().attr('fill-opacity', () -> if $(el).hasClass 'disabled' then 0.1 else 1 )
 
 
 class Chart.Settings
