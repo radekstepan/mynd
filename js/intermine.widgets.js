@@ -189,23 +189,6 @@ type.isUndefined = (function(_super) {
 
 })(type.Root);
 
-/* Merge properties of 2 dictionaries.
-*/
-
-var merge;
-
-merge = function(child, parent) {
-  var key;
-  for (key in parent) {
-    if (!(child[key] != null)) {
-      if (Object.prototype.hasOwnProperty.call(parent, key)) {
-        child[key] = parent[key];
-      }
-    }
-  }
-  return child;
-};
-
 /* Create file download with custom content.
 */
 
@@ -261,6 +244,23 @@ PlainExporter = (function() {
   return PlainExporter;
 
 })();
+
+/* Merge properties of 2 dictionaries.
+*/
+
+var merge;
+
+merge = function(child, parent) {
+  var key;
+  for (key in parent) {
+    if (!(child[key] != null)) {
+      if (Object.prototype.hasOwnProperty.call(parent, key)) {
+        child[key] = parent[key];
+      }
+    }
+  }
+  return child;
+};
 
 var factory;
 factory = function(Backbone) {
@@ -399,7 +399,9 @@ factory = function(Backbone) {
         "filters": type.isString,
         "filterLabel": type.isString,
         "filterSelectedValue": type.isString,
-        "simplePathQuery": type.isString
+        "simplePathQuery": type.isString,
+        "domainLabel": type.isString,
+        "rangeLabel": type.isString
       }
     };
   
@@ -1393,6 +1395,12 @@ factory = function(Backbone) {
       }
       if (this.response.results.length > 1) {
         if (this.response.chartType in google.visualization) {
+          this.chartOptions.hAxis = {
+            'title': this.response.chartType === 'BarChart' ? this.response.rangeLabel : this.response.domainLabel
+          };
+          this.chartOptions.vAxis = {
+            'title': this.response.chartType === 'BarChart' ? this.response.domainLabel : this.response.rangeLabel
+          };
           chart = new google.visualization[this.response.chartType]($(this.el).find("div.content")[0]);
           chart.draw(google.visualization.arrayToDataTable(this.response.results, false), this.chartOptions);
           if (this.response.pathQuery != null) {

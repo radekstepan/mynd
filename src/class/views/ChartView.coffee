@@ -48,6 +48,13 @@ class ChartView extends Backbone.View
         if @response.results.length > 1
             # Create the chart.
             if @response.chartType of google.visualization # If the type exists...
+
+                # Set the legend on axes.
+                @chartOptions.hAxis =
+                    'title': if @response.chartType is 'BarChart' then @response.rangeLabel else @response.domainLabel
+                @chartOptions.vAxis =
+                    'title': if @response.chartType is 'BarChart' then @response.domainLabel else @response.rangeLabel
+
                 chart = new google.visualization[@response.chartType]($(@el).find("div.content")[0])
                 chart.draw(google.visualization.arrayToDataTable(@response.results, false), @chartOptions)
 
