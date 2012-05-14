@@ -206,11 +206,65 @@ merge = function(child, parent) {
   return child;
 };
 
+/* Create file download with custom content.
+*/
+
+var Exporter, PlainExporter,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+Exporter = (function() {
+
+  Exporter.name = 'Exporter';
+
+  Exporter.prototype.mime = 'text/plain';
+
+  Exporter.prototype.charset = 'UTF-8';
+
+  Exporter.prototype.url = window.webkitURL || window.URL;
+
+  function Exporter(a, data, filename) {
+    var builder;
+    if (filename == null) {
+      filename = 'widget.tsv';
+    }
+    this.destroy = __bind(this.destroy, this);
+
+    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
+    builder.append(data);
+    a.attr('download', filename);
+    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
+    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
+  }
+
+  Exporter.prototype.destroy = function() {
+    return this.url.revokeObjectURL(this.href);
+  };
+
+  return Exporter;
+
+})();
+
+PlainExporter = (function() {
+
+  PlainExporter.name = 'PlainExporter';
+
+  function PlainExporter(data) {
+    var w;
+    w = window.open();
+    w.document.open();
+    w.document.write(data);
+    w.document.close();
+  }
+
+  PlainExporter.prototype.destroy = function() {};
+
+  return PlainExporter;
+
+})();
+
 var Chart;
 
-Chart = {
-  'series': ['first', 'second', 'third', 'fourth', 'fifth']
-};
+Chart = {};
 
 Chart.Column = (function() {
 
@@ -403,9 +457,9 @@ Chart.Column = (function() {
         }
         y = y - barHeight;
         color = domain['color'](value).toFixed(0);
-        bar = g.append("svg:rect").attr("class", "bar " + Chart.series[series] + " q" + color + "-" + this.colorbrewer).attr('x', x).attr('y', y).attr('width', barWidth).attr('height', barHeight);
+        bar = g.append("svg:rect").attr("class", "bar s" + series + " q" + color + "-" + this.colorbrewer).attr('x', x).attr('y', y).attr('width', barWidth).attr('height', barHeight);
         bar.transition().attr('opacity', 1);
-        w = values.append("svg:g").attr('class', "g" + index + " " + Chart.series[series] + " q" + color + "-" + this.colorbrewer);
+        w = values.append("svg:g").attr('class', "g" + index + " s" + series + " q" + color + "-" + this.colorbrewer);
         text = w.append("svg:text").attr('x', x + (barWidth / 2)).attr("text-anchor", "middle").text(value);
         if (this.isStacked) {
           ty = y + text.node().getBBox().height + this.padding.barValue;
@@ -487,7 +541,7 @@ Chart.Legend = (function() {
       name = _ref[index];
       _results.push((function(index, name) {
         return ul.append($('<li/>', {
-          'class': Chart.series[index],
+          'class': 's' + index,
           'html': name,
           'click': function(e) {
             return _this.clickAction(e.target, index);
@@ -500,7 +554,7 @@ Chart.Legend = (function() {
 
   Legend.prototype.clickAction = function(el, series) {
     $(el).toggleClass('disabled');
-    return d3.select(this.chart[0]).selectAll("." + Chart.series[series]).transition().attr('fill-opacity', function() {
+    return d3.select(this.chart[0]).selectAll(".s" + series).transition().attr('fill-opacity', function() {
       if ($(el).hasClass('disabled')) {
         return 0.1;
       } else {
@@ -546,62 +600,6 @@ Chart.Settings = (function() {
   };
 
   return Settings;
-
-})();
-
-/* Create file download with custom content.
-*/
-
-var Exporter, PlainExporter,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-Exporter = (function() {
-
-  Exporter.name = 'Exporter';
-
-  Exporter.prototype.mime = 'text/plain';
-
-  Exporter.prototype.charset = 'UTF-8';
-
-  Exporter.prototype.url = window.webkitURL || window.URL;
-
-  function Exporter(a, data, filename) {
-    var builder;
-    if (filename == null) {
-      filename = 'widget.tsv';
-    }
-    this.destroy = __bind(this.destroy, this);
-
-    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
-    builder.append(data);
-    a.attr('download', filename);
-    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
-    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
-  }
-
-  Exporter.prototype.destroy = function() {
-    return this.url.revokeObjectURL(this.href);
-  };
-
-  return Exporter;
-
-})();
-
-PlainExporter = (function() {
-
-  PlainExporter.name = 'PlainExporter';
-
-  function PlainExporter(data) {
-    var w;
-    w = window.open();
-    w.document.open();
-    w.document.write(data);
-    w.document.close();
-  }
-
-  PlainExporter.prototype.destroy = function() {};
-
-  return PlainExporter;
 
 })();
 

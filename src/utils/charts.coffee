@@ -1,6 +1,4 @@
-Chart =
-    # The names of consecutive series.
-    'series': [ 'first', 'second', 'third', 'fourth', 'fifth' ]
+Chart = {}
 
 
 # A vertical bar chart that is rendered within the browser using SVG.
@@ -255,7 +253,7 @@ class Chart.Column
                 # -------------------------------------------------------------------
                 # Append the actual rectangle.
                 bar = g.append("svg:rect")
-                .attr("class",  "bar #{Chart.series[series]} q#{color}-#{@colorbrewer}")
+                .attr("class",  "bar s#{series} q#{color}-#{@colorbrewer}")
                 .attr('x',      x)
                 .attr('y',      y)
                 .attr('width',  barWidth)
@@ -264,7 +262,7 @@ class Chart.Column
                 bar.transition().attr('opacity', 1)
 
                 # Add a text value.
-                w = values.append("svg:g").attr('class', "g#{index} #{Chart.series[series]} q#{color}-#{@colorbrewer}")
+                w = values.append("svg:g").attr('class', "g#{index} s#{series} q#{color}-#{@colorbrewer}")
                 
                 # Add a text in the middle of the bar.
                 text = w.append("svg:text")
@@ -352,7 +350,7 @@ class Chart.Legend
 
         for index, name of @series then do (index, name) =>
             ul.append $('<li/>',
-                'class': Chart.series[index]
+                'class': 's' + index
                 'html':  name
                 'click': (e) => @clickAction e.target, index
             )
@@ -363,7 +361,7 @@ class Chart.Legend
         $(el).toggleClass 'disabled'
 
         # Change the opacity to 'toggle' the series bars.
-        d3.select(@chart[0]).selectAll(".#{Chart.series[series]}")
+        d3.select(@chart[0]).selectAll(".s#{series}")
         .transition().attr('fill-opacity', () -> if $(el).hasClass 'disabled' then 0.1 else 1 )
 
 
