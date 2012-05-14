@@ -30,19 +30,25 @@ class ChartView extends Backbone.View
             for v in @response.results[1..]
                 data.push
                     'description': v[0]
-                    'data':      [ v[1], v[2] ]
+                    'data':      [ v[1], v[2], Math.floor( Math.random() * 12 ) ]
 
+            # Render the chart settings.
+            settings = new Chart.Settings(
+                'el':        $(@el).find("div.content div.settings")
+                'isStacked': @response.chartType is 'BarChart'
+            )
+            settings.render()
 
-            # Render the chart legend
+            # Render the chart legend.
             legend = new Chart.Legend(
                 'el':     $(@el).find("div.content div.legend")
                 'chart' : $(@el).find("div.content div.chart")
-                'series': [ @response.results[0][1], @response.results[0][2] ]
+                'series': [ @response.results[0][1], @response.results[0][2], "Radekalized" ]
             )
             legend.render()
 
             # Determine the height of the svg canvas it should occupy.
-            height = $(@widget.el).height() - $(@widget.el).find('header').height() - $(@widget.el).find('div.content div.legend').height()
+            height = $(@widget.el).height() - $(@widget.el).find('header').height() - $(@widget.el).find('div.content div.legend').height() - $(@widget.el).find('div.content div.settings').height()
 
             # Render the chart using d3.js
             chart = new Chart.Column(
@@ -54,6 +60,9 @@ class ChartView extends Backbone.View
                 'isStacked': @response.chartType is 'BarChart'
             )
             chart.render()
+
+            # Save reference to chart in settings.
+            settings.chart = chart
 
         else
             # Render no results.

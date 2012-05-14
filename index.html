@@ -12,7 +12,7 @@
         <link href="css/bootstrap.css" rel="stylesheet">
         
         <style>
-            .widget { margin:20px 10px; border-bottom:1px solid #EEE; }
+            .widget { margin:20px 10px; /*border-bottom:1px solid #EEE;*/ }
             /* d3.js charts */
             .widget .canvas { shape-rendering:crispEdges; }
             .widget .canvas rect { stroke:#FFF; cursor:pointer; }
@@ -41,7 +41,8 @@
             /* legend */
             .widget .legend ul { margin:0; text-align:center; font-family:Georgia; color:#555; }
             .widget .legend ul li { display:inline; margin:0 10px; cursor:pointer; }
-            .widget .legend ul li:before { content:" "; display:inline-block; width:10px; height:10px; margin-right:4px; opacity:1; }
+            .widget .legend ul li:before { content:" "; display:inline-block; width:10px; height:10px; margin-right:4px; opacity:1;
+                border:1px solid rgba(0, 0, 0, 0.2); border-radius:2px; }
             .widget .legend ul li.first:before { background:#2171b5; }
             .widget .legend ul li.second:before { background:#238b45; }
             .widget .legend ul li.third:before { background:#cb181d; }

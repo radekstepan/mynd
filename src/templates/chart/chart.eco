@@ -12,6 +12,7 @@
     </div>
 </header>
 <div class="content">
+    <div class="settings"></div>
     <div class="legend"></div>
     <div class="chart"></div>
 </div>

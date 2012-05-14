@@ -10,7 +10,7 @@ JST["loading.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return
 JST["invalidjsonkey.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<li style="vertical-align:bottom">\n    <span style="display:inline-block" class="label label-important">'),b.push(d(this.key)),b.push("</span> is "),b.push(d(this.actual)),b.push("; was expecting "),b.push(d(this.expected)),b.push("\n</li>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["popover.values.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f;b.push("<h4>"),b.push(d(this.values.length)),b.push(" "),b.push(d(this.type)),this.values.length!==1&&b.push(d("s")),b.push(":</h4>\n\n"),f=this.values.slice(0,this.valuesLimit-1+1||9e9);for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n    <a href="#" class="match">'),b.push(d(a)),b.push("</a>\n");b.push("\n"),this.values.length>this.valuesLimit&&b.push("&hellip;")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["popover.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="popover" style="position:absolute;top:5px;right:0;z-index:1;display:block">\n    <div class="popover-inner" style="'),b.push(d(this.style)),b.push('">\n        <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>\n        <h3 class="popover-title">\n            '),b.push(d(this.description.slice(0,this.descriptionLimit-1+1||9e9))),b.push("\n            "),this.description.length>this.descriptionLimit&&b.push("&hellip;"),b.push('\n        </h3>\n        <div class="popover-content">\n            <div class="values">\n                <!-- popover.values.eco -->\n            </div>\n            <div style="margin-top:10px">\n                <a class="btn btn-small btn-primary results">View results</a>\n                <a class="btn btn-small list disabled">Create list</a>\n            </div>\n        </div>\n    </div>\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["chart.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push('</h3>\n    <p style="margin:0">'),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push('\n        <p style="margin:10px 0 0 0">Number of Genes in this list not analysed in this widget: <a>'),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <form style="margin:0;padding:10px 0 0 0">\n            <!-- extra.eco -->\n        </form>\n    </div>\n</header>\n<div class="content">\n    <div class="legend"></div>\n    <div class="chart"></div>\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
+JST["chart.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push('</h3>\n    <p style="margin:0">'),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push('\n        <p style="margin:10px 0 0 0">Number of Genes in this list not analysed in this widget: <a>'),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <form style="margin:0;padding:10px 0 0 0">\n            <!-- extra.eco -->\n        </form>\n    </div>\n</header>\n<div class="content">\n    <div class="settings"></div>\n    <div class="legend"></div>\n    <div class="chart"></div>\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.row.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<td class="check"><input type="checkbox" '),this.row.selected&&b.push('checked="checked"'),b.push(' /></td>\n<td class="description">\n    '),b.push(d(this.row.description)),b.push("\n    "),this.row.externalLink&&(b.push('\n        [<a href="'),b.push(this.row.externalLink),b.push('" target="_blank">Link</a>]\n    ')),b.push('\n</td>\n<td class="pValue">'),b.push(d(this.row["p-value"].toPrecision(5))),b.push('</td>\n<td class="matches">\n    <a class="count" style="cursor:pointer">'),b.push(d(this.row.matches)),b.push("</a>\n</td>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push("<header>\n    <h3>"),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <!-- enrichment.form.eco -->\n    </div>\n\n    <div class="actions" style="padding:10px 0">\n        <!-- actions.eco -->\n    </div>\n</header>\n<div class="content">\n    <!-- enrichment.table.eco -->\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<!-- actual fixed head -->\n<div class="head" style="display:table">\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;"><input type="checkbox" class="check" /></div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">'),b.push(d(this.label)),b.push('</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">p-Value</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">Matches</div>\n    <div style="clear:both"></div>\n</div>\n<div class="wrapper" style="overflow:auto;overflow-x:hidden">\n    <table class="table table-striped">\n        <!-- head for proper cell width -->\n        <thead style="visibility:hidden">\n            <tr>\n                <th></th>\n                <th>'),b.push(d(this.label)),b.push("</th>\n                <th>p-Value</th>\n                <th>Matches</th>\n            </tr>\n        </thead>\n        <tbody>\n            <!-- loop enrichment.row.eco -->\n        </tbody>\n    </table>\n</div>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
@@ -206,62 +206,6 @@ merge = function(child, parent) {
   return child;
 };
 
-/* Create file download with custom content.
-*/
-
-var Exporter, PlainExporter,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-Exporter = (function() {
-
-  Exporter.name = 'Exporter';
-
-  Exporter.prototype.mime = 'text/plain';
-
-  Exporter.prototype.charset = 'UTF-8';
-
-  Exporter.prototype.url = window.webkitURL || window.URL;
-
-  function Exporter(a, data, filename) {
-    var builder;
-    if (filename == null) {
-      filename = 'widget.tsv';
-    }
-    this.destroy = __bind(this.destroy, this);
-
-    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
-    builder.append(data);
-    a.attr('download', filename);
-    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
-    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
-  }
-
-  Exporter.prototype.destroy = function() {
-    return this.url.revokeObjectURL(this.href);
-  };
-
-  return Exporter;
-
-})();
-
-PlainExporter = (function() {
-
-  PlainExporter.name = 'PlainExporter';
-
-  function PlainExporter(data) {
-    var w;
-    w = window.open();
-    w.document.open();
-    w.document.write(data);
-    w.document.close();
-  }
-
-  PlainExporter.prototype.destroy = function() {};
-
-  return PlainExporter;
-
-})();
-
 var Chart;
 
 Chart = {
@@ -281,13 +225,10 @@ Chart.Column = (function() {
   Column.prototype.pisvejc = 2;
 
   Column.prototype.ticks = {
-    'maxWidth': -Infinity,
     'count': 10
   };
 
   Column.prototype.description = {
-    'maxWidth': -Infinity,
-    'totalWidth': 0,
     'triangle': {
       'degrees': 30,
       'sideA': 0.5,
@@ -296,11 +237,19 @@ Chart.Column = (function() {
   };
 
   function Column(o) {
-    var group, groupValue, k, key, v, value, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3;
+    var k, v;
     for (k in o) {
       v = o[k];
       this[k] = v;
     }
+    $(this.el).css('height', this.height);
+  }
+
+  Column.prototype.render = function() {
+    var bar, barHeight, barWidth, bars, canvas, color, desc, descG, descriptions, domain, g, group, groupValue, height, index, key, previousHeight, series, t, text, tick, value, values, w, width, x, y, _i, _j, _k, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results, _results1,
+      _this = this;
+    $(this.el).empty();
+    canvas = d3.select(this.el[0]).append('svg:svg').attr('class', 'canvas');
     this.useWholeNumbers = true;
     this.maxValue = -Infinity;
     if (this.isStacked) {
@@ -336,18 +285,13 @@ Chart.Column = (function() {
         }
       }
     }
-    $(this.el).css('height', this.height);
-    this.canvas = d3.select(this.el[0]).append('svg:svg').attr('class', 'canvas');
-  }
-
-  Column.prototype.render = function() {
-    var bar, barHeight, barWidth, bars, color, desc, descG, domain, g, group, index, previousHeight, series, t, text, tick, value, values, w, width, x, y, _i, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1,
-      _this = this;
-    this.descriptions = this.canvas.append('svg:g').attr('class', 'descriptions');
-    _ref = this.data;
-    for (index in _ref) {
-      group = _ref[index];
-      g = this.descriptions.append("svg:g").attr("class", "g" + index);
+    descriptions = canvas.append('svg:g').attr('class', 'descriptions');
+    this.description.maxWidth = -Infinity;
+    this.description.totalWidth = 0;
+    _ref4 = this.data;
+    for (index in _ref4) {
+      group = _ref4[index];
+      g = descriptions.append("svg:g").attr("class", "g" + index);
       text = g.append("svg:text").attr("class", "text").attr("text-anchor", "end").text(group.description);
       width = text.node().getComputedTextLength();
       if (width > this.description.maxWidth) {
@@ -356,24 +300,25 @@ Chart.Column = (function() {
       this.description.totalWidth = this.description.totalWidth + width;
       g.append("svg:title").text(group.description);
     }
-    this.height = this.height - this.textHeight;
-    this.grid = this.canvas.append("svg:g").attr("class", "grid");
+    height = this.height - this.textHeight;
+    this.grid = canvas.append("svg:g").attr("class", "grid");
     domain = {};
     domain.ticks = (function() {
-      var t, _i, _len, _ref1, _results;
-      _ref1 = d3.scale.linear().domain([0, _this.maxValue]).ticks(_this.ticks.count);
+      var t, _k, _len2, _ref5, _results;
+      _ref5 = d3.scale.linear().domain([0, _this.maxValue]).ticks(_this.ticks.count);
       _results = [];
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        t = _ref1[_i];
+      for (_k = 0, _len2 = _ref5.length; _k < _len2; _k++) {
+        t = _ref5[_k];
         if ((parseInt(t) === t) || !_this.useWholeNumbers) {
           _results.push(t);
         }
       }
       return _results;
     })();
-    _ref1 = domain.ticks;
-    for (index in _ref1) {
-      tick = _ref1[index];
+    this.ticks.maxWidth = -Infinity;
+    _ref5 = domain.ticks;
+    for (index in _ref5) {
+      tick = _ref5[index];
       t = this.grid.append("svg:g").attr('class', "t" + index);
       text = t.append("svg:text").attr("class", "tick").attr("text-anchor", "begin").attr("x", 0).text(tick);
       width = text.node().getComputedTextLength();
@@ -381,31 +326,31 @@ Chart.Column = (function() {
         this.ticks.maxWidth = width;
       }
     }
-    this.width = this.width - this.ticks.maxWidth;
-    if (this.description.totalWidth > this.width) {
-      this.height = this.height - (this.description.maxWidth * this.description.triangle.sideA);
+    width = this.width - this.ticks.maxWidth;
+    if (this.description.totalWidth > width) {
+      height = height - (this.description.maxWidth * this.description.triangle.sideA);
     }
     domain.x = d3.scale.ordinal().domain((function() {
       _results = [];
-      for (var _i = 0, _ref2 = this.data.length - 1; 0 <= _ref2 ? _i <= _ref2 : _i >= _ref2; 0 <= _ref2 ? _i++ : _i--){ _results.push(_i); }
+      for (var _k = 0, _ref6 = this.data.length - 1; 0 <= _ref6 ? _k <= _ref6 : _k >= _ref6; 0 <= _ref6 ? _k++ : _k--){ _results.push(_k); }
       return _results;
-    }).apply(this)).rangeRoundBands([0, this.width], .05);
-    domain.y = d3.scale.linear().domain([0, this.maxValue]).rangeRound([0, this.height]);
+    }).apply(this)).rangeRoundBands([0, width], .05);
+    domain.y = d3.scale.linear().domain([0, this.maxValue]).rangeRound([0, height]);
     domain.color = d3.scale.linear().domain([0, this.maxValue]).rangeRound([0, this.colorbrewer - 1]);
-    _ref3 = domain.ticks;
-    for (index in _ref3) {
-      tick = _ref3[index];
+    _ref7 = domain.ticks;
+    for (index in _ref7) {
+      tick = _ref7[index];
       t = this.grid.select(".t" + index);
-      t.append("svg:line").attr("class", "line").attr("x1", this.ticks.maxWidth).attr("x2", this.width + this.ticks.maxWidth);
-      t.attr('transform', "translate(0," + (this.height - domain['y'](tick)) + ")");
+      t.append("svg:line").attr("class", "line").attr("x1", this.ticks.maxWidth).attr("x2", width + this.ticks.maxWidth);
+      t.attr('transform', "translate(0," + (height - domain['y'](tick)) + ")");
     }
-    this.chart = this.canvas.append("svg:g").attr("class", "chart");
+    this.chart = canvas.append("svg:g").attr("class", "chart");
     bars = this.chart.append("svg:g").attr("class", "bars");
     values = this.chart.append("svg:g").attr("class", "values");
-    _ref4 = this.data;
+    _ref8 = this.data;
     _results1 = [];
-    for (index in _ref4) {
-      group = _ref4[index];
+    for (index in _ref8) {
+      group = _ref8[index];
       g = bars.append("svg:g").attr("class", "g" + index);
       barWidth = domain['x'].rangeBand();
       if (!this.isStacked) {
@@ -415,20 +360,20 @@ Chart.Column = (function() {
         (function() {
           var x;
           x = _this.ticks.maxWidth + domain['x'](index) + barWidth;
-          return g.append("svg:line").attr("class", "line dashed").attr("style", "stroke-dasharray: 10, 5;").attr("x1", x).attr("x2", x).attr("y1", 0).attr("y2", _this.height);
+          return g.append("svg:line").attr("class", "line dashed").attr("style", "stroke-dasharray: 10, 5;").attr("x1", x).attr("x2", x).attr("y1", 0).attr("y2", height);
         })();
       }
       barHeight = 0;
-      _ref5 = group.data;
-      for (series in _ref5) {
-        value = _ref5[series];
+      _ref9 = group.data;
+      for (series in _ref9) {
+        value = _ref9[series];
         previousHeight = barHeight;
         barHeight = domain['y'](value);
         x = domain['x'](index) + this.ticks.maxWidth;
         if (!this.isStacked) {
           x = x + (series * barWidth);
         }
-        y = this.height - barHeight;
+        y = height - barHeight;
         if (this.isStacked) {
           y = y - previousHeight;
         }
@@ -471,7 +416,7 @@ Chart.Column = (function() {
         }
       }
       g.append("svg:title").text(group.description);
-      descG = this.descriptions.select(".g" + index);
+      descG = descriptions.select(".g" + index);
       desc = descG.select("text");
       if (this.description.maxWidth > barWidth) {
         desc.attr("transform", "rotate(-" + this.description.triangle.degrees + " 0 0)");
@@ -483,7 +428,7 @@ Chart.Column = (function() {
         x = (x + barWidth) - 0.5 * (barWidth * group.data.length);
         desc.attr("text-anchor", "middle");
       }
-      _results1.push(descG.attr('transform', "translate(" + x + "," + (this.height + this.textHeight) + ")"));
+      _results1.push(descG.attr('transform', "translate(" + x + "," + (height + this.textHeight) + ")"));
     }
     return _results1;
   };
@@ -537,6 +482,92 @@ Chart.Legend = (function() {
   };
 
   return Legend;
+
+})();
+
+Chart.Settings = (function() {
+
+  Settings.name = 'Settings';
+
+  function Settings(o) {
+    var k, v;
+    for (k in o) {
+      v = o[k];
+      this[k] = v;
+    }
+  }
+
+  Settings.prototype.render = function() {
+    var stacked,
+      _this = this;
+    return stacked = $(this.el).append($('<a/>', {
+      'class': "btn btn-mini stacked " + (this.isStacked ? 'active' : ''),
+      'text': 'Stacked',
+      'click': function(e) {
+        $(e.target).toggleClass('active');
+        _this.chart.isStacked = $(e.target).hasClass('active');
+        return _this.chart.render();
+      }
+    }));
+  };
+
+  return Settings;
+
+})();
+
+/* Create file download with custom content.
+*/
+
+var Exporter, PlainExporter,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+Exporter = (function() {
+
+  Exporter.name = 'Exporter';
+
+  Exporter.prototype.mime = 'text/plain';
+
+  Exporter.prototype.charset = 'UTF-8';
+
+  Exporter.prototype.url = window.webkitURL || window.URL;
+
+  function Exporter(a, data, filename) {
+    var builder;
+    if (filename == null) {
+      filename = 'widget.tsv';
+    }
+    this.destroy = __bind(this.destroy, this);
+
+    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
+    builder.append(data);
+    a.attr('download', filename);
+    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
+    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
+  }
+
+  Exporter.prototype.destroy = function() {
+    return this.url.revokeObjectURL(this.href);
+  };
+
+  return Exporter;
+
+})();
+
+PlainExporter = (function() {
+
+  PlainExporter.name = 'PlainExporter';
+
+  function PlainExporter(data) {
+    var w;
+    w = window.open();
+    w.document.open();
+    w.document.write(data);
+    w.document.close();
+  }
+
+  PlainExporter.prototype.destroy = function() {};
+
+  return PlainExporter;
 
 })();
 
@@ -1000,6 +1031,186 @@ factory = function(Backbone) {
   })(InterMineWidget);
   
 
+  /* Core Model for Enrichment and Table Models.
+  */
+  
+  var CoreCollection, CoreModel, EnrichmentResults, EnrichmentRow, TableResults, TableRow,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  CoreModel = (function(_super) {
+  
+    __extends(CoreModel, _super);
+  
+    CoreModel.name = 'CoreModel';
+  
+    function CoreModel() {
+      this.toggleSelected = __bind(this.toggleSelected, this);
+  
+      this.validate = __bind(this.validate, this);
+      return CoreModel.__super__.constructor.apply(this, arguments);
+    }
+  
+    CoreModel.prototype.defaults = {
+      "selected": false
+    };
+  
+    CoreModel.prototype.initialize = function(row, widget) {
+      this.widget = widget;
+      return this.validate(row);
+    };
+  
+    CoreModel.prototype.validate = function(row) {
+      return this.widget.validateType(row, this.spec);
+    };
+  
+    CoreModel.prototype.toggleSelected = function() {
+      return this.set({
+        selected: !this.get("selected")
+      });
+    };
+  
+    return CoreModel;
+  
+  })(Backbone.Model);
+  
+  CoreCollection = (function(_super) {
+  
+    __extends(CoreCollection, _super);
+  
+    CoreCollection.name = 'CoreCollection';
+  
+    function CoreCollection() {
+      return CoreCollection.__super__.constructor.apply(this, arguments);
+    }
+  
+    CoreCollection.prototype.model = CoreModel;
+  
+    CoreCollection.prototype.selected = function() {
+      return this.filter(function(row) {
+        return row.get("selected");
+      });
+    };
+  
+    CoreCollection.prototype.toggleSelected = function() {
+      var model, _i, _j, _len, _len1, _ref, _ref1, _results, _results1;
+      if (this.models.length - this.selected().length) {
+        _ref = this.models;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          model = _ref[_i];
+          _results.push(model.set({
+            "selected": true
+          }, {
+            'silent': true
+          }));
+        }
+        return _results;
+      } else {
+        _ref1 = this.models;
+        _results1 = [];
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          model = _ref1[_j];
+          _results1.push(model.set({
+            "selected": false
+          }, {
+            'silent': true
+          }));
+        }
+        return _results1;
+      }
+    };
+  
+    return CoreCollection;
+  
+  })(Backbone.Collection);
+  
+  /* Models underpinning Enrichment Widget results.
+  */
+  
+  
+  EnrichmentRow = (function(_super) {
+  
+    __extends(EnrichmentRow, _super);
+  
+    EnrichmentRow.name = 'EnrichmentRow';
+  
+    function EnrichmentRow() {
+      return EnrichmentRow.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentRow.prototype.spec = {
+      "description": type.isString,
+      "identifier": type.isString,
+      "matches": type.isInteger,
+      "p-value": type.isInteger,
+      "selected": type.isBoolean,
+      "externalLink": type.isString
+    };
+  
+    return EnrichmentRow;
+  
+  })(CoreModel);
+  
+  EnrichmentResults = (function(_super) {
+  
+    __extends(EnrichmentResults, _super);
+  
+    EnrichmentResults.name = 'EnrichmentResults';
+  
+    function EnrichmentResults() {
+      return EnrichmentResults.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentResults.prototype.model = EnrichmentRow;
+  
+    return EnrichmentResults;
+  
+  })(CoreCollection);
+  
+  /* Models underpinning Table Widget results.
+  */
+  
+  
+  TableRow = (function(_super) {
+  
+    __extends(TableRow, _super);
+  
+    TableRow.name = 'TableRow';
+  
+    function TableRow() {
+      return TableRow.__super__.constructor.apply(this, arguments);
+    }
+  
+    TableRow.prototype.spec = {
+      "matches": type.isInteger,
+      "identifier": type.isInteger,
+      "descriptions": type.isArray,
+      "selected": type.isBoolean
+    };
+  
+    return TableRow;
+  
+  })(CoreModel);
+  
+  TableResults = (function(_super) {
+  
+    __extends(TableResults, _super);
+  
+    TableResults.name = 'TableResults';
+  
+    function TableResults() {
+      return TableResults.__super__.constructor.apply(this, arguments);
+    }
+  
+    TableResults.prototype.model = TableRow;
+  
+    return TableResults;
+  
+  })(CoreCollection);
+  
+
   /* Enrichment Widget table row.
   */
   
@@ -1450,7 +1661,7 @@ factory = function(Backbone) {
     };
   
     ChartView.prototype.render = function() {
-      var chart, data, height, legend, v, _i, _len, _ref;
+      var chart, data, height, legend, settings, v, _i, _len, _ref;
       $(this.el).html(this.template("chart", {
         "title": this.options.title ? this.response.title : "",
         "description": this.options.description ? this.response.description : "",
@@ -1470,16 +1681,21 @@ factory = function(Backbone) {
           v = _ref[_i];
           data.push({
             'description': v[0],
-            'data': [v[1], v[2]]
+            'data': [v[1], v[2], Math.floor(Math.random() * 12)]
           });
         }
+        settings = new Chart.Settings({
+          'el': $(this.el).find("div.content div.settings"),
+          'isStacked': this.response.chartType === 'BarChart'
+        });
+        settings.render();
         legend = new Chart.Legend({
           'el': $(this.el).find("div.content div.legend"),
           'chart': $(this.el).find("div.content div.chart"),
-          'series': [this.response.results[0][1], this.response.results[0][2]]
+          'series': [this.response.results[0][1], this.response.results[0][2], "Radekalized"]
         });
         legend.render();
-        height = $(this.widget.el).height() - $(this.widget.el).find('header').height() - $(this.widget.el).find('div.content div.legend').height();
+        height = $(this.widget.el).height() - $(this.widget.el).find('header').height() - $(this.widget.el).find('div.content div.legend').height() - $(this.widget.el).find('div.content div.settings').height();
         chart = new Chart.Column({
           'el': $(this.el).find("div.content div.chart"),
           'data': data,
@@ -1488,7 +1704,8 @@ factory = function(Backbone) {
           'onclick': this.barAction,
           'isStacked': this.response.chartType === 'BarChart'
         });
-        return chart.render();
+        chart.render();
+        return settings.chart = chart;
       } else {
         return $(this.el).find("div.content").html($(this.template("noresults")));
       }
@@ -2008,192 +2225,13 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
-  /* Core Model for Enrichment and Table Models.
-  */
-  
-  var CoreCollection, CoreModel, EnrichmentResults, EnrichmentRow, TableResults, TableRow,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  CoreModel = (function(_super) {
-  
-    __extends(CoreModel, _super);
-  
-    CoreModel.name = 'CoreModel';
-  
-    function CoreModel() {
-      this.toggleSelected = __bind(this.toggleSelected, this);
-  
-      this.validate = __bind(this.validate, this);
-      return CoreModel.__super__.constructor.apply(this, arguments);
-    }
-  
-    CoreModel.prototype.defaults = {
-      "selected": false
-    };
-  
-    CoreModel.prototype.initialize = function(row, widget) {
-      this.widget = widget;
-      return this.validate(row);
-    };
-  
-    CoreModel.prototype.validate = function(row) {
-      return this.widget.validateType(row, this.spec);
-    };
-  
-    CoreModel.prototype.toggleSelected = function() {
-      return this.set({
-        selected: !this.get("selected")
-      });
-    };
-  
-    return CoreModel;
-  
-  })(Backbone.Model);
-  
-  CoreCollection = (function(_super) {
-  
-    __extends(CoreCollection, _super);
-  
-    CoreCollection.name = 'CoreCollection';
-  
-    function CoreCollection() {
-      return CoreCollection.__super__.constructor.apply(this, arguments);
-    }
-  
-    CoreCollection.prototype.model = CoreModel;
-  
-    CoreCollection.prototype.selected = function() {
-      return this.filter(function(row) {
-        return row.get("selected");
-      });
-    };
-  
-    CoreCollection.prototype.toggleSelected = function() {
-      var model, _i, _j, _len, _len1, _ref, _ref1, _results, _results1;
-      if (this.models.length - this.selected().length) {
-        _ref = this.models;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          model = _ref[_i];
-          _results.push(model.set({
-            "selected": true
-          }, {
-            'silent': true
-          }));
-        }
-        return _results;
-      } else {
-        _ref1 = this.models;
-        _results1 = [];
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          model = _ref1[_j];
-          _results1.push(model.set({
-            "selected": false
-          }, {
-            'silent': true
-          }));
-        }
-        return _results1;
-      }
-    };
-  
-    return CoreCollection;
-  
-  })(Backbone.Collection);
-  
-  /* Models underpinning Enrichment Widget results.
-  */
-  
-  
-  EnrichmentRow = (function(_super) {
-  
-    __extends(EnrichmentRow, _super);
-  
-    EnrichmentRow.name = 'EnrichmentRow';
-  
-    function EnrichmentRow() {
-      return EnrichmentRow.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentRow.prototype.spec = {
-      "description": type.isString,
-      "identifier": type.isString,
-      "matches": type.isInteger,
-      "p-value": type.isInteger,
-      "selected": type.isBoolean,
-      "externalLink": type.isString
-    };
-  
-    return EnrichmentRow;
-  
-  })(CoreModel);
-  
-  EnrichmentResults = (function(_super) {
-  
-    __extends(EnrichmentResults, _super);
-  
-    EnrichmentResults.name = 'EnrichmentResults';
-  
-    function EnrichmentResults() {
-      return EnrichmentResults.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentResults.prototype.model = EnrichmentRow;
-  
-    return EnrichmentResults;
-  
-  })(CoreCollection);
-  
-  /* Models underpinning Table Widget results.
-  */
-  
-  
-  TableRow = (function(_super) {
-  
-    __extends(TableRow, _super);
-  
-    TableRow.name = 'TableRow';
-  
-    function TableRow() {
-      return TableRow.__super__.constructor.apply(this, arguments);
-    }
-  
-    TableRow.prototype.spec = {
-      "matches": type.isInteger,
-      "identifier": type.isInteger,
-      "descriptions": type.isArray,
-      "selected": type.isBoolean
-    };
-  
-    return TableRow;
-  
-  })(CoreModel);
-  
-  TableResults = (function(_super) {
-  
-    __extends(TableResults, _super);
-  
-    TableResults.name = 'TableResults';
-  
-    function TableResults() {
-      return TableResults.__super__.constructor.apply(this, arguments);
-    }
-  
-    TableResults.prototype.model = TableRow;
-  
-    return TableResults;
-  
-  })(CoreCollection);
-  
-
   return {
 
     "InterMineWidget": InterMineWidget,
     "ChartWidget": ChartWidget,
     "TableWidget": TableWidget,
     "EnrichmentWidget": EnrichmentWidget,
+    "CoreModel": CoreModel,
     "EnrichmentRowView": EnrichmentRowView,
     "TableRowView": TableRowView,
     "TableView": TableView,
@@ -2202,7 +2240,6 @@ factory = function(Backbone) {
     "EnrichmentPopoverView": EnrichmentPopoverView,
     "EnrichmentView": EnrichmentView,
     "ChartPopoverView": ChartPopoverView,
-    "CoreModel": CoreModel,
 
   };
 };

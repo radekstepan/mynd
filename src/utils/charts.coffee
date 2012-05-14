@@ -20,17 +20,11 @@ class Chart.Column
 
     # The ticks/the numbers axis.
     ticks:
-        # The width (from left) to be left for axis numbers.
-        'maxWidth':    -Infinity
         # The number of ticks axis should have (roughly).
         'count':       10
 
     # Description...
     description:
-        # ... maximum width.
-        'maxWidth':    -Infinity
-        # ... total width.
-        'totalWidth':  0
         # ... rotation triangle (http://www.calculatorsoup.com/calculators/geometry-plane/triangle-theorems.php).
         'triangle':
             'degrees': 30
@@ -41,6 +35,19 @@ class Chart.Column
     constructor: (o) ->
         @[k] = v for k, v of o
 
+        # Update the height of the outer element.
+        $(@el).css 'height', @height
+
+    render: () ->
+        # Clear any previous content.
+        $(@el).empty()
+
+        # Create the chart wrapper.
+        canvas = d3.select(@el[0])
+        .append('svg:svg') # append svg
+        .attr('class', 'canvas')
+
+        # -------------------------------------------------------------------
         # Get a better understanding of the datasets we are dealing with.
         @useWholeNumbers = true ; @maxValue = -Infinity
         if @isStacked
@@ -61,21 +68,13 @@ class Chart.Column
                     # Get a maximum value from all series.
                     @maxValue = value if value > @maxValue
 
-        # Update the height of the outer element.
-        $(@el).css 'height', @height
-
-        # Create the chart wrapper.
-        @canvas = d3.select(@el[0])
-        .append('svg:svg') # append svg
-        .attr('class', 'canvas')
-
-    render: () ->
         # -------------------------------------------------------------------
         # Descriptions.
-        @descriptions = @canvas.append('svg:g').attr('class', 'descriptions')
+        descriptions = canvas.append('svg:g').attr('class', 'descriptions')
+        @description.maxWidth = -Infinity ; @description.totalWidth = 0
         for index, group of @data
             # Wrapper for the text and title.
-            g = @descriptions.append("svg:g")
+            g = descriptions.append("svg:g")
             .attr("class", "g#{index}")
             
             # Text.
@@ -96,10 +95,10 @@ class Chart.Column
         # -------------------------------------------------------------------
         
         # Reduce the chart space by accomodating the description.
-        @height = @height - @textHeight
+        height = @height - @textHeight
 
         # Add a wrapping `g` for the grid ticks and lines.
-        @grid = @canvas.append("svg:g").attr("class", "grid")
+        @grid = canvas.append("svg:g").attr("class", "grid")
 
         # Init the domain, with ticks for now.
         domain = {}
@@ -109,6 +108,8 @@ class Chart.Column
 
         # -------------------------------------------------------------------
         # Render the tick numbers so we can get the @ticks.maxWidth.
+        # The width (from left) to be left for axis numbers.
+        @ticks.maxWidth = -Infinity
         for index, tick of domain.ticks
             t = @grid.append("svg:g").attr('class', "t#{index}")
             
@@ -125,14 +126,14 @@ class Chart.Column
         # -------------------------------------------------------------------
         
         # Now that we know the width of the axis, reduce the width.
-        @width = @width - @ticks.maxWidth
+        width = @width - @ticks.maxWidth
 
         # Will we (probably) need to rotate the descriptions? Then reduce the @height by the height of one side of the triangle created by a 30 deg rotation.
-        if @description.totalWidth > @width then @height = @height - (@description.maxWidth * @description.triangle.sideA)
+        if @description.totalWidth > width then height = height - (@description.maxWidth * @description.triangle.sideA)
 
         # Get the domain as @width & @height are fixed now.
-        domain.x =     d3.scale.ordinal().domain([0..@data.length - 1]).rangeRoundBands([ 0, @width ], .05)
-        domain.y =     d3.scale.linear().domain([ 0, @maxValue ]).rangeRound([ 0, @height ])
+        domain.x =     d3.scale.ordinal().domain([0..@data.length - 1]).rangeRoundBands([ 0, width ], .05)
+        domain.y =     d3.scale.linear().domain([ 0, @maxValue ]).rangeRound([ 0, height ])
         domain.color = d3.scale.linear().domain([ 0, @maxValue ]).rangeRound([ 0, @colorbrewer - 1 ])
 
         # -------------------------------------------------------------------
@@ -145,15 +146,15 @@ class Chart.Column
             t.append("svg:line")
             .attr("class", "line")
             .attr("x1",    @ticks.maxWidth)
-            .attr("x2",    @width + @ticks.maxWidth)
+            .attr("x2",    width + @ticks.maxWidth)
 
             # Update the position of the wrapping `g` to shift both ticks and lines.
-            t.attr 'transform', "translate(0,#{@height - domain['y'](tick)})"
+            t.attr 'transform', "translate(0,#{height - domain['y'](tick)})"
 
         # -------------------------------------------------------------------
 
         # Chart `g`.
-        @chart = @canvas.append("svg:g").attr("class", "chart")
+        @chart = canvas.append("svg:g").attr("class", "chart")
 
         # -------------------------------------------------------------------
         # The bars.
@@ -183,7 +184,7 @@ class Chart.Column
                     .attr("x1",    x)
                     .attr("x2",    x)
                     .attr("y1",    0)
-                    .attr("y2",    @height)
+                    .attr("y2",    height)
 
             # -------------------------------------------------------------------
             # Traverse the data in the series.
@@ -197,7 +198,7 @@ class Chart.Column
                 if !@isStacked then x = x + (series * barWidth)
                 
                 # From the top.
-                y = @height - barHeight
+                y = height - barHeight
                 if @isStacked then y = y - previousHeight
                 
                 # ColorBrewer band.
@@ -261,7 +262,7 @@ class Chart.Column
             
             # -------------------------------------------------------------------
             # (A better) naive fce to determine if we should rotate the text.
-            descG = @descriptions.select(".g#{index}")
+            descG = descriptions.select(".g#{index}")
             desc =  descG.select("text")
             if @description.maxWidth > barWidth
                 desc.attr("transform", "rotate(-#{@description.triangle.degrees} 0 0)")
@@ -281,7 +282,7 @@ class Chart.Column
                 desc.attr("text-anchor", "middle")
             
             # Update the position of the description text wrapping `g` element.
-            descG.attr('transform', "translate(#{x},#{@height + @textHeight})")
+            descG.attr('transform', "translate(#{x},#{height + @textHeight})")
 
 
 class Chart.Legend
@@ -308,3 +309,21 @@ class Chart.Legend
         # Change the opacity to 'toggle' the series bars.
         d3.select(@chart[0]).selectAll(".#{Chart.series[series]}")
         .attr('fill-opacity', () -> if $(el).hasClass 'disabled' then 0.1 else 1 )
+
+
+class Chart.Settings
+
+    # Expand object values on us.
+    constructor: (o) ->
+        @[k] = v for k, v of o
+
+    render: () ->
+        # Is the chart stacked?
+        stacked = $(@el).append $('<a/>',
+            'class': "btn btn-mini stacked #{if @isStacked then 'active' else ''}"
+            'text':  'Stacked'
+            'click': (e) =>
+                $(e.target).toggleClass 'active'
+                @chart.isStacked = $(e.target).hasClass 'active'
+                @chart.render()
+        )
