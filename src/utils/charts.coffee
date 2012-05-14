@@ -39,6 +39,8 @@ class Chart.Column
         $(@el).css 'height', @height
 
     render: () ->
+        height = @height ; width = @width
+
         # Clear any previous content.
         $(@el).empty()
 
@@ -69,6 +71,30 @@ class Chart.Column
                     @maxValue = value if value > @maxValue
 
         # -------------------------------------------------------------------
+        # Axis Labels?
+        if @axis?
+            labels = canvas.append('svg:g').attr('class', 'labels')
+            if @axis.horizontal?
+                labels.append("svg:text")
+                    .attr("class",       "horizontal")
+                    .attr("text-anchor", "middle")
+                    .attr("x",           width / 2)
+                    .attr("y",           height)
+                    .text @axis.horizontal
+
+            if @axis.vertical?
+                labels.append("svg:text")
+                    .attr("class",       "vertical")
+                    .attr("text-anchor", "middle")
+                    .attr("transform",   "rotate(-90 #{@textHeight} #{height / 2})")
+                    .attr("x",           0)
+                    .attr("y",           height / 2)
+                    .text @axis.vertical
+
+            # Adjust the size of the remaining area.
+            height = height - @textHeight ; width = width - @textHeight
+
+        # -------------------------------------------------------------------
         # Descriptions.
         descriptions = canvas.append('svg:g').attr('class', 'descriptions')
         @description.maxWidth = -Infinity ; @description.totalWidth = 0
@@ -84,10 +110,10 @@ class Chart.Column
                 .text group.description
 
             # Update the max width.
-            width = text.node().getComputedTextLength()
-            @description.maxWidth = width if width > @description.maxWidth
+            textWidth = text.node().getComputedTextLength()
+            @description.maxWidth = textWidth if textWidth > @description.maxWidth
             # Update the total width.
-            @description.totalWidth = @description.totalWidth + width
+            @description.totalWidth = @description.totalWidth + textWidth
 
             # Add an onhover description title.
             g.append("svg:title").text group.description
@@ -95,10 +121,10 @@ class Chart.Column
         # -------------------------------------------------------------------
         
         # Reduce the chart space by accomodating the description.
-        height = @height - @textHeight
+        height = height - @textHeight
 
         # Add a wrapping `g` for the grid ticks and lines.
-        @grid = canvas.append("svg:g").attr("class", "grid")
+        grid = canvas.append("svg:g").attr("class", "grid")
 
         # Init the domain, with ticks for now.
         domain = {}
@@ -111,7 +137,7 @@ class Chart.Column
         # The width (from left) to be left for axis numbers.
         @ticks.maxWidth = -Infinity
         for index, tick of domain.ticks
-            t = @grid.append("svg:g").attr('class', "t#{index}")
+            t = grid.append("svg:g").attr('class', "t#{index}")
             
             text = t.append("svg:text")
             .attr("class",       "tick")
@@ -120,17 +146,24 @@ class Chart.Column
             .text tick
 
             # Update the max width.
-            width = text.node().getComputedTextLength()
-            @ticks.maxWidth = width if width > @ticks.maxWidth
+            textWidth = text.node().getComputedTextLength()
+            @ticks.maxWidth = textWidth if textWidth > @ticks.maxWidth
 
         # -------------------------------------------------------------------
         
-        # Now that we know the width of the axis, reduce the width.
-        width = @width - @ticks.maxWidth
+        # Now that we know the width of the axis, reduce the area width.
+        width = width - @ticks.maxWidth
 
         # Will we (probably) need to rotate the descriptions? Then reduce the @height by the height of one side of the triangle created by a 30 deg rotation.
         if @description.totalWidth > width then height = height - (@description.maxWidth * @description.triangle.sideA)
 
+        # Update the location of the vertical axis label if present.
+        if @axis?.vertical?
+            labels.select('.vertical')
+            .attr("transform",   "rotate(-90 #{@textHeight} #{height / 2})")
+            .attr("y",           height / 2)
+
+        # -------------------------------------------------------------------
         # Get the domain as @width & @height are fixed now.
         domain.x =     d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, width ], .05)
         domain.y =     d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, height ])
@@ -140,7 +173,7 @@ class Chart.Column
         # Horizontal lines among ticks.
         for index, tick of domain.ticks
             # Get the wrapping `g`.
-            t = @grid.select(".t#{index}")
+            t = grid.select(".t#{index}")
 
             # Draw the line
             t.append("svg:line")
@@ -154,11 +187,11 @@ class Chart.Column
         # -------------------------------------------------------------------
 
         # Chart `g`.
-        @chart = canvas.append("svg:g").attr("class", "chart")
+        chart = canvas.append("svg:g").attr("class", "chart")
 
         # -------------------------------------------------------------------
         # The bars.
-        bars = @chart.append("svg:g").attr("class", "bars") ; values = @chart.append("svg:g").attr("class", "values")
+        bars = chart.append("svg:g").attr("class", "bars") ; values = chart.append("svg:g").attr("class", "values")
         for index, group of @data
             # A wrapper group.
             g = bars
@@ -285,6 +318,11 @@ class Chart.Column
             
             # Update the position of the description text wrapping `g` element.
             descG.attr('transform', "translate(#{x},#{height + @textHeight})")
+
+        # If we have used vertical axis, shift the whole shebang to the right.
+        if @axis?.vertical?
+            grid.attr('transform', "translate(#{@textHeight}, 0)")
+            chart.attr('transform', "translate(#{@textHeight}, 0)")
 
 
 class Chart.Legend
