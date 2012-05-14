@@ -12,11 +12,14 @@ class Chart.Column
     # Number of ColorBrewer classes.
     colorbrewer:       4
 
-    # Assumed height of text.
-    textHeight:        10
-
-    # Constant to nudge text above/below bar.
-    pisvejc:           2
+    # Padding between elements.
+    padding:
+        # ...nudge bar text above/below bar
+        'barValue':    2 # px
+        # ...axis labels
+        'axisLabels':  5 # px
+        # ...space between bars
+        'barPadding':  0.05 # [0..1]
 
     # The ticks/the numbers axis.
     ticks:
@@ -75,29 +78,34 @@ class Chart.Column
         if @axis?
             labels = canvas.append('svg:g').attr('class', 'labels')
             if @axis.horizontal?
-                labels.append("svg:text")
+                text = labels.append("svg:text")
                     .attr("class",       "horizontal")
                     .attr("text-anchor", "middle")
                     .attr("x",           width / 2)
-                    .attr("y",           height)
+                    .attr("y",           height - @padding.axisLabels)
                     .text @axis.horizontal
 
+                # Adjust the size of the remaining area.
+                height = height - text.node().getBBox().height - @padding.axisLabels
+
             if @axis.vertical?
-                labels.append("svg:text")
+                text = labels.append("svg:text")
                     .attr("class",       "vertical")
                     .attr("text-anchor", "middle")
-                    .attr("transform",   "rotate(-90 #{@textHeight} #{height / 2})")
                     .attr("x",           0)
                     .attr("y",           height / 2)
                     .text @axis.vertical
 
-            # Adjust the size of the remaining area.
-            height = height - @textHeight ; width = width - @textHeight
+                verticalAxisLabelHeight = text.node().getBBox().height
+                text.attr("transform",   "rotate(-90 #{verticalAxisLabelHeight} #{height / 2})")
+
+                # Adjust the size of the remaining area.
+                width = width - verticalAxisLabelHeight - @padding.axisLabels
 
         # -------------------------------------------------------------------
         # Descriptions.
         descriptions = canvas.append('svg:g').attr('class', 'descriptions')
-        @description.maxWidth = -Infinity ; @description.totalWidth = 0
+        @description.maxWidth = -Infinity ; @description.totalWidth = 0 ; descriptionTextHeight = 0
         for index, group of @data
             # Wrapper for the text and title.
             g = descriptions.append("svg:g")
@@ -118,10 +126,13 @@ class Chart.Column
             # Add an onhover description title.
             g.append("svg:title").text group.description
 
+            # Save the text height.
+            if descriptionTextHeight is 0 then descriptionTextHeight = text.node().getBBox().height
+
         # -------------------------------------------------------------------
         
         # Reduce the chart space by accomodating the description.
-        height = height - @textHeight
+        height = height - descriptionTextHeight
 
         # Add a wrapping `g` for the grid ticks and lines.
         grid = canvas.append("svg:g").attr("class", "grid")
@@ -160,12 +171,12 @@ class Chart.Column
         # Update the location of the vertical axis label if present.
         if @axis?.vertical?
             labels.select('.vertical')
-            .attr("transform",   "rotate(-90 #{@textHeight} #{height / 2})")
+            .attr("transform",   "rotate(-90 #{verticalAxisLabelHeight} #{height / 2})")
             .attr("y",           height / 2)
 
         # -------------------------------------------------------------------
         # Get the domain as @width & @height are fixed now.
-        domain.x =     d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, width ], .05)
+        domain.x =     d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, width ], @padding.barPadding)
         domain.y =     d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, height ])
         domain.color = d3.scale.linear().domain([ 0, @maxValue ]).rangeRound([ 0, @colorbrewer - 1 ])
 
@@ -262,7 +273,7 @@ class Chart.Column
                 # -------------------------------------------------------------------
 
                 if @isStacked
-                    ty = y + @textHeight + @pisvejc
+                    ty = y + text.node().getBBox().height + @padding.barValue
 
                     text.attr('y', ty)
                     if text.node().getComputedTextLength() > barWidth
@@ -270,7 +281,7 @@ class Chart.Column
                     else
                         text.attr("class", "value on")
                 else
-                    ty = y - @pisvejc
+                    ty = y - @padding.barValue
 
                     # Maybe the value is too 'high' and would be left off the grid?
                     if ty < 15
@@ -317,12 +328,13 @@ class Chart.Column
                 desc.attr("text-anchor", "middle")
             
             # Update the position of the description text wrapping `g` element.
-            descG.attr('transform', "translate(#{x},#{height + @textHeight})")
+            descG.attr('transform', "translate(#{x},#{height + descriptionTextHeight})")
 
         # If we have used vertical axis, shift the whole shebang to the right.
         if @axis?.vertical?
-            grid.attr('transform', "translate(#{@textHeight}, 0)")
-            chart.attr('transform', "translate(#{@textHeight}, 0)")
+            grid.attr('transform', "translate(#{verticalAxisLabelHeight + @padding.axisLabels}, 0)")
+            chart.attr('transform', "translate(#{verticalAxisLabelHeight + @padding.axisLabels}, 0)")
+            descriptions.attr('transform', "translate(#{verticalAxisLabelHeight + @padding.axisLabels}, 0)")
 
 
 class Chart.Legend
