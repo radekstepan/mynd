@@ -189,6 +189,23 @@ type.isUndefined = (function(_super) {
 
 })(type.Root);
 
+/* Merge properties of 2 dictionaries.
+*/
+
+var merge;
+
+merge = function(child, parent) {
+  var key;
+  for (key in parent) {
+    if (!(child[key] != null)) {
+      if (Object.prototype.hasOwnProperty.call(parent, key)) {
+        child[key] = parent[key];
+      }
+    }
+  }
+  return child;
+};
+
 /* Create file download with custom content.
 */
 
@@ -244,23 +261,6 @@ PlainExporter = (function() {
   return PlainExporter;
 
 })();
-
-/* Merge properties of 2 dictionaries.
-*/
-
-var merge;
-
-merge = function(child, parent) {
-  var key;
-  for (key in parent) {
-    if (!(child[key] != null)) {
-      if (Object.prototype.hasOwnProperty.call(parent, key)) {
-        child[key] = parent[key];
-      }
-    }
-  }
-  return child;
-};
 
 var factory;
 factory = function(Backbone) {
@@ -1976,6 +1976,8 @@ $ = window.jQuery || window.Zepto;
 Widgets = (function() {
 
   Widgets.name = 'Widgets';
+
+  Widgets.prototype.VERSION = '1.1.0';
 
   Widgets.prototype.wait = true;
 
