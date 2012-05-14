@@ -206,62 +206,6 @@ merge = function(child, parent) {
   return child;
 };
 
-/* Create file download with custom content.
-*/
-
-var Exporter, PlainExporter,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-Exporter = (function() {
-
-  Exporter.name = 'Exporter';
-
-  Exporter.prototype.mime = 'text/plain';
-
-  Exporter.prototype.charset = 'UTF-8';
-
-  Exporter.prototype.url = window.webkitURL || window.URL;
-
-  function Exporter(a, data, filename) {
-    var builder;
-    if (filename == null) {
-      filename = 'widget.tsv';
-    }
-    this.destroy = __bind(this.destroy, this);
-
-    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
-    builder.append(data);
-    a.attr('download', filename);
-    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
-    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
-  }
-
-  Exporter.prototype.destroy = function() {
-    return this.url.revokeObjectURL(this.href);
-  };
-
-  return Exporter;
-
-})();
-
-PlainExporter = (function() {
-
-  PlainExporter.name = 'PlainExporter';
-
-  function PlainExporter(data) {
-    var w;
-    w = window.open();
-    w.document.open();
-    w.document.write(data);
-    w.document.close();
-  }
-
-  PlainExporter.prototype.destroy = function() {};
-
-  return PlainExporter;
-
-})();
-
 var Chart;
 
 Chart = {};
@@ -291,6 +235,8 @@ Chart.Column = (function() {
       'sideB': 0.866025
     }
   };
+
+  Column.prototype.series = {};
 
   function Column(o) {
     var k, v;
@@ -515,6 +461,14 @@ Chart.Column = (function() {
     }
   };
 
+  Column.prototype.hideSeries = function(series) {
+    return d3.select(this.el[0]).selectAll(".s" + series).transition().attr('fill-opacity', 0.1);
+  };
+
+  Column.prototype.showSeries = function(series) {
+    return d3.select(this.el[0]).selectAll(".s" + series).transition().attr('fill-opacity', 1);
+  };
+
   return Column;
 
 })();
@@ -534,6 +488,7 @@ Chart.Legend = (function() {
   Legend.prototype.render = function() {
     var index, name, ul, _ref, _results,
       _this = this;
+    $(this.el).empty();
     $(this.el).append(ul = $('<ul/>'));
     _ref = this.series;
     _results = [];
@@ -554,13 +509,11 @@ Chart.Legend = (function() {
 
   Legend.prototype.clickAction = function(el, series) {
     $(el).toggleClass('disabled');
-    return d3.select(this.chart[0]).selectAll(".s" + series).transition().attr('fill-opacity', function() {
-      if ($(el).hasClass('disabled')) {
-        return 0.1;
-      } else {
-        return 1;
-      }
-    });
+    if ($(el).hasClass('disabled')) {
+      return this.chart.hideSeries(series);
+    } else {
+      return this.chart.showSeries(series);
+    }
   };
 
   return Legend;
@@ -582,6 +535,7 @@ Chart.Settings = (function() {
   Settings.prototype.render = function() {
     var stacked,
       _this = this;
+    $(this.el).empty();
     return stacked = $(this.el).append($('<a/>', {
       'class': "btn btn-mini stacked " + (this.isStacked ? 'active' : ''),
       'text': this.isStacked ? 'Unstack' : 'Stack',
@@ -594,12 +548,69 @@ Chart.Settings = (function() {
           _this.chart.isStacked = false;
           $(e.target).text('Stack');
         }
+        _this.legend.render();
         return _this.chart.render();
       }
     }));
   };
 
   return Settings;
+
+})();
+
+/* Create file download with custom content.
+*/
+
+var Exporter, PlainExporter,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+Exporter = (function() {
+
+  Exporter.name = 'Exporter';
+
+  Exporter.prototype.mime = 'text/plain';
+
+  Exporter.prototype.charset = 'UTF-8';
+
+  Exporter.prototype.url = window.webkitURL || window.URL;
+
+  function Exporter(a, data, filename) {
+    var builder;
+    if (filename == null) {
+      filename = 'widget.tsv';
+    }
+    this.destroy = __bind(this.destroy, this);
+
+    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
+    builder.append(data);
+    a.attr('download', filename);
+    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
+    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
+  }
+
+  Exporter.prototype.destroy = function() {
+    return this.url.revokeObjectURL(this.href);
+  };
+
+  return Exporter;
+
+})();
+
+PlainExporter = (function() {
+
+  PlainExporter.name = 'PlainExporter';
+
+  function PlainExporter(data) {
+    var w;
+    w = window.open();
+    w.document.open();
+    w.document.write(data);
+    w.document.close();
+  }
+
+  PlainExporter.prototype.destroy = function() {};
+
+  return PlainExporter;
 
 })();
 
@@ -1695,7 +1706,7 @@ factory = function(Backbone) {
     };
   
     ChartView.prototype.render = function() {
-      var chart, data, height, legend, settings, v, _i, _len, _ref;
+      var chart, data, legend, settings, v, _i, _len, _ref;
       $(this.el).html(this.template("chart", {
         "title": this.options.title ? this.response.title : "",
         "description": this.options.description ? this.response.description : "",
@@ -1718,32 +1729,32 @@ factory = function(Backbone) {
             'data': [v[1], v[2]]
           });
         }
-        settings = new Chart.Settings({
-          'el': $(this.el).find("div.content div.settings"),
-          'isStacked': this.response.chartType === 'BarChart'
-        });
-        settings.render();
-        legend = new Chart.Legend({
-          'el': $(this.el).find("div.content div.legend"),
-          'chart': $(this.el).find("div.content div.chart"),
-          'series': [this.response.results[0][1], this.response.results[0][2]]
-        });
-        legend.render();
-        height = $(this.widget.el).height() - $(this.widget.el).find('header').height() - $(this.widget.el).find('div.content div.legend').height() - $(this.widget.el).find('div.content div.settings').height();
         chart = new Chart.Column({
           'el': $(this.el).find("div.content div.chart"),
           'data': data,
           'width': 460,
-          'height': height,
           'onclick': this.barAction,
           'isStacked': this.response.chartType === 'BarChart',
           'axis': {
             'horizontal': this.response.domainLabel,
-            'vertical': "" + this.response.type + " Count"
+            'vertical': this.response.type + ' Count'
           }
         });
-        chart.render();
-        return settings.chart = chart;
+        legend = new Chart.Legend({
+          'el': $(this.el).find("div.content div.legend"),
+          'chart': chart,
+          'series': [this.response.results[0][1], this.response.results[0][2]]
+        });
+        legend.render();
+        settings = new Chart.Settings({
+          'el': $(this.el).find("div.content div.settings"),
+          'chart': chart,
+          'legend': legend,
+          'isStacked': this.response.chartType === 'BarChart'
+        });
+        settings.render();
+        chart.height = $(this.widget.el).height() - $(this.widget.el).find('header').height() - $(this.widget.el).find('div.content div.legend').height() - $(this.widget.el).find('div.content div.settings').height();
+        return chart.render();
       } else {
         return $(this.el).find("div.content").html($(this.template("noresults")));
       }

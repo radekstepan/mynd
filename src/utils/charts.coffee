@@ -32,6 +32,9 @@ class Chart.Column
             'sideA':   0.5
             'sideB':   0.866025
 
+    # Series and their visibility on us.
+    series: {}
+
     # Expand object values on us.
     constructor: (o) ->
         @[k] = v for k, v of o
@@ -40,6 +43,7 @@ class Chart.Column
         $(@el).css 'height', @height
 
     render: () ->
+        # Preserve the original.
         height = @height ; width = @width
 
         # Clear any previous content.
@@ -258,7 +262,7 @@ class Chart.Column
                 .attr('y',      y)
                 .attr('width',  barWidth)
                 .attr('height', barHeight)
-                
+
                 bar.transition().attr('opacity', 1)
 
                 # Add a text value.
@@ -338,6 +342,14 @@ class Chart.Column
             chart.attr('transform', "translate(#{verticalAxisLabelHeight + @padding.axisLabels}, 0)")
             descriptions.attr('transform', "translate(#{verticalAxisLabelHeight + @padding.axisLabels}, 0)")
 
+    hideSeries: (series) ->
+        d3.select(@el[0]).selectAll(".s#{series}")
+        .transition().attr('fill-opacity', 0.1 )
+
+    showSeries: (series) ->
+        d3.select(@el[0]).selectAll(".s#{series}")
+        .transition().attr('fill-opacity', 1 )
+
 
 class Chart.Legend
 
@@ -346,12 +358,17 @@ class Chart.Legend
         @[k] = v for k, v of o
 
     render: () ->
+        # Clear.
+        $(@el).empty()
+
+        # List of series.
         $(@el).append ul = $('<ul/>')
 
         for index, name of @series then do (index, name) =>
             ul.append $('<li/>',
                 'class': 's' + index
                 'html':  name
+                # Toggle series.
                 'click': (e) => @clickAction e.target, index
             )
 
@@ -360,9 +377,11 @@ class Chart.Legend
         # Toggle the disabled state.
         $(el).toggleClass 'disabled'
 
-        # Change the opacity to 'toggle' the series bars.
-        d3.select(@chart[0]).selectAll(".s#{series}")
-        .transition().attr('fill-opacity', () -> if $(el).hasClass 'disabled' then 0.1 else 1 )
+        # Change the visibility of series on a chart.
+        if $(el).hasClass 'disabled'
+            @chart.hideSeries series
+        else
+            @chart.showSeries series
 
 
 class Chart.Settings
@@ -372,6 +391,9 @@ class Chart.Settings
         @[k] = v for k, v of o
 
     render: () ->
+        # Clear.
+        $(@el).empty()
+
         # Is the chart stacked?
         stacked = $(@el).append $('<a/>',
             'class': "btn btn-mini stacked #{if @isStacked then 'active' else ''}"
@@ -382,5 +404,8 @@ class Chart.Settings
                     @chart.isStacked = true ; $(e.target).text('Unstack')
                 else
                     @chart.isStacked = false ; $(e.target).text('Stack')
+                
+                # Re-render components.
+                @legend.render()
                 @chart.render()
         )
