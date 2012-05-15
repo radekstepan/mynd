@@ -1,5 +1,5 @@
 <form style="margin:0">
-    <div class="group" style="display:inline-block;margin-right:5px">
+    <div class="group" style="display:inline-block;margin-right:5px;float:left">
         <label>Test Correction</label>
         <select name="errorCorrection" class="span2">
             <% for correction in @errorCorrections: %>
@@ -10,7 +10,7 @@
         </select>
     </div>
 
-    <div class="group" style="display:inline-block;margin-right:5px">
+    <div class="group" style="display:inline-block;margin-right:5px;float:left">
         <label>Max p-value</label>
         <select name="pValue" class="span2">
             <% for p in @pValues: %>
@@ -21,3 +21,4 @@
         </select>
     </div>
 </form>
+<div style="clear:both"></div>
