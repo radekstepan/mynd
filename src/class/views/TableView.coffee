@@ -103,10 +103,12 @@ class TableView extends Backbone.View
 
         if result.length # Can be empty.
             # Create.
-            try
-                ex = new Exporter $(e.target), result.join("\n"), "#{@widget.bagName} #{@widget.id}.tsv"
-            catch TypeError
-                ex = new PlainExporter result.join("\n")
+            #try
+            #    ex = new Exporter $(e.target), result.join("\n"), "#{@widget.bagName} #{@widget.id}.tsv"
+            #catch TypeError
+            #    ex = new PlainExporter result.join("\n")
+            ex = new PlainExporter result.join("\n")
+
             # Cleanup.
             window.setTimeout (->
                 ex.destroy()
