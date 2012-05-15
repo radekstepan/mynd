@@ -12,6 +12,10 @@ class Widgets
 
     # JavaScript libraries as resources. Will be loaded if not present already.
     resources: [
+        name:  'JSON'
+        path:  'http://cdnjs.cloudflare.com/ajax/libs/json3/3.2.2/json3.min.js'
+        type:  'js'
+    ,
         name:  "jQuery"
         path:  "http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"
         type:  "js"
@@ -50,7 +54,7 @@ class Widgets
             # All libraries loaded, welcome jQuery, export classes.
             $ = window.jQuery
             # Enable Cross-Origin Resource Sharing (for Opera, IE).
-            $.support.cors = true
+            #$.support.cors = true
             o extends factory window.Backbone
             # Switch off waiting switch.
             @wait = false
