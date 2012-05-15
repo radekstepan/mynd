@@ -183,7 +183,7 @@ main = (callback) ->
                 
                 # Create a closing return statement exposing all classes.
                 classes.push "  return {\n"
-                classes.push ( "    \"#{name}\": #{name},\n" for name in names ).join('')
+                classes.push ( "    \"#{name}\": #{name}" for name in names ).join(",\n")
                 classes.push "  };\n};"
 
                 cb classes

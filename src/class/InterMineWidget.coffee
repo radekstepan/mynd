@@ -9,6 +9,9 @@ class InterMineWidget
             style: "height:572px;overflow:hidden;position:relative"
         @el = "#{@el} div.inner"
 
+        # Init imjs.
+        @imService = new intermine.Service('root': @service, 'token': @token)
+
     # Where is eco?
     template: (name, context = {}) -> JST["#{name}.eco"]?(context)
 
@@ -43,8 +46,3 @@ class InterMineWidget
 
         # Throw an error so we do not process further.
         throw new Error type
-
-    # Init, return an IMJS service instance.
-    imService: () =>
-        if not @imjs? then @imjs = new intermine.Service('root': @service, 'token': @token)
-        @imjs

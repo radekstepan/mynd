@@ -273,6 +273,28 @@ PlainExporter = (function() {
 
 })();
 
+/* <IE9 does not have Array::indexOf, use MDC implementation.
+*/
+
+if (!Array.prototype.indexOf) {
+  Array.prototype.indexOf = function(elt) {
+    var from, len;
+    len = this.length >>> 0;
+    from = Number(arguments[1]) || 0;
+    from = (from < 0 ? Math.ceil(from) : Math.floor(from));
+    if (from < 0) {
+      from += len;
+    }
+    while (from < len) {
+      if (from in this && this[from] === elt) {
+        return from;
+      }
+      from++;
+    }
+    return -1;
+  };
+}
+
 var factory;
 factory = function(Backbone) {
 
@@ -287,8 +309,6 @@ factory = function(Backbone) {
     InterMineWidget.name = 'InterMineWidget';
   
     function InterMineWidget() {
-      this.imService = __bind(this.imService, this);
-  
       this.error = __bind(this.error, this);
   
       this.validateType = __bind(this.validateType, this);
@@ -297,6 +317,10 @@ factory = function(Backbone) {
         style: "height:572px;overflow:hidden;position:relative"
       }));
       this.el = "" + this.el + " div.inner";
+      this.imService = new intermine.Service({
+        'root': this.service,
+        'token': this.token
+      });
     }
   
     InterMineWidget.prototype.template = function(name, context) {
@@ -344,16 +368,6 @@ factory = function(Backbone) {
       }
       $(this.el).html(this.template("error", opts));
       throw new Error(type);
-    };
-  
-    InterMineWidget.prototype.imService = function() {
-      if (!(this.imjs != null)) {
-        this.imjs = new intermine.Service({
-          'root': this.service,
-          'token': this.token
-        });
-      }
-      return this.imjs;
     };
   
     return InterMineWidget;
@@ -1196,7 +1210,7 @@ factory = function(Backbone) {
           "listCb": this.options.listCb,
           "pathQuery": this.response.pathQuery,
           "pathConstraint": this.response.pathConstraint,
-          "imService": this.widget.imService(),
+          "imService": this.widget.imService,
           "type": this.response.type
         })).el);
       }
@@ -1450,7 +1464,7 @@ factory = function(Backbone) {
                   "listCb": _this.options.listCb,
                   "matchCb": _this.options.matchCb,
                   "quickPq": quickPq,
-                  "imService": _this.widget.imService(),
+                  "imService": _this.widget.imService,
                   "type": _this.response.type
                 })).el);
               }
@@ -1748,7 +1762,7 @@ factory = function(Backbone) {
             "listCb": this.options.listCb
           },
           "response": this.response,
-          "imService": this.widget.imService()
+          "imService": this.widget.imService
         }).el);
       }
       return table.find('tbody').html(fragment);
@@ -1780,7 +1794,7 @@ factory = function(Backbone) {
         "op": "ONE OF",
         "values": rowIdentifiers
       });
-      return this.widget.imService().query(pq, function(q) {
+      return this.widget.imService.query(pq, function(q) {
         return q.rows(function(response) {
           var dict, ex, model, object, result, _j, _k, _len1, _len2, _ref1;
           dict = {};
@@ -1830,7 +1844,7 @@ factory = function(Backbone) {
           "resultsCb": this.options.resultsCb,
           "listCb": this.options.listCb,
           "response": this.response,
-          "imService": this.widget.imService()
+          "imService": this.widget.imService
         })).el);
       }
     };
@@ -1963,8 +1977,7 @@ factory = function(Backbone) {
     "ChartView": ChartView,
     "EnrichmentPopoverView": EnrichmentPopoverView,
     "EnrichmentView": EnrichmentView,
-    "ChartPopoverView": ChartPopoverView,
-
+    "ChartPopoverView": ChartPopoverView
   };
 };
 /* Interface to InterMine Widgets.
@@ -2012,13 +2025,7 @@ Widgets = (function() {
       path: "https://www.google.com/jsapi",
       type: "js"
     }, {
-      path: "https://raw.github.com/alexkalderimis/imjs/master/src/model.js",
-      type: "js"
-    }, {
-      path: "https://raw.github.com/alexkalderimis/imjs/master/src/query.js",
-      type: "js"
-    }, {
-      path: "https://raw.github.com/alexkalderimis/imjs/master/src/service.js",
+      path: "http://aragorn:1111/js/intermine.imjs.js",
       type: "js"
     }
   ];

@@ -105,7 +105,7 @@ class EnrichmentView extends Backbone.View
                 "type":      @response.type
                 "callbacks": { "matchCb": @options.matchCb, "resultsCb": @options.resultsCb, "listCb": @options.listCb }
                 "response":  @response
-                "imService": @widget.imService()
+                "imService": @widget.imService
             ).el
 
         # Append the fragment to trigger the browser reflow.
@@ -137,7 +137,7 @@ class EnrichmentView extends Backbone.View
             "values": rowIdentifiers
 
         # Get the actual data.
-        @widget.imService().query(pq, (q) =>
+        @widget.imService.query(pq, (q) =>
             q.rows (response) =>
                 # Assume the first column is the table column, while second is the matches object identifier (Gene).
                 # Form 'publication -> genes' object.
@@ -187,5 +187,5 @@ class EnrichmentView extends Backbone.View
                 "resultsCb":   @options.resultsCb
                 "listCb":      @options.listCb
                 "response":    @response
-                "imService":   @widget.imService()
+                "imService":   @widget.imService
             )).el

@@ -34,14 +34,16 @@ class Widgets
         name:  "google"
         path:  "https://www.google.com/jsapi"
         type:  "js"
+    #,
+        #path:  "https://raw.github.com/alexkalderimis/imjs/master/src/model.js"
+        #type:  "js"
+    #,
+        #path:  "https://raw.github.com/alexkalderimis/imjs/master/src/query.js"
+        #type:  "js"
     ,
-        path:  "https://raw.github.com/alexkalderimis/imjs/master/src/model.js"
-        type:  "js"
-    ,
-        path:  "https://raw.github.com/alexkalderimis/imjs/master/src/query.js"
-        type:  "js"
-    ,
-        path:  "https://raw.github.com/alexkalderimis/imjs/master/src/service.js"
+        #path:  "https://raw.github.com/alexkalderimis/imjs/master/src/service.js"
+        #type:  "js"
+        path:  "http://aragorn:1111/js/intermine.imjs.js"
         type:  "js"
     ]
 
