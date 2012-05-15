@@ -156,8 +156,8 @@ class EnrichmentView extends Backbone.View
                     #try
                     #    ex = new Exporter $(e.target), result.join("\n"), "#{@widget.bagName} #{@widget.id}.tsv"
                     #catch TypeError
-                    #    ex = new PlainExporter result.join("\n")
-                    ex = new PlainExporter result.join("\n")
+                    #    ex = new PlainExporter $(e.target), result.join("\n")
+                    ex = new PlainExporter $(e.target), result.join("\n")
 
                     # Cleanup.
                     window.setTimeout (->

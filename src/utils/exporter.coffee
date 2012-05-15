@@ -33,11 +33,21 @@ class PlainExporter
 
     # Create a new window with a formatted content.
     #
-    # 1. `data`:     string to download
-    constructor: (data) ->
+    # 1. `a`:        $ <a/>
+    # 2. `data`:     string to download
+    constructor: (a, data) ->
         w = window.open()
-        w.document.open()
-        w.document.write "<pre>#{data}</pre>"
-        w.document.close()
 
-    destroy: ->
+        # Are popups blocked? Why? ;)
+        if not w? or typeof w is "undefined"
+            a.after @msg = $ '<span/>',
+                'style': 'margin-left:5px'
+                'class': 'label label-inverse'
+                'text':  'Please enable popups'
+        else
+            w.document.open()
+            w.document.write "<pre>#{data}</pre>"
+            w.document.close()
+
+    # Clean up popup message if present.
+    destroy: -> @msg?.fadeOut()
