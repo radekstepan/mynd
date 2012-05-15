@@ -37,7 +37,7 @@ class PlainExporter
     constructor: (data) ->
         w = window.open()
         w.document.open()
-        w.document.write data
+        w.document.write "<pre>#{data}</pre>"
         w.document.close()
 
     destroy: ->
