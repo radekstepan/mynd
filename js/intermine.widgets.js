@@ -558,6 +558,155 @@ Chart.Settings = (function() {
 
 })();
 
+/* <IE9 does not have a whole lot of JS functions.
+*/
+
+if (!("bind" in Function.prototype)) {
+  Function.prototype.bind = function(owner) {
+    var args, that;
+    that = this;
+    if (arguments.length <= 1) {
+      return function() {
+        return that.apply(owner, arguments);
+      };
+    } else {
+      args = Array.prototype.slice.call(arguments, 1);
+      return function() {
+        return that.apply(owner, (arguments.length === 0 ? args : args.concat(Array.prototype.slice.call(arguments))));
+      };
+    }
+  };
+}
+
+if (!("trim" in String.prototype)) {
+  String.prototype.trim = function() {
+    return this.replace(/^\s+/, "").replace(/\s+$/, "");
+  };
+}
+
+if (!("indexOf" in Array.prototype)) {
+  Array.prototype.indexOf = function(find, i) {
+    var n;
+    if (i === undefined) {
+      i = 0;
+    }
+    if (i < 0) {
+      i += this.length;
+    }
+    if (i < 0) {
+      i = 0;
+    }
+    n = this.length;
+    while (i < n) {
+      if (i in this && this[i] === find) {
+        return i;
+      }
+      i++;
+    }
+    return -1;
+  };
+}
+
+if (!("lastIndexOf" in Array.prototype)) {
+  Array.prototype.lastIndexOf = function(find, i) {
+    if (i === undefined) {
+      i = this.length - 1;
+    }
+    if (i < 0) {
+      i += this.length;
+    }
+    if (i > this.length - 1) {
+      i = this.length - 1;
+    }
+    i++;
+    while (i-- > 0) {
+      if (i in this && this[i] === find) {
+        return i;
+      }
+    }
+    return -1;
+  };
+}
+
+if (!("forEach" in Array.prototype)) {
+  Array.prototype.forEach = function(action, that) {
+    var i, n, _results;
+    i = 0;
+    n = this.length;
+    _results = [];
+    while (i < n) {
+      if (i in this) {
+        action.call(that, this[i], i, this);
+      }
+      _results.push(i++);
+    }
+    return _results;
+  };
+}
+
+if (!("map" in Array.prototype)) {
+  Array.prototype.map = function(mapper, that) {
+    var i, n, other;
+    other = new Array(this.length);
+    i = 0;
+    n = this.length;
+    while (i < n) {
+      if (i in this) {
+        other[i] = mapper.call(that, this[i], i, this);
+      }
+      i++;
+    }
+    return other;
+  };
+}
+
+if (!("filter" in Array.prototype)) {
+  Array.prototype.filter = function(filter, that) {
+    var i, n, other, v;
+    other = [];
+    v = void 0;
+    i = 0;
+    n = this.length;
+    while (i < n) {
+      if (i in this && filter.call(that, v = this[i], i, this)) {
+        other.push(v);
+      }
+      i++;
+    }
+    return other;
+  };
+}
+
+if (!("every" in Array.prototype)) {
+  Array.prototype.every = function(tester, that) {
+    var i, n;
+    i = 0;
+    n = this.length;
+    while (i < n) {
+      if (i in this && !tester.call(that, this[i], i, this)) {
+        return false;
+      }
+      i++;
+    }
+    return true;
+  };
+}
+
+if (!("some" in Array.prototype)) {
+  Array.prototype.some = function(tester, that) {
+    var i, n;
+    i = 0;
+    n = this.length;
+    while (i < n) {
+      if (i in this && tester.call(that, this[i], i, this)) {
+        return true;
+      }
+      i++;
+    }
+    return false;
+  };
+}
+
 /* Create file download with custom content.
 */
 
@@ -624,28 +773,6 @@ PlainExporter = (function() {
   return PlainExporter;
 
 })();
-
-/* <IE9 does not have Array::indexOf, use MDC implementation.
-*/
-
-if (!Array.prototype.indexOf) {
-  Array.prototype.indexOf = function(elt) {
-    var from, len;
-    len = this.length >>> 0;
-    from = Number(arguments[1]) || 0;
-    from = (from < 0 ? Math.ceil(from) : Math.floor(from));
-    if (from < 0) {
-      from += len;
-    }
-    while (from < len) {
-      if (from in this && this[from] === elt) {
-        return from;
-      }
-      from++;
-    }
-    return -1;
-  };
-}
 
 var factory;
 factory = function(Backbone) {
@@ -2327,7 +2454,7 @@ Widgets = (function() {
 
   Widgets.name = 'Widgets';
 
-  Widgets.prototype.VERSION = '1.1.7';
+  Widgets.prototype.VERSION = 'd3';
 
   Widgets.prototype.wait = true;
 
@@ -2353,16 +2480,16 @@ Widgets = (function() {
       wait: true
     }, {
       name: "d3",
-      path: "http://d3js.org/d3.v2.min.js",
+      path: "http://d3js.org/d3.v2.js",
       type: "js"
     }, {
-      path: "http://alexkalderimis.github.com/im-tables/lib/imjs/src/model.js",
+      path: "https://raw.github.com/alexkalderimis/imjs/master/src/model.js",
       type: "js"
     }, {
-      path: "http://alexkalderimis.github.com/im-tables/lib/imjs/src/query.js",
+      path: "https://raw.github.com/alexkalderimis/imjs/master/src/query.js",
       type: "js"
     }, {
-      path: "http://alexkalderimis.github.com/im-tables/lib/imjs/src/service.js",
+      path: "https://raw.github.com/alexkalderimis/imjs/master/src/service.js",
       type: "js"
     }
   ];

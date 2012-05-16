@@ -6,7 +6,7 @@ $ = window.jQuery or window.Zepto
 # Public interface for the various InterMine Widgets.
 class Widgets
 
-    VERSION: '1.1.7'
+    VERSION: 'd3'
 
     wait:    true
 
@@ -32,16 +32,16 @@ class Widgets
         wait:  true
     ,
         name:  "d3"
-        path:  "http://d3js.org/d3.v2.min.js"
+        path:  "http://d3js.org/d3.v2.js"
         type:  "js"
     ,
-        path:  "http://alexkalderimis.github.com/im-tables/lib/imjs/src/model.js"
+        path:  "https://raw.github.com/alexkalderimis/imjs/master/src/model.js"
         type:  "js"
     ,
-        path:  "http://alexkalderimis.github.com/im-tables/lib/imjs/src/query.js"
+        path:  "https://raw.github.com/alexkalderimis/imjs/master/src/query.js"
         type:  "js"
     ,
-        path:  "http://alexkalderimis.github.com/im-tables/lib/imjs/src/service.js"
+        path:  "https://raw.github.com/alexkalderimis/imjs/master/src/service.js"
         type:  "js"
     ]
 
