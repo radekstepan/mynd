@@ -1,4 +1,4 @@
-<header>
+<div class="header">
     <h3><%= @title if @title %></h3>
     <p style="margin:0"><%- @description if @description %></p>
     <% if @notAnalysed: %>
@@ -10,7 +10,7 @@
             <!-- extra.eco -->
         </form>
     </div>
-</header>
+</div>
 <div class="content">
     <div class="settings"></div>
     <div class="legend"></div>

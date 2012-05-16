@@ -155,3 +155,28 @@ Widgets.enrichment('pathway_enrichment', 'myList', '#widget', options);
 ### I am clicking on Download after selecting a few Enrichment Widget rows and nothing happens.
 
 Make sure you run widgets through the `http://` protocol instead of `file://`.
+
+## Browser Support:
+
+- Linux Chrome 16
+- Linux Firefox 11
+- Linux Opera 11.61*
+- MacOS X Google Chrome 19
+- MacOS X Firefox 4.0.1
+- MacOS X Safari 5.0.6
+- Windows 7 Chrome 18
+- Windows 7 Firefox 11
+- Windows 7 Firefox 4
+- Windows 7 Firefox 2
+- Windows 7 Firefox 3
+- Windows 7 Opera 11.61
+- Windows 7 Opera 9.64
+- Windows 7 Safari 5.1.7
+- Windows 7 Internet Explorer 8
+
+Support of other browsers cannot be guaranteed.
+
+### Known Issues:
+
+1. Windows 7 **Internet Explorer 7** does not support `display:table-*` properties and thus faux table header is not inlined. (IE7 not supported)
+1. Linux **Opera 11.61** Google Visualization sometimes trims horizontal axis label.

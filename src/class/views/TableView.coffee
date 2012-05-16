@@ -58,7 +58,7 @@ class TableView extends Backbone.View
         @renderTableBody table
 
         # How tall should the table be? Whole height - header - faux header.
-        height = $(@el).height() - $(@el).find('header').height() - $(@el).find('div.content div.head').height()
+        height = $(@el).height() - $(@el).find('div.header').height() - $(@el).find('div.content div.head').height()
         $(@el).find("div.content div.wrapper").css 'height', "#{height}px"
 
         # Determine the width of the faux head element.
@@ -103,10 +103,12 @@ class TableView extends Backbone.View
 
         if result.length # Can be empty.
             # Create.
-            try
-                ex = new Exporter $(e.target), result.join("\n"), "#{@widget.bagName} #{@widget.id}.tsv"
-            catch TypeError
-                ex = new PlainExporter result.join("\n")
+            #try
+            #    ex = new Exporter $(e.target), result.join("\n"), "#{@widget.bagName} #{@widget.id}.tsv"
+            #catch TypeError
+            #    ex = new PlainExporter $(e.target), result.join("\n")
+            ex = new PlainExporter $(e.target), result.join("\n")
+
             # Cleanup.
             window.setTimeout (->
                 ex.destroy()
@@ -134,6 +136,6 @@ class TableView extends Backbone.View
                 "listCb":         @options.listCb
                 "pathQuery":      @response.pathQuery
                 "pathConstraint": @response.pathConstraint
-                "imService":      @widget.imService()
+                "imService":      @widget.imService
                 "type":           @response.type
             )).el

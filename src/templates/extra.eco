@@ -1,4 +1,4 @@
-<div class="group" style="display:inline-block;margin:0 5px 10px 0">
+<div class="group" style="display:inline-block;margin-right:5px;float:left">
     <label><%= @label %></label>
     <% if @possible.length > 1: %>
         <select name="<%= @label %>" class="span2">

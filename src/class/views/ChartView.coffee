@@ -25,6 +25,7 @@ class ChartView extends Backbone.View
 
         # Are the results empty?
         if @response.results.length > 1
+            
             # Form the series from Google Visualization formatted data.
             data = []
             for v in @response.results[1..]
@@ -62,7 +63,7 @@ class ChartView extends Backbone.View
             settings.render()
 
             # Determine the height of the svg canvas it should occupy.
-            chart.height = $(@widget.el).height() - $(@widget.el).find('header').height() - $(@widget.el).find('div.content div.legend').height() - $(@widget.el).find('div.content div.settings').height()
+            chart.height = $(@widget.el).height() - $(@widget.el).find('div.header').height() - $(@widget.el).find('div.content div.legend').height() - $(@widget.el).find('div.content div.settings').height()
             # Finally render the chart using d3.js
             chart.render()
 

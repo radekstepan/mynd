@@ -1,4 +1,4 @@
-<header>
+<div class="header">
     <h3><%= @title if @title %></h3>
     <p><%- @description if @description %></p>
     <% if @notAnalysed: %>
@@ -12,7 +12,7 @@
     <div class="actions" style="padding:10px 0">
         <!-- actions.eco -->
     </div>
-</header>
+</div>
 <div class="content">
     <!-- enrichment.table.eco -->
 </div>

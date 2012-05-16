@@ -78,7 +78,7 @@ class EnrichmentView extends Backbone.View
         @renderTableBody table
 
         # How tall should the table be? Whole height - header - faux header.
-        height = $(@el).height() - $(@el).find('header').height() - $(@el).find('div.content div.head').height()
+        height = $(@el).height() - $(@el).find('div.header').height() - $(@el).find('div.content div.head').height()
         $(@el).find("div.content div.wrapper").css 'height', "#{height}px"
 
         # Determine the width of the faux head element.
@@ -105,7 +105,7 @@ class EnrichmentView extends Backbone.View
                 "type":      @response.type
                 "callbacks": { "matchCb": @options.matchCb, "resultsCb": @options.resultsCb, "listCb": @options.listCb }
                 "response":  @response
-                "imService": @widget.imService()
+                "imService": @widget.imService
             ).el
 
         # Append the fragment to trigger the browser reflow.
@@ -137,7 +137,7 @@ class EnrichmentView extends Backbone.View
             "values": rowIdentifiers
 
         # Get the actual data.
-        @widget.imService().query(pq, (q) =>
+        @widget.imService.query(pq, (q) =>
             q.rows (response) =>
                 # Assume the first column is the table column, while second is the matches object identifier (Gene).
                 # Form 'publication -> genes' object.
@@ -156,8 +156,8 @@ class EnrichmentView extends Backbone.View
                     #try
                     #    ex = new Exporter $(e.target), result.join("\n"), "#{@widget.bagName} #{@widget.id}.tsv"
                     #catch TypeError
-                    #    ex = new PlainExporter result.join("\n")
-                    ex = new PlainExporter result.join("\n")
+                    #    ex = new PlainExporter $(e.target), result.join("\n")
+                    ex = new PlainExporter $(e.target), result.join("\n")
 
                     # Cleanup.
                     window.setTimeout (->
@@ -187,5 +187,5 @@ class EnrichmentView extends Backbone.View
                 "resultsCb":   @options.resultsCb
                 "listCb":      @options.listCb
                 "response":    @response
-                "imService":   @widget.imService()
+                "imService":   @widget.imService
             )).el
