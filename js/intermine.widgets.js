@@ -1996,7 +1996,7 @@ Widgets = (function() {
 
   Widgets.name = 'Widgets';
 
-  Widgets.prototype.VERSION = '1.1.6';
+  Widgets.prototype.VERSION = '1.1.7';
 
   Widgets.prototype.wait = true;
 
@@ -2025,7 +2025,13 @@ Widgets = (function() {
       path: "https://www.google.com/jsapi",
       type: "js"
     }, {
-      path: "http://aragorn:1111/js/intermine.imjs.js",
+      path: "https://raw.github.com/alexkalderimis/imjs/master/src/model.js",
+      type: "js"
+    }, {
+      path: "https://raw.github.com/alexkalderimis/imjs/master/src/query.js",
+      type: "js"
+    }, {
+      path: "https://raw.github.com/alexkalderimis/imjs/master/src/service.js",
       type: "js"
     }
   ];
