@@ -1,4 +1,29 @@
-Chart = {}
+Chart =
+
+    # Will explicitly definy CSS properties as properties of SVG elements.
+    expliticize: (e) ->
+        switch e.node().nodeName
+            when 'rect' then properties = ['fill', 'stroke']
+            when 'text' then properties = ['fill', 'font-family', 'font-size']
+            when 'line' then properties = ['stroke']
+        
+        for property in properties
+            e.attr property, window.getComputedStyle(e.node(), null).getPropertyValue property
+
+    # Will convert SVG into base64 PNG stream (through `canvg`).
+    toPNG: (svgEl, width, height) ->
+        # Create canvas.
+        canvas = $('<canvas/>',
+            'style':  'image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast'
+        )
+        .attr('width',  width)
+        .attr('height', height)
+
+        # SVG to Canvas.
+        canvg canvas[0], $(svgEl).html()
+
+        # Canvas to PNG.
+        canvas[0].toDataURL("image/png")
 
 
 # A vertical bar chart that is rendered within the browser using SVG.
@@ -90,6 +115,9 @@ class Chart.Column
                 # Adjust the size of the remaining area.
                 height = height - text.node().getBBox().height - @padding.axisLabels
 
+                # Make explicit.
+                Chart.expliticize text
+
             if @axis.vertical?
                 text = labels.append("svg:text")
                     .attr("class",       "vertical")
@@ -103,6 +131,9 @@ class Chart.Column
 
                 # Adjust the size of the remaining area.
                 width = width - verticalAxisLabelHeight - @padding.axisLabels
+
+                # Make explicit.
+                Chart.expliticize text
 
         # -------------------------------------------------------------------
         # Descriptions.
@@ -124,6 +155,9 @@ class Chart.Column
             @description.maxWidth = textWidth if textWidth > @description.maxWidth
             # Update the total width.
             @description.totalWidth = @description.totalWidth + textWidth
+
+            # Make explicit.
+            Chart.expliticize text
 
             # Add an onhover description title.
             g.append("svg:title").text group.description
@@ -162,6 +196,9 @@ class Chart.Column
             textWidth = text.node().getComputedTextLength()
             @ticks.maxWidth = textWidth if textWidth > @ticks.maxWidth
 
+            # Make explicit.
+            Chart.expliticize text
+
         # -------------------------------------------------------------------
         
         # Now that we know the width of the axis, reduce the area width.
@@ -189,10 +226,13 @@ class Chart.Column
             t = grid.select(".t#{index}")
 
             # Draw the line
-            t.append("svg:line")
+            line = t.append("svg:line")
             .attr("class", "line")
             .attr("x1",    @ticks.maxWidth)
             .attr("x2",    width + @ticks.maxWidth)
+
+            # Make explicit.
+            Chart.expliticize line
 
             # Update the position of the wrapping `g` to shift both ticks and lines.
             t.attr 'transform', "translate(0,#{height - domain['y'](tick)})"
@@ -224,7 +264,7 @@ class Chart.Column
                     x = @ticks.maxWidth + domain['x'](index) + barWidth
                     
                     # The actual line.
-                    g.append("svg:line")
+                    line = g.append("svg:line")
                     .attr("class", "line dashed")
                     .attr("style", "stroke-dasharray: 10, 5;")
                     .attr("x1",    x)
@@ -265,6 +305,9 @@ class Chart.Column
 
                 bar.transition().attr('opacity', 1)
 
+                # Make explicit.
+                Chart.expliticize bar
+
                 # Add a text value.
                 w = values.append("svg:g").attr('class', "g#{index} s#{series} q#{color}-#{@colorbrewer}")
                 
@@ -300,6 +343,9 @@ class Chart.Column
                     else
                         text.attr('y', ty)
                         text.attr("class", "value above")
+
+                # Make explicit.
+                Chart.expliticize text
 
                 # Add a title element for the value.
                 w.append("svg:title").text value
@@ -349,6 +395,8 @@ class Chart.Column
     showSeries: (series) ->
         d3.select(@el[0]).selectAll(".s#{series}")
         .transition().attr('fill-opacity', 1 )
+
+    toPNG: () -> Chart.toPNG @el, @width, @height
 
 
 class Chart.Legend
@@ -408,4 +456,12 @@ class Chart.Settings
                 # Re-render components.
                 @legend.render()
                 @chart.render()
+        )
+
+        # Download as an image?
+        $(@el).append $('<a/>',
+            'class': "btn btn-mini png"
+            'text':  'Save as a PNG'
+            'click': (e) =>
+                PlainExporter e.target, '<img src="' + @chart.toPNG() + '"/>'
         )

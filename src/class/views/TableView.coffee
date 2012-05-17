@@ -106,8 +106,8 @@ class TableView extends Backbone.View
             #try
             #    ex = new Exporter $(e.target), result.join("\n"), "#{@widget.bagName} #{@widget.id}.tsv"
             #catch TypeError
-            #    ex = new PlainExporter $(e.target), result.join("\n")
-            ex = new PlainExporter $(e.target), result.join("\n")
+            #    ex = new PlainExporter $(e.target), '<pre>' + result.join("\n") + '<pre>'
+            ex = new PlainExporter $(e.target), '<pre>' + result.join("\n") + '<pre>'
 
             # Cleanup.
             window.setTimeout (->

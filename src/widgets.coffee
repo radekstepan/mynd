@@ -43,6 +43,12 @@ class Widgets
     ,
         path:  "https://raw.github.com/alexkalderimis/imjs/master/src/service.js"
         type:  "js"
+    ,
+        path:  "http://canvg.googlecode.com/svn/trunk/rgbcolor.js"
+        type:  "js"
+    ,
+        path:  "http://canvg.googlecode.com/svn/trunk/canvg.js"
+        type:  "js"
     ]
 
     # New Widgets client.

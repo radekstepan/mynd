@@ -2,14 +2,15 @@
 var o = {};
 
 var JST = {};
+JST["error.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="alert alert-block">\n    <h4 class="alert-heading">'),b.push(d(this.title)),b.push(" for "),b.push(d(this.name)),b.push("</h4>\n    <p>"),b.push(this.text),b.push("</p>\n</div>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["actions.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<a class="btn btn-small '),this.disabled&&b.push("disabled"),b.push(' view">View</a>\n<a class="btn btn-small '),this.disabled&&b.push("disabled"),b.push(' export">Download</a>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["extra.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f;b.push('<div class="group" style="display:inline-block;margin-right:5px;float:left">\n    <label>'),b.push(d(this.label)),b.push("</label>\n    ");if(this.possible.length>1){b.push('\n        <select name="'),b.push(d(this.label)),b.push('" class="span2">\n            '),f=this.possible;for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n                <option value="'),b.push(d(a)),b.push('" '),this.selected===a&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(a)),b.push("\n                </option>\n            ");b.push("\n        </select>\n    ")}else b.push("\n        "),b.push(d(this.possible[0])),b.push("\n    ");b.push("\n</div>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["noresults.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="alert alert-info">\n    <p>The Widget has no results.</p>\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["loading.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="loading" style="background:rgba(255,255,255,0.9);position:absolute;top:0;left:0;height:100%;width:100%;text-align:center;">\n    <p style="padding-top:50%;font-weight:bold;">Loading &hellip;</p>\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["invalidjsonkey.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<li style="vertical-align:bottom">\n    <span style="display:inline-block" class="label label-important">'),b.push(d(this.key)),b.push("</span> is "),b.push(d(this.actual)),b.push("; was expecting "),b.push(d(this.expected)),b.push("\n</li>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["error.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="alert alert-block">\n    <h4 class="alert-heading">'),b.push(d(this.title)),b.push(" for "),b.push(d(this.name)),b.push("</h4>\n    <p>"),b.push(this.text),b.push("</p>\n</div>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["popover.values.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f;b.push("<h4>"),b.push(d(this.values.length)),b.push(" "),b.push(d(this.type)),this.values.length!==1&&b.push(d("s")),b.push(":</h4>\n\n"),f=this.values.slice(0,this.valuesLimit-1+1||9e9);for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n    <a href="#" class="match">'),b.push(d(a)),b.push("</a>\n");b.push("\n"),this.values.length>this.valuesLimit&&b.push("&hellip;")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["popover.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="popover" style="position:absolute;top:5px;right:0;z-index:1;display:block">\n    <div class="popover-inner" style="'),b.push(d(this.style)),b.push('">\n        <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>\n        <h3 class="popover-title">\n            '),b.push(d(this.description.slice(0,this.descriptionLimit-1+1||9e9))),b.push("\n            "),this.description.length>this.descriptionLimit&&b.push("&hellip;"),b.push('\n        </h3>\n        <div class="popover-content">\n            <div class="values">\n                <!-- popover.values.eco -->\n            </div>\n            <div style="margin-top:10px">\n                <a class="btn btn-small btn-primary results">View results</a>\n                <a class="btn btn-small list disabled">Create list</a>\n            </div>\n        </div>\n    </div>\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
+JST["chart.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="header">\n    <h3>'),this.title&&b.push(d(this.title)),b.push('</h3>\n    <p style="margin:0">'),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push('\n        <p style="margin:10px 0 0 0">Number of Genes in this list not analysed in this widget: <a>'),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <form style="margin:0;padding:10px 0 0 0">\n            <!-- extra.eco -->\n        </form>\n    </div>\n</div>\n<div class="content">\n    <div class="settings"></div>\n    <div class="legend"></div>\n    <div class="chart"></div>\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.row.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<td class="check"><input type="checkbox" '),this.row.selected&&b.push('checked="checked"'),b.push(' /></td>\n<td class="description">\n    '),b.push(d(this.row.description)),b.push("\n    "),this.row.externalLink&&(b.push('\n        [<a href="'),b.push(this.row.externalLink),b.push('" target="_blank">Link</a>]\n    ')),b.push('\n</td>\n<td class="pValue">'),b.push(d(this.row["p-value"].toPrecision(5))),b.push('</td>\n<td class="matches">\n    <a class="count" style="cursor:pointer">'),b.push(d(this.row.matches)),b.push("</a>\n</td>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="header">\n    <h3>'),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <!-- enrichment.form.eco -->\n    </div>\n\n    <div class="actions" style="padding:10px 0">\n        <!-- actions.eco -->\n    </div>\n</div>\n<div class="content">\n    <!-- enrichment.table.eco -->\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["enrichment.table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<!-- actual fixed head -->\n<div class="head" style="display:table">\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;"><input type="checkbox" class="check" /></div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">'),b.push(d(this.label)),b.push('</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">p-Value</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">Matches</div>\n    <div style="clear:both"></div>\n</div>\n<div class="wrapper" style="overflow:auto;overflow-x:hidden">\n    <table class="table table-striped">\n        <!-- head for proper cell width -->\n        <thead style="visibility:hidden">\n            <tr>\n                <th></th>\n                <th>'),b.push(d(this.label)),b.push("</th>\n                <th>p-Value</th>\n                <th>Matches</th>\n            </tr>\n        </thead>\n        <tbody>\n            <!-- loop enrichment.row.eco -->\n        </tbody>\n    </table>\n</div>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
@@ -17,7 +18,6 @@ JST["enrichment.form.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,
 JST["table.row.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f;b.push('<td class="check"><input type="checkbox" '),this.row.selected&&b.push('checked="checked"'),b.push(" /></td>\n"),f=this.row.descriptions;for(c=0,e=f.length;c<e;c++)a=f[c],b.push("\n    <td>"),b.push(d(a)),b.push("</td>\n");b.push("\n<td>"),b.push(d(this.row.matches)),b.push("</td>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="header">\n    <h3>'),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="actions" style="padding:10px 0">\n        <!-- actions.eco -->\n    </div>\n</div>\n<div class="content">\n    <!-- table.table.eco -->\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["table.table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f,g,h,i;b.push('<!-- actual fixed head -->\n<div class="head" style="display:table">\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;"><input type="checkbox" class="check" /></div>\n    '),h=this.columns;for(c=0,f=h.length;c<f;c++)a=h[c],b.push('\n        <div style="font-weight:bold;display:table-cell;padding:0 8px;">'),b.push(d(a)),b.push("</div>\n    ");b.push('\n    <div style="clear:both"></div>\n</div>\n<div class="wrapper" style="overflow:auto;overflow-x:hidden">\n    <table class="table table-striped">\n        <!-- head for proper cell width -->\n        <thead style="visibility:hidden">\n            <tr>\n                <th></th>\n                '),i=this.columns;for(e=0,g=i.length;e<g;e++)a=i[e],b.push("\n                    <th>"),b.push(d(a)),b.push("</th>\n                ");b.push("\n            </tr>\n        </thead>\n        <tbody>\n            <!-- loop table.row.eco -->\n        </tbody>\n    </table>\n</div>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["chart.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="header">\n    <h3>'),this.title&&b.push(d(this.title)),b.push('</h3>\n    <p style="margin:0">'),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push('\n        <p style="margin:10px 0 0 0">Number of Genes in this list not analysed in this widget: <a>'),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <form style="margin:0;padding:10px 0 0 0">\n            <!-- extra.eco -->\n        </form>\n    </div>\n</div>\n<div class="content">\n    <div class="settings"></div>\n    <div class="legend"></div>\n    <div class="chart"></div>\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 /* Types in JS.
 */
 
@@ -208,7 +208,35 @@ merge = function(child, parent) {
 
 var Chart;
 
-Chart = {};
+Chart = {
+  expliticize: function(e) {
+    var properties, property, _i, _len, _results;
+    switch (e.node().nodeName) {
+      case 'rect':
+        properties = ['fill', 'stroke'];
+        break;
+      case 'text':
+        properties = ['fill', 'font-family', 'font-size'];
+        break;
+      case 'line':
+        properties = ['stroke'];
+    }
+    _results = [];
+    for (_i = 0, _len = properties.length; _i < _len; _i++) {
+      property = properties[_i];
+      _results.push(e.attr(property, window.getComputedStyle(e.node(), null).getPropertyValue(property)));
+    }
+    return _results;
+  },
+  toPNG: function(svgEl, width, height) {
+    var canvas;
+    canvas = $('<canvas/>', {
+      'style': 'image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast'
+    }).attr('width', width).attr('height', height);
+    canvg(canvas[0], $(svgEl).html());
+    return canvas[0].toDataURL("image/png");
+  }
+};
 
 Chart.Column = (function() {
 
@@ -248,7 +276,7 @@ Chart.Column = (function() {
   }
 
   Column.prototype.render = function() {
-    var bar, barHeight, barValueHeight, barWidth, bars, canvas, chart, color, desc, descG, descriptionTextHeight, descriptions, domain, g, grid, group, groupValue, height, index, key, labels, series, t, text, textWidth, tick, ty, value, values, verticalAxisLabelHeight, w, width, x, y, _i, _j, _k, _len, _len1, _ref, _ref1, _ref10, _ref11, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results,
+    var bar, barHeight, barValueHeight, barWidth, bars, canvas, chart, color, desc, descG, descriptionTextHeight, descriptions, domain, g, grid, group, groupValue, height, index, key, labels, line, series, t, text, textWidth, tick, ty, value, values, verticalAxisLabelHeight, w, width, x, y, _i, _j, _k, _len, _len1, _ref, _ref1, _ref10, _ref11, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results,
       _this = this;
     height = this.height;
     width = this.width;
@@ -294,12 +322,14 @@ Chart.Column = (function() {
       if (this.axis.horizontal != null) {
         text = labels.append("svg:text").attr("class", "horizontal").attr("text-anchor", "middle").attr("x", width / 2).attr("y", height - this.padding.axisLabels).text(this.axis.horizontal);
         height = height - text.node().getBBox().height - this.padding.axisLabels;
+        Chart.expliticize(text);
       }
       if (this.axis.vertical != null) {
         text = labels.append("svg:text").attr("class", "vertical").attr("text-anchor", "middle").attr("x", 0).attr("y", height / 2).text(this.axis.vertical);
         verticalAxisLabelHeight = text.node().getBBox().height;
         text.attr("transform", "rotate(-90 " + verticalAxisLabelHeight + " " + (height / 2) + ")");
         width = width - verticalAxisLabelHeight - this.padding.axisLabels;
+        Chart.expliticize(text);
       }
     }
     descriptions = canvas.append('svg:g').attr('class', 'descriptions');
@@ -316,6 +346,7 @@ Chart.Column = (function() {
         this.description.maxWidth = textWidth;
       }
       this.description.totalWidth = this.description.totalWidth + textWidth;
+      Chart.expliticize(text);
       g.append("svg:title").text(group.description);
       if (descriptionTextHeight === 0) {
         descriptionTextHeight = text.node().getBBox().height;
@@ -346,6 +377,7 @@ Chart.Column = (function() {
       if (textWidth > this.ticks.maxWidth) {
         this.ticks.maxWidth = textWidth;
       }
+      Chart.expliticize(text);
     }
     width = width - this.ticks.maxWidth;
     if (this.description.totalWidth > width) {
@@ -365,7 +397,8 @@ Chart.Column = (function() {
     for (index in _ref8) {
       tick = _ref8[index];
       t = grid.select(".t" + index);
-      t.append("svg:line").attr("class", "line").attr("x1", this.ticks.maxWidth).attr("x2", width + this.ticks.maxWidth);
+      line = t.append("svg:line").attr("class", "line").attr("x1", this.ticks.maxWidth).attr("x2", width + this.ticks.maxWidth);
+      Chart.expliticize(line);
       t.attr('transform', "translate(0," + (height - domain['y'](tick)) + ")");
     }
     chart = canvas.append("svg:g").attr("class", "chart");
@@ -383,7 +416,7 @@ Chart.Column = (function() {
         (function() {
           var x;
           x = _this.ticks.maxWidth + domain['x'](index) + barWidth;
-          return g.append("svg:line").attr("class", "line dashed").attr("style", "stroke-dasharray: 10, 5;").attr("x1", x).attr("x2", x).attr("y1", 0).attr("y2", height);
+          return line = g.append("svg:line").attr("class", "line dashed").attr("style", "stroke-dasharray: 10, 5;").attr("x1", x).attr("x2", x).attr("y1", 0).attr("y2", height);
         })();
       }
       y = height;
@@ -405,6 +438,7 @@ Chart.Column = (function() {
         color = domain['color'](value).toFixed(0);
         bar = g.append("svg:rect").attr("class", "bar s" + series + " q" + color + "-" + this.colorbrewer).attr('x', x).attr('y', y).attr('width', barWidth).attr('height', barHeight);
         bar.transition().attr('opacity', 1);
+        Chart.expliticize(bar);
         w = values.append("svg:g").attr('class', "g" + index + " s" + series + " q" + color + "-" + this.colorbrewer);
         text = w.append("svg:text").attr('x', x + (barWidth / 2)).attr("text-anchor", "middle").text(value);
         if (this.isStacked) {
@@ -430,6 +464,7 @@ Chart.Column = (function() {
             text.attr("class", "value above");
           }
         }
+        Chart.expliticize(text);
         w.append("svg:title").text(value);
         if (this.onclick != null) {
           (function(bar, group, series, value) {
@@ -467,6 +502,10 @@ Chart.Column = (function() {
 
   Column.prototype.showSeries = function(series) {
     return d3.select(this.el[0]).selectAll(".s" + series).transition().attr('fill-opacity', 1);
+  };
+
+  Column.prototype.toPNG = function() {
+    return Chart.toPNG(this.el, this.width, this.height);
   };
 
   return Column;
@@ -536,7 +575,7 @@ Chart.Settings = (function() {
     var stacked,
       _this = this;
     $(this.el).empty();
-    return stacked = $(this.el).append($('<a/>', {
+    stacked = $(this.el).append($('<a/>', {
       'class': "btn btn-mini stacked " + (this.isStacked ? 'active' : ''),
       'text': this.isStacked ? 'Unstack' : 'Stack',
       'click': function(e) {
@@ -550,6 +589,13 @@ Chart.Settings = (function() {
         }
         _this.legend.render();
         return _this.chart.render();
+      }
+    }));
+    return $(this.el).append($('<a/>', {
+      'class': "btn btn-mini png",
+      'text': 'Save as a PNG',
+      'click': function(e) {
+        return PlainExporter(e.target, '<img src="' + _this.chart.toPNG() + '"/>');
       }
     }));
   };
@@ -760,7 +806,7 @@ PlainExporter = (function() {
       }));
     } else {
       w.document.open();
-      w.document.write("<pre>" + data + "</pre>");
+      w.document.write(data);
       w.document.close();
     }
   }
@@ -1659,7 +1705,7 @@ factory = function(Backbone) {
         result.push(model.get('descriptions').join("\t") + "\t" + model.get('matches'));
       }
       if (result.length) {
-        ex = new PlainExporter($(e.target), result.join("\n"));
+        ex = new PlainExporter($(e.target), '<pre>' + result.join("\n") + '<pre>');
         return window.setTimeout((function() {
           return ex.destroy();
         }), 5000);
@@ -2270,7 +2316,7 @@ factory = function(Backbone) {
             result.push([model.get('description'), model.get('p-value')].join("\t") + "\t" + dict[model.get('identifier')].join(','));
           }
           if (result.length) {
-            ex = new PlainExporter($(e.target), result.join("\n"));
+            ex = new PlainExporter($(e.target), '<pre>' + result.join("\n") + '<pre>');
             return window.setTimeout((function() {
               return ex.destroy();
             }), 5000);
@@ -2490,6 +2536,12 @@ Widgets = (function() {
       type: "js"
     }, {
       path: "https://raw.github.com/alexkalderimis/imjs/master/src/service.js",
+      type: "js"
+    }, {
+      path: "http://canvg.googlecode.com/svn/trunk/rgbcolor.js",
+      type: "js"
+    }, {
+      path: "http://canvg.googlecode.com/svn/trunk/canvg.js",
       type: "js"
     }
   ];

@@ -46,7 +46,7 @@ class PlainExporter
                 'text':  'Please enable popups'
         else
             w.document.open()
-            w.document.write "<pre>#{data}</pre>"
+            w.document.write data
             w.document.close()
 
     # Clean up popup message if present.
