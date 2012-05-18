@@ -26,10 +26,52 @@ Example: [0, 400] for a column chart 400px wide</p>             </td>           
             <span class="nv">internal.range = </span><span class="nx">range</span>
             <span class="nv">internal.rangeBand = </span><span class="nx">step</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nx">padding</span><span class="p">)</span>
 
-            <span class="nx">scale</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Returns the band width.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nv">scale.getRangeBand = </span><span class="o">-&gt;</span>
-            <span class="nx">internal</span><span class="p">.</span><span class="nx">rangeBand</span>
+            <span class="nx">scale</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Returns the band width.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nv">scale.getRangeBand = </span><span class="o">-&gt;</span> <span class="nx">internal</span><span class="p">.</span><span class="nx">rangeBand</span>
 
         <span class="nx">scale</span><span class="p">.</span><span class="nx">setDomain</span><span class="p">()</span>
+    <span class="p">)()</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>Linear scales map a continuous input domain to a continuous output range.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">Mynd.Scale.linear = </span><span class="o">-&gt;</span>
+    <span class="p">(</span> <span class="o">-&gt;</span>
+        <span class="nv">internal = </span><span class="p">{}</span>
+
+        <span class="nv">uninterpolateNumber = </span><span class="nf">(a, b) -&gt;</span>
+            <span class="nv">b = </span><span class="p">(</span><span class="k">if</span> <span class="nx">b</span> <span class="o">-</span> <span class="p">(</span><span class="nv">a = </span><span class="o">+</span><span class="nx">a</span><span class="p">)</span> <span class="k">then</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="nx">b</span> <span class="o">-</span> <span class="nx">a</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="nf">(x) -&gt;</span>
+                <span class="p">(</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">a</span><span class="p">)</span> <span class="o">*</span> <span class="nx">b</span>
+
+        <span class="nv">interpolateNumber = </span><span class="nf">(a, b) -&gt;</span>
+            <span class="nx">b</span> <span class="o">-=</span> <span class="nx">a</span>
+            <span class="nf">(t) -&gt;</span>
+                <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span> <span class="o">*</span> <span class="nx">t</span>
+
+        <span class="nv">scale_bilinear = </span><span class="o">-&gt;</span>
+            <span class="nv">u = </span><span class="nx">uninterpolateNumber</span> <span class="nx">internal</span><span class="p">.</span><span class="nx">domain</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">internal</span><span class="p">.</span><span class="nx">domain</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="nv">i = </span><span class="nx">interpolateNumber</span> <span class="nx">internal</span><span class="p">.</span><span class="nx">range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">internal</span><span class="p">.</span><span class="nx">range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="nf">(x) -&gt;</span>
+                <span class="nx">i</span> <span class="nx">u</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span>
+
+        <span class="nv">rescale = </span><span class="o">-&gt;</span>
+            <span class="k">if</span> <span class="nx">internal</span><span class="p">.</span><span class="nx">domain</span><span class="o">?</span> <span class="o">and</span> <span class="nx">internal</span><span class="p">.</span><span class="nx">range</span><span class="o">?</span>
+                <span class="nv">internal.output = internal.input = </span><span class="nx">scale_bilinear</span><span class="p">()</span>
+            
+            <span class="nx">scale</span>
+        
+        <span class="nv">scale = </span><span class="nf">(x) -&gt;</span> <span class="nx">internal</span><span class="p">.</span><span class="nx">output</span> <span class="nx">x</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>Set the scale's input domain to the specified array of numbers.
+Example: [0, 3] for bar values ranging from 0 to a maximum of 3</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nv">scale.domain = </span><span class="nf">(x) -&gt;</span>
+            <span class="nv">internal.domain = </span><span class="nx">x</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nb">Number</span><span class="p">)</span>
+            
+            <span class="nx">rescale</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>Setsthe scale's output range to the specified array of values.
+Example: [0, 100] for a column chart bar that is to be at most 100px tall.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nv">scale.range = </span><span class="nf">(x) -&gt;</span>
+            <span class="nv">internal.range = </span><span class="nx">x</span>
+            
+            <span class="nx">rescale</span><span class="p">()</span>
+
+        <span class="nx">scale</span>
     <span class="p">)()</span>
+
+<span class="nv">mynd = </span><span class="nx">Mynd</span><span class="p">.</span><span class="nx">Scale</span><span class="p">.</span><span class="nx">linear</span><span class="p">().</span><span class="nx">domain</span><span class="p">([</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span> <span class="p">]).</span><span class="nx">range</span><span class="p">([</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">15.7</span> <span class="p">])</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s1">&#39;---- mynd ----&#39;</span>
+<span class="k">for</span> <span class="nx">value</span> <span class="k">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">mynd</span> <span class="nx">value</span>
 
 </pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

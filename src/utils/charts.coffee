@@ -215,11 +215,14 @@ class Chart.Column
 
         # -------------------------------------------------------------------
         # Get the domain as @width & @height are fixed now.
-        domain.x =     d3.scale.ordinal().domain([0..@data.length - 1]).rangeBands([ 0, width ], @padding.barPadding)
+        domain.x =     Mynd.Scale.ordinal().setDomain([0...@data.length]).setRangeBands([ 0, width ], @padding.barPadding)
         domain.y =     d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, height ])
         domain.color = d3.scale.linear().domain([ 0, @maxValue ]).rangeRound([ 0, @colorbrewer - 1 ])
 
-        domain.x =     Mynd.Scale.ordinal().setDomain([0...@data.length]).setRangeBands([ 0, width ], @padding.barPadding)
+        console.log '---- d3 ----'
+        doom = d3.scale.linear().domain([ 0, 3 ]).range([ 0, 15.7 ])
+        for value in [1, 2.3, 3]
+            console.log doom value
 
         # -------------------------------------------------------------------
         # Horizontal lines among ticks.

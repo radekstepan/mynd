@@ -50,8 +50,59 @@ Mynd.Scale.ordinal = ->
             scale
 
         # Returns the band width.
-        scale.getRangeBand = ->
-            internal.rangeBand
+        scale.getRangeBand = -> internal.rangeBand
 
         scale.setDomain()
     )()
+
+# Linear scales map a continuous input domain to a continuous output range.
+Mynd.Scale.linear = ->
+    ( ->
+        internal = {}
+
+        uninterpolateNumber = (a, b) ->
+            b = (if b - (a = +a) then 1 / (b - a) else 0)
+            (x) ->
+                (x - a) * b
+
+        interpolateNumber = (a, b) ->
+            b -= a
+            (t) ->
+                a + b * t
+
+        scale_bilinear = ->
+            u = uninterpolateNumber internal.domain[0], internal.domain[1]
+            i = interpolateNumber internal.range[0], internal.range[1]
+            (x) ->
+                i u(x)
+
+        rescale = ->
+            if internal.domain? and internal.range?
+                internal.output = internal.input = scale_bilinear()
+            
+            scale
+        
+        scale = (x) -> internal.output x
+
+        # Set the scale's input domain to the specified array of numbers.
+        # Example: [0, 3] for bar values ranging from 0 to a maximum of 3
+        scale.domain = (x) ->
+            internal.domain = x.map(Number)
+            
+            rescale()
+
+        # Setsthe scale's output range to the specified array of values.
+        # Example: [0, 100] for a column chart bar that is to be at most 100px tall.
+        scale.range = (x) ->
+            internal.range = x
+            
+            rescale()
+
+        scale
+    )()
+
+mynd = Mynd.Scale.linear().domain([ 0, 3 ]).range([ 0, 15.7 ])
+
+console.log '---- mynd ----'
+for value in [1, 2.3, 3]
+    console.log mynd value

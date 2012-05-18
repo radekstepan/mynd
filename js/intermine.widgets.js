@@ -276,7 +276,7 @@ Chart.Column = (function() {
   }
 
   Column.prototype.render = function() {
-    var bar, barHeight, barValueHeight, barWidth, bars, canvas, chart, color, desc, descG, descriptionTextHeight, descriptions, domain, g, grid, group, groupValue, height, index, key, labels, line, series, t, text, textWidth, tick, ty, value, values, verticalAxisLabelHeight, w, width, x, y, _i, _j, _k, _l, _len, _len1, _ref, _ref1, _ref10, _ref11, _ref12, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results, _results1,
+    var bar, barHeight, barValueHeight, barWidth, bars, canvas, chart, color, desc, descG, descriptionTextHeight, descriptions, domain, doom, g, grid, group, groupValue, height, index, key, labels, line, series, t, text, textWidth, tick, ty, value, values, verticalAxisLabelHeight, w, width, x, y, _i, _j, _k, _l, _len, _len1, _len2, _ref, _ref1, _ref10, _ref11, _ref12, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results,
       _this = this;
     height = this.height;
     width = this.width;
@@ -386,18 +386,20 @@ Chart.Column = (function() {
     if (((_ref6 = this.axis) != null ? _ref6.vertical : void 0) != null) {
       labels.select('.vertical').attr("transform", "rotate(-90 " + verticalAxisLabelHeight + " " + (height / 2) + ")").attr("y", height / 2);
     }
-    domain.x = d3.scale.ordinal().domain((function() {
+    domain.x = Mynd.Scale.ordinal().setDomain((function() {
       _results = [];
-      for (var _k = 0, _ref7 = this.data.length - 1; 0 <= _ref7 ? _k <= _ref7 : _k >= _ref7; 0 <= _ref7 ? _k++ : _k--){ _results.push(_k); }
+      for (var _k = 0, _ref7 = this.data.length; 0 <= _ref7 ? _k < _ref7 : _k > _ref7; 0 <= _ref7 ? _k++ : _k--){ _results.push(_k); }
       return _results;
-    }).apply(this)).rangeBands([0, width], this.padding.barPadding);
+    }).apply(this)).setRangeBands([0, width], this.padding.barPadding);
     domain.y = d3.scale.linear().domain([0, this.maxValue]).range([0, height]);
     domain.color = d3.scale.linear().domain([0, this.maxValue]).rangeRound([0, this.colorbrewer - 1]);
-    domain.x = Mynd.Scale.ordinal().setDomain((function() {
-      _results1 = [];
-      for (var _l = 0, _ref8 = this.data.length; 0 <= _ref8 ? _l < _ref8 : _l > _ref8; 0 <= _ref8 ? _l++ : _l--){ _results1.push(_l); }
-      return _results1;
-    }).apply(this)).setRangeBands([0, width], this.padding.barPadding);
+    console.log('---- d3 ----');
+    doom = d3.scale.linear().domain([0, 3]).range([0, 15.7]);
+    _ref8 = [1, 2.3, 3];
+    for (_l = 0, _len2 = _ref8.length; _l < _len2; _l++) {
+      value = _ref8[_l];
+      console.log(doom(value));
+    }
     _ref9 = domain.ticks;
     for (index in _ref9) {
       tick = _ref9[index];
@@ -758,7 +760,7 @@ if (!("some" in Array.prototype)) {
   };
 }
 
-var Mynd;
+var Mynd, mynd, value, _i, _len, _ref;
 
 Mynd = {};
 
@@ -824,6 +826,61 @@ Mynd.Scale.ordinal = function() {
     return scale.setDomain();
   })();
 };
+
+Mynd.Scale.linear = function() {
+  return (function() {
+    var internal, interpolateNumber, rescale, scale, scale_bilinear, uninterpolateNumber;
+    internal = {};
+    uninterpolateNumber = function(a, b) {
+      b = (b - (a = +a) ? 1 / (b - a) : 0);
+      return function(x) {
+        return (x - a) * b;
+      };
+    };
+    interpolateNumber = function(a, b) {
+      b -= a;
+      return function(t) {
+        return a + b * t;
+      };
+    };
+    scale_bilinear = function() {
+      var i, u;
+      u = uninterpolateNumber(internal.domain[0], internal.domain[1]);
+      i = interpolateNumber(internal.range[0], internal.range[1]);
+      return function(x) {
+        return i(u(x));
+      };
+    };
+    rescale = function() {
+      if ((internal.domain != null) && (internal.range != null)) {
+        internal.output = internal.input = scale_bilinear();
+      }
+      return scale;
+    };
+    scale = function(x) {
+      return internal.output(x);
+    };
+    scale.domain = function(x) {
+      internal.domain = x.map(Number);
+      return rescale();
+    };
+    scale.range = function(x) {
+      internal.range = x;
+      return rescale();
+    };
+    return scale;
+  })();
+};
+
+mynd = Mynd.Scale.linear().domain([0, 3]).range([0, 15.7]);
+
+console.log('---- mynd ----');
+
+_ref = [1, 2.3, 3];
+for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+  value = _ref[_i];
+  console.log(mynd(value));
+}
 
 /* Create file download with custom content.
 */
