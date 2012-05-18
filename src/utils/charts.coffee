@@ -219,6 +219,8 @@ class Chart.Column
         domain.y =     d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, height ])
         domain.color = d3.scale.linear().domain([ 0, @maxValue ]).rangeRound([ 0, @colorbrewer - 1 ])
 
+        domain.x =     Mynd.Scale.ordinal().setDomain([0...@data.length]).setRangeBands([ 0, width ], @padding.barPadding)
+
         # -------------------------------------------------------------------
         # Horizontal lines among ticks.
         for index, tick of domain.ticks
@@ -252,7 +254,7 @@ class Chart.Column
             .attr("class", "g#{index}")
             
             # The width of the bar.
-            barWidth = domain['x'].rangeBand()
+            barWidth = domain['x'].getRangeBand()
             # Split among the number of series we have.
             if !@isStacked then barWidth = barWidth / group['data'].length
 

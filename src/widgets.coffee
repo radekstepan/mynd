@@ -32,7 +32,7 @@ class Widgets
         wait:  true
     ,
         name:  "d3"
-        path:  "http://d3js.org/d3.v2.js"
+        path:  "http://aragorn:1111/js/d3.v2.js"
         type:  "js"
     ,
         path:  "https://raw.github.com/alexkalderimis/imjs/master/src/model.js"

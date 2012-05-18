@@ -276,7 +276,7 @@ Chart.Column = (function() {
   }
 
   Column.prototype.render = function() {
-    var bar, barHeight, barValueHeight, barWidth, bars, canvas, chart, color, desc, descG, descriptionTextHeight, descriptions, domain, g, grid, group, groupValue, height, index, key, labels, line, series, t, text, textWidth, tick, ty, value, values, verticalAxisLabelHeight, w, width, x, y, _i, _j, _k, _len, _len1, _ref, _ref1, _ref10, _ref11, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results,
+    var bar, barHeight, barValueHeight, barWidth, bars, canvas, chart, color, desc, descG, descriptionTextHeight, descriptions, domain, g, grid, group, groupValue, height, index, key, labels, line, series, t, text, textWidth, tick, ty, value, values, verticalAxisLabelHeight, w, width, x, y, _i, _j, _k, _l, _len, _len1, _ref, _ref1, _ref10, _ref11, _ref12, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results, _results1,
       _this = this;
     height = this.height;
     width = this.width;
@@ -393,9 +393,14 @@ Chart.Column = (function() {
     }).apply(this)).rangeBands([0, width], this.padding.barPadding);
     domain.y = d3.scale.linear().domain([0, this.maxValue]).range([0, height]);
     domain.color = d3.scale.linear().domain([0, this.maxValue]).rangeRound([0, this.colorbrewer - 1]);
-    _ref8 = domain.ticks;
-    for (index in _ref8) {
-      tick = _ref8[index];
+    domain.x = Mynd.Scale.ordinal().setDomain((function() {
+      _results1 = [];
+      for (var _l = 0, _ref8 = this.data.length; 0 <= _ref8 ? _l < _ref8 : _l > _ref8; 0 <= _ref8 ? _l++ : _l--){ _results1.push(_l); }
+      return _results1;
+    }).apply(this)).setRangeBands([0, width], this.padding.barPadding);
+    _ref9 = domain.ticks;
+    for (index in _ref9) {
+      tick = _ref9[index];
       t = grid.select(".t" + index);
       line = t.append("svg:line").attr("class", "line").attr("x1", this.ticks.maxWidth).attr("x2", width + this.ticks.maxWidth);
       Chart.expliticize(line);
@@ -404,11 +409,11 @@ Chart.Column = (function() {
     chart = canvas.append("svg:g").attr("class", "chart");
     bars = chart.append("svg:g").attr("class", "bars");
     values = chart.append("svg:g").attr("class", "values");
-    _ref9 = this.data;
-    for (index in _ref9) {
-      group = _ref9[index];
+    _ref10 = this.data;
+    for (index in _ref10) {
+      group = _ref10[index];
       g = bars.append("svg:g").attr("class", "g" + index);
-      barWidth = domain['x'].rangeBand();
+      barWidth = domain['x'].getRangeBand();
       if (!this.isStacked) {
         barWidth = barWidth / group['data'].length;
       }
@@ -420,9 +425,9 @@ Chart.Column = (function() {
         })();
       }
       y = height;
-      _ref10 = group.data;
-      for (series in _ref10) {
-        value = _ref10[series];
+      _ref11 = group.data;
+      for (series in _ref11) {
+        value = _ref11[series];
         barHeight = domain['y'](value);
         if (!barHeight && this.isStacked) {
           continue;
@@ -489,7 +494,7 @@ Chart.Column = (function() {
       }
       descG.attr('transform', "translate(" + x + "," + (height + descriptionTextHeight) + ")");
     }
-    if (((_ref11 = this.axis) != null ? _ref11.vertical : void 0) != null) {
+    if (((_ref12 = this.axis) != null ? _ref12.vertical : void 0) != null) {
       grid.attr('transform', "translate(" + (verticalAxisLabelHeight + this.padding.axisLabels) + ", 0)");
       chart.attr('transform', "translate(" + (verticalAxisLabelHeight + this.padding.axisLabels) + ", 0)");
       return descriptions.attr('transform', "translate(" + (verticalAxisLabelHeight + this.padding.axisLabels) + ", 0)");
@@ -752,6 +757,73 @@ if (!("some" in Array.prototype)) {
     return false;
   };
 }
+
+var Mynd;
+
+Mynd = {};
+
+Mynd.Scale = {};
+
+Mynd.Scale.ordinal = function() {
+  return (function() {
+    var internal, scale;
+    internal = {};
+    scale = function(x) {
+      return internal.range[x];
+    };
+    scale.setDomain = function(domain) {
+      var d, element, key, value, _i, _len;
+      if (domain == null) {
+        domain = [];
+      }
+      d = {};
+      for (_i = 0, _len = domain.length; _i < _len; _i++) {
+        element = domain[_i];
+        d[element] = element;
+      }
+      internal.domain = (function() {
+        var _results;
+        _results = [];
+        for (key in d) {
+          value = d[key];
+          _results.push(value);
+        }
+        return _results;
+      })();
+      return scale;
+    };
+    scale.setRangeBands = function(bands, padding) {
+      var range, reverse, start, step, stop, _i, _ref, _ref1, _results;
+      if (padding == null) {
+        padding = 0;
+      }
+      start = bands[0];
+      stop = bands[1];
+      reverse = bands[1] < bands[0];
+      if (reverse) {
+        _ref = [start, stop], stop = _ref[0], start = _ref[1];
+      }
+      step = (stop - start) / (internal.domain.length + padding);
+      range = (function() {
+        _results = [];
+        for (var _i = 0, _ref1 = internal.domain.length; 0 <= _ref1 ? _i < _ref1 : _i > _ref1; 0 <= _ref1 ? _i++ : _i--){ _results.push(_i); }
+        return _results;
+      }).apply(this).map(function(i) {
+        return (start + (step * padding)) + (step * i);
+      });
+      if (reverse) {
+        range.reverse();
+      }
+      internal.range = range;
+      internal.rangeBand = step * (1 - padding);
+      return scale;
+    };
+    scale.getRangeBand = function() {
+      return internal.rangeBand;
+    };
+    return scale.setDomain();
+  })();
+};
 
 /* Create file download with custom content.
 */
@@ -2526,7 +2598,7 @@ Widgets = (function() {
       wait: true
     }, {
       name: "d3",
-      path: "http://d3js.org/d3.v2.js",
+      path: "http://aragorn:1111/js/d3.v2.js",
       type: "js"
     }, {
       path: "https://raw.github.com/alexkalderimis/imjs/master/src/model.js",
