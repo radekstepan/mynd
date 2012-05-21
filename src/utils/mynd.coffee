@@ -8,7 +8,10 @@ Mynd.Scale.ordinal = ->
         internal = {}
 
         # Given a value `x` in the input domain, returns the corresponding value in the output range.
-        scale = (x) -> internal.range[x]
+        scale = (x) ->
+            if not internal.range? then throw new Error 'Mynd.Scale.ordinal: you need to set input range first'
+            
+            internal.range[x]
 
         # Sets the input domain of the ordinal scale to the specified array of values. The first element in values will
         #  be mapped to the first element in the output range, the second domain value to the second range value, and so
@@ -33,6 +36,8 @@ Mynd.Scale.ordinal = ->
         # The `padding` is in the range [0,1] and corresponds to the amount of space in the range interval to allocate
         #  to padding.
         scale.setRangeBands = (bands, padding = 0) ->
+            if not internal.domain? then throw new Error 'Mynd.Scale.ordinal: you need to set input domain first'
+
             start = bands[0] ; stop = bands[1]
             
             # Do we need to reverse the range?
@@ -60,45 +65,40 @@ Mynd.Scale.linear = ->
     ( ->
         internal = {}
 
-        uninterpolateNumber = (a, b) ->
-            b = (if b - (a = +a) then 1 / (b - a) else 0)
-            (x) ->
-                (x - a) * b
+        # Returns a numeric deinterpolator between two numbers `a` and `b` representing the domain (bar min/max values).
+        deinterpolate = (a, b) ->
+            (x) -> (x - a) * 1 / (b - a)
 
-        interpolateNumber = (a, b) ->
-            b -= a
-            (t) ->
-                a + b * t
+        # Returns a numeric interpolator between the two numbers `a` and `b` representing the range (column chart height).
+        interpolate = (a, b) ->
+            (x) -> a + b * x
 
-        scale_bilinear = ->
-            u = uninterpolateNumber internal.domain[0], internal.domain[1]
-            i = interpolateNumber internal.range[0], internal.range[1]
-            (x) ->
-                i u(x)
-
-        rescale = ->
-            if internal.domain? and internal.range?
-                internal.output = internal.input = scale_bilinear()
-            
-            scale
+        scaleBilinear = (domain, range) ->
+            (x) -> interpolate(range[0], range[1])( deinterpolate(domain[0], domain[1])( x ) )
         
-        scale = (x) -> internal.output x
+        scale = (x) ->
+            if not internal.output?
+                # Set domain and range?
+                if internal.domain? and internal.range?
+                    # ...then apply bilinear scale de/interpolator.
+                    internal.output = scaleBilinear internal.domain, internal.range
+                else
+                    throw new Error 'Mynd.Scale.linear: you need to set both input domain and range'
+
+            internal.output x
 
         # Set the scale's input domain to the specified array of numbers.
-        # Example: [0, 3] for bar values ranging from 0 to a maximum of 3
-        scale.domain = (x) ->
-            internal.domain = x.map(Number)
-            
-            rescale()
+        # Example: [0, 2] for bar values ranging from 0 to a maximum of 2
+        scale.setDomain = (domain) -> internal.domain = domain ; scale
 
         # Setsthe scale's output range to the specified array of values.
         # Example: [0, 100] for a column chart bar that is to be at most 100px tall.
-        scale.range = (x) ->
-            internal.range = x
-            
-            rescale()
+        scale.setRange = (range) ->   internal.range = range ; scale
 
         scale
     )()
 
-mynd = Mynd.Scale.linear().domain([ 0, 3 ]).range([ 0, 15.7 ])
+mynd = Mynd.Scale.linear().setDomain([ 0, 3 ]).setRange([ 0, 10 ])
+
+for index in [0..3]
+    console.log mynd index
