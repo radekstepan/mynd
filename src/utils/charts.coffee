@@ -177,7 +177,7 @@ class Chart.Column
         domain = {}
         domain.ticks = do () =>
             # Modify ticks to use whole numbers where appropriate.
-            ( t for t in d3.scale.linear().domain([ 0, @maxValue ]).ticks(@ticks.count) when ( (parseInt(t) is t) or !@useWholeNumbers ) )
+            ( t for t in Mynd.Scale.linear().setDomain([ 0, @maxValue ]).getTicks(@ticks.count) when ( (parseInt(t) is t) or !@useWholeNumbers ) )
 
         # -------------------------------------------------------------------
         # Render the tick numbers so we can get the @ticks.maxWidth.
@@ -212,9 +212,9 @@ class Chart.Column
             height = height - (@description.maxWidth * @description.triangle.sideA)
 
         # Height is fixed now.
-        domain.y =     d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, height ])
+        domain.y =     Mynd.Scale.linear().setDomain([ 0, @maxValue ]).setRange([ 0, height ])
         # Color was never an issue.
-        domain.color = d3.scale.linear().domain([ 0, @maxValue ]).rangeRound([ 0, @colorbrewer - 1 ])
+        domain.color = Mynd.Scale.linear().setDomain([ 0, @maxValue ]).setRange([ 0, @colorbrewer - 1 ], true)
 
         # -------------------------------------------------------------------
         # Horizontal lines among ticks.

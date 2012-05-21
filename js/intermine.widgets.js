@@ -206,6 +206,155 @@ merge = function(child, parent) {
   return child;
 };
 
+/* <IE9 does not have a whole lot of JS functions.
+*/
+
+if (!("bind" in Function.prototype)) {
+  Function.prototype.bind = function(owner) {
+    var args, that;
+    that = this;
+    if (arguments.length <= 1) {
+      return function() {
+        return that.apply(owner, arguments);
+      };
+    } else {
+      args = Array.prototype.slice.call(arguments, 1);
+      return function() {
+        return that.apply(owner, (arguments.length === 0 ? args : args.concat(Array.prototype.slice.call(arguments))));
+      };
+    }
+  };
+}
+
+if (!("trim" in String.prototype)) {
+  String.prototype.trim = function() {
+    return this.replace(/^\s+/, "").replace(/\s+$/, "");
+  };
+}
+
+if (!("indexOf" in Array.prototype)) {
+  Array.prototype.indexOf = function(find, i) {
+    var n;
+    if (i === undefined) {
+      i = 0;
+    }
+    if (i < 0) {
+      i += this.length;
+    }
+    if (i < 0) {
+      i = 0;
+    }
+    n = this.length;
+    while (i < n) {
+      if (i in this && this[i] === find) {
+        return i;
+      }
+      i++;
+    }
+    return -1;
+  };
+}
+
+if (!("lastIndexOf" in Array.prototype)) {
+  Array.prototype.lastIndexOf = function(find, i) {
+    if (i === undefined) {
+      i = this.length - 1;
+    }
+    if (i < 0) {
+      i += this.length;
+    }
+    if (i > this.length - 1) {
+      i = this.length - 1;
+    }
+    i++;
+    while (i-- > 0) {
+      if (i in this && this[i] === find) {
+        return i;
+      }
+    }
+    return -1;
+  };
+}
+
+if (!("forEach" in Array.prototype)) {
+  Array.prototype.forEach = function(action, that) {
+    var i, n, _results;
+    i = 0;
+    n = this.length;
+    _results = [];
+    while (i < n) {
+      if (i in this) {
+        action.call(that, this[i], i, this);
+      }
+      _results.push(i++);
+    }
+    return _results;
+  };
+}
+
+if (!("map" in Array.prototype)) {
+  Array.prototype.map = function(mapper, that) {
+    var i, n, other;
+    other = new Array(this.length);
+    i = 0;
+    n = this.length;
+    while (i < n) {
+      if (i in this) {
+        other[i] = mapper.call(that, this[i], i, this);
+      }
+      i++;
+    }
+    return other;
+  };
+}
+
+if (!("filter" in Array.prototype)) {
+  Array.prototype.filter = function(filter, that) {
+    var i, n, other, v;
+    other = [];
+    v = void 0;
+    i = 0;
+    n = this.length;
+    while (i < n) {
+      if (i in this && filter.call(that, v = this[i], i, this)) {
+        other.push(v);
+      }
+      i++;
+    }
+    return other;
+  };
+}
+
+if (!("every" in Array.prototype)) {
+  Array.prototype.every = function(tester, that) {
+    var i, n;
+    i = 0;
+    n = this.length;
+    while (i < n) {
+      if (i in this && !tester.call(that, this[i], i, this)) {
+        return false;
+      }
+      i++;
+    }
+    return true;
+  };
+}
+
+if (!("some" in Array.prototype)) {
+  Array.prototype.some = function(tester, that) {
+    var i, n;
+    i = 0;
+    n = this.length;
+    while (i < n) {
+      if (i in this && tester.call(that, this[i], i, this)) {
+        return true;
+      }
+      i++;
+    }
+    return false;
+  };
+}
+
 var Chart;
 
 Chart = {
@@ -357,7 +506,7 @@ Chart.Column = (function() {
     domain = {};
     domain.ticks = (function() {
       var t, _k, _len2, _ref5, _results;
-      _ref5 = d3.scale.linear().domain([0, _this.maxValue]).ticks(_this.ticks.count);
+      _ref5 = Mynd.Scale.linear().setDomain([0, _this.maxValue]).getTicks(_this.ticks.count);
       _results = [];
       for (_k = 0, _len2 = _ref5.length; _k < _len2; _k++) {
         t = _ref5[_k];
@@ -388,8 +537,8 @@ Chart.Column = (function() {
     if (this.description.maxWidth > domain['x'].getRangeBand()) {
       height = height - (this.description.maxWidth * this.description.triangle.sideA);
     }
-    domain.y = d3.scale.linear().domain([0, this.maxValue]).range([0, height]);
-    domain.color = d3.scale.linear().domain([0, this.maxValue]).rangeRound([0, this.colorbrewer - 1]);
+    domain.y = Mynd.Scale.linear().setDomain([0, this.maxValue]).setRange([0, height]);
+    domain.color = Mynd.Scale.linear().setDomain([0, this.maxValue]).setRange([0, this.colorbrewer - 1], true);
     _ref7 = domain.ticks;
     for (index in _ref7) {
       tick = _ref7[index];
@@ -602,7 +751,7 @@ Chart.Settings = (function() {
 
 })();
 
-var Mynd, i, mynd, _i;
+var Mynd;
 
 Mynd = {};
 
@@ -755,12 +904,6 @@ Mynd.Scale.linear = function() {
   })();
 };
 
-mynd = Mynd.Scale.linear().setDomain([0, 3.4557]).setRange([0, 4]);
-
-for (i = _i = 1; _i < 3; i = ++_i) {
-  console.log(mynd(i));
-}
-
 /* Create file download with custom content.
 */
 
@@ -827,155 +970,6 @@ PlainExporter = (function() {
   return PlainExporter;
 
 })();
-
-/* <IE9 does not have a whole lot of JS functions.
-*/
-
-if (!("bind" in Function.prototype)) {
-  Function.prototype.bind = function(owner) {
-    var args, that;
-    that = this;
-    if (arguments.length <= 1) {
-      return function() {
-        return that.apply(owner, arguments);
-      };
-    } else {
-      args = Array.prototype.slice.call(arguments, 1);
-      return function() {
-        return that.apply(owner, (arguments.length === 0 ? args : args.concat(Array.prototype.slice.call(arguments))));
-      };
-    }
-  };
-}
-
-if (!("trim" in String.prototype)) {
-  String.prototype.trim = function() {
-    return this.replace(/^\s+/, "").replace(/\s+$/, "");
-  };
-}
-
-if (!("indexOf" in Array.prototype)) {
-  Array.prototype.indexOf = function(find, i) {
-    var n;
-    if (i === undefined) {
-      i = 0;
-    }
-    if (i < 0) {
-      i += this.length;
-    }
-    if (i < 0) {
-      i = 0;
-    }
-    n = this.length;
-    while (i < n) {
-      if (i in this && this[i] === find) {
-        return i;
-      }
-      i++;
-    }
-    return -1;
-  };
-}
-
-if (!("lastIndexOf" in Array.prototype)) {
-  Array.prototype.lastIndexOf = function(find, i) {
-    if (i === undefined) {
-      i = this.length - 1;
-    }
-    if (i < 0) {
-      i += this.length;
-    }
-    if (i > this.length - 1) {
-      i = this.length - 1;
-    }
-    i++;
-    while (i-- > 0) {
-      if (i in this && this[i] === find) {
-        return i;
-      }
-    }
-    return -1;
-  };
-}
-
-if (!("forEach" in Array.prototype)) {
-  Array.prototype.forEach = function(action, that) {
-    var i, n, _results;
-    i = 0;
-    n = this.length;
-    _results = [];
-    while (i < n) {
-      if (i in this) {
-        action.call(that, this[i], i, this);
-      }
-      _results.push(i++);
-    }
-    return _results;
-  };
-}
-
-if (!("map" in Array.prototype)) {
-  Array.prototype.map = function(mapper, that) {
-    var i, n, other;
-    other = new Array(this.length);
-    i = 0;
-    n = this.length;
-    while (i < n) {
-      if (i in this) {
-        other[i] = mapper.call(that, this[i], i, this);
-      }
-      i++;
-    }
-    return other;
-  };
-}
-
-if (!("filter" in Array.prototype)) {
-  Array.prototype.filter = function(filter, that) {
-    var i, n, other, v;
-    other = [];
-    v = void 0;
-    i = 0;
-    n = this.length;
-    while (i < n) {
-      if (i in this && filter.call(that, v = this[i], i, this)) {
-        other.push(v);
-      }
-      i++;
-    }
-    return other;
-  };
-}
-
-if (!("every" in Array.prototype)) {
-  Array.prototype.every = function(tester, that) {
-    var i, n;
-    i = 0;
-    n = this.length;
-    while (i < n) {
-      if (i in this && !tester.call(that, this[i], i, this)) {
-        return false;
-      }
-      i++;
-    }
-    return true;
-  };
-}
-
-if (!("some" in Array.prototype)) {
-  Array.prototype.some = function(tester, that) {
-    var i, n;
-    i = 0;
-    n = this.length;
-    while (i < n) {
-      if (i in this && tester.call(that, this[i], i, this)) {
-        return true;
-      }
-      i++;
-    }
-    return false;
-  };
-}
 
 var factory;
 factory = function(Backbone) {
