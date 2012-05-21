@@ -70,18 +70,21 @@ Mynd.Scale.linear = ->
             (x) -> (x - a) * 1 / (b - a)
 
         # Returns a numeric interpolator between the two numbers `a` and `b` representing the range (column chart height).
-        interpolate = (a, b) ->
-            (x) -> a + b * x
+        interpolate = (a, b, round) ->
+            if round
+                (x) -> Math.round a + b * x
+            else
+                (x) -> a + b * x
 
-        scaleBilinear = (domain, range) ->
-            (x) -> interpolate(range[0], range[1])( deinterpolate(domain[0], domain[1])( x ) )
+        scaleBilinear = (domain, range, round) ->
+            (x) -> interpolate(range[0], range[1], round)( deinterpolate(domain[0], domain[1])( x ) )
         
         scale = (x) ->
             if not internal.output?
                 # Set domain and range?
                 if internal.domain? and internal.range?
                     # ...then apply bilinear scale de/interpolator.
-                    internal.output = scaleBilinear internal.domain, internal.range
+                    internal.output = scaleBilinear internal.domain, internal.range, internal.round
                 else
                     throw new Error 'Mynd.Scale.linear: you need to set both input domain and range'
 
@@ -91,9 +94,14 @@ Mynd.Scale.linear = ->
         # Example: [0, 2] for bar values ranging from 0 to a maximum of 2
         scale.setDomain = (domain) -> internal.domain = domain ; scale
 
-        # Setsthe scale's output range to the specified array of values.
+        # Sets the scale's output range to the specified array of values.
+        # Enable `round` to get round numbers avoid antialiasing artifacts.
         # Example: [0, 100] for a column chart bar that is to be at most 100px tall.
-        scale.setRange = (range) ->   internal.range = range ; scale
+        scale.setRange = (range, round=false) ->
+            internal.range = range
+            internal.round = round
+
+            scale
 
         # Returns approximately count representative values from the scale's input domain. The returned tick values are
         #  uniformly spaced, have human-readable values (such as multiples of powers of 10), and are guaranteed to be
@@ -125,6 +133,3 @@ Mynd.Scale.linear = ->
 
         scale
     )()
-
-mynd = Mynd.Scale.linear().setDomain([ 0, 1.5 ]).getTicks(5)
-console.log 'Mynd', mynd

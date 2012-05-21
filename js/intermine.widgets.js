@@ -390,7 +390,6 @@ Chart.Column = (function() {
     }
     domain.y = d3.scale.linear().domain([0, this.maxValue]).range([0, height]);
     domain.color = d3.scale.linear().domain([0, this.maxValue]).rangeRound([0, this.colorbrewer - 1]);
-    console.log('d3', d3.scale.linear().domain([0, 1.5]).ticks(5));
     _ref7 = domain.ticks;
     for (index in _ref7) {
       tick = _ref7[index];
@@ -603,6 +602,232 @@ Chart.Settings = (function() {
 
 })();
 
+var Mynd, i, mynd, _i;
+
+Mynd = {};
+
+Mynd.Scale = {};
+
+Mynd.Scale.ordinal = function() {
+  return (function() {
+    var internal, scale;
+    internal = {};
+    scale = function(x) {
+      if (!(internal.range != null)) {
+        throw new Error('Mynd.Scale.ordinal: you need to set input range first');
+      }
+      return internal.range[x];
+    };
+    scale.setDomain = function(domain) {
+      var d, element, key, value, _i, _len;
+      if (domain == null) {
+        domain = [];
+      }
+      d = {};
+      for (_i = 0, _len = domain.length; _i < _len; _i++) {
+        element = domain[_i];
+        d[element] = element;
+      }
+      internal.domain = (function() {
+        var _results;
+        _results = [];
+        for (key in d) {
+          value = d[key];
+          _results.push(value);
+        }
+        return _results;
+      })();
+      return scale;
+    };
+    scale.setRangeBands = function(bands, padding) {
+      var range, reverse, start, step, stop, _i, _ref, _ref1, _results;
+      if (padding == null) {
+        padding = 0;
+      }
+      if (!(internal.domain != null)) {
+        throw new Error('Mynd.Scale.ordinal: you need to set input domain first');
+      }
+      start = bands[0];
+      stop = bands[1];
+      reverse = bands[1] < bands[0];
+      if (reverse) {
+        _ref = [start, stop], stop = _ref[0], start = _ref[1];
+      }
+      step = (stop - start) / (internal.domain.length + padding);
+      range = (function() {
+        _results = [];
+        for (var _i = 0, _ref1 = internal.domain.length; 0 <= _ref1 ? _i < _ref1 : _i > _ref1; 0 <= _ref1 ? _i++ : _i--){ _results.push(_i); }
+        return _results;
+      }).apply(this).map(function(i) {
+        return (start + (step * padding)) + (step * i);
+      });
+      if (reverse) {
+        range.reverse();
+      }
+      internal.range = range;
+      internal.rangeBand = step * (1 - padding);
+      return scale;
+    };
+    scale.getRangeBand = function() {
+      return internal.rangeBand;
+    };
+    return scale.setDomain();
+  })();
+};
+
+Mynd.Scale.linear = function() {
+  return (function() {
+    var deinterpolate, internal, interpolate, scale, scaleBilinear;
+    internal = {};
+    deinterpolate = function(a, b) {
+      return function(x) {
+        return (x - a) * 1 / (b - a);
+      };
+    };
+    interpolate = function(a, b, round) {
+      if (round) {
+        return function(x) {
+          return Math.round(a + b * x);
+        };
+      } else {
+        return function(x) {
+          return a + b * x;
+        };
+      }
+    };
+    scaleBilinear = function(domain, range, round) {
+      return function(x) {
+        return interpolate(range[0], range[1], round)(deinterpolate(domain[0], domain[1])(x));
+      };
+    };
+    scale = function(x) {
+      if (!(internal.output != null)) {
+        if ((internal.domain != null) && (internal.range != null)) {
+          internal.output = scaleBilinear(internal.domain, internal.range, internal.round);
+        } else {
+          throw new Error('Mynd.Scale.linear: you need to set both input domain and range');
+        }
+      }
+      return internal.output(x);
+    };
+    scale.setDomain = function(domain) {
+      internal.domain = domain;
+      return scale;
+    };
+    scale.setRange = function(range, round) {
+      if (round == null) {
+        round = false;
+      }
+      internal.range = range;
+      internal.round = round;
+      return scale;
+    };
+    scale.getTicks = function(amount) {
+      var reverse, span, start, step, stop, ticks, x, _ref;
+      if (!(internal.domain != null)) {
+        throw new Error('Mynd.Scale.linear: you need to set input domain first');
+      }
+      start = internal.domain[0];
+      stop = internal.domain[1];
+      reverse = internal.domain[1] < internal.domain[0];
+      if (reverse) {
+        _ref = [start, stop], stop = _ref[0], start = _ref[1];
+      }
+      span = stop - start;
+      step = Math.pow(10, Math.floor(Math.log(span / amount) / Math.LN10));
+      x = amount / span * step;
+      if (x <= .15) {
+        step *= 10;
+      } else if (x <= .35) {
+        step *= 5;
+      } else if (x <= .75) {
+        step *= 2;
+      }
+      ticks = [];
+      x = Math.ceil(start / step) * step;
+      while (x <= Math.floor(stop / step) * step + step * .5) {
+        ticks.push(x);
+        x += step;
+      }
+      return ticks;
+    };
+    return scale;
+  })();
+};
+
+mynd = Mynd.Scale.linear().setDomain([0, 3.4557]).setRange([0, 4]);
+
+for (i = _i = 1; _i < 3; i = ++_i) {
+  console.log(mynd(i));
+}
+
+/* Create file download with custom content.
+*/
+
+var Exporter, PlainExporter,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+Exporter = (function() {
+
+  Exporter.name = 'Exporter';
+
+  Exporter.prototype.mime = 'text/plain';
+
+  Exporter.prototype.charset = 'UTF-8';
+
+  Exporter.prototype.url = window.webkitURL || window.URL;
+
+  function Exporter(a, data, filename) {
+    var builder;
+    if (filename == null) {
+      filename = 'widget.tsv';
+    }
+    this.destroy = __bind(this.destroy, this);
+
+    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
+    builder.append(data);
+    a.attr('download', filename);
+    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
+    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
+  }
+
+  Exporter.prototype.destroy = function() {
+    return this.url.revokeObjectURL(this.href);
+  };
+
+  return Exporter;
+
+})();
+
+PlainExporter = (function() {
+
+  PlainExporter.name = 'PlainExporter';
+
+  function PlainExporter(a, data) {
+    var w;
+    w = window.open();
+    if (!(w != null) || typeof w === "undefined") {
+      a.after(this.msg = $('<span/>', {
+        'style': 'margin-left:5px',
+        'class': 'label label-inverse',
+        'text': 'Please enable popups'
+      }));
+    } else {
+      w.document.open();
+      w.document.write(data);
+      w.document.close();
+    }
+  }
+
+  PlainExporter.prototype.destroy = function() {
+    var _ref;
+    return (_ref = this.msg) != null ? _ref.fadeOut() : void 0;
+  };
+
+  return PlainExporter;
+
+})();
+
 /* <IE9 does not have a whole lot of JS functions.
 */
 
@@ -751,220 +976,6 @@ if (!("some" in Array.prototype)) {
     return false;
   };
 }
-
-var Mynd, mynd;
-
-Mynd = {};
-
-Mynd.Scale = {};
-
-Mynd.Scale.ordinal = function() {
-  return (function() {
-    var internal, scale;
-    internal = {};
-    scale = function(x) {
-      if (!(internal.range != null)) {
-        throw new Error('Mynd.Scale.ordinal: you need to set input range first');
-      }
-      return internal.range[x];
-    };
-    scale.setDomain = function(domain) {
-      var d, element, key, value, _i, _len;
-      if (domain == null) {
-        domain = [];
-      }
-      d = {};
-      for (_i = 0, _len = domain.length; _i < _len; _i++) {
-        element = domain[_i];
-        d[element] = element;
-      }
-      internal.domain = (function() {
-        var _results;
-        _results = [];
-        for (key in d) {
-          value = d[key];
-          _results.push(value);
-        }
-        return _results;
-      })();
-      return scale;
-    };
-    scale.setRangeBands = function(bands, padding) {
-      var range, reverse, start, step, stop, _i, _ref, _ref1, _results;
-      if (padding == null) {
-        padding = 0;
-      }
-      if (!(internal.domain != null)) {
-        throw new Error('Mynd.Scale.ordinal: you need to set input domain first');
-      }
-      start = bands[0];
-      stop = bands[1];
-      reverse = bands[1] < bands[0];
-      if (reverse) {
-        _ref = [start, stop], stop = _ref[0], start = _ref[1];
-      }
-      step = (stop - start) / (internal.domain.length + padding);
-      range = (function() {
-        _results = [];
-        for (var _i = 0, _ref1 = internal.domain.length; 0 <= _ref1 ? _i < _ref1 : _i > _ref1; 0 <= _ref1 ? _i++ : _i--){ _results.push(_i); }
-        return _results;
-      }).apply(this).map(function(i) {
-        return (start + (step * padding)) + (step * i);
-      });
-      if (reverse) {
-        range.reverse();
-      }
-      internal.range = range;
-      internal.rangeBand = step * (1 - padding);
-      return scale;
-    };
-    scale.getRangeBand = function() {
-      return internal.rangeBand;
-    };
-    return scale.setDomain();
-  })();
-};
-
-Mynd.Scale.linear = function() {
-  return (function() {
-    var deinterpolate, internal, interpolate, scale, scaleBilinear;
-    internal = {};
-    deinterpolate = function(a, b) {
-      return function(x) {
-        return (x - a) * 1 / (b - a);
-      };
-    };
-    interpolate = function(a, b) {
-      return function(x) {
-        return a + b * x;
-      };
-    };
-    scaleBilinear = function(domain, range) {
-      return function(x) {
-        return interpolate(range[0], range[1])(deinterpolate(domain[0], domain[1])(x));
-      };
-    };
-    scale = function(x) {
-      if (!(internal.output != null)) {
-        if ((internal.domain != null) && (internal.range != null)) {
-          internal.output = scaleBilinear(internal.domain, internal.range);
-        } else {
-          throw new Error('Mynd.Scale.linear: you need to set both input domain and range');
-        }
-      }
-      return internal.output(x);
-    };
-    scale.setDomain = function(domain) {
-      internal.domain = domain;
-      return scale;
-    };
-    scale.setRange = function(range) {
-      internal.range = range;
-      return scale;
-    };
-    scale.getTicks = function(amount) {
-      var reverse, span, start, step, stop, ticks, x, _ref;
-      if (!(internal.domain != null)) {
-        throw new Error('Mynd.Scale.linear: you need to set input domain first');
-      }
-      start = internal.domain[0];
-      stop = internal.domain[1];
-      reverse = internal.domain[1] < internal.domain[0];
-      if (reverse) {
-        _ref = [start, stop], stop = _ref[0], start = _ref[1];
-      }
-      span = stop - start;
-      step = Math.pow(10, Math.floor(Math.log(span / amount) / Math.LN10));
-      x = amount / span * step;
-      if (x <= .15) {
-        step *= 10;
-      } else if (x <= .35) {
-        step *= 5;
-      } else if (x <= .75) {
-        step *= 2;
-      }
-      ticks = [];
-      x = Math.ceil(start / step) * step;
-      while (x <= Math.floor(stop / step) * step + step * .5) {
-        ticks.push(x);
-        x += step;
-      }
-      return ticks;
-    };
-    return scale;
-  })();
-};
-
-mynd = Mynd.Scale.linear().setDomain([0, 1.5]).getTicks(5);
-
-console.log('Mynd', mynd);
-
-/* Create file download with custom content.
-*/
-
-var Exporter, PlainExporter,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-Exporter = (function() {
-
-  Exporter.name = 'Exporter';
-
-  Exporter.prototype.mime = 'text/plain';
-
-  Exporter.prototype.charset = 'UTF-8';
-
-  Exporter.prototype.url = window.webkitURL || window.URL;
-
-  function Exporter(a, data, filename) {
-    var builder;
-    if (filename == null) {
-      filename = 'widget.tsv';
-    }
-    this.destroy = __bind(this.destroy, this);
-
-    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
-    builder.append(data);
-    a.attr('download', filename);
-    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
-    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
-  }
-
-  Exporter.prototype.destroy = function() {
-    return this.url.revokeObjectURL(this.href);
-  };
-
-  return Exporter;
-
-})();
-
-PlainExporter = (function() {
-
-  PlainExporter.name = 'PlainExporter';
-
-  function PlainExporter(a, data) {
-    var w;
-    w = window.open();
-    if (!(w != null) || typeof w === "undefined") {
-      a.after(this.msg = $('<span/>', {
-        'style': 'margin-left:5px',
-        'class': 'label label-inverse',
-        'text': 'Please enable popups'
-      }));
-    } else {
-      w.document.open();
-      w.document.write(data);
-      w.document.close();
-    }
-  }
-
-  PlainExporter.prototype.destroy = function() {
-    var _ref;
-    return (_ref = this.msg) != null ? _ref.fadeOut() : void 0;
-  };
-
-  return PlainExporter;
-
-})();
 
 var factory;
 factory = function(Backbone) {
