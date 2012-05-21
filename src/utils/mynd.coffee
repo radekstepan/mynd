@@ -95,10 +95,36 @@ Mynd.Scale.linear = ->
         # Example: [0, 100] for a column chart bar that is to be at most 100px tall.
         scale.setRange = (range) ->   internal.range = range ; scale
 
+        # Returns approximately count representative values from the scale's input domain. The returned tick values are
+        #  uniformly spaced, have human-readable values (such as multiples of powers of 10), and are guaranteed to be
+        #  within the extent of the input domain.
+        scale.getTicks = (amount) ->
+            if not internal.domain? then throw new Error 'Mynd.Scale.linear: you need to set input domain first'
+
+            start = internal.domain[0] ; stop = internal.domain[1]
+
+            # Do we need to reverse the domain?
+            reverse = internal.domain[1] < internal.domain[0]
+            [stop, start] = [start, stop] if reverse
+
+            span = stop - start
+            step = Math.pow( 10, Math.floor( Math.log( span / amount ) / Math.LN10 ) )
+
+            # Adjust the step.
+            x = amount / span * step
+            if x <= .15 then step *= 10
+            else if x <= .35 then step *= 5
+            else if x <= .75 then step *= 2
+            
+            # Create the ticks list.
+            ticks = []
+            x = Math.ceil(start / step) * step
+            (ticks.push x ; x += step) while x <= Math.floor(stop / step) * step + step * .5
+
+            ticks
+
         scale
     )()
 
-mynd = Mynd.Scale.linear().setDomain([ 0, 3 ]).setRange([ 0, 10 ])
-
-for index in [0..3]
-    console.log mynd index
+mynd = Mynd.Scale.linear().setDomain([ 0, 1.5 ]).getTicks(5)
+console.log 'Mynd', mynd

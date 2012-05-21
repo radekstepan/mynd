@@ -216,6 +216,8 @@ class Chart.Column
         # Color was never an issue.
         domain.color = d3.scale.linear().domain([ 0, @maxValue ]).rangeRound([ 0, @colorbrewer - 1 ])
 
+        console.log 'd3', d3.scale.linear().domain([ 0, 1.5 ]).ticks(5)
+
         # -------------------------------------------------------------------
         # Horizontal lines among ticks.
         for index, tick of domain.ticks
