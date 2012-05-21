@@ -199,30 +199,22 @@ class Chart.Column
             # Make explicit.
             Chart.expliticize text
 
-        # -------------------------------------------------------------------
-        
         # Now that we know the width of the axis, reduce the area width.
         width = width - @ticks.maxWidth
 
-        # Will we (probably) need to rotate the descriptions? Then reduce the @height by the height of one side of the triangle created by a 30 deg rotation.
-        if @description.totalWidth > width then height = height - (@description.maxWidth * @description.triangle.sideA)
-
-        # Update the location of the vertical axis label if present.
-        if @axis?.vertical?
-            labels.select('.vertical')
-            .attr("transform",   "rotate(-90 #{verticalAxisLabelHeight} #{height / 2})")
-            .attr("y",           height / 2)
-
         # -------------------------------------------------------------------
-        # Get the domain as @width & @height are fixed now.
+        # Get the domain.
         domain.x =     Mynd.Scale.ordinal().setDomain([0...@data.length]).setRangeBands([ 0, width ], @padding.barPadding)
-        domain.y =     d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, height ])
-        domain.color = d3.scale.linear().domain([ 0, @maxValue ]).rangeRound([ 0, @colorbrewer - 1 ])
+        
+        # Given this domain and subsequent bar width, will we need to rotate text?
+        if @description.maxWidth > domain['x'].getRangeBand()
+            # ...then reduce the @height by the height of one side of the triangle created by a (future) 30 deg text rotation.
+            height = height - (@description.maxWidth * @description.triangle.sideA)
 
-        console.log '---- d3 ----'
-        doom = d3.scale.linear().domain([ 0, 3 ]).range([ 0, 15.7 ])
-        for value in [1, 2.3, 3]
-            console.log doom value
+        # Height is fixed now.
+        domain.y =     d3.scale.linear().domain([ 0, @maxValue ]).range([ 0, height ])
+        # Color was never an issue.
+        domain.color = d3.scale.linear().domain([ 0, @maxValue ]).rangeRound([ 0, @colorbrewer - 1 ])
 
         # -------------------------------------------------------------------
         # Horizontal lines among ticks.
@@ -387,8 +379,14 @@ class Chart.Column
             # Update the position of the description text wrapping `g` element.
             descG.attr('transform', "translate(#{x},#{height + descriptionTextHeight})")
 
-        # If we have used vertical axis, shift the whole shebang to the right.
+        # If vertical axis present...
         if @axis?.vertical?
+            # Update its location
+            labels.select('.vertical')
+            .attr("transform",   "rotate(-90 #{verticalAxisLabelHeight} #{height / 2})")
+            .attr("y",           height / 2)
+
+            # Shift the whole shebang to the right.
             grid.attr('transform', "translate(#{verticalAxisLabelHeight + @padding.axisLabels}, 0)")
             chart.attr('transform', "translate(#{verticalAxisLabelHeight + @padding.axisLabels}, 0)")
             descriptions.attr('transform', "translate(#{verticalAxisLabelHeight + @padding.axisLabels}, 0)")

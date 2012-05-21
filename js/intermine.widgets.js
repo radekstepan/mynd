@@ -4,7 +4,7 @@ var o = {};
 var JST = {};
 JST["error.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="alert alert-block">\n    <h4 class="alert-heading">'),b.push(d(this.title)),b.push(" for "),b.push(d(this.name)),b.push("</h4>\n    <p>"),b.push(this.text),b.push("</p>\n</div>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["actions.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<a class="btn btn-small '),this.disabled&&b.push("disabled"),b.push(' view">View</a>\n<a class="btn btn-small '),this.disabled&&b.push("disabled"),b.push(' export">Download</a>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["extra.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f;b.push('<div class="group" style="display:inline-block;margin-right:5px;float:left">\n    <label>'),b.push(d(this.label)),b.push("</label>\n    ");if(this.possible.length>1){b.push('\n        <select name="'),b.push(d(this.label)),b.push('" class="span2">\n            '),f=this.possible;for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n                <option value="'),b.push(d(a)),b.push('" '),this.selected===a&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(a)),b.push("\n                </option>\n            ");b.push("\n        </select>\n    ")}else b.push("\n        "),b.push(d(this.possible[0])),b.push("\n    ");b.push("\n</div>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
+JST["extra.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f;b.push('<div class="group" style="display:inline-block;margin:0 5px 10px 0;float:left">\n    <label>'),b.push(d(this.label)),b.push("</label>\n    ");if(this.possible.length>1){b.push('\n        <select name="'),b.push(d(this.label)),b.push('" class="span2">\n            '),f=this.possible;for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n                <option value="'),b.push(d(a)),b.push('" '),this.selected===a&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(a)),b.push("\n                </option>\n            ");b.push("\n        </select>\n    ")}else b.push("\n        "),b.push(d(this.possible[0])),b.push("\n    ");b.push('\n</div>\n<div style="clear:both"></div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["noresults.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="alert alert-info">\n    <p>The Widget has no results.</p>\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["loading.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="loading" style="background:rgba(255,255,255,0.9);position:absolute;top:0;left:0;height:100%;width:100%;text-align:center;">\n    <p style="padding-top:50%;font-weight:bold;">Loading &hellip;</p>\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
 JST["invalidjsonkey.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<li style="vertical-align:bottom">\n    <span style="display:inline-block" class="label label-important">'),b.push(d(this.key)),b.push("</span> is "),b.push(d(this.actual)),b.push("; was expecting "),b.push(d(this.expected)),b.push("\n</li>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
@@ -189,23 +189,6 @@ type.isUndefined = (function(_super) {
 
 })(type.Root);
 
-/* Merge properties of 2 dictionaries.
-*/
-
-var merge;
-
-merge = function(child, parent) {
-  var key;
-  for (key in parent) {
-    if (!(child[key] != null)) {
-      if (Object.prototype.hasOwnProperty.call(parent, key)) {
-        child[key] = parent[key];
-      }
-    }
-  }
-  return child;
-};
-
 var Chart;
 
 Chart = {
@@ -276,7 +259,7 @@ Chart.Column = (function() {
   }
 
   Column.prototype.render = function() {
-    var bar, barHeight, barValueHeight, barWidth, bars, canvas, chart, color, desc, descG, descriptionTextHeight, descriptions, domain, doom, g, grid, group, groupValue, height, index, key, labels, line, series, t, text, textWidth, tick, ty, value, values, verticalAxisLabelHeight, w, width, x, y, _i, _j, _k, _l, _len, _len1, _len2, _ref, _ref1, _ref10, _ref11, _ref12, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results,
+    var bar, barHeight, barValueHeight, barWidth, bars, canvas, chart, color, desc, descG, descriptionTextHeight, descriptions, domain, g, grid, group, groupValue, height, index, key, labels, line, series, t, text, textWidth, tick, ty, value, values, verticalAxisLabelHeight, w, width, x, y, _i, _j, _k, _len, _len1, _ref, _ref1, _ref10, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9, _results,
       _this = this;
     height = this.height;
     width = this.width;
@@ -380,29 +363,19 @@ Chart.Column = (function() {
       Chart.expliticize(text);
     }
     width = width - this.ticks.maxWidth;
-    if (this.description.totalWidth > width) {
-      height = height - (this.description.maxWidth * this.description.triangle.sideA);
-    }
-    if (((_ref6 = this.axis) != null ? _ref6.vertical : void 0) != null) {
-      labels.select('.vertical').attr("transform", "rotate(-90 " + verticalAxisLabelHeight + " " + (height / 2) + ")").attr("y", height / 2);
-    }
     domain.x = Mynd.Scale.ordinal().setDomain((function() {
       _results = [];
-      for (var _k = 0, _ref7 = this.data.length; 0 <= _ref7 ? _k < _ref7 : _k > _ref7; 0 <= _ref7 ? _k++ : _k--){ _results.push(_k); }
+      for (var _k = 0, _ref6 = this.data.length; 0 <= _ref6 ? _k < _ref6 : _k > _ref6; 0 <= _ref6 ? _k++ : _k--){ _results.push(_k); }
       return _results;
     }).apply(this)).setRangeBands([0, width], this.padding.barPadding);
+    if (this.description.maxWidth > domain['x'].getRangeBand()) {
+      height = height - (this.description.maxWidth * this.description.triangle.sideA);
+    }
     domain.y = d3.scale.linear().domain([0, this.maxValue]).range([0, height]);
     domain.color = d3.scale.linear().domain([0, this.maxValue]).rangeRound([0, this.colorbrewer - 1]);
-    console.log('---- d3 ----');
-    doom = d3.scale.linear().domain([0, 3]).range([0, 15.7]);
-    _ref8 = [1, 2.3, 3];
-    for (_l = 0, _len2 = _ref8.length; _l < _len2; _l++) {
-      value = _ref8[_l];
-      console.log(doom(value));
-    }
-    _ref9 = domain.ticks;
-    for (index in _ref9) {
-      tick = _ref9[index];
+    _ref7 = domain.ticks;
+    for (index in _ref7) {
+      tick = _ref7[index];
       t = grid.select(".t" + index);
       line = t.append("svg:line").attr("class", "line").attr("x1", this.ticks.maxWidth).attr("x2", width + this.ticks.maxWidth);
       Chart.expliticize(line);
@@ -411,9 +384,9 @@ Chart.Column = (function() {
     chart = canvas.append("svg:g").attr("class", "chart");
     bars = chart.append("svg:g").attr("class", "bars");
     values = chart.append("svg:g").attr("class", "values");
-    _ref10 = this.data;
-    for (index in _ref10) {
-      group = _ref10[index];
+    _ref8 = this.data;
+    for (index in _ref8) {
+      group = _ref8[index];
       g = bars.append("svg:g").attr("class", "g" + index);
       barWidth = domain['x'].getRangeBand();
       if (!this.isStacked) {
@@ -427,9 +400,9 @@ Chart.Column = (function() {
         })();
       }
       y = height;
-      _ref11 = group.data;
-      for (series in _ref11) {
-        value = _ref11[series];
+      _ref9 = group.data;
+      for (series in _ref9) {
+        value = _ref9[series];
         barHeight = domain['y'](value);
         if (!barHeight && this.isStacked) {
           continue;
@@ -496,7 +469,8 @@ Chart.Column = (function() {
       }
       descG.attr('transform', "translate(" + x + "," + (height + descriptionTextHeight) + ")");
     }
-    if (((_ref12 = this.axis) != null ? _ref12.vertical : void 0) != null) {
+    if (((_ref10 = this.axis) != null ? _ref10.vertical : void 0) != null) {
+      labels.select('.vertical').attr("transform", "rotate(-90 " + verticalAxisLabelHeight + " " + (height / 2) + ")").attr("y", height / 2);
       grid.attr('transform', "translate(" + (verticalAxisLabelHeight + this.padding.axisLabels) + ", 0)");
       chart.attr('transform', "translate(" + (verticalAxisLabelHeight + this.padding.axisLabels) + ", 0)");
       return descriptions.attr('transform', "translate(" + (verticalAxisLabelHeight + this.padding.axisLabels) + ", 0)");
@@ -610,6 +584,23 @@ Chart.Settings = (function() {
   return Settings;
 
 })();
+
+/* Merge properties of 2 dictionaries.
+*/
+
+var merge;
+
+merge = function(child, parent) {
+  var key;
+  for (key in parent) {
+    if (!(child[key] != null)) {
+      if (Object.prototype.hasOwnProperty.call(parent, key)) {
+        child[key] = parent[key];
+      }
+    }
+  }
+  return child;
+};
 
 /* <IE9 does not have a whole lot of JS functions.
 */
@@ -760,7 +751,7 @@ if (!("some" in Array.prototype)) {
   };
 }
 
-var Mynd, mynd, value, _i, _len, _ref;
+var Mynd, mynd;
 
 Mynd = {};
 
@@ -873,14 +864,6 @@ Mynd.Scale.linear = function() {
 };
 
 mynd = Mynd.Scale.linear().domain([0, 3]).range([0, 15.7]);
-
-console.log('---- mynd ----');
-
-_ref = [1, 2.3, 3];
-for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-  value = _ref[_i];
-  console.log(mynd(value));
-}
 
 /* Create file download with custom content.
 */

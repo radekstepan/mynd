@@ -102,7 +102,3 @@ Mynd.Scale.linear = ->
     )()
 
 mynd = Mynd.Scale.linear().domain([ 0, 3 ]).range([ 0, 15.7 ])
-
-console.log '---- mynd ----'
-for value in [1, 2.3, 3]
-    console.log mynd value
