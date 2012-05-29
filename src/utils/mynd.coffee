@@ -1,3 +1,177 @@
+temp = {}
+
+temp_selectionPrototype = []
+
+temp.selection = -> temp_selectionRoot
+
+temp.selection:: = temp_selectionPrototype
+
+temp_select = (s, n) -> n.querySelector s
+
+temp_selection_selector = (selector) ->
+  ->
+    temp_select selector, this
+
+temp_selectionPrototype.select = (selector) ->
+  subgroups = []
+  subgroup = undefined
+  subnode = undefined
+  group = undefined
+  node = undefined
+  selector = temp_selection_selector(selector) if typeof selector isnt "function"
+  j = -1
+  m = @length
+
+  while ++j < m
+    subgroups.push subgroup = []
+    subgroup.parentNode = (group = this[j]).parentNode
+    i = -1
+    n = group.length
+
+    while ++i < n
+      if node = group[i]
+        subgroup.push subnode = selector.call(node, node.__data__, i)
+        subnode.__data__ = node.__data__  if subnode and "__data__" of node
+      else
+        subgroup.push null
+  
+  temp_selection subgroups
+
+temp_selectionPrototype.append = (name) ->
+  append = ->
+    @appendChild document.createElementNS(@namespaceURI, name)
+  appendNS = ->
+    @appendChild document.createElementNS(name.space, name.local)
+  name = temp.ns.qualify(name)
+  @select (if name.local then appendNS else append)
+
+temp_nsPrefix =
+  svg: "http://www.w3.org/2000/svg"
+  xhtml: "http://www.w3.org/1999/xhtml"
+  xlink: "http://www.w3.org/1999/xlink"
+  xml: "http://www.w3.org/XML/1998/namespace"
+  xmlns: "http://www.w3.org/2000/xmlns/"
+
+temp.ns =
+  prefix: temp_nsPrefix
+  qualify: (name) ->
+    i = name.indexOf(":")
+    prefix = name
+    if i >= 0
+      prefix = name.substring(0, i)
+      name = name.substring(i + 1)
+    (if temp_nsPrefix.hasOwnProperty(prefix)
+      space: temp_nsPrefix[prefix]
+      local: name
+     else name)
+
+temp_selectionPrototype.attr = (name, value) ->
+  attrNull = ->
+    @removeAttribute name
+  attrNullNS = ->
+    @removeAttributeNS name.space, name.local
+  attrConstant = ->
+    @setAttribute name, value
+  attrConstantNS = ->
+    @setAttributeNS name.space, name.local, value
+  attrFunction = ->
+    x = value.apply(this, arguments)
+    unless x?
+      @removeAttribute name
+    else
+      @setAttribute name, x
+  attrFunctionNS = ->
+    x = value.apply(this, arguments)
+    unless x?
+      @removeAttributeNS name.space, name.local
+    else
+      @setAttributeNS name.space, name.local, x
+  name = temp.ns.qualify(name)
+  if arguments.length < 2
+    node = @node()
+    return (if name.local then node.getAttributeNS(name.space, name.local) else node.getAttribute(name))
+  @each (if not value? then (if name.local then attrNullNS else attrNull) else (if typeof value is "function" then (if name.local then attrFunctionNS else attrFunction) else (if name.local then attrConstantNS else attrConstant)))
+
+temp_selectionPrototype.each = (callback) ->
+  j = -1
+  m = @length
+
+  while ++j < m
+    group = this[j]
+    i = -1
+    n = group.length
+
+    while ++i < n
+      node = group[i]
+      callback.call node, node.__data__, i, j  if node
+  this
+
+temp_selectionPrototype.text = (value) ->
+  (if arguments.length < 1 then @node().textContent else @each((if typeof value is "function" then ->
+    v = value.apply(this, arguments)
+    @textContent = (if not v? then "" else v)
+   else (if not value? then ->
+    @textContent = ""
+   else ->
+    @textContent = value
+  ))))
+
+temp_selectionPrototype.node = (callback) ->
+  j = 0
+  m = @length
+
+  while j < m
+    group = this[j]
+    i = 0
+    n = group.length
+
+    while i < n
+      node = group[i]
+      return node  if node
+      i++
+    j++
+  null
+
+temp_selectionPrototype.on = (type, listener, capture) ->
+  capture = false  if arguments.length < 3
+  name = "__on" + type
+  i = type.indexOf(".")
+  type = type.substring(0, i)  if i > 0
+  return (i = @node()[name]) and i._  if arguments.length < 2
+  @each (d, i) ->
+    l = (e) ->
+      o = d3.event
+      d3.event = e
+      try
+        listener.call node, node.__data__, i
+      finally
+        d3.event = o
+    node = this
+    o = node[name]
+    if o
+      node.removeEventListener type, o, o.$
+      delete node[name]
+    if listener
+      node.addEventListener type, node[name] = l, l.$ = capture
+      l._ = listener
+
+temp_selection = (groups) ->
+  groups.__proto__ = temp_selectionPrototype
+  return groups;
+
+temp_selectionRoot = temp_selection([ [ document ] ])
+
+temp_selectRoot = document.documentElement
+
+temp_selectionRoot[0].parentNode = temp_selectRoot
+
+temp.select = (selector) ->
+    if typeof selector is "string"
+        return temp_selectionRoot.select(selector)
+    else
+        return temp_selection([ [ selector ] ])
+
+
 ## Mynd/Chart means/þýðir chart/mynd in/í icelandic/íslensku
 Mynd = {}
 Mynd.Scale = {}

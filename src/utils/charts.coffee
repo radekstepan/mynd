@@ -300,7 +300,7 @@ class Chart.Column
                 .attr('width',  barWidth)
                 .attr('height', barHeight)
 
-                bar.transition().attr('opacity', 1)
+                bar.attr('opacity', 1)
 
                 # Make explicit.
                 Chart.expliticize bar
@@ -393,11 +393,11 @@ class Chart.Column
 
     hideSeries: (series) ->
         d3.select(@el[0]).selectAll(".s#{series}")
-        .transition().attr('fill-opacity', 0.1 )
+        .attr('fill-opacity', 0.1 )
 
     showSeries: (series) ->
         d3.select(@el[0]).selectAll(".s#{series}")
-        .transition().attr('fill-opacity', 1 )
+        .attr('fill-opacity', 1 )
 
     toPNG: () -> Chart.toPNG @el, @width, @height
 

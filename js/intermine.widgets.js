@@ -206,155 +206,6 @@ merge = function(child, parent) {
   return child;
 };
 
-/* <IE9 does not have a whole lot of JS functions.
-*/
-
-if (!("bind" in Function.prototype)) {
-  Function.prototype.bind = function(owner) {
-    var args, that;
-    that = this;
-    if (arguments.length <= 1) {
-      return function() {
-        return that.apply(owner, arguments);
-      };
-    } else {
-      args = Array.prototype.slice.call(arguments, 1);
-      return function() {
-        return that.apply(owner, (arguments.length === 0 ? args : args.concat(Array.prototype.slice.call(arguments))));
-      };
-    }
-  };
-}
-
-if (!("trim" in String.prototype)) {
-  String.prototype.trim = function() {
-    return this.replace(/^\s+/, "").replace(/\s+$/, "");
-  };
-}
-
-if (!("indexOf" in Array.prototype)) {
-  Array.prototype.indexOf = function(find, i) {
-    var n;
-    if (i === undefined) {
-      i = 0;
-    }
-    if (i < 0) {
-      i += this.length;
-    }
-    if (i < 0) {
-      i = 0;
-    }
-    n = this.length;
-    while (i < n) {
-      if (i in this && this[i] === find) {
-        return i;
-      }
-      i++;
-    }
-    return -1;
-  };
-}
-
-if (!("lastIndexOf" in Array.prototype)) {
-  Array.prototype.lastIndexOf = function(find, i) {
-    if (i === undefined) {
-      i = this.length - 1;
-    }
-    if (i < 0) {
-      i += this.length;
-    }
-    if (i > this.length - 1) {
-      i = this.length - 1;
-    }
-    i++;
-    while (i-- > 0) {
-      if (i in this && this[i] === find) {
-        return i;
-      }
-    }
-    return -1;
-  };
-}
-
-if (!("forEach" in Array.prototype)) {
-  Array.prototype.forEach = function(action, that) {
-    var i, n, _results;
-    i = 0;
-    n = this.length;
-    _results = [];
-    while (i < n) {
-      if (i in this) {
-        action.call(that, this[i], i, this);
-      }
-      _results.push(i++);
-    }
-    return _results;
-  };
-}
-
-if (!("map" in Array.prototype)) {
-  Array.prototype.map = function(mapper, that) {
-    var i, n, other;
-    other = new Array(this.length);
-    i = 0;
-    n = this.length;
-    while (i < n) {
-      if (i in this) {
-        other[i] = mapper.call(that, this[i], i, this);
-      }
-      i++;
-    }
-    return other;
-  };
-}
-
-if (!("filter" in Array.prototype)) {
-  Array.prototype.filter = function(filter, that) {
-    var i, n, other, v;
-    other = [];
-    v = void 0;
-    i = 0;
-    n = this.length;
-    while (i < n) {
-      if (i in this && filter.call(that, v = this[i], i, this)) {
-        other.push(v);
-      }
-      i++;
-    }
-    return other;
-  };
-}
-
-if (!("every" in Array.prototype)) {
-  Array.prototype.every = function(tester, that) {
-    var i, n;
-    i = 0;
-    n = this.length;
-    while (i < n) {
-      if (i in this && !tester.call(that, this[i], i, this)) {
-        return false;
-      }
-      i++;
-    }
-    return true;
-  };
-}
-
-if (!("some" in Array.prototype)) {
-  Array.prototype.some = function(tester, that) {
-    var i, n;
-    i = 0;
-    n = this.length;
-    while (i < n) {
-      if (i in this && tester.call(that, this[i], i, this)) {
-        return true;
-      }
-      i++;
-    }
-    return false;
-  };
-}
-
 var Chart;
 
 Chart = {
@@ -583,7 +434,7 @@ Chart.Column = (function() {
         y = y - barHeight;
         color = domain['color'](value).toFixed(0);
         bar = g.append("svg:rect").attr("class", "bar s" + series + " q" + color + "-" + this.colorbrewer).attr('x', x).attr('y', y).attr('width', barWidth).attr('height', barHeight);
-        bar.transition().attr('opacity', 1);
+        bar.attr('opacity', 1);
         Chart.expliticize(bar);
         w = values.append("svg:g").attr('class', "g" + index + " s" + series + " q" + color + "-" + this.colorbrewer);
         text = w.append("svg:text").attr('x', x + (barWidth / 2)).attr("text-anchor", "middle").text(value);
@@ -644,11 +495,11 @@ Chart.Column = (function() {
   };
 
   Column.prototype.hideSeries = function(series) {
-    return d3.select(this.el[0]).selectAll(".s" + series).transition().attr('fill-opacity', 0.1);
+    return d3.select(this.el[0]).selectAll(".s" + series).attr('fill-opacity', 0.1);
   };
 
   Column.prototype.showSeries = function(series) {
-    return d3.select(this.el[0]).selectAll(".s" + series).transition().attr('fill-opacity', 1);
+    return d3.select(this.el[0]).selectAll(".s" + series).attr('fill-opacity', 1);
   };
 
   Column.prototype.toPNG = function() {
@@ -751,7 +602,399 @@ Chart.Settings = (function() {
 
 })();
 
-var Mynd;
+/* <IE9 does not have a whole lot of JS functions.
+*/
+
+if (!("bind" in Function.prototype)) {
+  Function.prototype.bind = function(owner) {
+    var args, that;
+    that = this;
+    if (arguments.length <= 1) {
+      return function() {
+        return that.apply(owner, arguments);
+      };
+    } else {
+      args = Array.prototype.slice.call(arguments, 1);
+      return function() {
+        return that.apply(owner, (arguments.length === 0 ? args : args.concat(Array.prototype.slice.call(arguments))));
+      };
+    }
+  };
+}
+
+if (!("trim" in String.prototype)) {
+  String.prototype.trim = function() {
+    return this.replace(/^\s+/, "").replace(/\s+$/, "");
+  };
+}
+
+if (!("indexOf" in Array.prototype)) {
+  Array.prototype.indexOf = function(find, i) {
+    var n;
+    if (i === undefined) {
+      i = 0;
+    }
+    if (i < 0) {
+      i += this.length;
+    }
+    if (i < 0) {
+      i = 0;
+    }
+    n = this.length;
+    while (i < n) {
+      if (i in this && this[i] === find) {
+        return i;
+      }
+      i++;
+    }
+    return -1;
+  };
+}
+
+if (!("lastIndexOf" in Array.prototype)) {
+  Array.prototype.lastIndexOf = function(find, i) {
+    if (i === undefined) {
+      i = this.length - 1;
+    }
+    if (i < 0) {
+      i += this.length;
+    }
+    if (i > this.length - 1) {
+      i = this.length - 1;
+    }
+    i++;
+    while (i-- > 0) {
+      if (i in this && this[i] === find) {
+        return i;
+      }
+    }
+    return -1;
+  };
+}
+
+if (!("forEach" in Array.prototype)) {
+  Array.prototype.forEach = function(action, that) {
+    var i, n, _results;
+    i = 0;
+    n = this.length;
+    _results = [];
+    while (i < n) {
+      if (i in this) {
+        action.call(that, this[i], i, this);
+      }
+      _results.push(i++);
+    }
+    return _results;
+  };
+}
+
+if (!("map" in Array.prototype)) {
+  Array.prototype.map = function(mapper, that) {
+    var i, n, other;
+    other = new Array(this.length);
+    i = 0;
+    n = this.length;
+    while (i < n) {
+      if (i in this) {
+        other[i] = mapper.call(that, this[i], i, this);
+      }
+      i++;
+    }
+    return other;
+  };
+}
+
+if (!("filter" in Array.prototype)) {
+  Array.prototype.filter = function(filter, that) {
+    var i, n, other, v;
+    other = [];
+    v = void 0;
+    i = 0;
+    n = this.length;
+    while (i < n) {
+      if (i in this && filter.call(that, v = this[i], i, this)) {
+        other.push(v);
+      }
+      i++;
+    }
+    return other;
+  };
+}
+
+if (!("every" in Array.prototype)) {
+  Array.prototype.every = function(tester, that) {
+    var i, n;
+    i = 0;
+    n = this.length;
+    while (i < n) {
+      if (i in this && !tester.call(that, this[i], i, this)) {
+        return false;
+      }
+      i++;
+    }
+    return true;
+  };
+}
+
+if (!("some" in Array.prototype)) {
+  Array.prototype.some = function(tester, that) {
+    var i, n;
+    i = 0;
+    n = this.length;
+    while (i < n) {
+      if (i in this && tester.call(that, this[i], i, this)) {
+        return true;
+      }
+      i++;
+    }
+    return false;
+  };
+}
+
+var Mynd, temp, temp_nsPrefix, temp_select, temp_selectRoot, temp_selection, temp_selectionPrototype, temp_selectionRoot, temp_selection_selector;
+
+temp = {};
+
+temp_selectionPrototype = [];
+
+temp.selection = function() {
+  return temp_selectionRoot;
+};
+
+temp.selection.prototype = temp_selectionPrototype;
+
+temp_select = function(s, n) {
+  return n.querySelector(s);
+};
+
+temp_selection_selector = function(selector) {
+  return function() {
+    return temp_select(selector, this);
+  };
+};
+
+temp_selectionPrototype.select = function(selector) {
+  var group, i, j, m, n, node, subgroup, subgroups, subnode;
+  subgroups = [];
+  subgroup = void 0;
+  subnode = void 0;
+  group = void 0;
+  node = void 0;
+  if (typeof selector !== "function") {
+    selector = temp_selection_selector(selector);
+  }
+  j = -1;
+  m = this.length;
+  while (++j < m) {
+    subgroups.push(subgroup = []);
+    subgroup.parentNode = (group = this[j]).parentNode;
+    i = -1;
+    n = group.length;
+    while (++i < n) {
+      if (node = group[i]) {
+        subgroup.push(subnode = selector.call(node, node.__data__, i));
+        if (subnode && "__data__" in node) {
+          subnode.__data__ = node.__data__;
+        }
+      } else {
+        subgroup.push(null);
+      }
+    }
+  }
+  return temp_selection(subgroups);
+};
+
+temp_selectionPrototype.append = function(name) {
+  var append, appendNS;
+  append = function() {
+    return this.appendChild(document.createElementNS(this.namespaceURI, name));
+  };
+  appendNS = function() {
+    return this.appendChild(document.createElementNS(name.space, name.local));
+  };
+  name = temp.ns.qualify(name);
+  return this.select((name.local ? appendNS : append));
+};
+
+temp_nsPrefix = {
+  svg: "http://www.w3.org/2000/svg",
+  xhtml: "http://www.w3.org/1999/xhtml",
+  xlink: "http://www.w3.org/1999/xlink",
+  xml: "http://www.w3.org/XML/1998/namespace",
+  xmlns: "http://www.w3.org/2000/xmlns/"
+};
+
+temp.ns = {
+  prefix: temp_nsPrefix,
+  qualify: function(name) {
+    var i, prefix;
+    i = name.indexOf(":");
+    prefix = name;
+    if (i >= 0) {
+      prefix = name.substring(0, i);
+      name = name.substring(i + 1);
+    }
+    if (temp_nsPrefix.hasOwnProperty(prefix)) {
+      return {
+        space: temp_nsPrefix[prefix],
+        local: name
+      };
+    } else {
+      return name;
+    }
+  }
+};
+
+temp_selectionPrototype.attr = function(name, value) {
+  var attrConstant, attrConstantNS, attrFunction, attrFunctionNS, attrNull, attrNullNS, node;
+  attrNull = function() {
+    return this.removeAttribute(name);
+  };
+  attrNullNS = function() {
+    return this.removeAttributeNS(name.space, name.local);
+  };
+  attrConstant = function() {
+    return this.setAttribute(name, value);
+  };
+  attrConstantNS = function() {
+    return this.setAttributeNS(name.space, name.local, value);
+  };
+  attrFunction = function() {
+    var x;
+    x = value.apply(this, arguments);
+    if (x == null) {
+      return this.removeAttribute(name);
+    } else {
+      return this.setAttribute(name, x);
+    }
+  };
+  attrFunctionNS = function() {
+    var x;
+    x = value.apply(this, arguments);
+    if (x == null) {
+      return this.removeAttributeNS(name.space, name.local);
+    } else {
+      return this.setAttributeNS(name.space, name.local, x);
+    }
+  };
+  name = temp.ns.qualify(name);
+  if (arguments.length < 2) {
+    node = this.node();
+    return (name.local ? node.getAttributeNS(name.space, name.local) : node.getAttribute(name));
+  }
+  return this.each((!(value != null) ? (name.local ? attrNullNS : attrNull) : (typeof value === "function" ? (name.local ? attrFunctionNS : attrFunction) : (name.local ? attrConstantNS : attrConstant))));
+};
+
+temp_selectionPrototype.each = function(callback) {
+  var group, i, j, m, n, node;
+  j = -1;
+  m = this.length;
+  while (++j < m) {
+    group = this[j];
+    i = -1;
+    n = group.length;
+    while (++i < n) {
+      node = group[i];
+      if (node) {
+        callback.call(node, node.__data__, i, j);
+      }
+    }
+  }
+  return this;
+};
+
+temp_selectionPrototype.text = function(value) {
+  if (arguments.length < 1) {
+    return this.node().textContent;
+  } else {
+    return this.each((typeof value === "function" ? function() {
+      var v;
+      v = value.apply(this, arguments);
+      return this.textContent = (!(v != null) ? "" : v);
+    } : (!(value != null) ? function() {
+      return this.textContent = "";
+    } : function() {
+      return this.textContent = value;
+    })));
+  }
+};
+
+temp_selectionPrototype.node = function(callback) {
+  var group, i, j, m, n, node;
+  j = 0;
+  m = this.length;
+  while (j < m) {
+    group = this[j];
+    i = 0;
+    n = group.length;
+    while (i < n) {
+      node = group[i];
+      if (node) {
+        return node;
+      }
+      i++;
+    }
+    j++;
+  }
+  return null;
+};
+
+temp_selectionPrototype.on = function(type, listener, capture) {
+  var i, name;
+  if (arguments.length < 3) {
+    capture = false;
+  }
+  name = "__on" + type;
+  i = type.indexOf(".");
+  if (i > 0) {
+    type = type.substring(0, i);
+  }
+  if (arguments.length < 2) {
+    return (i = this.node()[name]) && i._;
+  }
+  return this.each(function(d, i) {
+    var l, node, o;
+    l = function(e) {
+      var o;
+      o = d3.event;
+      d3.event = e;
+      try {
+        return listener.call(node, node.__data__, i);
+      } finally {
+        d3.event = o;
+      }
+    };
+    node = this;
+    o = node[name];
+    if (o) {
+      node.removeEventListener(type, o, o.$);
+      delete node[name];
+    }
+    if (listener) {
+      node.addEventListener(type, node[name] = l, l.$ = capture);
+      return l._ = listener;
+    }
+  });
+};
+
+temp_selection = function(groups) {
+  groups.__proto__ = temp_selectionPrototype;
+  return groups;
+};
+
+temp_selectionRoot = temp_selection([[document]]);
+
+temp_selectRoot = document.documentElement;
+
+temp_selectionRoot[0].parentNode = temp_selectRoot;
+
+temp.select = function(selector) {
+  if (typeof selector === "string") {
+    return temp_selectionRoot.select(selector);
+  } else {
+    return temp_selection([[selector]]);
+  }
+};
 
 Mynd = {};
 
