@@ -1,3 +1,8 @@
+## Mynd/Chart means/þýðir chart/mynd in/í icelandic/íslensku
+Mynd = {}
+Mynd.Scale = {}
+
+
 temp = {}
 
 temp_selectionPrototype = []
@@ -8,9 +13,15 @@ temp.selection:: = temp_selectionPrototype
 
 temp_select = (s, n) -> n.querySelector s
 
+temp_selectAll = (s, n) -> n.querySelectorAll s
+
 temp_selection_selector = (selector) ->
     ->
         temp_select selector, @
+
+temp_selection_selectorAll = (selector) ->
+    ->
+        temp_selectAll selector, @
 
 temp_selectionPrototype.select = (selector) ->
     subgroups = []
@@ -35,6 +46,26 @@ temp_selectionPrototype.select = (selector) ->
             else
                 subgroup.push null
       
+    temp_selection subgroups
+
+temp_selectionPrototype.selectAll = (selector) ->
+    subgroups = []
+    subgroup = undefined
+    node = undefined
+    selector = temp_selection_selectorAll(selector) if typeof selector isnt "function"
+    j = -1
+    m = @length
+
+    while ++j < m
+        group = @[j]
+        i = -1
+        n = group.length
+
+        while ++i < n
+            if node = group[i]
+                subgroups.push subgroup = temp_array(selector.call(node, node.__data__, i))
+                subgroup.parentNode = node
+    
     temp_selection subgroups
 
 temp_selectionPrototype.append = (name) ->
@@ -195,16 +226,35 @@ temp_selectRoot = document.documentElement
 
 temp_selectionRoot[0].parentNode = temp_selectRoot
 
-temp.select = (selector) ->
+temp_arraySlice = (pseudoarray) ->
+    Array::slice.call pseudoarray
+
+temp_arrayCopy = (pseudoarray) ->
+    i = -1
+    n = pseudoarray.length
+    array = []
+    array.push pseudoarray[i] while ++i < n
+    array
+
+try
+    temp_array(document.documentElement.childNodes)[0].nodeType
+catch e
+    temp_array = temp_arrayCopy
+
+temp_array = temp_arraySlice
+
+Mynd.selectAll = (selector) ->
+    if typeof selector is "string"
+        temp_selectionRoot.selectAll(selector)
+    else
+        temp_selection([ temp_array(selector) ])
+
+Mynd.select = (selector) ->
     if typeof selector is "string"
         return temp_selectionRoot.select(selector)
     else
         return temp_selection([ [ selector ] ])
 
-
-## Mynd/Chart means/þýðir chart/mynd in/í icelandic/íslensku
-Mynd = {}
-Mynd.Scale = {}
 
 # Ordinal scales have a discrete domain (chart bars).
 Mynd.Scale.ordinal = ->

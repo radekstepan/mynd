@@ -281,7 +281,7 @@ Chart.Column = (function() {
     height = this.height;
     width = this.width;
     $(this.el).empty();
-    canvas = d3.select(this.el[0]).append('svg:svg').attr('class', 'canvas');
+    canvas = Mynd.select(this.el[0]).append('svg:svg').attr('class', 'canvas');
     this.useWholeNumbers = true;
     this.maxValue = -Infinity;
     if (this.isStacked) {
@@ -495,11 +495,11 @@ Chart.Column = (function() {
   };
 
   Column.prototype.hideSeries = function(series) {
-    return d3.select(this.el[0]).selectAll(".s" + series).attr('fill-opacity', 0.1);
+    return Mynd.select(this.el[0]).selectAll(".s" + series).attr('fill-opacity', 0.1);
   };
 
   Column.prototype.showSeries = function(series) {
-    return d3.select(this.el[0]).selectAll(".s" + series).attr('fill-opacity', 1);
+    return Mynd.select(this.el[0]).selectAll(".s" + series).attr('fill-opacity', 1);
   };
 
   Column.prototype.toPNG = function() {
@@ -751,7 +751,11 @@ if (!("some" in Array.prototype)) {
   };
 }
 
-var Mynd, temp, temp_nsPrefix, temp_select, temp_selectRoot, temp_selection, temp_selectionPrototype, temp_selectionRoot, temp_selection_selector;
+var Mynd, temp, temp_array, temp_arrayCopy, temp_arraySlice, temp_nsPrefix, temp_select, temp_selectAll, temp_selectRoot, temp_selection, temp_selectionPrototype, temp_selectionRoot, temp_selection_selector, temp_selection_selectorAll;
+
+Mynd = {};
+
+Mynd.Scale = {};
 
 temp = {};
 
@@ -767,9 +771,19 @@ temp_select = function(s, n) {
   return n.querySelector(s);
 };
 
+temp_selectAll = function(s, n) {
+  return n.querySelectorAll(s);
+};
+
 temp_selection_selector = function(selector) {
   return function() {
     return temp_select(selector, this);
+  };
+};
+
+temp_selection_selectorAll = function(selector) {
+  return function() {
+    return temp_selectAll(selector, this);
   };
 };
 
@@ -798,6 +812,30 @@ temp_selectionPrototype.select = function(selector) {
         }
       } else {
         subgroup.push(null);
+      }
+    }
+  }
+  return temp_selection(subgroups);
+};
+
+temp_selectionPrototype.selectAll = function(selector) {
+  var group, i, j, m, n, node, subgroup, subgroups;
+  subgroups = [];
+  subgroup = void 0;
+  node = void 0;
+  if (typeof selector !== "function") {
+    selector = temp_selection_selectorAll(selector);
+  }
+  j = -1;
+  m = this.length;
+  while (++j < m) {
+    group = this[j];
+    i = -1;
+    n = group.length;
+    while (++i < n) {
+      if (node = group[i]) {
+        subgroups.push(subgroup = temp_array(selector.call(node, node.__data__, i)));
+        subgroup.parentNode = node;
       }
     }
   }
@@ -1020,17 +1058,44 @@ temp_selectRoot = document.documentElement;
 
 temp_selectionRoot[0].parentNode = temp_selectRoot;
 
-temp.select = function(selector) {
+temp_arraySlice = function(pseudoarray) {
+  return Array.prototype.slice.call(pseudoarray);
+};
+
+temp_arrayCopy = function(pseudoarray) {
+  var array, i, n;
+  i = -1;
+  n = pseudoarray.length;
+  array = [];
+  while (++i < n) {
+    array.push(pseudoarray[i]);
+  }
+  return array;
+};
+
+try {
+  temp_array(document.documentElement.childNodes)[0].nodeType;
+} catch (e) {
+  temp_array = temp_arrayCopy;
+}
+
+temp_array = temp_arraySlice;
+
+Mynd.selectAll = function(selector) {
+  if (typeof selector === "string") {
+    return temp_selectionRoot.selectAll(selector);
+  } else {
+    return temp_selection([temp_array(selector)]);
+  }
+};
+
+Mynd.select = function(selector) {
   if (typeof selector === "string") {
     return temp_selectionRoot.select(selector);
   } else {
     return temp_selection([[selector]]);
   }
 };
-
-Mynd = {};
-
-Mynd.Scale = {};
 
 Mynd.Scale.ordinal = function() {
   return (function() {
@@ -2563,115 +2628,6 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
-  /* Chart Widget bar onclick box.
-  */
-  
-  var ChartPopoverView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  ChartPopoverView = (function(_super) {
-  
-    __extends(ChartPopoverView, _super);
-  
-    ChartPopoverView.name = 'ChartPopoverView';
-  
-    function ChartPopoverView() {
-      this.close = __bind(this.close, this);
-  
-      this.listAction = __bind(this.listAction, this);
-  
-      this.resultsAction = __bind(this.resultsAction, this);
-  
-      this.matchAction = __bind(this.matchAction, this);
-  
-      this.renderValues = __bind(this.renderValues, this);
-  
-      this.render = __bind(this.render, this);
-      return ChartPopoverView.__super__.constructor.apply(this, arguments);
-    }
-  
-    ChartPopoverView.prototype.descriptionLimit = 50;
-  
-    ChartPopoverView.prototype.valuesLimit = 5;
-  
-    ChartPopoverView.prototype.events = {
-      "click a.match": "matchAction",
-      "click a.results": "resultsAction",
-      "click a.list": "listAction",
-      "click a.close": "close"
-    };
-  
-    ChartPopoverView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      return this.render();
-    };
-  
-    ChartPopoverView.prototype.render = function() {
-      var values,
-        _this = this;
-      $(this.el).html(this.template("popover", {
-        "description": this.description,
-        "descriptionLimit": this.descriptionLimit,
-        "style": 'width:300px'
-      }));
-      values = [];
-      this.imService.query(this.quickPq, function(q) {
-        return q.rows(function(response) {
-          var object, _i, _len;
-          for (_i = 0, _len = response.length; _i < _len; _i++) {
-            object = response[_i];
-            values.push((function(object) {
-              var column, _j, _len1;
-              for (_j = 0, _len1 = object.length; _j < _len1; _j++) {
-                column = object[_j];
-                if (column.length > 0) {
-                  return column;
-                }
-              }
-            })(object));
-          }
-          return _this.renderValues(values);
-        });
-      });
-      return this;
-    };
-  
-    ChartPopoverView.prototype.renderValues = function(values) {
-      return $(this.el).find('div.values').html(this.template("popover.values", {
-        'values': values,
-        'type': this.type,
-        'valuesLimit': this.valuesLimit
-      }));
-    };
-  
-    ChartPopoverView.prototype.matchAction = function(e) {
-      this.matchCb($(e.target).text(), this.type);
-      return e.preventDefault();
-    };
-  
-    ChartPopoverView.prototype.resultsAction = function() {
-      return this.resultsCb(this.resultsPq);
-    };
-  
-    ChartPopoverView.prototype.listAction = function() {
-      return this.listCb(this.resultsPq);
-    };
-  
-    ChartPopoverView.prototype.close = function() {
-      return $(this.el).remove();
-    };
-  
-    return ChartPopoverView;
-  
-  })(Backbone.View);
-  
-
   /* View maintaining Enrichment Widget.
   */
   
@@ -2893,6 +2849,115 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
+  /* Chart Widget bar onclick box.
+  */
+  
+  var ChartPopoverView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  ChartPopoverView = (function(_super) {
+  
+    __extends(ChartPopoverView, _super);
+  
+    ChartPopoverView.name = 'ChartPopoverView';
+  
+    function ChartPopoverView() {
+      this.close = __bind(this.close, this);
+  
+      this.listAction = __bind(this.listAction, this);
+  
+      this.resultsAction = __bind(this.resultsAction, this);
+  
+      this.matchAction = __bind(this.matchAction, this);
+  
+      this.renderValues = __bind(this.renderValues, this);
+  
+      this.render = __bind(this.render, this);
+      return ChartPopoverView.__super__.constructor.apply(this, arguments);
+    }
+  
+    ChartPopoverView.prototype.descriptionLimit = 50;
+  
+    ChartPopoverView.prototype.valuesLimit = 5;
+  
+    ChartPopoverView.prototype.events = {
+      "click a.match": "matchAction",
+      "click a.results": "resultsAction",
+      "click a.list": "listAction",
+      "click a.close": "close"
+    };
+  
+    ChartPopoverView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      return this.render();
+    };
+  
+    ChartPopoverView.prototype.render = function() {
+      var values,
+        _this = this;
+      $(this.el).html(this.template("popover", {
+        "description": this.description,
+        "descriptionLimit": this.descriptionLimit,
+        "style": 'width:300px'
+      }));
+      values = [];
+      this.imService.query(this.quickPq, function(q) {
+        return q.rows(function(response) {
+          var object, _i, _len;
+          for (_i = 0, _len = response.length; _i < _len; _i++) {
+            object = response[_i];
+            values.push((function(object) {
+              var column, _j, _len1;
+              for (_j = 0, _len1 = object.length; _j < _len1; _j++) {
+                column = object[_j];
+                if (column.length > 0) {
+                  return column;
+                }
+              }
+            })(object));
+          }
+          return _this.renderValues(values);
+        });
+      });
+      return this;
+    };
+  
+    ChartPopoverView.prototype.renderValues = function(values) {
+      return $(this.el).find('div.values').html(this.template("popover.values", {
+        'values': values,
+        'type': this.type,
+        'valuesLimit': this.valuesLimit
+      }));
+    };
+  
+    ChartPopoverView.prototype.matchAction = function(e) {
+      this.matchCb($(e.target).text(), this.type);
+      return e.preventDefault();
+    };
+  
+    ChartPopoverView.prototype.resultsAction = function() {
+      return this.resultsCb(this.resultsPq);
+    };
+  
+    ChartPopoverView.prototype.listAction = function() {
+      return this.listCb(this.resultsPq);
+    };
+  
+    ChartPopoverView.prototype.close = function() {
+      return $(this.el).remove();
+    };
+  
+    return ChartPopoverView;
+  
+  })(Backbone.View);
+  
+
   return {
 
     "InterMineWidget": InterMineWidget,
@@ -2906,8 +2971,8 @@ factory = function(Backbone) {
     "TablePopoverView": TablePopoverView,
     "ChartView": ChartView,
     "EnrichmentPopoverView": EnrichmentPopoverView,
-    "ChartPopoverView": ChartPopoverView,
-    "EnrichmentView": EnrichmentView
+    "EnrichmentView": EnrichmentView,
+    "ChartPopoverView": ChartPopoverView
   };
 };
 /* Interface to InterMine Widgets.

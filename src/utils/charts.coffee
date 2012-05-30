@@ -75,7 +75,7 @@ class Chart.Column
         $(@el).empty()
 
         # Create the chart wrapper.
-        canvas = d3.select(@el[0])
+        canvas = Mynd.select(@el[0])
         .append('svg:svg') # append svg
         .attr('class', 'canvas')
 
@@ -392,11 +392,11 @@ class Chart.Column
             descriptions.attr('transform', "translate(#{verticalAxisLabelHeight + @padding.axisLabels}, 0)")
 
     hideSeries: (series) ->
-        d3.select(@el[0]).selectAll(".s#{series}")
+        Mynd.select(@el[0]).selectAll(".s#{series}")
         .attr('fill-opacity', 0.1 )
 
     showSeries: (series) ->
-        d3.select(@el[0]).selectAll(".s#{series}")
+        Mynd.select(@el[0]).selectAll(".s#{series}")
         .attr('fill-opacity', 1 )
 
     toPNG: () -> Chart.toPNG @el, @width, @height
