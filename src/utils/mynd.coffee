@@ -9,155 +9,185 @@ temp.selection:: = temp_selectionPrototype
 temp_select = (s, n) -> n.querySelector s
 
 temp_selection_selector = (selector) ->
-  ->
-    temp_select selector, this
+    ->
+        temp_select selector, @
 
 temp_selectionPrototype.select = (selector) ->
-  subgroups = []
-  subgroup = undefined
-  subnode = undefined
-  group = undefined
-  node = undefined
-  selector = temp_selection_selector(selector) if typeof selector isnt "function"
-  j = -1
-  m = @length
+    subgroups = []
+    subgroup = undefined
+    subnode = undefined
+    group = undefined
+    node = undefined
+    selector = temp_selection_selector(selector) if typeof selector isnt "function"
+    j = -1
+    m = @length
 
-  while ++j < m
-    subgroups.push subgroup = []
-    subgroup.parentNode = (group = this[j]).parentNode
-    i = -1
-    n = group.length
+    while ++j < m
+        subgroups.push subgroup = []
+        subgroup.parentNode = (group = @[j]).parentNode
+        i = -1
+        n = group.length
 
-    while ++i < n
-      if node = group[i]
-        subgroup.push subnode = selector.call(node, node.__data__, i)
-        subnode.__data__ = node.__data__  if subnode and "__data__" of node
-      else
-        subgroup.push null
-  
-  temp_selection subgroups
+        while ++i < n
+            if node = group[i]
+                subgroup.push subnode = selector.call(node, node.__data__, i)
+                subnode.__data__ = node.__data__  if subnode and "__data__" of node
+            else
+                subgroup.push null
+      
+    temp_selection subgroups
 
 temp_selectionPrototype.append = (name) ->
-  append = ->
-    @appendChild document.createElementNS(@namespaceURI, name)
-  appendNS = ->
-    @appendChild document.createElementNS(name.space, name.local)
-  name = temp.ns.qualify(name)
-  @select (if name.local then appendNS else append)
+    append = ->
+        @appendChild document.createElementNS(@namespaceURI, name)
+    appendNS = ->
+        @appendChild document.createElementNS(name.space, name.local)
+    
+    name = temp.ns.qualify(name)
+    @select (if name.local then appendNS else append)
 
 temp_nsPrefix =
-  svg: "http://www.w3.org/2000/svg"
-  xhtml: "http://www.w3.org/1999/xhtml"
-  xlink: "http://www.w3.org/1999/xlink"
-  xml: "http://www.w3.org/XML/1998/namespace"
-  xmlns: "http://www.w3.org/2000/xmlns/"
+    svg: "http://www.w3.org/2000/svg"
+    xhtml: "http://www.w3.org/1999/xhtml"
 
 temp.ns =
-  prefix: temp_nsPrefix
-  qualify: (name) ->
-    i = name.indexOf(":")
-    prefix = name
-    if i >= 0
-      prefix = name.substring(0, i)
-      name = name.substring(i + 1)
-    (if temp_nsPrefix.hasOwnProperty(prefix)
-      space: temp_nsPrefix[prefix]
-      local: name
-     else name)
+    prefix: temp_nsPrefix
+  
+    qualify: (name) ->
+        i = name.indexOf(":")
+        prefix = name
+        
+        if i >= 0
+            prefix = name.substring(0, i)
+            name = name.substring(i + 1)
+        (if temp_nsPrefix.hasOwnProperty(prefix)
+            space: temp_nsPrefix[prefix]
+            local: name
+        else name)
 
 temp_selectionPrototype.attr = (name, value) ->
-  attrNull = ->
-    @removeAttribute name
-  attrNullNS = ->
-    @removeAttributeNS name.space, name.local
-  attrConstant = ->
-    @setAttribute name, value
-  attrConstantNS = ->
-    @setAttributeNS name.space, name.local, value
-  attrFunction = ->
-    x = value.apply(this, arguments)
-    unless x?
-      @removeAttribute name
-    else
-      @setAttribute name, x
-  attrFunctionNS = ->
-    x = value.apply(this, arguments)
-    unless x?
-      @removeAttributeNS name.space, name.local
-    else
-      @setAttributeNS name.space, name.local, x
-  name = temp.ns.qualify(name)
-  if arguments.length < 2
-    node = @node()
-    return (if name.local then node.getAttributeNS(name.space, name.local) else node.getAttribute(name))
-  @each (if not value? then (if name.local then attrNullNS else attrNull) else (if typeof value is "function" then (if name.local then attrFunctionNS else attrFunction) else (if name.local then attrConstantNS else attrConstant)))
+    attrNull = -> @removeAttribute name
+    attrNullNS = -> @removeAttributeNS name.space, name.local
+    attrConstant = -> @setAttribute name, value
+    attrConstantNS = -> @setAttributeNS name.space, name.local, value
+  
+    attrFunction = ->
+        x = value.apply(@, arguments)
+        unless x?
+            @removeAttribute name
+        else
+            @setAttribute name, x
+  
+    attrFunctionNS = ->
+        x = value.apply(@, arguments)
+        unless x?
+            @removeAttributeNS name.space, name.local
+        else
+            @setAttributeNS name.space, name.local, x
+    
+    name = temp.ns.qualify(name)
+    if arguments.length < 2
+        node = @node()
+        return (if name.local then node.getAttributeNS(name.space, name.local) else node.getAttribute(name))
+    
+    ret = do ->
+        if not value?
+            if name.local
+                return attrNullNS
+            else
+                return attrNull
+        else
+            if typeof value is "function"
+                if name.local
+                    return attrFunctionNS
+                else
+                    return attrFunction
+            else
+                if name.local
+                    return attrConstantNS
+                else
+                    return attrConstant
+    
+    @each ret
 
 temp_selectionPrototype.each = (callback) ->
-  j = -1
-  m = @length
+    j = -1
+    m = @length
 
-  while ++j < m
-    group = this[j]
-    i = -1
-    n = group.length
+    while ++j < m
+        group = @[j]
+        i = -1
+        n = group.length
 
-    while ++i < n
-      node = group[i]
-      callback.call node, node.__data__, i, j  if node
-  this
+        while ++i < n
+            node = group[i]
+            callback.call node, node.__data__, i, j if node
+  
+    @
 
 temp_selectionPrototype.text = (value) ->
-  (if arguments.length < 1 then @node().textContent else @each((if typeof value is "function" then ->
-    v = value.apply(this, arguments)
-    @textContent = (if not v? then "" else v)
-   else (if not value? then ->
-    @textContent = ""
-   else ->
-    @textContent = value
-  ))))
+    if arguments.length < 1
+        @node().textContent
+    else
+        ret = do ->
+            if typeof value is "function"
+                ->
+                    v = value.apply(@, arguments)
+                    @textContent = (if not v? then "" else v)
+            else
+                if not value?
+                    ->
+                        @textContent = ""
+                else
+                    ->
+                        @textContent = value
+    
+        @each ret
 
 temp_selectionPrototype.node = (callback) ->
-  j = 0
-  m = @length
+    j = 0
+    m = @length
 
-  while j < m
-    group = this[j]
-    i = 0
-    n = group.length
+    while j < m
+        group = @[j]
+        i = 0
+        n = group.length
 
-    while i < n
-      node = group[i]
-      return node  if node
-      i++
-    j++
-  null
+        while i < n
+            node = group[i]
+            return node  if node
+            i++
+        j++
+    null
 
 temp_selectionPrototype.on = (type, listener, capture) ->
-  capture = false  if arguments.length < 3
-  name = "__on" + type
-  i = type.indexOf(".")
-  type = type.substring(0, i)  if i > 0
-  return (i = @node()[name]) and i._  if arguments.length < 2
-  @each (d, i) ->
-    l = (e) ->
-      o = d3.event
-      d3.event = e
-      try
-        listener.call node, node.__data__, i
-      finally
-        d3.event = o
-    node = this
-    o = node[name]
-    if o
-      node.removeEventListener type, o, o.$
-      delete node[name]
-    if listener
-      node.addEventListener type, node[name] = l, l.$ = capture
-      l._ = listener
+    capture = false  if arguments.length < 3
+    name = "__on" + type
+    i = type.indexOf(".")
+    type = type.substring(0, i)  if i > 0
+    
+    return (i = @node()[name]) and i._  if arguments.length < 2
+  
+    @each (d, i) ->
+        l = (e) ->
+            o = d3.event
+            d3.event = e
+            try
+                listener.call node, node.__data__, i
+            finally
+                d3.event = o
+        node = @
+        o = node[name]
+        if o
+            node.removeEventListener type, o, o.$
+            delete node[name]
+        if listener
+            node.addEventListener type, node[name] = l, l.$ = capture
+            l._ = listener
 
 temp_selection = (groups) ->
-  groups.__proto__ = temp_selectionPrototype
-  return groups;
+    groups.__proto__ = temp_selectionPrototype
+    return groups
 
 temp_selectionRoot = temp_selection([ [ document ] ])
 

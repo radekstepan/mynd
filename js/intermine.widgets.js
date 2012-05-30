@@ -818,10 +818,7 @@ temp_selectionPrototype.append = function(name) {
 
 temp_nsPrefix = {
   svg: "http://www.w3.org/2000/svg",
-  xhtml: "http://www.w3.org/1999/xhtml",
-  xlink: "http://www.w3.org/1999/xlink",
-  xml: "http://www.w3.org/XML/1998/namespace",
-  xmlns: "http://www.w3.org/2000/xmlns/"
+  xhtml: "http://www.w3.org/1999/xhtml"
 };
 
 temp.ns = {
@@ -846,7 +843,7 @@ temp.ns = {
 };
 
 temp_selectionPrototype.attr = function(name, value) {
-  var attrConstant, attrConstantNS, attrFunction, attrFunctionNS, attrNull, attrNullNS, node;
+  var attrConstant, attrConstantNS, attrFunction, attrFunctionNS, attrNull, attrNullNS, node, ret;
   attrNull = function() {
     return this.removeAttribute(name);
   };
@@ -882,7 +879,30 @@ temp_selectionPrototype.attr = function(name, value) {
     node = this.node();
     return (name.local ? node.getAttributeNS(name.space, name.local) : node.getAttribute(name));
   }
-  return this.each((!(value != null) ? (name.local ? attrNullNS : attrNull) : (typeof value === "function" ? (name.local ? attrFunctionNS : attrFunction) : (name.local ? attrConstantNS : attrConstant))));
+  ret = (function() {
+    if (!(value != null)) {
+      if (name.local) {
+        return attrNullNS;
+      } else {
+        return attrNull;
+      }
+    } else {
+      if (typeof value === "function") {
+        if (name.local) {
+          return attrFunctionNS;
+        } else {
+          return attrFunction;
+        }
+      } else {
+        if (name.local) {
+          return attrConstantNS;
+        } else {
+          return attrConstant;
+        }
+      }
+    }
+  })();
+  return this.each(ret);
 };
 
 temp_selectionPrototype.each = function(callback) {
@@ -904,18 +924,30 @@ temp_selectionPrototype.each = function(callback) {
 };
 
 temp_selectionPrototype.text = function(value) {
+  var ret;
   if (arguments.length < 1) {
     return this.node().textContent;
   } else {
-    return this.each((typeof value === "function" ? function() {
-      var v;
-      v = value.apply(this, arguments);
-      return this.textContent = (!(v != null) ? "" : v);
-    } : (!(value != null) ? function() {
-      return this.textContent = "";
-    } : function() {
-      return this.textContent = value;
-    })));
+    ret = (function() {
+      if (typeof value === "function") {
+        return function() {
+          var v;
+          v = value.apply(this, arguments);
+          return this.textContent = (!(v != null) ? "" : v);
+        };
+      } else {
+        if (!(value != null)) {
+          return function() {
+            return this.textContent = "";
+          };
+        } else {
+          return function() {
+            return this.textContent = value;
+          };
+        }
+      }
+    })();
+    return this.each(ret);
   }
 };
 
@@ -2531,6 +2563,115 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
+  /* Chart Widget bar onclick box.
+  */
+  
+  var ChartPopoverView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  
+  ChartPopoverView = (function(_super) {
+  
+    __extends(ChartPopoverView, _super);
+  
+    ChartPopoverView.name = 'ChartPopoverView';
+  
+    function ChartPopoverView() {
+      this.close = __bind(this.close, this);
+  
+      this.listAction = __bind(this.listAction, this);
+  
+      this.resultsAction = __bind(this.resultsAction, this);
+  
+      this.matchAction = __bind(this.matchAction, this);
+  
+      this.renderValues = __bind(this.renderValues, this);
+  
+      this.render = __bind(this.render, this);
+      return ChartPopoverView.__super__.constructor.apply(this, arguments);
+    }
+  
+    ChartPopoverView.prototype.descriptionLimit = 50;
+  
+    ChartPopoverView.prototype.valuesLimit = 5;
+  
+    ChartPopoverView.prototype.events = {
+      "click a.match": "matchAction",
+      "click a.results": "resultsAction",
+      "click a.list": "listAction",
+      "click a.close": "close"
+    };
+  
+    ChartPopoverView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      return this.render();
+    };
+  
+    ChartPopoverView.prototype.render = function() {
+      var values,
+        _this = this;
+      $(this.el).html(this.template("popover", {
+        "description": this.description,
+        "descriptionLimit": this.descriptionLimit,
+        "style": 'width:300px'
+      }));
+      values = [];
+      this.imService.query(this.quickPq, function(q) {
+        return q.rows(function(response) {
+          var object, _i, _len;
+          for (_i = 0, _len = response.length; _i < _len; _i++) {
+            object = response[_i];
+            values.push((function(object) {
+              var column, _j, _len1;
+              for (_j = 0, _len1 = object.length; _j < _len1; _j++) {
+                column = object[_j];
+                if (column.length > 0) {
+                  return column;
+                }
+              }
+            })(object));
+          }
+          return _this.renderValues(values);
+        });
+      });
+      return this;
+    };
+  
+    ChartPopoverView.prototype.renderValues = function(values) {
+      return $(this.el).find('div.values').html(this.template("popover.values", {
+        'values': values,
+        'type': this.type,
+        'valuesLimit': this.valuesLimit
+      }));
+    };
+  
+    ChartPopoverView.prototype.matchAction = function(e) {
+      this.matchCb($(e.target).text(), this.type);
+      return e.preventDefault();
+    };
+  
+    ChartPopoverView.prototype.resultsAction = function() {
+      return this.resultsCb(this.resultsPq);
+    };
+  
+    ChartPopoverView.prototype.listAction = function() {
+      return this.listCb(this.resultsPq);
+    };
+  
+    ChartPopoverView.prototype.close = function() {
+      return $(this.el).remove();
+    };
+  
+    return ChartPopoverView;
+  
+  })(Backbone.View);
+  
+
   /* View maintaining Enrichment Widget.
   */
   
@@ -2752,115 +2893,6 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
-  /* Chart Widget bar onclick box.
-  */
-  
-  var ChartPopoverView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  ChartPopoverView = (function(_super) {
-  
-    __extends(ChartPopoverView, _super);
-  
-    ChartPopoverView.name = 'ChartPopoverView';
-  
-    function ChartPopoverView() {
-      this.close = __bind(this.close, this);
-  
-      this.listAction = __bind(this.listAction, this);
-  
-      this.resultsAction = __bind(this.resultsAction, this);
-  
-      this.matchAction = __bind(this.matchAction, this);
-  
-      this.renderValues = __bind(this.renderValues, this);
-  
-      this.render = __bind(this.render, this);
-      return ChartPopoverView.__super__.constructor.apply(this, arguments);
-    }
-  
-    ChartPopoverView.prototype.descriptionLimit = 50;
-  
-    ChartPopoverView.prototype.valuesLimit = 5;
-  
-    ChartPopoverView.prototype.events = {
-      "click a.match": "matchAction",
-      "click a.results": "resultsAction",
-      "click a.list": "listAction",
-      "click a.close": "close"
-    };
-  
-    ChartPopoverView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      return this.render();
-    };
-  
-    ChartPopoverView.prototype.render = function() {
-      var values,
-        _this = this;
-      $(this.el).html(this.template("popover", {
-        "description": this.description,
-        "descriptionLimit": this.descriptionLimit,
-        "style": 'width:300px'
-      }));
-      values = [];
-      this.imService.query(this.quickPq, function(q) {
-        return q.rows(function(response) {
-          var object, _i, _len;
-          for (_i = 0, _len = response.length; _i < _len; _i++) {
-            object = response[_i];
-            values.push((function(object) {
-              var column, _j, _len1;
-              for (_j = 0, _len1 = object.length; _j < _len1; _j++) {
-                column = object[_j];
-                if (column.length > 0) {
-                  return column;
-                }
-              }
-            })(object));
-          }
-          return _this.renderValues(values);
-        });
-      });
-      return this;
-    };
-  
-    ChartPopoverView.prototype.renderValues = function(values) {
-      return $(this.el).find('div.values').html(this.template("popover.values", {
-        'values': values,
-        'type': this.type,
-        'valuesLimit': this.valuesLimit
-      }));
-    };
-  
-    ChartPopoverView.prototype.matchAction = function(e) {
-      this.matchCb($(e.target).text(), this.type);
-      return e.preventDefault();
-    };
-  
-    ChartPopoverView.prototype.resultsAction = function() {
-      return this.resultsCb(this.resultsPq);
-    };
-  
-    ChartPopoverView.prototype.listAction = function() {
-      return this.listCb(this.resultsPq);
-    };
-  
-    ChartPopoverView.prototype.close = function() {
-      return $(this.el).remove();
-    };
-  
-    return ChartPopoverView;
-  
-  })(Backbone.View);
-  
-
   return {
 
     "InterMineWidget": InterMineWidget,
@@ -2874,8 +2906,8 @@ factory = function(Backbone) {
     "TablePopoverView": TablePopoverView,
     "ChartView": ChartView,
     "EnrichmentPopoverView": EnrichmentPopoverView,
-    "EnrichmentView": EnrichmentView,
-    "ChartPopoverView": ChartPopoverView
+    "ChartPopoverView": ChartPopoverView,
+    "EnrichmentView": EnrichmentView
   };
 };
 /* Interface to InterMine Widgets.
