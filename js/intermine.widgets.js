@@ -751,7 +751,7 @@ if (!("some" in Array.prototype)) {
   };
 }
 
-var Mynd, temp, temp_array, temp_arrayCopy, temp_arraySlice, temp_nsPrefix, temp_select, temp_selectAll, temp_selectRoot, temp_selection, temp_selectionPrototype, temp_selectionRoot, temp_selection_selector, temp_selection_selectorAll;
+var Mynd, temp, temp_array, temp_arrayCopy, temp_arraySlice, temp_dispatch, temp_dispatch_event, temp_eventCancel, temp_eventDispatch, temp_eventSource, temp_nsPrefix, temp_select, temp_selectAll, temp_selectRoot, temp_selection, temp_selectionPrototype, temp_selectionRoot, temp_selection_selector, temp_selection_selectorAll;
 
 Mynd = {};
 
@@ -1009,6 +1009,109 @@ temp_selectionPrototype.node = function(callback) {
   return null;
 };
 
+temp_eventCancel = function() {
+  temp.event.stopPropagation();
+  return temp.event.preventDefault();
+};
+
+temp_eventSource = function() {
+  var e, s;
+  e = temp.event;
+  s = void 0;
+  while (s = e.sourceEvent) {
+    e = s;
+  }
+  return e;
+};
+
+temp_dispatch = function() {};
+
+temp_dispatch.prototype.on = function(type, listener) {
+  var i, name;
+  i = type.indexOf(".");
+  name = "";
+  if (i > 0) {
+    name = type.substring(i + 1);
+    type = type.substring(0, i);
+  }
+  if (arguments.length < 2) {
+    return this[type].on(name);
+  } else {
+    return this[type].on(name, listener);
+  }
+};
+
+temp_dispatch_event = function(dispatch) {
+  var event, listenerByName, listeners;
+  event = function() {
+    var i, l, n, z;
+    z = listeners;
+    i = -1;
+    n = z.length;
+    l = void 0;
+    if ((function() {
+      var _results;
+      _results = [];
+      while (++i < n) {
+        _results.push(l = z[i].on);
+      }
+      return _results;
+    })()) {
+      l.apply(this, arguments);
+    }
+    return dispatch;
+  };
+  listeners = [];
+  listenerByName = new d3_Map;
+  console.log(listenerByName);
+  event.on = function(name, listener) {
+    var i, l;
+    l = listenerByName.get(name);
+    i = void 0;
+    if (arguments.length < 2) {
+      return l && l.on;
+    }
+    if (l) {
+      l.on = null;
+      listeners = listeners.slice(0, i = listeners.indexOf(l)).concat(listeners.slice(i + 1));
+      listenerByName.remove(name);
+    }
+    if (listener) {
+      listeners.push(listenerByName.set(name, {
+        on: listener
+      }));
+    }
+    return dispatch;
+  };
+  return event;
+};
+
+temp_eventDispatch = function(target) {
+  var dispatch, i, n;
+  dispatch = new temp_dispatch;
+  i = 0;
+  n = arguments.length;
+  while (++i < n) {
+    dispatch[arguments[i]] = temp_dispatch_event(dispatch);
+  }
+  dispatch.of = function(thiz, argumentz) {
+    return function(e1) {
+      var e0;
+      try {
+        e0 = e1.sourceEvent = temp.event;
+        e1.target = target;
+        temp.event = e1;
+        return dispatch[e1.type].apply(thiz, argumentz);
+      } finally {
+        temp.event = e0;
+      }
+    };
+  };
+  return dispatch;
+};
+
+temp.event = null;
+
 temp_selectionPrototype.on = function(type, listener, capture) {
   var i, name;
   if (arguments.length < 3) {
@@ -1026,12 +1129,12 @@ temp_selectionPrototype.on = function(type, listener, capture) {
     var l, node, o;
     l = function(e) {
       var o;
-      o = d3.event;
-      d3.event = e;
+      o = temp.event;
+      temp.event = e;
       try {
         return listener.call(node, node.__data__, i);
       } finally {
-        d3.event = o;
+        temp.event = o;
       }
     };
     node = this;

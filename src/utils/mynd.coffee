@@ -191,6 +191,77 @@ temp_selectionPrototype.node = (callback) ->
         j++
     null
 
+temp_eventCancel = ->
+    temp.event.stopPropagation()
+    temp.event.preventDefault()
+
+temp_eventSource = ->
+    e = temp.event
+    s = undefined
+    e = s while s = e.sourceEvent
+    e
+
+temp_dispatch = ->
+
+temp_dispatch::on = (type, listener) ->
+    i = type.indexOf(".")
+    name = ""
+    if i > 0
+        name = type.substring(i + 1)
+        type = type.substring(0, i)
+    (if arguments.length < 2 then this[type].on(name) else this[type].on(name, listener))
+
+temp_dispatch_event = (dispatch) ->
+    
+    event = ->
+        z = listeners
+        i = -1
+        n = z.length
+        l = undefined
+        l.apply this, arguments  if l = z[i].on  while ++i < n
+        dispatch
+    
+    listeners = []
+    listenerByName = new d3_Map
+    
+    event.on = (name, listener) ->
+        l = listenerByName.get(name)
+        i = undefined
+        return l and l.on  if arguments.length < 2
+    
+        if l
+            l.on = null
+            listeners = listeners.slice(0, i = listeners.indexOf(l)).concat(listeners.slice(i + 1))
+            listenerByName.remove name
+    
+        if listener
+            listeners.push listenerByName.set(name,
+                on: listener
+            )
+    
+        dispatch
+
+    event
+
+temp_eventDispatch = (target) ->
+    dispatch = new temp_dispatch
+    i = 0
+    n = arguments.length
+    dispatch[arguments[i]] = temp_dispatch_event(dispatch)  while ++i < n
+    dispatch.of = (thiz, argumentz) ->
+        (e1) ->
+            try
+                e0 = e1.sourceEvent = temp.event
+                e1.target = target
+                temp.event = e1
+                dispatch[e1.type].apply thiz, argumentz
+            finally
+                temp.event = e0
+    
+    dispatch
+
+temp.event = null
+
 temp_selectionPrototype.on = (type, listener, capture) ->
     capture = false  if arguments.length < 3
     name = "__on" + type
@@ -201,12 +272,12 @@ temp_selectionPrototype.on = (type, listener, capture) ->
   
     @each (d, i) ->
         l = (e) ->
-            o = d3.event
-            d3.event = e
+            o = temp.event
+            temp.event = e
             try
                 listener.call node, node.__data__, i
             finally
-                d3.event = o
+                temp.event = o
         node = @
         o = node[name]
         if o
