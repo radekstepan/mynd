@@ -1063,7 +1063,6 @@ temp_dispatch_event = function(dispatch) {
   };
   listeners = [];
   listenerByName = new d3_Map;
-  console.log(listenerByName);
   event.on = function(name, listener) {
     var i, l;
     l = listenerByName.get(name);
@@ -1478,8 +1477,7 @@ factory = function(Backbone) {
       opts.name = this.name || this.id;
       switch (type) {
         case "AJAXTransport":
-          opts.title = opts.statusText;
-          opts.text = opts.responseText;
+          opts.title = "AJAX Request Failed";
           break;
         case "JSONResponse":
           opts.title = "Invalid JSON Response";
@@ -1611,8 +1609,11 @@ factory = function(Backbone) {
             });
           }
         },
-        error: function(err) {
-          return _this.error(err, "AJAXTransport");
+        error: function(request, status, error) {
+          clearTimeout(timeout);
+          return _this.error({
+            'text': "" + _this.service + "list/chart"
+          }, "AJAXTransport");
         }
       });
     };
@@ -1721,8 +1722,11 @@ factory = function(Backbone) {
             });
           }
         },
-        error: function(err) {
-          return _this.error(err, "AJAXTransport");
+        error: function(request, status, error) {
+          clearTimeout(timeout);
+          return _this.error({
+            'text': "" + _this.service + "list/table"
+          }, "AJAXTransport");
         }
       });
     };
@@ -1857,8 +1861,11 @@ factory = function(Backbone) {
             });
           }
         },
-        error: function(err) {
-          return _this.error(err, "AJAXTransport");
+        error: function(request, status, error) {
+          clearTimeout(timeout);
+          return _this.error({
+            'text': "" + _this.service + "list/enrichment"
+          }, "AJAXTransport");
         }
       });
     };

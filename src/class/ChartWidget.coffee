@@ -102,4 +102,4 @@ class ChartWidget extends InterMineWidget
                         "options":  @widgetOptions
                     )
             
-            error: (err) => @error err, "AJAXTransport"
+            error: (request, status, error) => clearTimeout timeout ; @error { 'text': "#{@service}list/chart" }, "AJAXTransport"

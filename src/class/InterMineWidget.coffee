@@ -35,8 +35,7 @@ class InterMineWidget
         # Which?
         switch type
             when "AJAXTransport"
-                opts.title = opts.statusText
-                opts.text = opts.responseText
+                opts.title = "AJAX Request Failed"
             when "JSONResponse"
                 opts.title = "Invalid JSON Response"
                 opts.text = "<ol>#{opts.join('')}</ol>"
