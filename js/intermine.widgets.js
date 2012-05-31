@@ -3130,13 +3130,7 @@ Widgets = (function() {
       path: "http://cdn.intermine.org/js/d3/2.8.1/d3.v2.min.js",
       type: "js"
     }, {
-      path: "http://cdn.intermine.org/js/intermine/imjs/latest/model.js",
-      type: "js"
-    }, {
-      path: "http://cdn.intermine.org/js/intermine/imjs/latest/query.js",
-      type: "js"
-    }, {
-      path: "http://cdn.intermine.org/js/intermine/imjs/latest/service.js",
+      path: "http://cdn.intermine.org/js/intermine/imjs/latest/imjs.js",
       type: "js"
     }, {
       path: "http://cdn.intermine.org/js/canvg/latest/rgbcolor.js",
