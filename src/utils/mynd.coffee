@@ -9,11 +9,7 @@ class Selection
     event: null
 
     # Elements in the selection backed by an Array.
-    elements: []
-
-    push: -> @elements.push arguments...
-
-    constructor: -> @push arguments...
+    constructor: (@elements=[]) ->
 
     # Quality element with SVG prefix or without.
     qualify: (name) ->
@@ -29,20 +25,20 @@ class Selection
     #  elements in the current document match the specified selector, returns the empty selection. If multiple elements match
     #  the selector, only the first matching element (in document traversal order) will be selected.
     select: (selector) ->
-        subgroups = []
         if typeof selector isnt "function" then selector = do (selector) -> ( -> @.querySelector selector )
 
+        subgroups = []
         for i in [0...@elements.length]
             subgroups.push subgroup = []
-            subgroup.parentNode = @elements[i].parentNode
-
+            
+            # For all subgroups.
             for j in [0...@elements[i].length]
                 if node = @elements[i][j]
                     subgroup.push subnode = selector.call(node, node.__data__, j)
-                    subnode.__data__ = node.__data__ if subnode and node?.__data__
+                    subnode.__data__ = node.__data__ if subnode and "__data__" of node
                 else
                     subgroup.push null
-          
+
         new Selection subgroups
 
     # Selects all elements that match the specified selector. The elements will be selected in document traversal order
@@ -56,7 +52,6 @@ class Selection
             for j in [0...@elements[i].length]
                 if node = @elements[i][j]
                     subgroups.push subgroup = temp_array(selector.call(node, node.__data__, j))
-                    subgroup.parentNode = node
         
         new Selection subgroups
 
@@ -193,15 +188,16 @@ temp_array = temp_arraySlice
 
 Mynd.selectAll = (selector) ->
     if typeof selector is "string"
-        (new Selection([ document ].parentNode = document.documentElement)).selectAll(selector)
+        (new Selection([ document ])).selectAll(selector)
     else
         new Selection temp_array(selector)
 
 Mynd.select = (selector) ->
     if typeof selector is "string"
-        (new Selection([ document ].parentNode = document.documentElement)).select selector
+        (new Selection([ document ])).select selector
     else
-        new Selection [ selector ]
+        # Select single node.
+        new Selection [ [ selector ] ]
 
 
 # Ordinal scales have a discrete domain (chart bars).

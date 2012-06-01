@@ -36,7 +36,7 @@ class Runner
             # We need to load this many.
             @wait = tests.length
             for test in tests
-                new JSLoader("js/tests/#{test}.js", =>
+                new JSLoader("js/tests/#{test}.js?#{new Date().getTime()}", =>
                     # One less thing...
                     @wait -= 1
                     @run() unless @wait

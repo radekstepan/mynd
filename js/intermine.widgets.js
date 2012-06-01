@@ -647,15 +647,8 @@ Selection = (function() {
 
   Selection.prototype.event = null;
 
-  Selection.prototype.elements = [];
-
-  Selection.prototype.push = function() {
-    var _ref;
-    return (_ref = this.elements).push.apply(_ref, arguments);
-  };
-
-  function Selection() {
-    this.push.apply(this, arguments);
+  function Selection(elements) {
+    this.elements = elements != null ? elements : [];
   }
 
   Selection.prototype.qualify = function(name) {
@@ -672,7 +665,6 @@ Selection = (function() {
 
   Selection.prototype.select = function(selector) {
     var i, j, node, subgroup, subgroups, subnode, _i, _j, _ref, _ref1;
-    subgroups = [];
     if (typeof selector !== "function") {
       selector = (function(selector) {
         return function() {
@@ -680,13 +672,13 @@ Selection = (function() {
         };
       })(selector);
     }
+    subgroups = [];
     for (i = _i = 0, _ref = this.elements.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
       subgroups.push(subgroup = []);
-      subgroup.parentNode = this.elements[i].parentNode;
       for (j = _j = 0, _ref1 = this.elements[i].length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
         if (node = this.elements[i][j]) {
           subgroup.push(subnode = selector.call(node, node.__data__, j));
-          if (subnode && (node != null ? node.__data__ : void 0)) {
+          if (subnode && "__data__" in node) {
             subnode.__data__ = node.__data__;
           }
         } else {
@@ -711,7 +703,6 @@ Selection = (function() {
       for (j = _j = 0, _ref1 = this.elements[i].length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
         if (node = this.elements[i][j]) {
           subgroups.push(subgroup = temp_array(selector.call(node, node.__data__, j)));
-          subgroup.parentNode = node;
         }
       }
     }
@@ -884,7 +875,7 @@ temp_array = temp_arraySlice;
 
 Mynd.selectAll = function(selector) {
   if (typeof selector === "string") {
-    return (new Selection([document].parentNode = document.documentElement)).selectAll(selector);
+    return (new Selection([document])).selectAll(selector);
   } else {
     return new Selection(temp_array(selector));
   }
@@ -892,9 +883,9 @@ Mynd.selectAll = function(selector) {
 
 Mynd.select = function(selector) {
   if (typeof selector === "string") {
-    return (new Selection([document].parentNode = document.documentElement)).select(selector);
+    return (new Selection([document])).select(selector);
   } else {
-    return new Selection([selector]);
+    return new Selection([[selector]]);
   }
 };
 
@@ -1654,174 +1645,6 @@ factory = function(Backbone) {
   })(InterMineWidget);
   
 
-  /* Core Model for Enrichment and Table Models.
-  */
-  
-  var CoreCollection, CoreModel, EnrichmentResults, EnrichmentRow, TableResults, TableRow,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-  
-  CoreModel = (function(_super) {
-  
-    __extends(CoreModel, _super);
-  
-    function CoreModel() {
-      this.toggleSelected = __bind(this.toggleSelected, this);
-  
-      this.validate = __bind(this.validate, this);
-      return CoreModel.__super__.constructor.apply(this, arguments);
-    }
-  
-    CoreModel.prototype.defaults = {
-      "selected": false
-    };
-  
-    CoreModel.prototype.initialize = function(row, widget) {
-      this.widget = widget;
-      return this.validate(row);
-    };
-  
-    CoreModel.prototype.validate = function(row) {
-      return this.widget.validateType(row, this.spec);
-    };
-  
-    CoreModel.prototype.toggleSelected = function() {
-      return this.set({
-        selected: !this.get("selected")
-      });
-    };
-  
-    return CoreModel;
-  
-  })(Backbone.Model);
-  
-  CoreCollection = (function(_super) {
-  
-    __extends(CoreCollection, _super);
-  
-    function CoreCollection() {
-      return CoreCollection.__super__.constructor.apply(this, arguments);
-    }
-  
-    CoreCollection.prototype.model = CoreModel;
-  
-    CoreCollection.prototype.selected = function() {
-      return this.filter(function(row) {
-        return row.get("selected");
-      });
-    };
-  
-    CoreCollection.prototype.toggleSelected = function() {
-      var model, _i, _j, _len, _len1, _ref, _ref1, _results, _results1;
-      if (this.models.length - this.selected().length) {
-        _ref = this.models;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          model = _ref[_i];
-          _results.push(model.set({
-            "selected": true
-          }, {
-            'silent': true
-          }));
-        }
-        return _results;
-      } else {
-        _ref1 = this.models;
-        _results1 = [];
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          model = _ref1[_j];
-          _results1.push(model.set({
-            "selected": false
-          }, {
-            'silent': true
-          }));
-        }
-        return _results1;
-      }
-    };
-  
-    return CoreCollection;
-  
-  })(Backbone.Collection);
-  
-  /* Models underpinning Enrichment Widget results.
-  */
-  
-  
-  EnrichmentRow = (function(_super) {
-  
-    __extends(EnrichmentRow, _super);
-  
-    function EnrichmentRow() {
-      return EnrichmentRow.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentRow.prototype.spec = {
-      "description": type.isString,
-      "identifier": type.isString,
-      "matches": type.isInteger,
-      "p-value": type.isInteger,
-      "selected": type.isBoolean,
-      "externalLink": type.isString
-    };
-  
-    return EnrichmentRow;
-  
-  })(CoreModel);
-  
-  EnrichmentResults = (function(_super) {
-  
-    __extends(EnrichmentResults, _super);
-  
-    function EnrichmentResults() {
-      return EnrichmentResults.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentResults.prototype.model = EnrichmentRow;
-  
-    return EnrichmentResults;
-  
-  })(CoreCollection);
-  
-  /* Models underpinning Table Widget results.
-  */
-  
-  
-  TableRow = (function(_super) {
-  
-    __extends(TableRow, _super);
-  
-    function TableRow() {
-      return TableRow.__super__.constructor.apply(this, arguments);
-    }
-  
-    TableRow.prototype.spec = {
-      "matches": type.isInteger,
-      "identifier": type.isInteger,
-      "descriptions": type.isArray,
-      "selected": type.isBoolean
-    };
-  
-    return TableRow;
-  
-  })(CoreModel);
-  
-  TableResults = (function(_super) {
-  
-    __extends(TableResults, _super);
-  
-    function TableResults() {
-      return TableResults.__super__.constructor.apply(this, arguments);
-    }
-  
-    TableResults.prototype.model = TableRow;
-  
-    return TableResults;
-  
-  })(CoreCollection);
-  
-
   /* Chart Widget bar onclick box.
   */
   
@@ -2198,78 +2021,6 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
-  /* Enrichment Widget table row.
-  */
-  
-  var EnrichmentRowView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-  
-  EnrichmentRowView = (function(_super) {
-  
-    __extends(EnrichmentRowView, _super);
-  
-    function EnrichmentRowView() {
-      this.toggleMatchesAction = __bind(this.toggleMatchesAction, this);
-  
-      this.selectAction = __bind(this.selectAction, this);
-  
-      this.render = __bind(this.render, this);
-      return EnrichmentRowView.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentRowView.prototype.tagName = "tr";
-  
-    EnrichmentRowView.prototype.events = {
-      "click td.check input": "selectAction",
-      "click td.matches a.count": "toggleMatchesAction"
-    };
-  
-    EnrichmentRowView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      this.model.bind('change', this.render);
-      return this.render();
-    };
-  
-    EnrichmentRowView.prototype.render = function() {
-      $(this.el).html(this.template("enrichment.row", {
-        "row": this.model.toJSON()
-      }));
-      return this;
-    };
-  
-    EnrichmentRowView.prototype.selectAction = function() {
-      return this.model.toggleSelected();
-    };
-  
-    EnrichmentRowView.prototype.toggleMatchesAction = function() {
-      if (!(this.popoverView != null)) {
-        return $(this.el).find('td.matches a.count').after((this.popoverView = new EnrichmentPopoverView({
-          "matches": this.model.get("matches"),
-          "identifiers": [this.model.get("identifier")],
-          "description": this.model.get("description"),
-          "template": this.template,
-          "matchCb": this.callbacks.matchCb,
-          "resultsCb": this.callbacks.resultsCb,
-          "listCb": this.callbacks.listCb,
-          "response": this.response,
-          "imService": this.imService
-        })).el);
-      } else {
-        return this.popoverView.toggle();
-      }
-    };
-  
-    return EnrichmentRowView;
-  
-  })(Backbone.View);
-  
-
   /* View maintaining Enrichment Widget.
   */
   
@@ -2485,6 +2236,78 @@ factory = function(Backbone) {
     };
   
     return EnrichmentView;
+  
+  })(Backbone.View);
+  
+
+  /* Enrichment Widget table row.
+  */
+  
+  var EnrichmentRowView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  
+  EnrichmentRowView = (function(_super) {
+  
+    __extends(EnrichmentRowView, _super);
+  
+    function EnrichmentRowView() {
+      this.toggleMatchesAction = __bind(this.toggleMatchesAction, this);
+  
+      this.selectAction = __bind(this.selectAction, this);
+  
+      this.render = __bind(this.render, this);
+      return EnrichmentRowView.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentRowView.prototype.tagName = "tr";
+  
+    EnrichmentRowView.prototype.events = {
+      "click td.check input": "selectAction",
+      "click td.matches a.count": "toggleMatchesAction"
+    };
+  
+    EnrichmentRowView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      this.model.bind('change', this.render);
+      return this.render();
+    };
+  
+    EnrichmentRowView.prototype.render = function() {
+      $(this.el).html(this.template("enrichment.row", {
+        "row": this.model.toJSON()
+      }));
+      return this;
+    };
+  
+    EnrichmentRowView.prototype.selectAction = function() {
+      return this.model.toggleSelected();
+    };
+  
+    EnrichmentRowView.prototype.toggleMatchesAction = function() {
+      if (!(this.popoverView != null)) {
+        return $(this.el).find('td.matches a.count').after((this.popoverView = new EnrichmentPopoverView({
+          "matches": this.model.get("matches"),
+          "identifiers": [this.model.get("identifier")],
+          "description": this.model.get("description"),
+          "template": this.template,
+          "matchCb": this.callbacks.matchCb,
+          "resultsCb": this.callbacks.resultsCb,
+          "listCb": this.callbacks.listCb,
+          "response": this.response,
+          "imService": this.imService
+        })).el);
+      } else {
+        return this.popoverView.toggle();
+      }
+    };
+  
+    return EnrichmentRowView;
   
   })(Backbone.View);
   
@@ -2819,21 +2642,189 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
+  /* Core Model for Enrichment and Table Models.
+  */
+  
+  var CoreCollection, CoreModel, EnrichmentResults, EnrichmentRow, TableResults, TableRow,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  
+  CoreModel = (function(_super) {
+  
+    __extends(CoreModel, _super);
+  
+    function CoreModel() {
+      this.toggleSelected = __bind(this.toggleSelected, this);
+  
+      this.validate = __bind(this.validate, this);
+      return CoreModel.__super__.constructor.apply(this, arguments);
+    }
+  
+    CoreModel.prototype.defaults = {
+      "selected": false
+    };
+  
+    CoreModel.prototype.initialize = function(row, widget) {
+      this.widget = widget;
+      return this.validate(row);
+    };
+  
+    CoreModel.prototype.validate = function(row) {
+      return this.widget.validateType(row, this.spec);
+    };
+  
+    CoreModel.prototype.toggleSelected = function() {
+      return this.set({
+        selected: !this.get("selected")
+      });
+    };
+  
+    return CoreModel;
+  
+  })(Backbone.Model);
+  
+  CoreCollection = (function(_super) {
+  
+    __extends(CoreCollection, _super);
+  
+    function CoreCollection() {
+      return CoreCollection.__super__.constructor.apply(this, arguments);
+    }
+  
+    CoreCollection.prototype.model = CoreModel;
+  
+    CoreCollection.prototype.selected = function() {
+      return this.filter(function(row) {
+        return row.get("selected");
+      });
+    };
+  
+    CoreCollection.prototype.toggleSelected = function() {
+      var model, _i, _j, _len, _len1, _ref, _ref1, _results, _results1;
+      if (this.models.length - this.selected().length) {
+        _ref = this.models;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          model = _ref[_i];
+          _results.push(model.set({
+            "selected": true
+          }, {
+            'silent': true
+          }));
+        }
+        return _results;
+      } else {
+        _ref1 = this.models;
+        _results1 = [];
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          model = _ref1[_j];
+          _results1.push(model.set({
+            "selected": false
+          }, {
+            'silent': true
+          }));
+        }
+        return _results1;
+      }
+    };
+  
+    return CoreCollection;
+  
+  })(Backbone.Collection);
+  
+  /* Models underpinning Enrichment Widget results.
+  */
+  
+  
+  EnrichmentRow = (function(_super) {
+  
+    __extends(EnrichmentRow, _super);
+  
+    function EnrichmentRow() {
+      return EnrichmentRow.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentRow.prototype.spec = {
+      "description": type.isString,
+      "identifier": type.isString,
+      "matches": type.isInteger,
+      "p-value": type.isInteger,
+      "selected": type.isBoolean,
+      "externalLink": type.isString
+    };
+  
+    return EnrichmentRow;
+  
+  })(CoreModel);
+  
+  EnrichmentResults = (function(_super) {
+  
+    __extends(EnrichmentResults, _super);
+  
+    function EnrichmentResults() {
+      return EnrichmentResults.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentResults.prototype.model = EnrichmentRow;
+  
+    return EnrichmentResults;
+  
+  })(CoreCollection);
+  
+  /* Models underpinning Table Widget results.
+  */
+  
+  
+  TableRow = (function(_super) {
+  
+    __extends(TableRow, _super);
+  
+    function TableRow() {
+      return TableRow.__super__.constructor.apply(this, arguments);
+    }
+  
+    TableRow.prototype.spec = {
+      "matches": type.isInteger,
+      "identifier": type.isInteger,
+      "descriptions": type.isArray,
+      "selected": type.isBoolean
+    };
+  
+    return TableRow;
+  
+  })(CoreModel);
+  
+  TableResults = (function(_super) {
+  
+    __extends(TableResults, _super);
+  
+    function TableResults() {
+      return TableResults.__super__.constructor.apply(this, arguments);
+    }
+  
+    TableResults.prototype.model = TableRow;
+  
+    return TableResults;
+  
+  })(CoreCollection);
+  
+
   return {
 
     "ChartWidget": ChartWidget,
     "EnrichmentWidget": EnrichmentWidget,
     "InterMineWidget": InterMineWidget,
     "TableWidget": TableWidget,
-    "CoreModel": CoreModel,
     "ChartPopoverView": ChartPopoverView,
     "ChartView": ChartView,
     "EnrichmentPopoverView": EnrichmentPopoverView,
-    "EnrichmentRowView": EnrichmentRowView,
     "EnrichmentView": EnrichmentView,
+    "EnrichmentRowView": EnrichmentRowView,
     "TablePopoverView": TablePopoverView,
     "TableRowView": TableRowView,
-    "TableView": TableView
+    "TableView": TableView,
+    "CoreModel": CoreModel
   };
 };
 /* Interface to InterMine Widgets.
