@@ -335,3 +335,6 @@ Mynd.Scale.linear = ->
 
         scale
     )()
+
+# Put on InterMine namespace
+intermine.mynd = Mynd

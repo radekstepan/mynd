@@ -43,6 +43,6 @@ class Runner
                 )
 
     # Run the tests (and prevent global leaks detected Error).
-    run: -> mocha.run().globals [ "Widgets", "_", "Backbone", "google", "googleLT_", "google_exportSymbol", "google_exportProperty" ]
+    run: -> mocha.run().globals [ "_", "Backbone", "canvg", "RGBColor", "d3", "d3_time_weekdays" ]
 
 new Runner()
