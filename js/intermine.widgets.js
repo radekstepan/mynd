@@ -751,414 +751,226 @@ if (!("some" in Array.prototype)) {
   };
 }
 
-var Mynd, temp, temp_array, temp_arrayCopy, temp_arraySlice, temp_dispatch, temp_dispatch_event, temp_eventCancel, temp_eventDispatch, temp_eventSource, temp_nsPrefix, temp_select, temp_selectAll, temp_selectRoot, temp_selection, temp_selectionPrototype, temp_selectionRoot, temp_selection_selector, temp_selection_selectorAll;
+var Mynd, Selection, temp_array, temp_arrayCopy, temp_arraySlice,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
 Mynd = {};
 
 Mynd.Scale = {};
 
-temp = {};
+Selection = (function(_super) {
 
-temp_selectionPrototype = [];
+  __extends(Selection, _super);
 
-temp.selection = function() {
-  return temp_selectionRoot;
-};
+  Selection.name = 'Selection';
 
-temp.selection.prototype = temp_selectionPrototype;
+  Selection.prototype.event = null;
 
-temp_select = function(s, n) {
-  return n.querySelector(s);
-};
-
-temp_selectAll = function(s, n) {
-  return n.querySelectorAll(s);
-};
-
-temp_selection_selector = function(selector) {
-  return function() {
-    return temp_select(selector, this);
-  };
-};
-
-temp_selection_selectorAll = function(selector) {
-  return function() {
-    return temp_selectAll(selector, this);
-  };
-};
-
-temp_selectionPrototype.select = function(selector) {
-  var group, i, j, m, n, node, subgroup, subgroups, subnode;
-  subgroups = [];
-  subgroup = void 0;
-  subnode = void 0;
-  group = void 0;
-  node = void 0;
-  if (typeof selector !== "function") {
-    selector = temp_selection_selector(selector);
+  function Selection() {
+    this.push.apply(this, arguments);
   }
-  j = -1;
-  m = this.length;
-  while (++j < m) {
-    subgroups.push(subgroup = []);
-    subgroup.parentNode = (group = this[j]).parentNode;
-    i = -1;
-    n = group.length;
-    while (++i < n) {
-      if (node = group[i]) {
-        subgroup.push(subnode = selector.call(node, node.__data__, i));
-        if (subnode && "__data__" in node) {
-          subnode.__data__ = node.__data__;
-        }
-      } else {
-        subgroup.push(null);
-      }
-    }
-  }
-  return temp_selection(subgroups);
-};
 
-temp_selectionPrototype.selectAll = function(selector) {
-  var group, i, j, m, n, node, subgroup, subgroups;
-  subgroups = [];
-  subgroup = void 0;
-  node = void 0;
-  if (typeof selector !== "function") {
-    selector = temp_selection_selectorAll(selector);
-  }
-  j = -1;
-  m = this.length;
-  while (++j < m) {
-    group = this[j];
-    i = -1;
-    n = group.length;
-    while (++i < n) {
-      if (node = group[i]) {
-        subgroups.push(subgroup = temp_array(selector.call(node, node.__data__, i)));
-        subgroup.parentNode = node;
-      }
-    }
-  }
-  return temp_selection(subgroups);
-};
-
-temp_selectionPrototype.append = function(name) {
-  var append, appendNS;
-  append = function() {
-    return this.appendChild(document.createElementNS(this.namespaceURI, name));
-  };
-  appendNS = function() {
-    return this.appendChild(document.createElementNS(name.space, name.local));
-  };
-  name = temp.ns.qualify(name);
-  return this.select((name.local ? appendNS : append));
-};
-
-temp_nsPrefix = {
-  svg: "http://www.w3.org/2000/svg",
-  xhtml: "http://www.w3.org/1999/xhtml"
-};
-
-temp.ns = {
-  prefix: temp_nsPrefix,
-  qualify: function(name) {
-    var i, prefix;
-    i = name.indexOf(":");
-    prefix = name;
-    if (i >= 0) {
-      prefix = name.substring(0, i);
-      name = name.substring(i + 1);
-    }
-    if (temp_nsPrefix.hasOwnProperty(prefix)) {
+  Selection.prototype.qualify = function(name) {
+    var index;
+    if (!(index = name.indexOf('svg:'))) {
       return {
-        space: temp_nsPrefix[prefix],
-        local: name
+        space: 'http://www.w3.org/2000/svg',
+        local: name.slice(4)
       };
     } else {
       return name;
     }
-  }
-};
+  };
 
-temp_selectionPrototype.attr = function(name, value) {
-  var attrConstant, attrConstantNS, attrFunction, attrFunctionNS, attrNull, attrNullNS, node, ret;
-  attrNull = function() {
-    return this.removeAttribute(name);
-  };
-  attrNullNS = function() {
-    return this.removeAttributeNS(name.space, name.local);
-  };
-  attrConstant = function() {
-    return this.setAttribute(name, value);
-  };
-  attrConstantNS = function() {
-    return this.setAttributeNS(name.space, name.local, value);
-  };
-  attrFunction = function() {
-    var x;
-    x = value.apply(this, arguments);
-    if (x == null) {
-      return this.removeAttribute(name);
-    } else {
-      return this.setAttribute(name, x);
+  Selection.prototype.select = function(selector) {
+    var i, j, node, subgroup, subgroups, subnode, _i, _j, _ref, _ref1;
+    subgroups = [];
+    if (typeof selector !== "function") {
+      selector = (function(selector) {
+        return function() {
+          return this.querySelector(selector);
+        };
+      })(selector);
     }
-  };
-  attrFunctionNS = function() {
-    var x;
-    x = value.apply(this, arguments);
-    if (x == null) {
-      return this.removeAttributeNS(name.space, name.local);
-    } else {
-      return this.setAttributeNS(name.space, name.local, x);
-    }
-  };
-  name = temp.ns.qualify(name);
-  if (arguments.length < 2) {
-    node = this.node();
-    return (name.local ? node.getAttributeNS(name.space, name.local) : node.getAttribute(name));
-  }
-  ret = (function() {
-    if (!(value != null)) {
-      if (name.local) {
-        return attrNullNS;
-      } else {
-        return attrNull;
-      }
-    } else {
-      if (typeof value === "function") {
-        if (name.local) {
-          return attrFunctionNS;
+    for (i = _i = 0, _ref = this.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+      subgroups.push(subgroup = []);
+      subgroup.parentNode = this[i].parentNode;
+      for (j = _j = 0, _ref1 = this[i].length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
+        if (node = this[i][j]) {
+          subgroup.push(subnode = selector.call(node, node.__data__, j));
+          if (subnode && (node != null ? node.__data__ : void 0)) {
+            subnode.__data__ = node.__data__;
+          }
         } else {
-          return attrFunction;
-        }
-      } else {
-        if (name.local) {
-          return attrConstantNS;
-        } else {
-          return attrConstant;
+          subgroup.push(null);
         }
       }
     }
-  })();
-  return this.each(ret);
-};
+    return new Selection(subgroups);
+  };
 
-temp_selectionPrototype.each = function(callback) {
-  var group, i, j, m, n, node;
-  j = -1;
-  m = this.length;
-  while (++j < m) {
-    group = this[j];
-    i = -1;
-    n = group.length;
-    while (++i < n) {
-      node = group[i];
-      if (node) {
-        callback.call(node, node.__data__, i, j);
+  Selection.prototype.selectAll = function(selector) {
+    var i, j, node, subgroup, subgroups, _i, _j, _ref, _ref1;
+    subgroups = [];
+    if (typeof selector !== "function") {
+      selector = (function(selector) {
+        return function() {
+          return this.querySelectorAll(selector);
+        };
+      })(selector);
+    }
+    for (i = _i = 0, _ref = this.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+      for (j = _j = 0, _ref1 = this[i].length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
+        if (node = this[i][j]) {
+          subgroups.push(subgroup = temp_array(selector.call(node, node.__data__, j)));
+          subgroup.parentNode = node;
+        }
       }
     }
-  }
-  return this;
-};
+    return new Selection(subgroups);
+  };
 
-temp_selectionPrototype.text = function(value) {
-  var ret;
-  if (arguments.length < 1) {
-    return this.node().textContent;
-  } else {
-    ret = (function() {
+  Selection.prototype.append = function(name) {
+    name = this.qualify(name);
+    if (name.local) {
+      return this.select(function() {
+        return this.appendChild(document.createElementNS(name.space, name.local));
+      });
+    } else {
+      return this.select(function() {
+        return this.appendChild(document.createElementNS(this.namespaceURI, name));
+      });
+    }
+  };
+
+  Selection.prototype.each = function(callback) {
+    var i, j, node, _i, _j, _ref, _ref1;
+    for (i = _i = 0, _ref = this.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+      for (j = _j = 0, _ref1 = this[i].length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
+        node = this[i][j];
+        if (node) {
+          callback.call(node, node.__data__, i, j);
+        }
+      }
+    }
+    return this;
+  };
+
+  Selection.prototype.attr = function(name, value) {
+    name = this.qualify(name);
+    return this.each((function() {
+      if (!(value != null)) {
+        if (name.local) {
+          return function() {
+            return this.removeAttributeNS(name.space, name.local);
+          };
+        } else {
+          return function() {
+            return this.removeAttribute(name);
+          };
+        }
+      } else {
+        if (typeof value === "function") {
+          if (name.local) {
+            return function() {
+              var x;
+              x = value.apply(this, arguments);
+              if (x == null) {
+                return this.removeAttributeNS(name.space, name.local);
+              } else {
+                return this.setAttributeNS(name.space, name.local, x);
+              }
+            };
+          } else {
+            return function() {
+              var x;
+              x = value.apply(this, arguments);
+              if (x == null) {
+                return this.removeAttribute(name);
+              } else {
+                return this.setAttribute(name, x);
+              }
+            };
+          }
+        } else {
+          if (name.local) {
+            return function() {
+              return this.setAttributeNS(name.space, name.local, value);
+            };
+          } else {
+            return function() {
+              return this.setAttribute(name, value);
+            };
+          }
+        }
+      }
+    })());
+  };
+
+  Selection.prototype.text = function(value) {
+    if (value == null) {
+      return this.node().textContent;
+    }
+    return this.each((function() {
       if (typeof value === "function") {
         return function() {
-          var v;
-          v = value.apply(this, arguments);
-          return this.textContent = (!(v != null) ? "" : v);
+          return this.textContent = value.apply(this, arguments) || '';
         };
       } else {
-        if (!(value != null)) {
-          return function() {
-            return this.textContent = "";
-          };
-        } else {
-          return function() {
-            return this.textContent = value;
-          };
+        return function() {
+          return this.textContent = value;
+        };
+      }
+    })());
+  };
+
+  Selection.prototype.node = function(callback) {
+    var i, j, _i, _j, _ref, _ref1;
+    for (i = _i = 0, _ref = this.length; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+      for (j = _j = 0, _ref1 = this[i].length; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
+        if (this[i][j] != null) {
+          return this[i][j];
         }
       }
-    })();
-    return this.each(ret);
-  }
-};
-
-temp_selectionPrototype.node = function(callback) {
-  var group, i, j, m, n, node;
-  j = 0;
-  m = this.length;
-  while (j < m) {
-    group = this[j];
-    i = 0;
-    n = group.length;
-    while (i < n) {
-      node = group[i];
-      if (node) {
-        return node;
-      }
-      i++;
     }
-    j++;
-  }
-  return null;
-};
-
-temp_eventCancel = function() {
-  temp.event.stopPropagation();
-  return temp.event.preventDefault();
-};
-
-temp_eventSource = function() {
-  var e, s;
-  e = temp.event;
-  s = void 0;
-  while (s = e.sourceEvent) {
-    e = s;
-  }
-  return e;
-};
-
-temp_dispatch = function() {};
-
-temp_dispatch.prototype.on = function(type, listener) {
-  var i, name;
-  i = type.indexOf(".");
-  name = "";
-  if (i > 0) {
-    name = type.substring(i + 1);
-    type = type.substring(0, i);
-  }
-  if (arguments.length < 2) {
-    return this[type].on(name);
-  } else {
-    return this[type].on(name, listener);
-  }
-};
-
-temp_dispatch_event = function(dispatch) {
-  var event, listenerByName, listeners;
-  event = function() {
-    var i, l, n, z;
-    z = listeners;
-    i = -1;
-    n = z.length;
-    l = void 0;
-    if ((function() {
-      var _results;
-      _results = [];
-      while (++i < n) {
-        _results.push(l = z[i].on);
-      }
-      return _results;
-    })()) {
-      l.apply(this, arguments);
-    }
-    return dispatch;
+    return null;
   };
-  listeners = [];
-  listenerByName = new d3_Map;
-  event.on = function(name, listener) {
-    var i, l;
-    l = listenerByName.get(name);
-    i = void 0;
-    if (arguments.length < 2) {
-      return l && l.on;
-    }
-    if (l) {
-      l.on = null;
-      listeners = listeners.slice(0, i = listeners.indexOf(l)).concat(listeners.slice(i + 1));
-      listenerByName.remove(name);
-    }
-    if (listener) {
-      listeners.push(listenerByName.set(name, {
-        on: listener
-      }));
-    }
-    return dispatch;
-  };
-  return event;
-};
 
-temp_eventDispatch = function(target) {
-  var dispatch, i, n;
-  dispatch = new temp_dispatch;
-  i = 0;
-  n = arguments.length;
-  while (++i < n) {
-    dispatch[arguments[i]] = temp_dispatch_event(dispatch);
-  }
-  dispatch.of = function(thiz, argumentz) {
-    return function(e1) {
-      var e0;
-      try {
-        e0 = e1.sourceEvent = temp.event;
-        e1.target = target;
-        temp.event = e1;
-        return dispatch[e1.type].apply(thiz, argumentz);
-      } finally {
-        temp.event = e0;
+  Selection.prototype.on = function(type, listener) {
+    var i, name;
+    name = "__on" + type;
+    if (listener == null) {
+      return (i = this.node()[name])._;
+    }
+    return this.each(function(x, index) {
+      var eventListener, o,
+        _this = this;
+      eventListener = function(event) {
+        var bak;
+        bak = Selection.event;
+        Selection.event = event;
+        try {
+          return listener.call(_this, _this.__data__, index);
+        } finally {
+          Selection.event = bak;
+        }
+      };
+      o = this[name];
+      if (o) {
+        this.removeEventListener(type, o, o.$);
+        delete this[name];
       }
-    };
-  };
-  return dispatch;
-};
-
-temp.event = null;
-
-temp_selectionPrototype.on = function(type, listener, capture) {
-  var i, name;
-  if (arguments.length < 3) {
-    capture = false;
-  }
-  name = "__on" + type;
-  i = type.indexOf(".");
-  if (i > 0) {
-    type = type.substring(0, i);
-  }
-  if (arguments.length < 2) {
-    return (i = this.node()[name]) && i._;
-  }
-  return this.each(function(d, i) {
-    var l, node, o;
-    l = function(e) {
-      var o;
-      o = temp.event;
-      temp.event = e;
-      try {
-        return listener.call(node, node.__data__, i);
-      } finally {
-        temp.event = o;
+      if (listener) {
+        this.addEventListener(type, this[name] = eventListener, eventListener.$ = false);
+        return eventListener._ = listener;
       }
-    };
-    node = this;
-    o = node[name];
-    if (o) {
-      node.removeEventListener(type, o, o.$);
-      delete node[name];
-    }
-    if (listener) {
-      node.addEventListener(type, node[name] = l, l.$ = capture);
-      return l._ = listener;
-    }
-  });
-};
+    });
+  };
 
-temp_selection = function(groups) {
-  groups.__proto__ = temp_selectionPrototype;
-  return groups;
-};
+  return Selection;
 
-temp_selectionRoot = temp_selection([[document]]);
-
-temp_selectRoot = document.documentElement;
-
-temp_selectionRoot[0].parentNode = temp_selectRoot;
+})(Array);
 
 temp_arraySlice = function(pseudoarray) {
   return Array.prototype.slice.call(pseudoarray);
@@ -1185,17 +997,17 @@ temp_array = temp_arraySlice;
 
 Mynd.selectAll = function(selector) {
   if (typeof selector === "string") {
-    return temp_selectionRoot.selectAll(selector);
+    return (new Selection([document].parentNode = document.documentElement)).selectAll(selector);
   } else {
-    return temp_selection([temp_array(selector)]);
+    return new Selection(temp_array(selector));
   }
 };
 
 Mynd.select = function(selector) {
   if (typeof selector === "string") {
-    return temp_selectionRoot.select(selector);
+    return (new Selection([document].parentNode = document.documentElement)).select(selector);
   } else {
-    return temp_selection([[selector]]);
+    return new Selection([selector]);
   }
 };
 

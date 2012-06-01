@@ -2,300 +2,168 @@
 Mynd = {}
 Mynd.Scale = {}
 
+# Selection is an Array.
+class Selection extends Array
 
-temp = {}
+    event: null
 
-temp_selectionPrototype = []
+    constructor: ->
+        @push arguments...
 
-temp.selection = -> temp_selectionRoot
-
-temp.selection:: = temp_selectionPrototype
-
-temp_select = (s, n) -> n.querySelector s
-
-temp_selectAll = (s, n) -> n.querySelectorAll s
-
-temp_selection_selector = (selector) ->
-    ->
-        temp_select selector, @
-
-temp_selection_selectorAll = (selector) ->
-    ->
-        temp_selectAll selector, @
-
-temp_selectionPrototype.select = (selector) ->
-    subgroups = []
-    subgroup = undefined
-    subnode = undefined
-    group = undefined
-    node = undefined
-    selector = temp_selection_selector(selector) if typeof selector isnt "function"
-    j = -1
-    m = @length
-
-    while ++j < m
-        subgroups.push subgroup = []
-        subgroup.parentNode = (group = @[j]).parentNode
-        i = -1
-        n = group.length
-
-        while ++i < n
-            if node = group[i]
-                subgroup.push subnode = selector.call(node, node.__data__, i)
-                subnode.__data__ = node.__data__  if subnode and "__data__" of node
-            else
-                subgroup.push null
-      
-    temp_selection subgroups
-
-temp_selectionPrototype.selectAll = (selector) ->
-    subgroups = []
-    subgroup = undefined
-    node = undefined
-    selector = temp_selection_selectorAll(selector) if typeof selector isnt "function"
-    j = -1
-    m = @length
-
-    while ++j < m
-        group = @[j]
-        i = -1
-        n = group.length
-
-        while ++i < n
-            if node = group[i]
-                subgroups.push subgroup = temp_array(selector.call(node, node.__data__, i))
-                subgroup.parentNode = node
-    
-    temp_selection subgroups
-
-temp_selectionPrototype.append = (name) ->
-    append = ->
-        @appendChild document.createElementNS(@namespaceURI, name)
-    appendNS = ->
-        @appendChild document.createElementNS(name.space, name.local)
-    
-    name = temp.ns.qualify(name)
-    @select (if name.local then appendNS else append)
-
-temp_nsPrefix =
-    svg: "http://www.w3.org/2000/svg"
-    xhtml: "http://www.w3.org/1999/xhtml"
-
-temp.ns =
-    prefix: temp_nsPrefix
-  
+    # Quality element with SVG prefix or without.
     qualify: (name) ->
-        i = name.indexOf(":")
-        prefix = name
+        if (!index = name.indexOf('svg:'))
+            return {
+                space: 'http://www.w3.org/2000/svg'
+                local: name[4...]
+            }
+        else
+            return name
+
+    # Selects the first element that matches the specified selector string, returning a single-element selection. If no elements in the current document
+    #  match the specified selector, returns the empty selection. If multiple elements match the selector, only the first matching element (in document
+    #  traversal order) will be selected.
+    select: (selector) ->
+        subgroups = []
+        if typeof selector isnt "function" then selector = do (selector) -> ( -> @.querySelector selector )
+
+        for i in [0...@length]
+            subgroups.push subgroup = []
+            subgroup.parentNode = @[i].parentNode
+
+            for j in [0...@[i].length]
+                if node = @[i][j]
+                    subgroup.push subnode = selector.call(node, node.__data__, j)
+                    subnode.__data__ = node.__data__ if subnode and node?.__data__
+                else
+                    subgroup.push null
+          
+        new Selection subgroups
+
+    # Selects all elements that match the specified selector. The elements will be selected in document traversal order (top-to-bottom). If no elements in the
+    #  current document match the specified selector, returns the empty selection.
+    selectAll: (selector) ->
+        subgroups = []
+        if typeof selector isnt "function"
+            selector = do (selector) -> ( -> @.querySelectorAll selector )
+
+        for i in [0...@length]
+            for j in [0...@[i].length]
+                if node = @[i][j]
+                    subgroups.push subgroup = temp_array(selector.call(node, node.__data__, j))
+                    subgroup.parentNode = node
         
-        if i >= 0
-            prefix = name.substring(0, i)
-            name = name.substring(i + 1)
-        (if temp_nsPrefix.hasOwnProperty(prefix)
-            space: temp_nsPrefix[prefix]
-            local: name
-        else name)
+        new Selection subgroups
 
-temp_selectionPrototype.attr = (name, value) ->
-    attrNull = -> @removeAttribute name
-    attrNullNS = -> @removeAttributeNS name.space, name.local
-    attrConstant = -> @setAttribute name, value
-    attrConstantNS = -> @setAttributeNS name.space, name.local, value
-  
-    attrFunction = ->
-        x = value.apply(@, arguments)
-        unless x?
-            @removeAttribute name
+    # Appends a new element with the specified name as the last child of each element in the current selection. Returns a new selection containing the appended
+    #  elements. Each new element inherits the data of the current elements, if any, in the same manner as select for subselections. The name must be specified
+    #  as a constant, though in the future we might allow appending of existing elements or a function to generate the name dynamically.
+    # If value is not specified, returns the value of the specified attribute for the first non-null element in the selection. This is generally useful only if
+    #  you know that the selection contains exactly one element.
+    append: (name) ->
+        name = @qualify name
+
+        if name.local
+            @select -> @appendChild document.createElementNS(name.space, name.local)
         else
-            @setAttribute name, x
-  
-    attrFunctionNS = ->
-        x = value.apply(@, arguments)
-        unless x?
-            @removeAttributeNS name.space, name.local
-        else
-            @setAttributeNS name.space, name.local, x
-    
-    name = temp.ns.qualify(name)
-    if arguments.length < 2
-        node = @node()
-        return (if name.local then node.getAttributeNS(name.space, name.local) else node.getAttribute(name))
-    
-    ret = do ->
-        if not value?
-            if name.local
-                return attrNullNS
-            else
-                return attrNull
-        else
-            if typeof value is "function"
+            @select -> @appendChild document.createElementNS(@namespaceURI, name)
+
+    # Invokes the specified function for each element in the current selection, passing in the current data, index, context of the current DOM element.
+    each: (callback) ->
+        for i in [0...@length]
+            for j in [0...@[i].length]
+                node = @[i][j]
+                callback.call node, node.__data__, i, j if node
+      
+        @
+
+    # If value is specified, sets the attribute with the specified name to the specified value on all selected elements. If value is a constant, then all elements
+    #  are given the same attribute value; otherwise, if value is a function, then the function is evaluated for each selected element (in order), being passed the
+    #  current datum d and the current index i, with the this context as the current DOM element. The function's return value is then used to set each element's
+    #  attribute. A null value will remove the specified attribute.
+    attr: (name, value) ->      
+        name = @qualify name
+        
+        @each do ->
+            if not value?
                 if name.local
-                    return attrFunctionNS
+                    -> @removeAttributeNS name.space, name.local
                 else
-                    return attrFunction
+                    -> @removeAttribute name
             else
-                if name.local
-                    return attrConstantNS
+                if typeof value is "function"
+                    if name.local
+                        ->
+                            x = value.apply(@, arguments)
+                            unless x?
+                                @removeAttributeNS name.space, name.local
+                            else
+                                @setAttributeNS name.space, name.local, x
+                    else
+                        ->
+                            x = value.apply(@, arguments)
+                            unless x?
+                                @removeAttribute name
+                            else
+                                @setAttribute name, x
                 else
-                    return attrConstant
-    
-    @each ret
+                    if name.local
+                        -> @setAttributeNS name.space, name.local, value
+                    else
+                        -> @setAttribute name, value
 
-temp_selectionPrototype.each = (callback) ->
-    j = -1
-    m = @length
-
-    while ++j < m
-        group = @[j]
-        i = -1
-        n = group.length
-
-        while ++i < n
-            node = group[i]
-            callback.call node, node.__data__, i, j if node
-  
-    @
-
-temp_selectionPrototype.text = (value) ->
-    if arguments.length < 1
-        @node().textContent
-    else
-        ret = do ->
+    # Get or set text content.
+    text: (value) ->
+        return @node().textContent unless value?
+        
+        @each do ->
             if typeof value is "function"
-                ->
-                    v = value.apply(@, arguments)
-                    @textContent = (if not v? then "" else v)
+                -> @textContent = value.apply(@, arguments) or ''
             else
-                if not value?
-                    ->
-                        @textContent = ""
-                else
-                    ->
-                        @textContent = value
-    
-        @each ret
+                -> @textContent = value
 
-temp_selectionPrototype.node = (callback) ->
-    j = 0
-    m = @length
+    # Returns the first non-null element in the current selection. If the selection is empty, returns null.
+    node: (callback) ->
+        for i in [0..@length]
+            for j in [0..@[i].length]
+                return @[i][j] if @[i][j]?
+        
+        null
 
-    while j < m
-        group = @[j]
-        i = 0
-        n = group.length
-
-        while i < n
-            node = group[i]
-            return node  if node
-            i++
-        j++
-    null
-
-temp_eventCancel = ->
-    temp.event.stopPropagation()
-    temp.event.preventDefault()
-
-temp_eventSource = ->
-    e = temp.event
-    s = undefined
-    e = s while s = e.sourceEvent
-    e
-
-temp_dispatch = ->
-
-temp_dispatch::on = (type, listener) ->
-    i = type.indexOf(".")
-    name = ""
-    if i > 0
-        name = type.substring(i + 1)
-        type = type.substring(0, i)
-    (if arguments.length < 2 then this[type].on(name) else this[type].on(name, listener))
-
-temp_dispatch_event = (dispatch) ->
-    
-    event = ->
-        z = listeners
-        i = -1
-        n = z.length
-        l = undefined
-        l.apply this, arguments  if l = z[i].on  while ++i < n
-        dispatch
-    
-    listeners = []
-    listenerByName = new d3_Map
-    
-    event.on = (name, listener) ->
-        l = listenerByName.get(name)
-        i = undefined
-        return l and l.on  if arguments.length < 2
-    
-        if l
-            l.on = null
-            listeners = listeners.slice(0, i = listeners.indexOf(l)).concat(listeners.slice(i + 1))
-            listenerByName.remove name
-    
-        if listener
-            listeners.push listenerByName.set(name,
-                on: listener
-            )
-    
-        dispatch
-
-    event
-
-temp_eventDispatch = (target) ->
-    dispatch = new temp_dispatch
-    i = 0
-    n = arguments.length
-    dispatch[arguments[i]] = temp_dispatch_event(dispatch)  while ++i < n
-    dispatch.of = (thiz, argumentz) ->
-        (e1) ->
-            try
-                e0 = e1.sourceEvent = temp.event
-                e1.target = target
-                temp.event = e1
-                dispatch[e1.type].apply thiz, argumentz
-            finally
-                temp.event = e0
-    
-    dispatch
-
-temp.event = null
-
-temp_selectionPrototype.on = (type, listener, capture) ->
-    capture = false  if arguments.length < 3
-    name = "__on" + type
-    i = type.indexOf(".")
-    type = type.substring(0, i)  if i > 0
-    
-    return (i = @node()[name]) and i._  if arguments.length < 2
-  
-    @each (d, i) ->
-        l = (e) ->
-            o = temp.event
-            temp.event = e
-            try
-                listener.call node, node.__data__, i
-            finally
-                temp.event = o
-        node = @
-        o = node[name]
-        if o
-            node.removeEventListener type, o, o.$
-            delete node[name]
-        if listener
-            node.addEventListener type, node[name] = l, l.$ = capture
-            l._ = listener
-
-temp_selection = (groups) ->
-    groups.__proto__ = temp_selectionPrototype
-    return groups
-
-temp_selectionRoot = temp_selection([ [ document ] ])
-
-temp_selectRoot = document.documentElement
-
-temp_selectionRoot[0].parentNode = temp_selectRoot
+    # Adds or removes an event listener to each element in the current selection, for the specified type.
+    #  `type` is a string event type name, such as "click", "mouseover", or "submit".
+    #  `listener` is invoked in the same manner as other operator functions, being passed the current datum, index and context (the current DOM element).
+    on: (type, listener) ->
+        name = "__on#{type}"
+      
+        # If listener is not specified, returns the currently-assigned listener for the specified type, if any (untested).
+        return (i = @node()[name])._ unless listener?
+      
+        @each (x, index) ->
+            # The object that receives a notification when an event of the specified type occurs.
+            eventListener = (event) =>
+                # Backup current event.
+                bak = Selection.event
+                # Current event.
+                Selection.event = event
+                try
+                    #  The specified listener is invoked passing current datum `d` and index `i`, with the `this` context as the current DOM element.
+                    listener.call @, @.__data__, index
+                finally
+                    # Save back.
+                    Selection.event = bak
+            
+            o = @[name]
+            # Remove event listeners from the event target.
+            if o
+                @.removeEventListener type, o, o.$
+                delete @[name]
+            
+            # Register a single event listener on a single target.
+            if listener
+                @.addEventListener type, @[name] = eventListener, eventListener.$ = false # W3C useCapture flag
+                # Save it so we can retrieve it later.
+                eventListener._ = listener
 
 temp_arraySlice = (pseudoarray) ->
     Array::slice.call pseudoarray
@@ -316,15 +184,15 @@ temp_array = temp_arraySlice
 
 Mynd.selectAll = (selector) ->
     if typeof selector is "string"
-        temp_selectionRoot.selectAll(selector)
+        (new Selection([ document ].parentNode = document.documentElement)).selectAll(selector)
     else
-        temp_selection([ temp_array(selector) ])
+        new Selection temp_array(selector)
 
 Mynd.select = (selector) ->
     if typeof selector is "string"
-        return temp_selectionRoot.select(selector)
+        (new Selection([ document ].parentNode = document.documentElement)).select selector
     else
-        return temp_selection([ [ selector ] ])
+        new Selection [ selector ]
 
 
 # Ordinal scales have a discrete domain (chart bars).
