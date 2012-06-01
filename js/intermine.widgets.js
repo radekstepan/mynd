@@ -2,210 +2,22 @@
 var o = {};
 
 var JST = {};
-JST["error.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="alert alert-block">\n    <h4 class="alert-heading">'),b.push(d(this.title)),b.push(" for "),b.push(d(this.name)),b.push("</h4>\n    <p>"),b.push(this.text),b.push("</p>\n</div>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["actions.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<a class="btn btn-small '),this.disabled&&b.push("disabled"),b.push(' view">View</a>\n<a class="btn btn-small '),this.disabled&&b.push("disabled"),b.push(' export">Download</a>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["extra.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f;b.push('<div class="group" style="display:inline-block;margin:0 5px 10px 0;float:left">\n    <label>'),b.push(d(this.label)),b.push("</label>\n    ");if(this.possible.length>1){b.push('\n        <select name="'),b.push(d(this.label)),b.push('" class="span2">\n            '),f=this.possible;for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n                <option value="'),b.push(d(a)),b.push('" '),this.selected===a&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(a)),b.push("\n                </option>\n            ");b.push("\n        </select>\n    ")}else b.push("\n        "),b.push(d(this.possible[0])),b.push("\n    ");b.push('\n</div>\n<div style="clear:both"></div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["noresults.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="alert alert-info">\n    <p>The Widget has no results.</p>\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["loading.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="loading" style="background:rgba(255,255,255,0.9);position:absolute;top:0;left:0;height:100%;width:100%;text-align:center;">\n    <p style="padding-top:50%;font-weight:bold;">Loading &hellip;</p>\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["invalidjsonkey.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<li style="vertical-align:bottom">\n    <span style="display:inline-block" class="label label-important">'),b.push(d(this.key)),b.push("</span> is "),b.push(d(this.actual)),b.push("; was expecting "),b.push(d(this.expected)),b.push("\n</li>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["popover.values.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f;b.push("<h4>"),b.push(d(this.values.length)),b.push(" "),b.push(d(this.type)),this.values.length!==1&&b.push(d("s")),b.push(":</h4>\n\n"),f=this.values.slice(0,this.valuesLimit-1+1||9e9);for(c=0,e=f.length;c<e;c++)a=f[c],b.push('\n    <a href="#" class="match">'),b.push(d(a)),b.push("</a>\n");b.push("\n"),this.values.length>this.valuesLimit&&b.push("&hellip;")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["popover.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="popover" style="position:absolute;top:5px;right:0;z-index:1;display:block">\n    <div class="popover-inner" style="'),b.push(d(this.style)),b.push('">\n        <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>\n        <h3 class="popover-title">\n            '),b.push(d(this.description.slice(0,this.descriptionLimit-1+1||9e9))),b.push("\n            "),this.description.length>this.descriptionLimit&&b.push("&hellip;"),b.push('\n        </h3>\n        <div class="popover-content">\n            <div class="values">\n                <!-- popover.values.eco -->\n            </div>\n            <div style="margin-top:10px">\n                <a class="btn btn-small btn-primary results">View results</a>\n                <a class="btn btn-small list disabled">Create list</a>\n            </div>\n        </div>\n    </div>\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["chart.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="header">\n    <h3>'),this.title&&b.push(d(this.title)),b.push('</h3>\n    <p style="margin:0">'),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push('\n        <p style="margin:10px 0 0 0">Number of Genes in this list not analysed in this widget: <a>'),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <form style="margin:0;padding:10px 0 0 0">\n            <!-- extra.eco -->\n        </form>\n    </div>\n</div>\n<div class="content">\n    <div class="settings"></div>\n    <div class="legend"></div>\n    <div class="chart"></div>\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["enrichment.row.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<td class="check"><input type="checkbox" '),this.row.selected&&b.push('checked="checked"'),b.push(' /></td>\n<td class="description">\n    '),b.push(d(this.row.description)),b.push("\n    "),this.row.externalLink&&(b.push('\n        [<a href="'),b.push(this.row.externalLink),b.push('" target="_blank">Link</a>]\n    ')),b.push('\n</td>\n<td class="pValue">'),b.push(d(this.row["p-value"].toPrecision(5))),b.push('</td>\n<td class="matches">\n    <a class="count" style="cursor:pointer">'),b.push(d(this.row.matches)),b.push("</a>\n</td>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["enrichment.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="header">\n    <h3>'),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="form">\n        <!-- enrichment.form.eco -->\n    </div>\n\n    <div class="actions" style="padding:10px 0">\n        <!-- actions.eco -->\n    </div>\n</div>\n<div class="content">\n    <!-- enrichment.table.eco -->\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["enrichment.table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<!-- actual fixed head -->\n<div class="head" style="display:table">\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;"><input type="checkbox" class="check" /></div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">'),b.push(d(this.label)),b.push('</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">p-Value</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">Matches</div>\n    <div style="clear:both"></div>\n</div>\n<div class="wrapper" style="overflow:auto;overflow-x:hidden">\n    <table class="table table-striped">\n        <!-- head for proper cell width -->\n        <thead style="visibility:hidden">\n            <tr>\n                <th></th>\n                <th>'),b.push(d(this.label)),b.push("</th>\n                <th>p-Value</th>\n                <th>Matches</th>\n            </tr>\n        </thead>\n        <tbody>\n            <!-- loop enrichment.row.eco -->\n        </tbody>\n    </table>\n</div>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["enrichment.form.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f,g,h,i,j;b.push('<form style="margin:0">\n    <div class="group" style="display:inline-block;margin-right:5px;float:left">\n        <label>Test Correction</label>\n        <select name="errorCorrection" class="span2">\n            '),i=this.errorCorrections;for(e=0,g=i.length;e<g;e++)a=i[e],b.push('\n                <option value="'),b.push(d(a)),b.push('" '),this.options.errorCorrection===a&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(a)),b.push("\n            </option>\n            ");b.push('\n        </select>\n    </div>\n\n    <div class="group" style="display:inline-block;margin-right:5px;float:left">\n        <label>Max p-value</label>\n        <select name="pValue" class="span2">\n            '),j=this.pValues;for(f=0,h=j.length;f<h;f++)c=j[f],b.push('\n                <option value="'),b.push(d(c)),b.push('" '),this.options.pValue===c&&b.push(d('selected="selected"')),b.push(">\n                    "),b.push(d(c)),b.push("\n                </option>\n            ");b.push('\n        </select>\n    </div>\n</form>\n<div style="clear:both"></div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["table.row.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f;b.push('<td class="check"><input type="checkbox" '),this.row.selected&&b.push('checked="checked"'),b.push(" /></td>\n"),f=this.row.descriptions;for(c=0,e=f.length;c<e;c++)a=f[c],b.push("\n    <td>"),b.push(d(a)),b.push("</td>\n");b.push("\n<td>"),b.push(d(this.row.matches)),b.push("</td>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){b.push('<div class="header">\n    <h3>'),this.title&&b.push(d(this.title)),b.push("</h3>\n    <p>"),this.description&&b.push(this.description),b.push("</p>\n    "),this.notAnalysed&&(b.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),b.push(d(this.notAnalysed)),b.push("</a></p>\n    ")),b.push('\n\n    <div class="actions" style="padding:10px 0">\n        <!-- actions.eco -->\n    </div>\n</div>\n<div class="content">\n    <!-- table.table.eco -->\n</div>')}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-JST["table.table.eco"]=function(a){a||(a={});var b=[],c=function(a){var c=b,d;return b=[],a.call(this),d=b.join(""),b=c,e(d)},d=function(a){return a&&a.ecoSafe?a:typeof a!="undefined"&&a!=null?g(a):""},e,f=a.safe,g=a.escape;return e=a.safe=function(a){if(a&&a.ecoSafe)return a;if(typeof a=="undefined"||a==null)a="";var b=new String(a);return b.ecoSafe=!0,b},g||(g=a.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var a,c,e,f,g,h,i;b.push('<!-- actual fixed head -->\n<div class="head" style="display:table">\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;"><input type="checkbox" class="check" /></div>\n    '),h=this.columns;for(c=0,f=h.length;c<f;c++)a=h[c],b.push('\n        <div style="font-weight:bold;display:table-cell;padding:0 8px;">'),b.push(d(a)),b.push("</div>\n    ");b.push('\n    <div style="clear:both"></div>\n</div>\n<div class="wrapper" style="overflow:auto;overflow-x:hidden">\n    <table class="table table-striped">\n        <!-- head for proper cell width -->\n        <thead style="visibility:hidden">\n            <tr>\n                <th></th>\n                '),i=this.columns;for(e=0,g=i.length;e<g;e++)a=i[e],b.push("\n                    <th>"),b.push(d(a)),b.push("</th>\n                ");b.push("\n            </tr>\n        </thead>\n        <tbody>\n            <!-- loop table.row.eco -->\n        </tbody>\n    </table>\n</div>")}).call(this)}.call(a),a.safe=f,a.escape=g,b.join("")}
-/* Types in JS.
-*/
-
-var type,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-
-type = {};
-
-type.Root = (function() {
-
-  Root.name = 'Root';
-
-  function Root() {}
-
-  Root.prototype.result = false;
-
-  Root.prototype.is = function() {
-    return this.result;
-  };
-
-  Root.prototype.toString = function() {
-    return "" + this.expected + " but got " + this.actual;
-  };
-
-  return Root;
-
-})();
-
-type.isString = (function(_super) {
-
-  __extends(isString, _super);
-
-  isString.name = 'isString';
-
-  isString.prototype.expected = "String";
-
-  function isString(actual) {
-    this.actual = actual;
-    this.result = typeof actual === 'string';
-  }
-
-  return isString;
-
-})(type.Root);
-
-type.isInteger = (function(_super) {
-
-  __extends(isInteger, _super);
-
-  isInteger.name = 'isInteger';
-
-  isInteger.prototype.expected = "Integer";
-
-  function isInteger(actual) {
-    this.actual = actual;
-    this.result = typeof actual === 'number';
-  }
-
-  return isInteger;
-
-})(type.Root);
-
-type.isBoolean = (function(_super) {
-
-  __extends(isBoolean, _super);
-
-  isBoolean.name = 'isBoolean';
-
-  isBoolean.prototype.expected = "Boolean true";
-
-  function isBoolean(actual) {
-    this.actual = actual;
-    this.result = typeof actual === 'boolean';
-  }
-
-  return isBoolean;
-
-})(type.Root);
-
-type.isNull = (function(_super) {
-
-  __extends(isNull, _super);
-
-  isNull.name = 'isNull';
-
-  isNull.prototype.expected = "Null";
-
-  function isNull(actual) {
-    this.actual = actual;
-    this.result = actual === null;
-  }
-
-  return isNull;
-
-})(type.Root);
-
-type.isArray = (function(_super) {
-
-  __extends(isArray, _super);
-
-  isArray.name = 'isArray';
-
-  isArray.prototype.expected = "Array";
-
-  function isArray(actual) {
-    this.actual = actual;
-    this.result = actual instanceof Array;
-  }
-
-  return isArray;
-
-})(type.Root);
-
-type.isHTTPSuccess = (function(_super) {
-
-  __extends(isHTTPSuccess, _super);
-
-  isHTTPSuccess.name = 'isHTTPSuccess';
-
-  isHTTPSuccess.prototype.expected = "HTTP code 200";
-
-  function isHTTPSuccess(actual) {
-    this.actual = actual;
-    this.result = actual === 200;
-  }
-
-  return isHTTPSuccess;
-
-})(type.Root);
-
-type.isJSON = (function(_super) {
-
-  __extends(isJSON, _super);
-
-  isJSON.name = 'isJSON';
-
-  isJSON.prototype.expected = "JSON Object";
-
-  function isJSON(actual) {
-    this.actual = actual;
-    this.result = true;
-    try {
-      if (typeof JSON !== "undefined" && JSON !== null) {
-        JSON.parse(actual);
-      }
-    } catch (e) {
-      this.result = false;
-    }
-  }
-
-  return isJSON;
-
-})(type.Root);
-
-type.isUndefined = (function(_super) {
-
-  __extends(isUndefined, _super);
-
-  isUndefined.name = 'isUndefined';
-
-  function isUndefined() {
-    return isUndefined.__super__.constructor.apply(this, arguments);
-  }
-
-  isUndefined.prototype.expected = "it to be undefined";
-
-  return isUndefined;
-
-})(type.Root);
-
-/* Merge properties of 2 dictionaries.
-*/
-
-var merge;
-
-merge = function(child, parent) {
-  var key;
-  for (key in parent) {
-    if (!(child[key] != null)) {
-      if (Object.prototype.hasOwnProperty.call(parent, key)) {
-        child[key] = parent[key];
-      }
-    }
-  }
-  return child;
-};
-
+JST["actions.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<a class="btn btn-small '),this.disabled&&__out.push("disabled"),__out.push(' view">View</a>\n<a class="btn btn-small '),this.disabled&&__out.push("disabled"),__out.push(' export">Download</a>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["error.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<div class="alert alert-block">\n    <h4 class="alert-heading">'),__out.push(__sanitize(this.title)),__out.push(" for "),__out.push(__sanitize(this.name)),__out.push("</h4>\n    <p>"),__out.push(this.text),__out.push("</p>\n</div>")}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["extra.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var v,_i,_len,_ref;__out.push('<div class="group" style="display:inline-block;margin:0 5px 10px 0;float:left">\n    <label>'),__out.push(__sanitize(this.label)),__out.push("</label>\n    ");if(this.possible.length>1){__out.push('\n        <select name="'),__out.push(__sanitize(this.label)),__out.push('" class="span2">\n            '),_ref=this.possible;for(_i=0,_len=_ref.length;_i<_len;_i++)v=_ref[_i],__out.push('\n                <option value="'),__out.push(__sanitize(v)),__out.push('" '),this.selected===v&&__out.push(__sanitize('selected="selected"')),__out.push(">\n                    "),__out.push(__sanitize(v)),__out.push("\n                </option>\n            ");__out.push("\n        </select>\n    ")}else __out.push("\n        "),__out.push(__sanitize(this.possible[0])),__out.push("\n    ");__out.push('\n</div>\n<div style="clear:both"></div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["invalidjsonkey.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<li style="vertical-align:bottom">\n    <span style="display:inline-block" class="label label-important">'),__out.push(__sanitize(this.key)),__out.push("</span> is "),__out.push(__sanitize(this.actual)),__out.push("; was expecting "),__out.push(__sanitize(this.expected)),__out.push("\n</li>")}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["loading.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<div class="loading" style="background:rgba(255,255,255,0.9);position:absolute;top:0;left:0;height:100%;width:100%;text-align:center;">\n    <p style="padding-top:50%;font-weight:bold;">Loading &hellip;</p>\n</div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["noresults.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<div class="alert alert-info">\n    <p>The Widget has no results.</p>\n</div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["chart.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<div class="header">\n    <h3>'),this.title&&__out.push(__sanitize(this.title)),__out.push('</h3>\n    <p style="margin:0">'),this.description&&__out.push(this.description),__out.push("</p>\n    "),this.notAnalysed&&(__out.push('\n        <p style="margin:10px 0 0 0">Number of Genes in this list not analysed in this widget: <a>'),__out.push(__sanitize(this.notAnalysed)),__out.push("</a></p>\n    ")),__out.push('\n\n    <div class="form">\n        <form style="margin:0;padding:10px 0 0 0">\n            <!-- extra.eco -->\n        </form>\n    </div>\n</div>\n<div class="content">\n    <div class="settings"></div>\n    <div class="legend"></div>\n    <div class="chart"></div>\n</div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["enrichment.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<div class="header">\n    <h3>'),this.title&&__out.push(__sanitize(this.title)),__out.push("</h3>\n    <p>"),this.description&&__out.push(this.description),__out.push("</p>\n    "),this.notAnalysed&&(__out.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),__out.push(__sanitize(this.notAnalysed)),__out.push("</a></p>\n    ")),__out.push('\n\n    <div class="form">\n        <!-- enrichment.form.eco -->\n    </div>\n\n    <div class="actions" style="padding:10px 0">\n        <!-- actions.eco -->\n    </div>\n</div>\n<div class="content">\n    <!-- enrichment.table.eco -->\n</div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["enrichment.form.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var correction,p,_i,_j,_len,_len1,_ref,_ref1;__out.push('<form style="margin:0">\n    <div class="group" style="display:inline-block;margin-right:5px;float:left">\n        <label>Test Correction</label>\n        <select name="errorCorrection" class="span2">\n            '),_ref=this.errorCorrections;for(_i=0,_len=_ref.length;_i<_len;_i++)correction=_ref[_i],__out.push('\n                <option value="'),__out.push(__sanitize(correction)),__out.push('" '),this.options.errorCorrection===correction&&__out.push(__sanitize('selected="selected"')),__out.push(">\n                    "),__out.push(__sanitize(correction)),__out.push("\n            </option>\n            ");__out.push('\n        </select>\n    </div>\n\n    <div class="group" style="display:inline-block;margin-right:5px;float:left">\n        <label>Max p-value</label>\n        <select name="pValue" class="span2">\n            '),_ref1=this.pValues;for(_j=0,_len1=_ref1.length;_j<_len1;_j++)p=_ref1[_j],__out.push('\n                <option value="'),__out.push(__sanitize(p)),__out.push('" '),this.options.pValue===p&&__out.push(__sanitize('selected="selected"')),__out.push(">\n                    "),__out.push(__sanitize(p)),__out.push("\n                </option>\n            ");__out.push('\n        </select>\n    </div>\n</form>\n<div style="clear:both"></div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["enrichment.row.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<td class="check"><input type="checkbox" '),this.row.selected&&__out.push('checked="checked"'),__out.push(' /></td>\n<td class="description">\n    '),__out.push(__sanitize(this.row.description)),__out.push("\n    "),this.row.externalLink&&(__out.push('\n        [<a href="'),__out.push(this.row.externalLink),__out.push('" target="_blank">Link</a>]\n    ')),__out.push('\n</td>\n<td class="pValue">'),__out.push(__sanitize(this.row["p-value"].toPrecision(5))),__out.push('</td>\n<td class="matches">\n    <a class="count" style="cursor:pointer">'),__out.push(__sanitize(this.row.matches)),__out.push("</a>\n</td>")}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["enrichment.table.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<!-- actual fixed head -->\n<div class="head" style="display:table">\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;"><input type="checkbox" class="check" /></div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">'),__out.push(__sanitize(this.label)),__out.push('</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">p-Value</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">Matches</div>\n    <div style="clear:both"></div>\n</div>\n<div class="wrapper" style="overflow:auto;overflow-x:hidden">\n    <table class="table table-striped">\n        <!-- head for proper cell width -->\n        <thead style="visibility:hidden">\n            <tr>\n                <th></th>\n                <th>'),__out.push(__sanitize(this.label)),__out.push("</th>\n                <th>p-Value</th>\n                <th>Matches</th>\n            </tr>\n        </thead>\n        <tbody>\n            <!-- loop enrichment.row.eco -->\n        </tbody>\n    </table>\n</div>")}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["table.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<div class="header">\n    <h3>'),this.title&&__out.push(__sanitize(this.title)),__out.push("</h3>\n    <p>"),this.description&&__out.push(this.description),__out.push("</p>\n    "),this.notAnalysed&&(__out.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),__out.push(__sanitize(this.notAnalysed)),__out.push("</a></p>\n    ")),__out.push('\n\n    <div class="actions" style="padding:10px 0">\n        <!-- actions.eco -->\n    </div>\n</div>\n<div class="content">\n    <!-- table.table.eco -->\n</div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["table.row.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var column,_i,_len,_ref;__out.push('<td class="check"><input type="checkbox" '),this.row.selected&&__out.push('checked="checked"'),__out.push(" /></td>\n"),_ref=this.row.descriptions;for(_i=0,_len=_ref.length;_i<_len;_i++)column=_ref[_i],__out.push("\n    <td>"),__out.push(__sanitize(column)),__out.push("</td>\n");__out.push("\n<td>"),__out.push(__sanitize(this.row.matches)),__out.push("</td>")}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["table.table.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var column,_i,_j,_len,_len1,_ref,_ref1;__out.push('<!-- actual fixed head -->\n<div class="head" style="display:table">\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;"><input type="checkbox" class="check" /></div>\n    '),_ref=this.columns;for(_i=0,_len=_ref.length;_i<_len;_i++)column=_ref[_i],__out.push('\n        <div style="font-weight:bold;display:table-cell;padding:0 8px;">'),__out.push(__sanitize(column)),__out.push("</div>\n    ");__out.push('\n    <div style="clear:both"></div>\n</div>\n<div class="wrapper" style="overflow:auto;overflow-x:hidden">\n    <table class="table table-striped">\n        <!-- head for proper cell width -->\n        <thead style="visibility:hidden">\n            <tr>\n                <th></th>\n                '),_ref1=this.columns;for(_j=0,_len1=_ref1.length;_j<_len1;_j++)column=_ref1[_j],__out.push("\n                    <th>"),__out.push(__sanitize(column)),__out.push("</th>\n                ");__out.push("\n            </tr>\n        </thead>\n        <tbody>\n            <!-- loop table.row.eco -->\n        </tbody>\n    </table>\n</div>")}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["popover.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<div class="popover" style="position:absolute;top:5px;right:0;z-index:1;display:block">\n    <div class="popover-inner" style="'),__out.push(__sanitize(this.style)),__out.push('">\n        <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>\n        <h3 class="popover-title">\n            '),__out.push(__sanitize(this.description.slice(0,this.descriptionLimit-1+1||9e9))),__out.push("\n            "),this.description.length>this.descriptionLimit&&__out.push("&hellip;"),__out.push('\n        </h3>\n        <div class="popover-content">\n            <div class="values">\n                <!-- popover.values.eco -->\n            </div>\n            <div style="margin-top:10px">\n                <a class="btn btn-small btn-primary results">View results</a>\n                <a class="btn btn-small list disabled">Create list</a>\n            </div>\n        </div>\n    </div>\n</div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["popover.values.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var object,_i,_len,_ref;__out.push("<h4>"),__out.push(__sanitize(this.values.length)),__out.push(" "),__out.push(__sanitize(this.type)),this.values.length!==1&&__out.push(__sanitize("s")),__out.push(":</h4>\n\n"),_ref=this.values.slice(0,this.valuesLimit-1+1||9e9);for(_i=0,_len=_ref.length;_i<_len;_i++)object=_ref[_i],__out.push('\n    <a href="#" class="match">'),__out.push(__sanitize(object)),__out.push("</a>\n");__out.push("\n"),this.values.length>this.valuesLimit&&__out.push("&hellip;")}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
 var Chart;
 
 Chart = {
@@ -239,8 +51,6 @@ Chart = {
 };
 
 Chart.Column = (function() {
-
-  Column.name = 'Column';
 
   Column.prototype.isStacked = false;
 
@@ -512,8 +322,6 @@ Chart.Column = (function() {
 
 Chart.Legend = (function() {
 
-  Legend.name = 'Legend';
-
   function Legend(o) {
     var k, v;
     for (k in o) {
@@ -559,8 +367,6 @@ Chart.Legend = (function() {
 
 Chart.Settings = (function() {
 
-  Settings.name = 'Settings';
-
   function Settings(o) {
     var k, v;
     for (k in o) {
@@ -599,6 +405,69 @@ Chart.Settings = (function() {
   };
 
   return Settings;
+
+})();
+
+/* Create file download with custom content.
+*/
+
+var Exporter, PlainExporter,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+Exporter = (function() {
+
+  Exporter.prototype.mime = 'text/plain';
+
+  Exporter.prototype.charset = 'UTF-8';
+
+  Exporter.prototype.url = window.webkitURL || window.URL;
+
+  function Exporter(a, data, filename) {
+    var builder;
+    if (filename == null) {
+      filename = 'widget.tsv';
+    }
+    this.destroy = __bind(this.destroy, this);
+
+    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
+    builder.append(data);
+    a.attr('download', filename);
+    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
+    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
+  }
+
+  Exporter.prototype.destroy = function() {
+    return this.url.revokeObjectURL(this.href);
+  };
+
+  return Exporter;
+
+})();
+
+PlainExporter = (function() {
+
+  function PlainExporter(a, data) {
+    var w;
+    w = window.open();
+    if (!(w != null) || typeof w === "undefined") {
+      a.after(this.msg = $('<span/>', {
+        'style': 'margin-left:5px',
+        'class': 'label label-inverse',
+        'text': 'Please enable popups'
+      }));
+    } else {
+      w.document.open();
+      w.document.write(data);
+      w.document.close();
+    }
+  }
+
+  PlainExporter.prototype.destroy = function() {
+    var _ref;
+    return (_ref = this.msg) != null ? _ref.fadeOut() : void 0;
+  };
+
+  return PlainExporter;
 
 })();
 
@@ -751,21 +620,39 @@ if (!("some" in Array.prototype)) {
   };
 }
 
-var Mynd, Selection, temp_array, temp_arrayCopy, temp_arraySlice,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+/* Merge properties of 2 dictionaries.
+*/
+
+var merge;
+
+merge = function(child, parent) {
+  var key;
+  for (key in parent) {
+    if (!(child[key] != null)) {
+      if (Object.prototype.hasOwnProperty.call(parent, key)) {
+        child[key] = parent[key];
+      }
+    }
+  }
+  return child;
+};
+
+var Mynd, Selection, temp_array, temp_arrayCopy, temp_arraySlice;
 
 Mynd = {};
 
 Mynd.Scale = {};
 
-Selection = (function(_super) {
-
-  __extends(Selection, _super);
-
-  Selection.name = 'Selection';
+Selection = (function() {
 
   Selection.prototype.event = null;
+
+  Selection.prototype.elements = [];
+
+  Selection.prototype.push = function() {
+    var _ref;
+    return (_ref = this.elements).push.apply(_ref, arguments);
+  };
 
   function Selection() {
     this.push.apply(this, arguments);
@@ -793,11 +680,11 @@ Selection = (function(_super) {
         };
       })(selector);
     }
-    for (i = _i = 0, _ref = this.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+    for (i = _i = 0, _ref = this.elements.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
       subgroups.push(subgroup = []);
-      subgroup.parentNode = this[i].parentNode;
-      for (j = _j = 0, _ref1 = this[i].length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
-        if (node = this[i][j]) {
+      subgroup.parentNode = this.elements[i].parentNode;
+      for (j = _j = 0, _ref1 = this.elements[i].length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
+        if (node = this.elements[i][j]) {
           subgroup.push(subnode = selector.call(node, node.__data__, j));
           if (subnode && (node != null ? node.__data__ : void 0)) {
             subnode.__data__ = node.__data__;
@@ -820,9 +707,9 @@ Selection = (function(_super) {
         };
       })(selector);
     }
-    for (i = _i = 0, _ref = this.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-      for (j = _j = 0, _ref1 = this[i].length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
-        if (node = this[i][j]) {
+    for (i = _i = 0, _ref = this.elements.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+      for (j = _j = 0, _ref1 = this.elements[i].length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
+        if (node = this.elements[i][j]) {
           subgroups.push(subgroup = temp_array(selector.call(node, node.__data__, j)));
           subgroup.parentNode = node;
         }
@@ -835,6 +722,7 @@ Selection = (function(_super) {
     name = this.qualify(name);
     if (name.local) {
       return this.select(function() {
+        console.log(name);
         return this.appendChild(document.createElementNS(name.space, name.local));
       });
     } else {
@@ -846,9 +734,9 @@ Selection = (function(_super) {
 
   Selection.prototype.each = function(callback) {
     var i, j, node, _i, _j, _ref, _ref1;
-    for (i = _i = 0, _ref = this.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-      for (j = _j = 0, _ref1 = this[i].length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
-        node = this[i][j];
+    for (i = _i = 0, _ref = this.elements.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+      for (j = _j = 0, _ref1 = this.elements[i].length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
+        node = this.elements[i][j];
         if (node) {
           callback.call(node, node.__data__, i, j);
         }
@@ -927,10 +815,10 @@ Selection = (function(_super) {
 
   Selection.prototype.node = function(callback) {
     var i, j, _i, _j, _ref, _ref1;
-    for (i = _i = 0, _ref = this.length; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-      for (j = _j = 0, _ref1 = this[i].length; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
-        if (this[i][j] != null) {
-          return this[i][j];
+    for (i = _i = 0, _ref = this.elements.length; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+      for (j = _j = 0, _ref1 = this.elements[i].length; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
+        if (this.elements[i][j] != null) {
+          return this.elements[i][j];
         }
       }
     }
@@ -970,7 +858,7 @@ Selection = (function(_super) {
 
   return Selection;
 
-})(Array);
+})();
 
 temp_arraySlice = function(pseudoarray) {
   return Array.prototype.slice.call(pseudoarray);
@@ -1158,72 +1046,158 @@ Mynd.Scale.linear = function() {
   })();
 };
 
-/* Create file download with custom content.
+/* Types in JS.
 */
 
-var Exporter, PlainExporter,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+var type,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-Exporter = (function() {
+type = {};
 
-  Exporter.name = 'Exporter';
+type.Root = (function() {
 
-  Exporter.prototype.mime = 'text/plain';
+  function Root() {}
 
-  Exporter.prototype.charset = 'UTF-8';
+  Root.prototype.result = false;
 
-  Exporter.prototype.url = window.webkitURL || window.URL;
-
-  function Exporter(a, data, filename) {
-    var builder;
-    if (filename == null) {
-      filename = 'widget.tsv';
-    }
-    this.destroy = __bind(this.destroy, this);
-
-    builder = new (window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder)();
-    builder.append(data);
-    a.attr('download', filename);
-    (this.href = this.url.createObjectURL(builder.getBlob("" + this.mime + ";charset=" + this.charset))) && (a.attr('href', this.href));
-    a.attr('data-downloadurl', [this.mime, filename, this.href].join(':'));
-  }
-
-  Exporter.prototype.destroy = function() {
-    return this.url.revokeObjectURL(this.href);
+  Root.prototype.is = function() {
+    return this.result;
   };
 
-  return Exporter;
+  Root.prototype.toString = function() {
+    return "" + this.expected + " but got " + this.actual;
+  };
+
+  return Root;
 
 })();
 
-PlainExporter = (function() {
+type.isString = (function(_super) {
 
-  PlainExporter.name = 'PlainExporter';
+  __extends(isString, _super);
 
-  function PlainExporter(a, data) {
-    var w;
-    w = window.open();
-    if (!(w != null) || typeof w === "undefined") {
-      a.after(this.msg = $('<span/>', {
-        'style': 'margin-left:5px',
-        'class': 'label label-inverse',
-        'text': 'Please enable popups'
-      }));
-    } else {
-      w.document.open();
-      w.document.write(data);
-      w.document.close();
+  isString.prototype.expected = "String";
+
+  function isString(actual) {
+    this.actual = actual;
+    this.result = typeof actual === 'string';
+  }
+
+  return isString;
+
+})(type.Root);
+
+type.isInteger = (function(_super) {
+
+  __extends(isInteger, _super);
+
+  isInteger.prototype.expected = "Integer";
+
+  function isInteger(actual) {
+    this.actual = actual;
+    this.result = typeof actual === 'number';
+  }
+
+  return isInteger;
+
+})(type.Root);
+
+type.isBoolean = (function(_super) {
+
+  __extends(isBoolean, _super);
+
+  isBoolean.prototype.expected = "Boolean true";
+
+  function isBoolean(actual) {
+    this.actual = actual;
+    this.result = typeof actual === 'boolean';
+  }
+
+  return isBoolean;
+
+})(type.Root);
+
+type.isNull = (function(_super) {
+
+  __extends(isNull, _super);
+
+  isNull.prototype.expected = "Null";
+
+  function isNull(actual) {
+    this.actual = actual;
+    this.result = actual === null;
+  }
+
+  return isNull;
+
+})(type.Root);
+
+type.isArray = (function(_super) {
+
+  __extends(isArray, _super);
+
+  isArray.prototype.expected = "Array";
+
+  function isArray(actual) {
+    this.actual = actual;
+    this.result = actual instanceof Array;
+  }
+
+  return isArray;
+
+})(type.Root);
+
+type.isHTTPSuccess = (function(_super) {
+
+  __extends(isHTTPSuccess, _super);
+
+  isHTTPSuccess.prototype.expected = "HTTP code 200";
+
+  function isHTTPSuccess(actual) {
+    this.actual = actual;
+    this.result = actual === 200;
+  }
+
+  return isHTTPSuccess;
+
+})(type.Root);
+
+type.isJSON = (function(_super) {
+
+  __extends(isJSON, _super);
+
+  isJSON.prototype.expected = "JSON Object";
+
+  function isJSON(actual) {
+    this.actual = actual;
+    this.result = true;
+    try {
+      if (typeof JSON !== "undefined" && JSON !== null) {
+        JSON.parse(actual);
+      }
+    } catch (e) {
+      this.result = false;
     }
   }
 
-  PlainExporter.prototype.destroy = function() {
-    var _ref;
-    return (_ref = this.msg) != null ? _ref.fadeOut() : void 0;
-  };
+  return isJSON;
 
-  return PlainExporter;
+})(type.Root);
 
-})();
+type.isUndefined = (function(_super) {
+
+  __extends(isUndefined, _super);
+
+  function isUndefined() {
+    return isUndefined.__super__.constructor.apply(this, arguments);
+  }
+
+  isUndefined.prototype.expected = "it to be undefined";
+
+  return isUndefined;
+
+})(type.Root);
 
 var factory;
 factory = function(Backbone) {
@@ -1235,8 +1209,6 @@ factory = function(Backbone) {
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   
   InterMineWidget = (function() {
-  
-    InterMineWidget.name = 'InterMineWidget';
   
     function InterMineWidget() {
       this.error = __bind(this.error, this);
@@ -1310,13 +1282,11 @@ factory = function(Backbone) {
   var ChartWidget,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   
   ChartWidget = (function(_super) {
   
     __extends(ChartWidget, _super);
-  
-    ChartWidget.name = 'ChartWidget';
   
     ChartWidget.prototype.widgetOptions = {
       "title": true,
@@ -1435,132 +1405,17 @@ factory = function(Backbone) {
   })(InterMineWidget);
   
 
-  /* Table Widget main class.
-  */
-  
-  var TableWidget,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  TableWidget = (function(_super) {
-  
-    __extends(TableWidget, _super);
-  
-    TableWidget.name = 'TableWidget';
-  
-    TableWidget.prototype.widgetOptions = {
-      "title": true,
-      "description": true,
-      matchCb: function(id, type) {
-        return typeof console !== "undefined" && console !== null ? console.log(id, type) : void 0;
-      },
-      resultsCb: function(pq) {
-        return typeof console !== "undefined" && console !== null ? console.log(pq) : void 0;
-      },
-      listCb: function(pq) {
-        return typeof console !== "undefined" && console !== null ? console.log(pq) : void 0;
-      }
-    };
-  
-    TableWidget.prototype.spec = {
-      response: {
-        "columnTitle": type.isString,
-        "title": type.isString,
-        "description": type.isString,
-        "pathQuery": type.isString,
-        "columns": type.isString,
-        "pathConstraint": type.isString,
-        "requestedAt": type.isString,
-        "list": type.isString,
-        "type": type.isString,
-        "notAnalysed": type.isInteger,
-        "results": type.isArray,
-        "wasSuccessful": type.isBoolean,
-        "error": type.isNull,
-        "statusCode": type.isHTTPSuccess
-      }
-    };
-  
-    function TableWidget(service, token, id, bagName, el, widgetOptions) {
-      this.service = service;
-      this.token = token;
-      this.id = id;
-      this.bagName = bagName;
-      this.el = el;
-      if (widgetOptions == null) {
-        widgetOptions = {};
-      }
-      this.render = __bind(this.render, this);
-  
-      this.widgetOptions = merge(widgetOptions, this.widgetOptions);
-      TableWidget.__super__.constructor.call(this);
-      this.render();
-    }
-  
-    TableWidget.prototype.render = function() {
-      var data, timeout, _ref,
-        _this = this;
-      timeout = window.setTimeout((function() {
-        return $(_this.el).append(_this.loading = $(_this.template('loading')));
-      }), 400);
-      if ((_ref = this.view) != null) {
-        _ref.undelegateEvents();
-      }
-      data = {
-        'widget': this.id,
-        'list': this.bagName,
-        'token': this.token
-      };
-      return $.ajax({
-        url: "" + this.service + "list/table",
-        dataType: "jsonp",
-        data: data,
-        success: function(response) {
-          var _ref1;
-          window.clearTimeout(timeout);
-          if ((_ref1 = _this.loading) != null) {
-            _ref1.remove();
-          }
-          _this.validateType(response, _this.spec.response);
-          if (response.wasSuccessful) {
-            _this.name = response.title;
-            return _this.view = new TableView({
-              "widget": _this,
-              "el": _this.el,
-              "template": _this.template,
-              "response": response,
-              "options": _this.widgetOptions
-            });
-          }
-        },
-        error: function(request, status, error) {
-          clearTimeout(timeout);
-          return _this.error({
-            'text': "" + _this.service + "list/table"
-          }, "AJAXTransport");
-        }
-      });
-    };
-  
-    return TableWidget;
-  
-  })(InterMineWidget);
-  
-
   /* Enrichment Widget main class.
   */
   
   var EnrichmentWidget,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   
   EnrichmentWidget = (function(_super) {
   
     __extends(EnrichmentWidget, _super);
-  
-    EnrichmentWidget.name = 'EnrichmentWidget';
   
     EnrichmentWidget.prototype.widgetOptions = {
       "title": true,
@@ -1687,19 +1542,128 @@ factory = function(Backbone) {
   })(InterMineWidget);
   
 
+  /* Table Widget main class.
+  */
+  
+  var TableWidget,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  
+  TableWidget = (function(_super) {
+  
+    __extends(TableWidget, _super);
+  
+    TableWidget.prototype.widgetOptions = {
+      "title": true,
+      "description": true,
+      matchCb: function(id, type) {
+        return typeof console !== "undefined" && console !== null ? console.log(id, type) : void 0;
+      },
+      resultsCb: function(pq) {
+        return typeof console !== "undefined" && console !== null ? console.log(pq) : void 0;
+      },
+      listCb: function(pq) {
+        return typeof console !== "undefined" && console !== null ? console.log(pq) : void 0;
+      }
+    };
+  
+    TableWidget.prototype.spec = {
+      response: {
+        "columnTitle": type.isString,
+        "title": type.isString,
+        "description": type.isString,
+        "pathQuery": type.isString,
+        "columns": type.isString,
+        "pathConstraint": type.isString,
+        "requestedAt": type.isString,
+        "list": type.isString,
+        "type": type.isString,
+        "notAnalysed": type.isInteger,
+        "results": type.isArray,
+        "wasSuccessful": type.isBoolean,
+        "error": type.isNull,
+        "statusCode": type.isHTTPSuccess
+      }
+    };
+  
+    function TableWidget(service, token, id, bagName, el, widgetOptions) {
+      this.service = service;
+      this.token = token;
+      this.id = id;
+      this.bagName = bagName;
+      this.el = el;
+      if (widgetOptions == null) {
+        widgetOptions = {};
+      }
+      this.render = __bind(this.render, this);
+  
+      this.widgetOptions = merge(widgetOptions, this.widgetOptions);
+      TableWidget.__super__.constructor.call(this);
+      this.render();
+    }
+  
+    TableWidget.prototype.render = function() {
+      var data, timeout, _ref,
+        _this = this;
+      timeout = window.setTimeout((function() {
+        return $(_this.el).append(_this.loading = $(_this.template('loading')));
+      }), 400);
+      if ((_ref = this.view) != null) {
+        _ref.undelegateEvents();
+      }
+      data = {
+        'widget': this.id,
+        'list': this.bagName,
+        'token': this.token
+      };
+      return $.ajax({
+        url: "" + this.service + "list/table",
+        dataType: "jsonp",
+        data: data,
+        success: function(response) {
+          var _ref1;
+          window.clearTimeout(timeout);
+          if ((_ref1 = _this.loading) != null) {
+            _ref1.remove();
+          }
+          _this.validateType(response, _this.spec.response);
+          if (response.wasSuccessful) {
+            _this.name = response.title;
+            return _this.view = new TableView({
+              "widget": _this,
+              "el": _this.el,
+              "template": _this.template,
+              "response": response,
+              "options": _this.widgetOptions
+            });
+          }
+        },
+        error: function(request, status, error) {
+          clearTimeout(timeout);
+          return _this.error({
+            'text': "" + _this.service + "list/table"
+          }, "AJAXTransport");
+        }
+      });
+    };
+  
+    return TableWidget;
+  
+  })(InterMineWidget);
+  
+
   /* Core Model for Enrichment and Table Models.
   */
   
   var CoreCollection, CoreModel, EnrichmentResults, EnrichmentRow, TableResults, TableRow,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   
   CoreModel = (function(_super) {
   
     __extends(CoreModel, _super);
-  
-    CoreModel.name = 'CoreModel';
   
     function CoreModel() {
       this.toggleSelected = __bind(this.toggleSelected, this);
@@ -1734,8 +1698,6 @@ factory = function(Backbone) {
   CoreCollection = (function(_super) {
   
     __extends(CoreCollection, _super);
-  
-    CoreCollection.name = 'CoreCollection';
   
     function CoreCollection() {
       return CoreCollection.__super__.constructor.apply(this, arguments);
@@ -1790,8 +1752,6 @@ factory = function(Backbone) {
   
     __extends(EnrichmentRow, _super);
   
-    EnrichmentRow.name = 'EnrichmentRow';
-  
     function EnrichmentRow() {
       return EnrichmentRow.__super__.constructor.apply(this, arguments);
     }
@@ -1813,8 +1773,6 @@ factory = function(Backbone) {
   
     __extends(EnrichmentResults, _super);
   
-    EnrichmentResults.name = 'EnrichmentResults';
-  
     function EnrichmentResults() {
       return EnrichmentResults.__super__.constructor.apply(this, arguments);
     }
@@ -1832,8 +1790,6 @@ factory = function(Backbone) {
   TableRow = (function(_super) {
   
     __extends(TableRow, _super);
-  
-    TableRow.name = 'TableRow';
   
     function TableRow() {
       return TableRow.__super__.constructor.apply(this, arguments);
@@ -1854,8 +1810,6 @@ factory = function(Backbone) {
   
     __extends(TableResults, _super);
   
-    TableResults.name = 'TableResults';
-  
     function TableResults() {
       return TableResults.__super__.constructor.apply(this, arguments);
     }
@@ -1867,19 +1821,393 @@ factory = function(Backbone) {
   })(CoreCollection);
   
 
+  /* Chart Widget bar onclick box.
+  */
+  
+  var ChartPopoverView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  
+  ChartPopoverView = (function(_super) {
+  
+    __extends(ChartPopoverView, _super);
+  
+    function ChartPopoverView() {
+      this.close = __bind(this.close, this);
+  
+      this.listAction = __bind(this.listAction, this);
+  
+      this.resultsAction = __bind(this.resultsAction, this);
+  
+      this.matchAction = __bind(this.matchAction, this);
+  
+      this.renderValues = __bind(this.renderValues, this);
+  
+      this.render = __bind(this.render, this);
+      return ChartPopoverView.__super__.constructor.apply(this, arguments);
+    }
+  
+    ChartPopoverView.prototype.descriptionLimit = 50;
+  
+    ChartPopoverView.prototype.valuesLimit = 5;
+  
+    ChartPopoverView.prototype.events = {
+      "click a.match": "matchAction",
+      "click a.results": "resultsAction",
+      "click a.list": "listAction",
+      "click a.close": "close"
+    };
+  
+    ChartPopoverView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      return this.render();
+    };
+  
+    ChartPopoverView.prototype.render = function() {
+      var values,
+        _this = this;
+      $(this.el).html(this.template("popover", {
+        "description": this.description,
+        "descriptionLimit": this.descriptionLimit,
+        "style": 'width:300px'
+      }));
+      values = [];
+      this.imService.query(this.quickPq, function(q) {
+        return q.rows(function(response) {
+          var object, _i, _len;
+          for (_i = 0, _len = response.length; _i < _len; _i++) {
+            object = response[_i];
+            values.push((function(object) {
+              var column, _j, _len1;
+              for (_j = 0, _len1 = object.length; _j < _len1; _j++) {
+                column = object[_j];
+                if (column.length > 0) {
+                  return column;
+                }
+              }
+            })(object));
+          }
+          return _this.renderValues(values);
+        });
+      });
+      return this;
+    };
+  
+    ChartPopoverView.prototype.renderValues = function(values) {
+      return $(this.el).find('div.values').html(this.template("popover.values", {
+        'values': values,
+        'type': this.type,
+        'valuesLimit': this.valuesLimit
+      }));
+    };
+  
+    ChartPopoverView.prototype.matchAction = function(e) {
+      this.matchCb($(e.target).text(), this.type);
+      return e.preventDefault();
+    };
+  
+    ChartPopoverView.prototype.resultsAction = function() {
+      return this.resultsCb(this.resultsPq);
+    };
+  
+    ChartPopoverView.prototype.listAction = function() {
+      return this.listCb(this.resultsPq);
+    };
+  
+    ChartPopoverView.prototype.close = function() {
+      return $(this.el).remove();
+    };
+  
+    return ChartPopoverView;
+  
+  })(Backbone.View);
+  
+
+  /* View maintaining Chart Widget.
+  */
+  
+  var ChartView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  
+  ChartView = (function(_super) {
+  
+    __extends(ChartView, _super);
+  
+    function ChartView() {
+      this.formAction = __bind(this.formAction, this);
+  
+      this.barAction = __bind(this.barAction, this);
+      return ChartView.__super__.constructor.apply(this, arguments);
+    }
+  
+    ChartView.prototype.events = {
+      "change div.form select": "formAction"
+    };
+  
+    ChartView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      return this.render();
+    };
+  
+    ChartView.prototype.render = function() {
+      var chart, data, legend, settings, v, _i, _len, _ref;
+      $(this.el).html(this.template("chart", {
+        "title": this.options.title ? this.response.title : "",
+        "description": this.options.description ? this.response.description : "",
+        "notAnalysed": this.response.notAnalysed
+      }));
+      if (this.response.filterLabel != null) {
+        $(this.el).find('div.form form').append(this.template("extra", {
+          "label": this.response.filterLabel,
+          "possible": this.response.filters.split(','),
+          "selected": this.response.filterSelectedValue
+        }));
+      }
+      if (this.response.results.length > 1) {
+        data = [];
+        _ref = this.response.results.slice(1);
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          v = _ref[_i];
+          data.push({
+            'description': v[0],
+            'data': [v[1], v[2]]
+          });
+        }
+        chart = new Chart.Column({
+          'el': $(this.el).find("div.content div.chart"),
+          'data': data,
+          'width': 460,
+          'onclick': this.barAction,
+          'isStacked': this.response.chartType === 'BarChart',
+          'axis': {
+            'horizontal': this.response.domainLabel,
+            'vertical': this.response.type + ' Count'
+          }
+        });
+        legend = new Chart.Legend({
+          'el': $(this.el).find("div.content div.legend"),
+          'chart': chart,
+          'series': [this.response.results[0][1], this.response.results[0][2]]
+        });
+        legend.render();
+        settings = new Chart.Settings({
+          'el': $(this.el).find("div.content div.settings"),
+          'chart': chart,
+          'legend': legend,
+          'isStacked': this.response.chartType === 'BarChart'
+        });
+        settings.render();
+        chart.height = $(this.widget.el).height() - $(this.widget.el).find('div.header').height() - $(this.widget.el).find('div.content div.legend').height() - $(this.widget.el).find('div.content div.settings').height();
+        return chart.render();
+      } else {
+        return $(this.el).find("div.content").html($(this.template("noresults")));
+      }
+    };
+  
+    ChartView.prototype.barAction = function(category, seriesIndex, value) {
+      var description, quickPq, resultsPq, series, _ref;
+      description = '';
+      resultsPq = this.response.pathQuery;
+      quickPq = this.response.simplePathQuery;
+      description += category;
+      resultsPq = resultsPq.replace("%category", category);
+      quickPq = quickPq.replace("%category", category);
+      description += ' ' + this.response.seriesLabels.split(',')[seriesIndex];
+      series = (_ref = this.response.seriesValues) != null ? _ref.split(',')[seriesIndex] : void 0;
+      resultsPq = resultsPq.replace("%series", series);
+      quickPq = resultsPq.replace("%series", series);
+      resultsPq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(resultsPq) : void 0;
+      quickPq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(quickPq) : void 0;
+      if (this.barView != null) {
+        this.barView.close();
+      }
+      if (description) {
+        return $(this.el).find('div.content').append((this.barView = new ChartPopoverView({
+          "description": description,
+          "template": this.template,
+          "resultsPq": resultsPq,
+          "resultsCb": this.options.resultsCb,
+          "listCb": this.options.listCb,
+          "matchCb": this.options.matchCb,
+          "quickPq": quickPq,
+          "imService": this.widget.imService,
+          "type": this.response.type
+        })).el);
+      }
+    };
+  
+    ChartView.prototype.formAction = function(e) {
+      this.widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value");
+      return this.widget.render();
+    };
+  
+    return ChartView;
+  
+  })(Backbone.View);
+  
+
+  /* Enrichment Widget table row matches box.
+  */
+  
+  var EnrichmentPopoverView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+  
+  EnrichmentPopoverView = (function(_super) {
+  
+    __extends(EnrichmentPopoverView, _super);
+  
+    function EnrichmentPopoverView() {
+      this.listAction = __bind(this.listAction, this);
+  
+      this.resultsAction = __bind(this.resultsAction, this);
+  
+      this.matchAction = __bind(this.matchAction, this);
+  
+      this.getPq = __bind(this.getPq, this);
+  
+      this.toggle = __bind(this.toggle, this);
+  
+      this.renderValues = __bind(this.renderValues, this);
+  
+      this.render = __bind(this.render, this);
+      return EnrichmentPopoverView.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentPopoverView.prototype.descriptionLimit = 50;
+  
+    EnrichmentPopoverView.prototype.valuesLimit = 5;
+  
+    EnrichmentPopoverView.prototype.events = {
+      "click a.match": "matchAction",
+      "click a.results": "resultsAction",
+      "click a.list": "listAction",
+      "click a.close": "toggle"
+    };
+  
+    EnrichmentPopoverView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      return this.render();
+    };
+  
+    EnrichmentPopoverView.prototype.render = function() {
+      var pq, values,
+        _this = this;
+      $(this.el).css({
+        'position': 'relative'
+      });
+      $(this.el).html(this.template("popover", {
+        "description": this.description,
+        "descriptionLimit": this.descriptionLimit,
+        "style": this.style || "width:300px;margin-left:-300px"
+      }));
+      pq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(this.response['pathQueryForMatches']) : void 0;
+      pq.where.push({
+        "path": this.response.pathConstraint,
+        "op": "ONE OF",
+        "values": this.identifiers
+      });
+      values = [];
+      this.imService.query(pq, function(q) {
+        return q.rows(function(response) {
+          var object, value, _i, _len;
+          for (_i = 0, _len = response.length; _i < _len; _i++) {
+            object = response[_i];
+            value = (function(object) {
+              var column, _j, _len1, _ref;
+              _ref = object.reverse();
+              for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+                column = _ref[_j];
+                if (column.length > 0) {
+                  return column;
+                }
+              }
+            })(object);
+            if (__indexOf.call(values, value) < 0) {
+              values.push(value);
+            }
+          }
+          return _this.renderValues(values);
+        });
+      });
+      return this;
+    };
+  
+    EnrichmentPopoverView.prototype.renderValues = function(values) {
+      return $(this.el).find('div.values').html(this.template("popover.values", {
+        'values': values,
+        'type': this.response.type,
+        'valuesLimit': this.valuesLimit
+      }));
+    };
+  
+    EnrichmentPopoverView.prototype.toggle = function() {
+      return $(this.el).toggle();
+    };
+  
+    EnrichmentPopoverView.prototype.getPq = function() {
+      var pq;
+      pq = this.response.pathQuery;
+      this.pq = JSON.parse(pq);
+      return this.pq.where.push({
+        "path": this.response.pathConstraint,
+        "op": "ONE OF",
+        "values": this.identifiers
+      });
+    };
+  
+    EnrichmentPopoverView.prototype.matchAction = function(e) {
+      this.matchCb($(e.target).text(), this.response.type);
+      return e.preventDefault();
+    };
+  
+    EnrichmentPopoverView.prototype.resultsAction = function() {
+      if (this.pq == null) {
+        this.getPq();
+      }
+      return this.resultsCb(this.pq);
+    };
+  
+    EnrichmentPopoverView.prototype.listAction = function() {
+      if (this.pq == null) {
+        this.getPq();
+      }
+      return this.listCb(this.pq);
+    };
+  
+    return EnrichmentPopoverView;
+  
+  })(Backbone.View);
+  
+
   /* Enrichment Widget table row.
   */
   
   var EnrichmentRowView,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   
   EnrichmentRowView = (function(_super) {
   
     __extends(EnrichmentRowView, _super);
-  
-    EnrichmentRowView.name = 'EnrichmentRowView';
   
     function EnrichmentRowView() {
       this.toggleMatchesAction = __bind(this.toggleMatchesAction, this);
@@ -1941,19 +2269,352 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
+  /* View maintaining Enrichment Widget.
+  */
+  
+  var EnrichmentView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  
+  EnrichmentView = (function(_super) {
+  
+    __extends(EnrichmentView, _super);
+  
+    function EnrichmentView() {
+      this.viewAction = __bind(this.viewAction, this);
+  
+      this.exportAction = __bind(this.exportAction, this);
+  
+      this.selectAllAction = __bind(this.selectAllAction, this);
+  
+      this.formAction = __bind(this.formAction, this);
+  
+      this.renderTableBody = __bind(this.renderTableBody, this);
+  
+      this.renderTable = __bind(this.renderTable, this);
+  
+      this.renderToolbar = __bind(this.renderToolbar, this);
+      return EnrichmentView.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentView.prototype.events = {
+      "click div.actions a.view": "viewAction",
+      "click div.actions a.export": "exportAction",
+      "change div.form select": "formAction",
+      "click div.content input.check": "selectAllAction"
+    };
+  
+    EnrichmentView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      this.collection = new EnrichmentResults();
+      this.collection.bind('change', this.renderToolbar);
+      return this.render();
+    };
+  
+    EnrichmentView.prototype.render = function() {
+      $(this.el).html(this.template("enrichment", {
+        "title": this.options.title ? this.response.title : "",
+        "description": this.options.description ? this.response.description : "",
+        "notAnalysed": this.response.notAnalysed
+      }));
+      $(this.el).find("div.form").html(this.template("enrichment.form", {
+        "options": this.form.options,
+        "pValues": this.form.pValues,
+        "errorCorrections": this.form.errorCorrections
+      }));
+      if (this.response.filterLabel != null) {
+        $(this.el).find('div.form form').append(this.template("extra", {
+          "label": this.response.filterLabel,
+          "possible": this.response.filters.split(','),
+          "selected": this.response.filterSelectedValue
+        }));
+      }
+      if (this.response.results.length > 0) {
+        this.renderToolbar();
+        this.renderTable();
+      } else {
+        $(this.el).find("div.content").html($(this.template("noresults")));
+      }
+      return this;
+    };
+  
+    EnrichmentView.prototype.renderToolbar = function() {
+      return $(this.el).find("div.actions").html($(this.template("actions", {
+        "disabled": this.collection.selected().length === 0
+      })));
+    };
+  
+    EnrichmentView.prototype.renderTable = function() {
+      var height, i, table, _fn, _i, _ref,
+        _this = this;
+      $(this.el).find("div.content").html($(this.template("enrichment.table", {
+        "label": this.response.label
+      })));
+      table = $(this.el).find("div.content table");
+      _fn = function(i) {
+        var data, row;
+        data = _this.response.results[i];
+        if (_this.response.externalLink) {
+          data.externalLink = _this.response.externalLink + data.identifier;
+        }
+        row = new EnrichmentRow(data, _this.widget);
+        return _this.collection.add(row);
+      };
+      for (i = _i = 0, _ref = this.response.results.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        _fn(i);
+      }
+      this.renderTableBody(table);
+      height = $(this.el).height() - $(this.el).find('div.header').height() - $(this.el).find('div.content div.head').height();
+      $(this.el).find("div.content div.wrapper").css('height', "" + height + "px");
+      $(this.el).find("div.content div.head").css("width", $(this.el).find("div.content table").width() + "px");
+      table.find('thead th').each(function(i, th) {
+        return $(_this.el).find("div.content div.head div:eq(" + i + ")").width($(th).width());
+      });
+      return table.css({
+        'margin-top': '-' + table.find('thead').height() + 'px'
+      });
+    };
+  
+    EnrichmentView.prototype.renderTableBody = function(table) {
+      var fragment, row, _i, _len, _ref;
+      fragment = document.createDocumentFragment();
+      _ref = this.collection.models;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        row = _ref[_i];
+        fragment.appendChild(new EnrichmentRowView({
+          "model": row,
+          "template": this.template,
+          "type": this.response.type,
+          "callbacks": {
+            "matchCb": this.options.matchCb,
+            "resultsCb": this.options.resultsCb,
+            "listCb": this.options.listCb
+          },
+          "response": this.response,
+          "imService": this.widget.imService
+        }).el);
+      }
+      return table.find('tbody').html(fragment);
+    };
+  
+    EnrichmentView.prototype.formAction = function(e) {
+      this.widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value");
+      return this.widget.render();
+    };
+  
+    EnrichmentView.prototype.selectAllAction = function() {
+      this.collection.toggleSelected();
+      this.renderToolbar();
+      return this.renderTableBody($(this.el).find("div.content table"));
+    };
+  
+    EnrichmentView.prototype.exportAction = function(e) {
+      var model, pq, rowIdentifiers, _i, _len, _ref,
+        _this = this;
+      rowIdentifiers = [];
+      _ref = this.collection.selected();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        model = _ref[_i];
+        rowIdentifiers.push(model.get('identifier'));
+      }
+      pq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(this.response['pathQueryForMatches']) : void 0;
+      pq.where.push({
+        "path": this.response.pathConstraint,
+        "op": "ONE OF",
+        "values": rowIdentifiers
+      });
+      return this.widget.imService.query(pq, function(q) {
+        return q.rows(function(response) {
+          var dict, ex, object, result, _j, _k, _len1, _len2, _ref1;
+          dict = {};
+          for (_j = 0, _len1 = response.length; _j < _len1; _j++) {
+            object = response[_j];
+            if (!(dict[object[0]] != null)) {
+              dict[object[0]] = [];
+            }
+            dict[object[0]].push(object[1]);
+          }
+          result = [];
+          _ref1 = _this.collection.selected();
+          for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
+            model = _ref1[_k];
+            result.push([model.get('description'), model.get('p-value')].join("\t") + "\t" + dict[model.get('identifier')].join(','));
+          }
+          if (result.length) {
+            ex = new PlainExporter($(e.target), '<pre>' + result.join("\n") + '<pre>');
+            return window.setTimeout((function() {
+              return ex.destroy();
+            }), 5000);
+          }
+        });
+      });
+    };
+  
+    EnrichmentView.prototype.viewAction = function() {
+      var descriptions, model, rowIdentifiers, _i, _len, _ref, _ref1;
+      descriptions = [];
+      rowIdentifiers = [];
+      _ref = this.collection.selected();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        model = _ref[_i];
+        descriptions.push(model.get('description'));
+        rowIdentifiers.push(model.get('identifier'));
+      }
+      if (rowIdentifiers.length) {
+        if ((_ref1 = this.popoverView) != null) {
+          _ref1.remove();
+        }
+        return $(this.el).find('div.actions').after((this.popoverView = new EnrichmentPopoverView({
+          "identifiers": rowIdentifiers,
+          "description": descriptions.join(', '),
+          "template": this.template,
+          "style": "width:300px",
+          "matchCb": this.options.matchCb,
+          "resultsCb": this.options.resultsCb,
+          "listCb": this.options.listCb,
+          "response": this.response,
+          "imService": this.widget.imService
+        })).el);
+      }
+    };
+  
+    return EnrichmentView;
+  
+  })(Backbone.View);
+  
+
+  /* Table Widget table row matches box.
+  */
+  
+  var TablePopoverView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  
+  TablePopoverView = (function(_super) {
+  
+    __extends(TablePopoverView, _super);
+  
+    function TablePopoverView() {
+      this.close = __bind(this.close, this);
+  
+      this.listAction = __bind(this.listAction, this);
+  
+      this.resultsAction = __bind(this.resultsAction, this);
+  
+      this.matchAction = __bind(this.matchAction, this);
+  
+      this.renderValues = __bind(this.renderValues, this);
+  
+      this.render = __bind(this.render, this);
+      return TablePopoverView.__super__.constructor.apply(this, arguments);
+    }
+  
+    TablePopoverView.prototype.descriptionLimit = 50;
+  
+    TablePopoverView.prototype.valuesLimit = 5;
+  
+    TablePopoverView.prototype.events = {
+      "click a.match": "matchAction",
+      "click a.results": "resultsAction",
+      "click a.list": "listAction",
+      "click a.close": "close"
+    };
+  
+    TablePopoverView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      return this.render();
+    };
+  
+    TablePopoverView.prototype.render = function() {
+      var values,
+        _this = this;
+      $(this.el).css({
+        'position': 'relative'
+      });
+      $(this.el).html(this.template("popover", {
+        "description": this.description,
+        "descriptionLimit": this.descriptionLimit,
+        "style": 'width:300px'
+      }));
+      this.pathQuery = JSON.parse(this.pathQuery);
+      this.pathQuery.where.push({
+        "path": this.pathConstraint,
+        "op": "ONE OF",
+        "values": this.identifiers
+      });
+      values = [];
+      this.imService.query(this.pathQuery, function(q) {
+        return q.rows(function(response) {
+          var object, _i, _len;
+          for (_i = 0, _len = response.length; _i < _len; _i++) {
+            object = response[_i];
+            values.push((function(object) {
+              var column, _j, _len1;
+              for (_j = 0, _len1 = object.length; _j < _len1; _j++) {
+                column = object[_j];
+                if (column.length > 0) {
+                  return column;
+                }
+              }
+            })(object));
+          }
+          return _this.renderValues(values);
+        });
+      });
+      return this;
+    };
+  
+    TablePopoverView.prototype.renderValues = function(values) {
+      return $(this.el).find('div.values').html(this.template("popover.values", {
+        'values': values,
+        'type': this.type,
+        'valuesLimit': this.valuesLimit
+      }));
+    };
+  
+    TablePopoverView.prototype.matchAction = function(e) {
+      this.matchCb($(e.target).text(), this.type);
+      return e.preventDefault();
+    };
+  
+    TablePopoverView.prototype.resultsAction = function() {
+      return this.resultsCb(this.pathQuery);
+    };
+  
+    TablePopoverView.prototype.listAction = function() {
+      return this.listCb(this.pathQuery);
+    };
+  
+    TablePopoverView.prototype.close = function() {
+      return $(this.el).remove();
+    };
+  
+    return TablePopoverView;
+  
+  })(Backbone.View);
+  
+
   /* Table Widget table row.
   */
   
   var TableRowView,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   
   TableRowView = (function(_super) {
   
     __extends(TableRowView, _super);
-  
-    TableRowView.name = 'TableRowView';
   
     function TableRowView() {
       this.selectAction = __bind(this.selectAction, this);
@@ -2000,13 +2661,11 @@ factory = function(Backbone) {
   var TableView,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   
   TableView = (function(_super) {
   
     __extends(TableView, _super);
-  
-    TableView.name = 'TableView';
   
     function TableView() {
       this.viewAction = __bind(this.viewAction, this);
@@ -2159,742 +2818,21 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
-  /* Table Widget table row matches box.
-  */
-  
-  var TablePopoverView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  TablePopoverView = (function(_super) {
-  
-    __extends(TablePopoverView, _super);
-  
-    TablePopoverView.name = 'TablePopoverView';
-  
-    function TablePopoverView() {
-      this.close = __bind(this.close, this);
-  
-      this.listAction = __bind(this.listAction, this);
-  
-      this.resultsAction = __bind(this.resultsAction, this);
-  
-      this.matchAction = __bind(this.matchAction, this);
-  
-      this.renderValues = __bind(this.renderValues, this);
-  
-      this.render = __bind(this.render, this);
-      return TablePopoverView.__super__.constructor.apply(this, arguments);
-    }
-  
-    TablePopoverView.prototype.descriptionLimit = 50;
-  
-    TablePopoverView.prototype.valuesLimit = 5;
-  
-    TablePopoverView.prototype.events = {
-      "click a.match": "matchAction",
-      "click a.results": "resultsAction",
-      "click a.list": "listAction",
-      "click a.close": "close"
-    };
-  
-    TablePopoverView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      return this.render();
-    };
-  
-    TablePopoverView.prototype.render = function() {
-      var values,
-        _this = this;
-      $(this.el).css({
-        'position': 'relative'
-      });
-      $(this.el).html(this.template("popover", {
-        "description": this.description,
-        "descriptionLimit": this.descriptionLimit,
-        "style": 'width:300px'
-      }));
-      this.pathQuery = JSON.parse(this.pathQuery);
-      this.pathQuery.where.push({
-        "path": this.pathConstraint,
-        "op": "ONE OF",
-        "values": this.identifiers
-      });
-      values = [];
-      this.imService.query(this.pathQuery, function(q) {
-        return q.rows(function(response) {
-          var object, _i, _len;
-          for (_i = 0, _len = response.length; _i < _len; _i++) {
-            object = response[_i];
-            values.push((function(object) {
-              var column, _j, _len1;
-              for (_j = 0, _len1 = object.length; _j < _len1; _j++) {
-                column = object[_j];
-                if (column.length > 0) {
-                  return column;
-                }
-              }
-            })(object));
-          }
-          return _this.renderValues(values);
-        });
-      });
-      return this;
-    };
-  
-    TablePopoverView.prototype.renderValues = function(values) {
-      return $(this.el).find('div.values').html(this.template("popover.values", {
-        'values': values,
-        'type': this.type,
-        'valuesLimit': this.valuesLimit
-      }));
-    };
-  
-    TablePopoverView.prototype.matchAction = function(e) {
-      this.matchCb($(e.target).text(), this.type);
-      return e.preventDefault();
-    };
-  
-    TablePopoverView.prototype.resultsAction = function() {
-      return this.resultsCb(this.pathQuery);
-    };
-  
-    TablePopoverView.prototype.listAction = function() {
-      return this.listCb(this.pathQuery);
-    };
-  
-    TablePopoverView.prototype.close = function() {
-      return $(this.el).remove();
-    };
-  
-    return TablePopoverView;
-  
-  })(Backbone.View);
-  
-
-  /* View maintaining Chart Widget.
-  */
-  
-  var ChartView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  ChartView = (function(_super) {
-  
-    __extends(ChartView, _super);
-  
-    ChartView.name = 'ChartView';
-  
-    function ChartView() {
-      this.formAction = __bind(this.formAction, this);
-  
-      this.barAction = __bind(this.barAction, this);
-      return ChartView.__super__.constructor.apply(this, arguments);
-    }
-  
-    ChartView.prototype.events = {
-      "change div.form select": "formAction"
-    };
-  
-    ChartView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      return this.render();
-    };
-  
-    ChartView.prototype.render = function() {
-      var chart, data, legend, settings, v, _i, _len, _ref;
-      $(this.el).html(this.template("chart", {
-        "title": this.options.title ? this.response.title : "",
-        "description": this.options.description ? this.response.description : "",
-        "notAnalysed": this.response.notAnalysed
-      }));
-      if (this.response.filterLabel != null) {
-        $(this.el).find('div.form form').append(this.template("extra", {
-          "label": this.response.filterLabel,
-          "possible": this.response.filters.split(','),
-          "selected": this.response.filterSelectedValue
-        }));
-      }
-      if (this.response.results.length > 1) {
-        data = [];
-        _ref = this.response.results.slice(1);
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          v = _ref[_i];
-          data.push({
-            'description': v[0],
-            'data': [v[1], v[2]]
-          });
-        }
-        chart = new Chart.Column({
-          'el': $(this.el).find("div.content div.chart"),
-          'data': data,
-          'width': 460,
-          'onclick': this.barAction,
-          'isStacked': this.response.chartType === 'BarChart',
-          'axis': {
-            'horizontal': this.response.domainLabel,
-            'vertical': this.response.type + ' Count'
-          }
-        });
-        legend = new Chart.Legend({
-          'el': $(this.el).find("div.content div.legend"),
-          'chart': chart,
-          'series': [this.response.results[0][1], this.response.results[0][2]]
-        });
-        legend.render();
-        settings = new Chart.Settings({
-          'el': $(this.el).find("div.content div.settings"),
-          'chart': chart,
-          'legend': legend,
-          'isStacked': this.response.chartType === 'BarChart'
-        });
-        settings.render();
-        chart.height = $(this.widget.el).height() - $(this.widget.el).find('div.header').height() - $(this.widget.el).find('div.content div.legend').height() - $(this.widget.el).find('div.content div.settings').height();
-        return chart.render();
-      } else {
-        return $(this.el).find("div.content").html($(this.template("noresults")));
-      }
-    };
-  
-    ChartView.prototype.barAction = function(category, seriesIndex, value) {
-      var description, quickPq, resultsPq, series, _ref;
-      description = '';
-      resultsPq = this.response.pathQuery;
-      quickPq = this.response.simplePathQuery;
-      description += category;
-      resultsPq = resultsPq.replace("%category", category);
-      quickPq = quickPq.replace("%category", category);
-      description += ' ' + this.response.seriesLabels.split(',')[seriesIndex];
-      series = (_ref = this.response.seriesValues) != null ? _ref.split(',')[seriesIndex] : void 0;
-      resultsPq = resultsPq.replace("%series", series);
-      quickPq = resultsPq.replace("%series", series);
-      resultsPq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(resultsPq) : void 0;
-      quickPq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(quickPq) : void 0;
-      if (this.barView != null) {
-        this.barView.close();
-      }
-      if (description) {
-        return $(this.el).find('div.content').append((this.barView = new ChartPopoverView({
-          "description": description,
-          "template": this.template,
-          "resultsPq": resultsPq,
-          "resultsCb": this.options.resultsCb,
-          "listCb": this.options.listCb,
-          "matchCb": this.options.matchCb,
-          "quickPq": quickPq,
-          "imService": this.widget.imService,
-          "type": this.response.type
-        })).el);
-      }
-    };
-  
-    ChartView.prototype.formAction = function(e) {
-      this.widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value");
-      return this.widget.render();
-    };
-  
-    return ChartView;
-  
-  })(Backbone.View);
-  
-
-  /* Enrichment Widget table row matches box.
-  */
-  
-  var EnrichmentPopoverView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
-    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
-  
-  EnrichmentPopoverView = (function(_super) {
-  
-    __extends(EnrichmentPopoverView, _super);
-  
-    EnrichmentPopoverView.name = 'EnrichmentPopoverView';
-  
-    function EnrichmentPopoverView() {
-      this.listAction = __bind(this.listAction, this);
-  
-      this.resultsAction = __bind(this.resultsAction, this);
-  
-      this.matchAction = __bind(this.matchAction, this);
-  
-      this.getPq = __bind(this.getPq, this);
-  
-      this.toggle = __bind(this.toggle, this);
-  
-      this.renderValues = __bind(this.renderValues, this);
-  
-      this.render = __bind(this.render, this);
-      return EnrichmentPopoverView.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentPopoverView.prototype.descriptionLimit = 50;
-  
-    EnrichmentPopoverView.prototype.valuesLimit = 5;
-  
-    EnrichmentPopoverView.prototype.events = {
-      "click a.match": "matchAction",
-      "click a.results": "resultsAction",
-      "click a.list": "listAction",
-      "click a.close": "toggle"
-    };
-  
-    EnrichmentPopoverView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      return this.render();
-    };
-  
-    EnrichmentPopoverView.prototype.render = function() {
-      var pq, values,
-        _this = this;
-      $(this.el).css({
-        'position': 'relative'
-      });
-      $(this.el).html(this.template("popover", {
-        "description": this.description,
-        "descriptionLimit": this.descriptionLimit,
-        "style": this.style || "width:300px;margin-left:-300px"
-      }));
-      pq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(this.response['pathQueryForMatches']) : void 0;
-      pq.where.push({
-        "path": this.response.pathConstraint,
-        "op": "ONE OF",
-        "values": this.identifiers
-      });
-      values = [];
-      this.imService.query(pq, function(q) {
-        return q.rows(function(response) {
-          var object, value, _i, _len;
-          for (_i = 0, _len = response.length; _i < _len; _i++) {
-            object = response[_i];
-            value = (function(object) {
-              var column, _j, _len1, _ref;
-              _ref = object.reverse();
-              for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
-                column = _ref[_j];
-                if (column.length > 0) {
-                  return column;
-                }
-              }
-            })(object);
-            if (__indexOf.call(values, value) < 0) {
-              values.push(value);
-            }
-          }
-          return _this.renderValues(values);
-        });
-      });
-      return this;
-    };
-  
-    EnrichmentPopoverView.prototype.renderValues = function(values) {
-      return $(this.el).find('div.values').html(this.template("popover.values", {
-        'values': values,
-        'type': this.response.type,
-        'valuesLimit': this.valuesLimit
-      }));
-    };
-  
-    EnrichmentPopoverView.prototype.toggle = function() {
-      return $(this.el).toggle();
-    };
-  
-    EnrichmentPopoverView.prototype.getPq = function() {
-      var pq;
-      pq = this.response.pathQuery;
-      this.pq = JSON.parse(pq);
-      return this.pq.where.push({
-        "path": this.response.pathConstraint,
-        "op": "ONE OF",
-        "values": this.identifiers
-      });
-    };
-  
-    EnrichmentPopoverView.prototype.matchAction = function(e) {
-      this.matchCb($(e.target).text(), this.response.type);
-      return e.preventDefault();
-    };
-  
-    EnrichmentPopoverView.prototype.resultsAction = function() {
-      if (this.pq == null) {
-        this.getPq();
-      }
-      return this.resultsCb(this.pq);
-    };
-  
-    EnrichmentPopoverView.prototype.listAction = function() {
-      if (this.pq == null) {
-        this.getPq();
-      }
-      return this.listCb(this.pq);
-    };
-  
-    return EnrichmentPopoverView;
-  
-  })(Backbone.View);
-  
-
-  /* View maintaining Enrichment Widget.
-  */
-  
-  var EnrichmentView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  EnrichmentView = (function(_super) {
-  
-    __extends(EnrichmentView, _super);
-  
-    EnrichmentView.name = 'EnrichmentView';
-  
-    function EnrichmentView() {
-      this.viewAction = __bind(this.viewAction, this);
-  
-      this.exportAction = __bind(this.exportAction, this);
-  
-      this.selectAllAction = __bind(this.selectAllAction, this);
-  
-      this.formAction = __bind(this.formAction, this);
-  
-      this.renderTableBody = __bind(this.renderTableBody, this);
-  
-      this.renderTable = __bind(this.renderTable, this);
-  
-      this.renderToolbar = __bind(this.renderToolbar, this);
-      return EnrichmentView.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentView.prototype.events = {
-      "click div.actions a.view": "viewAction",
-      "click div.actions a.export": "exportAction",
-      "change div.form select": "formAction",
-      "click div.content input.check": "selectAllAction"
-    };
-  
-    EnrichmentView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      this.collection = new EnrichmentResults();
-      this.collection.bind('change', this.renderToolbar);
-      return this.render();
-    };
-  
-    EnrichmentView.prototype.render = function() {
-      $(this.el).html(this.template("enrichment", {
-        "title": this.options.title ? this.response.title : "",
-        "description": this.options.description ? this.response.description : "",
-        "notAnalysed": this.response.notAnalysed
-      }));
-      $(this.el).find("div.form").html(this.template("enrichment.form", {
-        "options": this.form.options,
-        "pValues": this.form.pValues,
-        "errorCorrections": this.form.errorCorrections
-      }));
-      if (this.response.filterLabel != null) {
-        $(this.el).find('div.form form').append(this.template("extra", {
-          "label": this.response.filterLabel,
-          "possible": this.response.filters.split(','),
-          "selected": this.response.filterSelectedValue
-        }));
-      }
-      if (this.response.results.length > 0) {
-        this.renderToolbar();
-        this.renderTable();
-      } else {
-        $(this.el).find("div.content").html($(this.template("noresults")));
-      }
-      return this;
-    };
-  
-    EnrichmentView.prototype.renderToolbar = function() {
-      return $(this.el).find("div.actions").html($(this.template("actions", {
-        "disabled": this.collection.selected().length === 0
-      })));
-    };
-  
-    EnrichmentView.prototype.renderTable = function() {
-      var height, i, table, _fn, _i, _ref,
-        _this = this;
-      $(this.el).find("div.content").html($(this.template("enrichment.table", {
-        "label": this.response.label
-      })));
-      table = $(this.el).find("div.content table");
-      _fn = function(i) {
-        var data, row;
-        data = _this.response.results[i];
-        if (_this.response.externalLink) {
-          data.externalLink = _this.response.externalLink + data.identifier;
-        }
-        row = new EnrichmentRow(data, _this.widget);
-        return _this.collection.add(row);
-      };
-      for (i = _i = 0, _ref = this.response.results.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-        _fn(i);
-      }
-      this.renderTableBody(table);
-      height = $(this.el).height() - $(this.el).find('div.header').height() - $(this.el).find('div.content div.head').height();
-      $(this.el).find("div.content div.wrapper").css('height', "" + height + "px");
-      $(this.el).find("div.content div.head").css("width", $(this.el).find("div.content table").width() + "px");
-      table.find('thead th').each(function(i, th) {
-        return $(_this.el).find("div.content div.head div:eq(" + i + ")").width($(th).width());
-      });
-      return table.css({
-        'margin-top': '-' + table.find('thead').height() + 'px'
-      });
-    };
-  
-    EnrichmentView.prototype.renderTableBody = function(table) {
-      var fragment, row, _i, _len, _ref;
-      fragment = document.createDocumentFragment();
-      _ref = this.collection.models;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        row = _ref[_i];
-        fragment.appendChild(new EnrichmentRowView({
-          "model": row,
-          "template": this.template,
-          "type": this.response.type,
-          "callbacks": {
-            "matchCb": this.options.matchCb,
-            "resultsCb": this.options.resultsCb,
-            "listCb": this.options.listCb
-          },
-          "response": this.response,
-          "imService": this.widget.imService
-        }).el);
-      }
-      return table.find('tbody').html(fragment);
-    };
-  
-    EnrichmentView.prototype.formAction = function(e) {
-      this.widget.formOptions[$(e.target).attr("name")] = $(e.target[e.target.selectedIndex]).attr("value");
-      return this.widget.render();
-    };
-  
-    EnrichmentView.prototype.selectAllAction = function() {
-      this.collection.toggleSelected();
-      this.renderToolbar();
-      return this.renderTableBody($(this.el).find("div.content table"));
-    };
-  
-    EnrichmentView.prototype.exportAction = function(e) {
-      var model, pq, rowIdentifiers, _i, _len, _ref,
-        _this = this;
-      rowIdentifiers = [];
-      _ref = this.collection.selected();
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        model = _ref[_i];
-        rowIdentifiers.push(model.get('identifier'));
-      }
-      pq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(this.response['pathQueryForMatches']) : void 0;
-      pq.where.push({
-        "path": this.response.pathConstraint,
-        "op": "ONE OF",
-        "values": rowIdentifiers
-      });
-      return this.widget.imService.query(pq, function(q) {
-        return q.rows(function(response) {
-          var dict, ex, model, object, result, _j, _k, _len1, _len2, _ref1;
-          dict = {};
-          for (_j = 0, _len1 = response.length; _j < _len1; _j++) {
-            object = response[_j];
-            if (!(dict[object[0]] != null)) {
-              dict[object[0]] = [];
-            }
-            dict[object[0]].push(object[1]);
-          }
-          result = [];
-          _ref1 = _this.collection.selected();
-          for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
-            model = _ref1[_k];
-            result.push([model.get('description'), model.get('p-value')].join("\t") + "\t" + dict[model.get('identifier')].join(','));
-          }
-          if (result.length) {
-            ex = new PlainExporter($(e.target), '<pre>' + result.join("\n") + '<pre>');
-            return window.setTimeout((function() {
-              return ex.destroy();
-            }), 5000);
-          }
-        });
-      });
-    };
-  
-    EnrichmentView.prototype.viewAction = function() {
-      var descriptions, model, rowIdentifiers, _i, _len, _ref, _ref1;
-      descriptions = [];
-      rowIdentifiers = [];
-      _ref = this.collection.selected();
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        model = _ref[_i];
-        descriptions.push(model.get('description'));
-        rowIdentifiers.push(model.get('identifier'));
-      }
-      if (rowIdentifiers.length) {
-        if ((_ref1 = this.popoverView) != null) {
-          _ref1.remove();
-        }
-        return $(this.el).find('div.actions').after((this.popoverView = new EnrichmentPopoverView({
-          "identifiers": rowIdentifiers,
-          "description": descriptions.join(', '),
-          "template": this.template,
-          "style": "width:300px",
-          "matchCb": this.options.matchCb,
-          "resultsCb": this.options.resultsCb,
-          "listCb": this.options.listCb,
-          "response": this.response,
-          "imService": this.widget.imService
-        })).el);
-      }
-    };
-  
-    return EnrichmentView;
-  
-  })(Backbone.View);
-  
-
-  /* Chart Widget bar onclick box.
-  */
-  
-  var ChartPopoverView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-  
-  ChartPopoverView = (function(_super) {
-  
-    __extends(ChartPopoverView, _super);
-  
-    ChartPopoverView.name = 'ChartPopoverView';
-  
-    function ChartPopoverView() {
-      this.close = __bind(this.close, this);
-  
-      this.listAction = __bind(this.listAction, this);
-  
-      this.resultsAction = __bind(this.resultsAction, this);
-  
-      this.matchAction = __bind(this.matchAction, this);
-  
-      this.renderValues = __bind(this.renderValues, this);
-  
-      this.render = __bind(this.render, this);
-      return ChartPopoverView.__super__.constructor.apply(this, arguments);
-    }
-  
-    ChartPopoverView.prototype.descriptionLimit = 50;
-  
-    ChartPopoverView.prototype.valuesLimit = 5;
-  
-    ChartPopoverView.prototype.events = {
-      "click a.match": "matchAction",
-      "click a.results": "resultsAction",
-      "click a.list": "listAction",
-      "click a.close": "close"
-    };
-  
-    ChartPopoverView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      return this.render();
-    };
-  
-    ChartPopoverView.prototype.render = function() {
-      var values,
-        _this = this;
-      $(this.el).html(this.template("popover", {
-        "description": this.description,
-        "descriptionLimit": this.descriptionLimit,
-        "style": 'width:300px'
-      }));
-      values = [];
-      this.imService.query(this.quickPq, function(q) {
-        return q.rows(function(response) {
-          var object, _i, _len;
-          for (_i = 0, _len = response.length; _i < _len; _i++) {
-            object = response[_i];
-            values.push((function(object) {
-              var column, _j, _len1;
-              for (_j = 0, _len1 = object.length; _j < _len1; _j++) {
-                column = object[_j];
-                if (column.length > 0) {
-                  return column;
-                }
-              }
-            })(object));
-          }
-          return _this.renderValues(values);
-        });
-      });
-      return this;
-    };
-  
-    ChartPopoverView.prototype.renderValues = function(values) {
-      return $(this.el).find('div.values').html(this.template("popover.values", {
-        'values': values,
-        'type': this.type,
-        'valuesLimit': this.valuesLimit
-      }));
-    };
-  
-    ChartPopoverView.prototype.matchAction = function(e) {
-      this.matchCb($(e.target).text(), this.type);
-      return e.preventDefault();
-    };
-  
-    ChartPopoverView.prototype.resultsAction = function() {
-      return this.resultsCb(this.resultsPq);
-    };
-  
-    ChartPopoverView.prototype.listAction = function() {
-      return this.listCb(this.resultsPq);
-    };
-  
-    ChartPopoverView.prototype.close = function() {
-      return $(this.el).remove();
-    };
-  
-    return ChartPopoverView;
-  
-  })(Backbone.View);
-  
-
   return {
 
-    "InterMineWidget": InterMineWidget,
     "ChartWidget": ChartWidget,
-    "TableWidget": TableWidget,
     "EnrichmentWidget": EnrichmentWidget,
+    "InterMineWidget": InterMineWidget,
+    "TableWidget": TableWidget,
     "CoreModel": CoreModel,
-    "EnrichmentRowView": EnrichmentRowView,
-    "TableRowView": TableRowView,
-    "TableView": TableView,
-    "TablePopoverView": TablePopoverView,
+    "ChartPopoverView": ChartPopoverView,
     "ChartView": ChartView,
     "EnrichmentPopoverView": EnrichmentPopoverView,
+    "EnrichmentRowView": EnrichmentRowView,
     "EnrichmentView": EnrichmentView,
-    "ChartPopoverView": ChartPopoverView
+    "TablePopoverView": TablePopoverView,
+    "TableRowView": TableRowView,
+    "TableView": TableView
   };
 };
 /* Interface to InterMine Widgets.
@@ -2903,15 +2841,13 @@ factory = function(Backbone) {
 var $, Widgets,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   __slice = [].slice,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 $ = window.jQuery || window.Zepto;
 
 Widgets = (function() {
-
-  Widgets.name = 'Widgets';
 
   Widgets.prototype.VERSION = 'd3';
 

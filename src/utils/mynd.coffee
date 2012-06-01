@@ -2,13 +2,18 @@
 Mynd = {}
 Mynd.Scale = {}
 
-# Selection is an Array.
-class Selection extends Array
+# Selection backed by an Array.
+class Selection
 
+    # Event.
     event: null
 
-    constructor: ->
-        @push arguments...
+    # Elements in the selection backed by an Array.
+    elements: []
+
+    push: -> @elements.push arguments...
+
+    constructor: -> @push arguments...
 
     # Quality element with SVG prefix or without.
     qualify: (name) ->
@@ -20,19 +25,19 @@ class Selection extends Array
         else
             return name
 
-    # Selects the first element that matches the specified selector string, returning a single-element selection. If no elements in the current document
-    #  match the specified selector, returns the empty selection. If multiple elements match the selector, only the first matching element (in document
-    #  traversal order) will be selected.
+    # Selects the first element that matches the specified selector string, returning a single-element selection. If no
+    #  elements in the current document match the specified selector, returns the empty selection. If multiple elements match
+    #  the selector, only the first matching element (in document traversal order) will be selected.
     select: (selector) ->
         subgroups = []
         if typeof selector isnt "function" then selector = do (selector) -> ( -> @.querySelector selector )
 
-        for i in [0...@length]
+        for i in [0...@elements.length]
             subgroups.push subgroup = []
-            subgroup.parentNode = @[i].parentNode
+            subgroup.parentNode = @elements[i].parentNode
 
-            for j in [0...@[i].length]
-                if node = @[i][j]
+            for j in [0...@elements[i].length]
+                if node = @elements[i][j]
                     subgroup.push subnode = selector.call(node, node.__data__, j)
                     subnode.__data__ = node.__data__ if subnode and node?.__data__
                 else
@@ -40,26 +45,27 @@ class Selection extends Array
           
         new Selection subgroups
 
-    # Selects all elements that match the specified selector. The elements will be selected in document traversal order (top-to-bottom). If no elements in the
-    #  current document match the specified selector, returns the empty selection.
+    # Selects all elements that match the specified selector. The elements will be selected in document traversal order
+    #  (top-to-bottom). If no elements in the current document match the specified selector, returns the empty selection.
     selectAll: (selector) ->
         subgroups = []
         if typeof selector isnt "function"
             selector = do (selector) -> ( -> @.querySelectorAll selector )
 
-        for i in [0...@length]
-            for j in [0...@[i].length]
-                if node = @[i][j]
+        for i in [0...@elements.length]
+            for j in [0...@elements[i].length]
+                if node = @elements[i][j]
                     subgroups.push subgroup = temp_array(selector.call(node, node.__data__, j))
                     subgroup.parentNode = node
         
         new Selection subgroups
 
-    # Appends a new element with the specified name as the last child of each element in the current selection. Returns a new selection containing the appended
-    #  elements. Each new element inherits the data of the current elements, if any, in the same manner as select for subselections. The name must be specified
-    #  as a constant, though in the future we might allow appending of existing elements or a function to generate the name dynamically.
-    # If value is not specified, returns the value of the specified attribute for the first non-null element in the selection. This is generally useful only if
-    #  you know that the selection contains exactly one element.
+    # Appends a new element with the specified name as the last child of each element in the current selection. Returns a new
+    #  selection containing the appended elements. Each new element inherits the data of the current elements, if any, in the
+    #  same manner as select for subselections. The name must be specified as a constant, though in the future we might allow
+    #  appending of existing elements or a function to generate the name dynamically.
+    # If value is not specified, returns the value of the specified attribute for the first non-null element in the selection.
+    #  This is generally useful only if you know that the selection contains exactly one element.
     append: (name) ->
         name = @qualify name
 
@@ -68,22 +74,24 @@ class Selection extends Array
         else
             @select -> @appendChild document.createElementNS(@namespaceURI, name)
 
-    # Invokes the specified function for each element in the current selection, passing in the current data, index, context of the current DOM element.
+    # Invokes the specified function for each element in the current selection, passing in the current data, index, context of
+    #  the current DOM element.
     each: (callback) ->
-        for i in [0...@length]
-            for j in [0...@[i].length]
-                node = @[i][j]
+        for i in [0...@elements.length]
+            for j in [0...@elements[i].length]
+                node = @elements[i][j]
                 callback.call node, node.__data__, i, j if node
       
         @
 
-    # If value is specified, sets the attribute with the specified name to the specified value on all selected elements. If value is a constant, then all elements
-    #  are given the same attribute value; otherwise, if value is a function, then the function is evaluated for each selected element (in order), being passed the
-    #  current datum d and the current index i, with the this context as the current DOM element. The function's return value is then used to set each element's
+    # If value is specified, sets the attribute with the specified name to the specified value on all selected elements. If
+    #  value is a constant, then all elements are given the same attribute value; otherwise, if value is a function, then the
+    #  function is evaluated for each selected element (in order), being passed the current datum d and the current index `i`,
+    #  with the `this` context as the current DOM element. The function's return value is then used to set each element's
     #  attribute. A null value will remove the specified attribute.
     attr: (name, value) ->      
         name = @qualify name
-        
+
         @each do ->
             if not value?
                 if name.local
@@ -122,17 +130,18 @@ class Selection extends Array
             else
                 -> @textContent = value
 
-    # Returns the first non-null element in the current selection. If the selection is empty, returns null.
+    # Returns the first non-null element in the current `@elements` selection or null.
     node: (callback) ->
-        for i in [0..@length]
-            for j in [0..@[i].length]
-                return @[i][j] if @[i][j]?
+        for i in [0..@elements.length]
+            for j in [0..@elements[i].length]
+                return @elements[i][j] if @elements[i][j]?
         
         null
 
     # Adds or removes an event listener to each element in the current selection, for the specified type.
     #  `type` is a string event type name, such as "click", "mouseover", or "submit".
-    #  `listener` is invoked in the same manner as other operator functions, being passed the current datum, index and context (the current DOM element).
+    #  `listener` is invoked in the same manner as other operator functions, being passed the current datum, index and context
+    #  (the current DOM element).
     on: (type, listener) ->
         name = "__on#{type}"
       
@@ -147,7 +156,7 @@ class Selection extends Array
                 # Current event.
                 Selection.event = event
                 try
-                    #  The specified listener is invoked passing current datum `d` and index `i`, with the `this` context as the current DOM element.
+                    # The specified listener is invoked passing current datum, index and element context.
                     listener.call @, @.__data__, index
                 finally
                     # Save back.

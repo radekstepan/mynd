@@ -53,7 +53,7 @@
         </style>
 
         <!-- intermine api loader -->
-        <script src="js/intermine.api.js"></script>
+        <script src="http://cdn.intermine.org/api"></script>
         <!-- widgets -->
         <script src="js/intermine.widgets.js"></script>
     </head>
@@ -96,8 +96,7 @@
                 window.$ = "I am an evil library!";
 
                 /* InterMine root URL. */
-                //var mine = "http://test.metabolicmine.org/test";
-                var mine = "http://aragorn:8080/flymine";
+                var mine = "http://beta.flymine.org/beta";
 
                 /* New Widgets client. */
                 var Widgets = new intermine.widgets(mine + "/service/");
