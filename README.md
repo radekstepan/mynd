@@ -3,11 +3,10 @@ Client for embedding InterMine widgets (ws_widgets branch only!).
 ## Requirements:
 ### To Run:
 
-- [InterMine JavaScript API Loader](http://radekstepan.github.com/intermine-api-loader/intermine.api.js)
+- [InterMine JavaScript API Loader](http://cdn.intermine.org/api)
 
 The following will be fetched automatically:
 
-- Google Visualization API
 - jQuery
 - underscore.js
 - backbone.js
@@ -15,9 +14,10 @@ The following will be fetched automatically:
 
 ### To Compile:
 
-You can install all the following dependencies by running:
+You can install all of the following dependencies by running:
 
 ```bash
+sudo npm install -g coffee-script
 npm install -d
 ```
 

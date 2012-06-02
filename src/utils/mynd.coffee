@@ -2,196 +2,9 @@
 Mynd = {}
 Mynd.Scale = {}
 
-# Selection backed by an Array.
-class Selection
-
-    # Event.
-    event: null
-
-    # Elements in the selection backed by an Array.
-    constructor: (@elements=[]) ->
-
-    # Quality element with SVG prefix or without.
-    qualify: (name) ->
-        if (!index = name.indexOf('svg:'))
-            return {
-                space: 'http://www.w3.org/2000/svg'
-                local: name[4...]
-            }
-        else
-            return name
-
-    # Selects the first element that matches the specified selector string, returning a single-element selection. If no
-    #  elements in the current document match the specified selector, returns the empty selection. If multiple elements match
-    #  the selector, only the first matching element (in document traversal order) will be selected.
-    select: (selector) ->
-        if typeof selector isnt "function" then selector = do (selector) -> ( -> @.querySelector selector )
-
-        subgroups = []
-        for i in [0...@elements.length]
-            subgroups.push subgroup = []
-            
-            # For all subgroups.
-            for j in [0...@elements[i].length]
-                if node = @elements[i][j]
-                    subgroup.push subnode = selector.call(node, node.__data__, j)
-                    subnode.__data__ = node.__data__ if subnode and "__data__" of node
-                else
-                    subgroup.push null
-
-        new Selection subgroups
-
-    # Selects all elements that match the specified selector. The elements will be selected in document traversal order
-    #  (top-to-bottom). If no elements in the current document match the specified selector, returns the empty selection.
-    selectAll: (selector) ->
-        subgroups = []
-        if typeof selector isnt "function"
-            selector = do (selector) -> ( -> @.querySelectorAll selector )
-
-        for i in [0...@elements.length]
-            for j in [0...@elements[i].length]
-                if node = @elements[i][j]
-                    subgroups.push subgroup = temp_array(selector.call(node, node.__data__, j))
-        
-        new Selection subgroups
-
-    # Appends a new element with the specified name as the last child of each element in the current selection. Returns a new
-    #  selection containing the appended elements. Each new element inherits the data of the current elements, if any, in the
-    #  same manner as select for subselections. The name must be specified as a constant, though in the future we might allow
-    #  appending of existing elements or a function to generate the name dynamically.
-    # If value is not specified, returns the value of the specified attribute for the first non-null element in the selection.
-    #  This is generally useful only if you know that the selection contains exactly one element.
-    append: (name) ->
-        name = @qualify name
-
-        if name.local
-            @select -> @appendChild document.createElementNS(name.space, name.local)
-        else
-            @select -> @appendChild document.createElementNS(@namespaceURI, name)
-
-    # Invokes the specified function for each element in the current selection, passing in the current data, index, context of
-    #  the current DOM element.
-    each: (callback) ->
-        for i in [0...@elements.length]
-            for j in [0...@elements[i].length]
-                node = @elements[i][j]
-                callback.call node, node.__data__, i, j if node
-      
-        @
-
-    # If value is specified, sets the attribute with the specified name to the specified value on all selected elements. If
-    #  value is a constant, then all elements are given the same attribute value; otherwise, if value is a function, then the
-    #  function is evaluated for each selected element (in order), being passed the current datum d and the current index `i`,
-    #  with the `this` context as the current DOM element. The function's return value is then used to set each element's
-    #  attribute. A null value will remove the specified attribute.
-    attr: (name, value) ->      
-        name = @qualify name
-
-        @each do ->
-            if not value?
-                if name.local
-                    -> @removeAttributeNS name.space, name.local
-                else
-                    -> @removeAttribute name
-            else
-                if typeof value is "function"
-                    if name.local
-                        ->
-                            x = value.apply(@, arguments)
-                            unless x?
-                                @removeAttributeNS name.space, name.local
-                            else
-                                @setAttributeNS name.space, name.local, x
-                    else
-                        ->
-                            x = value.apply(@, arguments)
-                            unless x?
-                                @removeAttribute name
-                            else
-                                @setAttribute name, x
-                else
-                    if name.local
-                        -> @setAttributeNS name.space, name.local, value
-                    else
-                        -> @setAttribute name, value
-
-    # Get or set text content.
-    text: (value) ->
-        return @node().textContent unless value?
-        
-        @each do ->
-            if typeof value is "function"
-                -> @textContent = value.apply(@, arguments) or ''
-            else
-                -> @textContent = value
-
-    # Returns the first non-null element in the current `@elements` selection or null.
-    node: (callback) ->
-        for i in [0..@elements.length]
-            for j in [0..@elements[i].length]
-                return @elements[i][j] if @elements[i][j]?
-        
-        null
-
-    # Adds or removes an event listener to each element in the current selection, for the specified type.
-    #  `type` is a string event type name, such as "click", "mouseover", or "submit".
-    #  `listener` is invoked in the same manner as other operator functions, being passed the current datum, index and context
-    #  (the current DOM element).
-    on: (type, listener) ->
-        name = "__on#{type}"
-      
-        # If listener is not specified, returns the currently-assigned listener for the specified type, if any (untested).
-        return (i = @node()[name])._ unless listener?
-      
-        @each (x, index) ->
-            # The object that receives a notification when an event of the specified type occurs.
-            eventListener = (event) =>
-                # Backup current event.
-                bak = Selection.event
-                # Current event.
-                Selection.event = event
-                try
-                    # The specified listener is invoked passing current datum, index and element context.
-                    listener.call @, @.__data__, index
-                finally
-                    # Save back.
-                    Selection.event = bak
-            
-            o = @[name]
-            # Remove event listeners from the event target.
-            if o
-                @.removeEventListener type, o, o.$
-                delete @[name]
-            
-            # Register a single event listener on a single target.
-            if listener
-                @.addEventListener type, @[name] = eventListener, eventListener.$ = false # W3C useCapture flag
-                # Save it so we can retrieve it later.
-                eventListener._ = listener
-
-temp_arraySlice = (pseudoarray) ->
-    Array::slice.call pseudoarray
-
-temp_arrayCopy = (pseudoarray) ->
-    i = -1
-    n = pseudoarray.length
-    array = []
-    array.push pseudoarray[i] while ++i < n
-    array
-
-try
-    temp_array(document.documentElement.childNodes)[0].nodeType
-catch e
-    temp_array = temp_arrayCopy
-
-temp_array = temp_arraySlice
-
-Mynd.selectAll = (selector) ->
-    if typeof selector is "string"
-        (new Selection([ document ])).selectAll(selector)
-    else
-        new Selection temp_array(selector)
-
+# Selects the first element that matches the specified selector string, returning a single-element selection. If no
+#  elements in the current document match the specified selector, returns the empty selection. If multiple elements match
+#  the selector, only the first matching element (in document traversal order) will be selected.
 Mynd.select = (selector) ->
     if typeof selector is "string"
         (new Selection([ document ])).select selector
@@ -199,6 +12,13 @@ Mynd.select = (selector) ->
         # Select single node.
         new Selection [ [ selector ] ]
 
+# Selects all elements that match the specified selector. The elements will be selected in document traversal order
+#  (top-to-bottom). If no elements in the current document match the specified selector, returns the empty selection.
+Mynd.selectAll = (selector) ->
+    if typeof selector is "string"
+        (new Selection([ document ])).selectAll(selector)
+    else
+        throw new Error 'Mynd.selectAll(Nodes): this function is not implemented'
 
 # Ordinal scales have a discrete domain (chart bars).
 Mynd.Scale.ordinal = ->
@@ -331,6 +151,173 @@ Mynd.Scale.linear = ->
 
         scale
     )()
+
+# Selection backed by an Array.
+class Selection
+
+    # Event.
+    event: null
+
+    # Elements in the selection backed by an Array.
+    constructor: (@elements=[]) ->
+
+    # Quality element with SVG prefix or without.
+    qualify: (name) ->
+        if (!index = name.indexOf('svg:'))
+            return {
+                space: 'http://www.w3.org/2000/svg'
+                local: name[4...]
+            }
+        else
+            return name
+
+    # Selects the first element that matches the specified selector string, returning a single-element selection. If no
+    #  elements in the current document match the specified selector, returns the empty selection. If multiple elements match
+    #  the selector, only the first matching element (in document traversal order) will be selected.
+    select: (selector) ->
+        if typeof selector isnt "function" then selector = do (selector) -> ( -> @.querySelector selector )
+
+        subgroups = []
+        for i in [0...@elements.length]
+            subgroups.push subgroup = []
+            
+            # For all subgroups.
+            for j in [0...@elements[i].length]
+                if node = @elements[i][j]
+                    subgroup.push subnode = selector.call(node, node.__data__, j)
+                    subnode.__data__ = node.__data__ if subnode and "__data__" of node
+                else
+                    subgroup.push null
+
+        new Selection subgroups
+
+    # Selects all elements that match the specified selector. The elements will be selected in document traversal order
+    #  (top-to-bottom). If no elements in the current document match the specified selector, returns the empty selection.
+    selectAll: (selector) ->
+        subgroups = []
+        if typeof selector isnt "function"
+            selector = do (selector) -> ( -> @.querySelectorAll selector )
+
+        for i in [0...@elements.length]
+            for j in [0...@elements[i].length]
+                if node = @elements[i][j]
+                    subgroups.push subgroup = Array::slice.call selector.call(node, node.__data__, j)
+        
+        new Selection subgroups
+
+    # Appends a new element with the specified name as the last child of each element in the current selection. Returns a new
+    #  selection containing the appended elements. Each new element inherits the data of the current elements, if any, in the
+    #  same manner as select for subselections. The name must be specified as a constant, though in the future we might allow
+    #  appending of existing elements or a function to generate the name dynamically.
+    # If value is not specified, returns the value of the specified attribute for the first non-null element in the selection.
+    #  This is generally useful only if you know that the selection contains exactly one element.
+    append: (name) ->
+        name = @qualify name
+
+        if name.local
+            @select -> @appendChild document.createElementNS(name.space, name.local)
+        else
+            @select -> @appendChild document.createElementNS(@namespaceURI, name)
+
+    # Invokes the specified function for each element in the current selection, passing in the current data, index, context of
+    #  the current DOM element.
+    each: (callback) ->
+        for i in [0...@elements.length]
+            for j in [0...@elements[i].length]
+                node = @elements[i][j]
+                callback.call node, node.__data__, i, j if node
+      
+        @
+
+    # If value is specified, sets the attribute with the specified name to the specified value on all selected elements. If
+    #  value is a constant, then all elements are given the same attribute value; otherwise, if value is a function, then the
+    #  function is evaluated for each selected element (in order), being passed the current datum d and the current index `i`,
+    #  with the `this` context as the current DOM element. The function's return value is then used to set each element's
+    #  attribute. A null value will remove the specified attribute.
+    attr: (name, value) ->      
+        name = @qualify name
+
+        @each do ->
+            if not value?
+                if name.local
+                    -> @removeAttributeNS name.space, name.local
+                else
+                    -> @removeAttribute name
+            else
+                if typeof value is "function"
+                    if name.local
+                        ->
+                            x = value.apply(@, arguments)
+                            unless x?
+                                @removeAttributeNS name.space, name.local
+                            else
+                                @setAttributeNS name.space, name.local, x
+                    else
+                        ->
+                            x = value.apply(@, arguments)
+                            unless x?
+                                @removeAttribute name
+                            else
+                                @setAttribute name, x
+                else
+                    if name.local
+                        -> @setAttributeNS name.space, name.local, value
+                    else
+                        -> @setAttribute name, value
+
+    # Get or set text content.
+    text: (value) ->
+        return @node().textContent unless value?
+        
+        @each do ->
+            if typeof value is "function"
+                -> @textContent = value.apply(@, arguments) or ''
+            else
+                -> @textContent = value
+
+    # Returns the first non-null element in the current `@elements` selection or null.
+    node: (callback) ->
+        for i in [0..@elements.length]
+            for j in [0..@elements[i].length]
+                return @elements[i][j] if @elements[i][j]?
+        
+        null
+
+    # Adds or removes an event listener to each element in the current selection, for the specified type.
+    #  `type` is a string event type name, such as "click", "mouseover", or "submit".
+    #  `listener` is invoked in the same manner as other operator functions, being passed the current datum, index and context
+    #  (the current DOM element).
+    on: (type, listener) ->
+        name = "__on#{type}"
+      
+        # If listener is not specified, returns the currently-assigned listener for the specified type, if any (untested).
+        return (i = @node()[name])._ unless listener?
+      
+        @each (x, index) ->
+            # The object that receives a notification when an event of the specified type occurs.
+            eventListener = (event) =>
+                # Backup current event.
+                bak = Selection.event
+                # Current event.
+                Selection.event = event
+                try
+                    # The specified listener is invoked passing current datum, index and element context.
+                    listener.call @, @.__data__, index
+                finally
+                    # Save back.
+                    Selection.event = bak
+            
+            o = @[name]
+            # Remove event listeners from the event target.
+            if o
+                @.removeEventListener type, o, o.$
+                delete @[name]
+            
+            # Register a single event listener on a single target.
+            if listener
+                @.addEventListener type, @[name] = eventListener, eventListener.$ = false # W3C useCapture flag
+                # Save it so we can retrieve it later.
+                eventListener._ = listener
 
 # Put on InterMine namespace
 intermine.mynd = Mynd

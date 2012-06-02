@@ -31,10 +31,6 @@ class Widgets
         type:  "js"
         wait:  true
     ,
-        name:  "d3"
-        path:  "http://cdn.intermine.org/js/d3/2.8.1/d3.v2.min.js"
-        type:  "js"
-    ,
         path:  "http://cdn.intermine.org/js/intermine/imjs/latest/imjs.js"
         type:  "js"
     ,
