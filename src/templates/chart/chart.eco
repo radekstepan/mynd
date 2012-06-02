@@ -1,0 +1,18 @@
+<div class="header">
+    <h3><%= @title if @title %></h3>
+    <p style="margin:0"><%- @description if @description %></p>
+    <% if @notAnalysed: %>
+        <p style="margin:10px 0 0 0">Number of Genes in this list not analysed in this widget: <a><%= @notAnalysed %></a></p>
+    <% end %>
+
+    <div class="form">
+        <form style="margin:0;padding:10px 0 0 0">
+            <!-- extra.eco -->
+        </form>
+    </div>
+</div>
+<div class="content">
+    <div class="settings"></div>
+    <div class="legend"></div>
+    <div class="chart"></div>
+</div>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Widget Client (Mynd)</title>
+
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Twitter Bootstrap -->
+        <link href="css/bootstrap.css" rel="stylesheet">
+        
+        <style>
+            .widget { margin:20px 10px; /*border-bottom:1px solid #EEE;*/ }
+            /* d3.js charts */
+            .widget .canvas { shape-rendering:crispEdges; }
+            .widget .canvas rect { stroke:#FFF; cursor:pointer; }
+            .widget .canvas line { stroke:#CCC; }
+            .widget .canvas line.dashed { stroke:#EEE; }
+            .widget .canvas text { font-family:Georgia; fill:#555; font-size:11px; }
+            .widget .canvas .labels text { font-size:14px; }
+            /* ColorBrewer Blues, Greens, Reds */
+            .widget .canvas rect.bar.s0.q0-4 { fill:#eff3ff }
+            .widget .canvas rect.bar.s0.q1-4 { fill:#bdd7e7 }
+            .widget .canvas rect.bar.s0.q2-4 { fill:#6baed6 }
+            .widget .canvas rect.bar.s0.q3-4 { fill:#2171b5 }
+            .widget .canvas rect.bar.s1.q0-4 { fill:#edf8e9 }
+            .widget .canvas rect.bar.s1.q1-4 { fill:#bae4b3 }
+            .widget .canvas rect.bar.s1.q2-4 { fill:#74c476 }
+            .widget .canvas rect.bar.s1.q3-4 { fill:#238b45 }
+            .widget .canvas rect.bar.s2.q0-4 { fill:#fee5d9 }
+            .widget .canvas rect.bar.s2.q1-4 { fill:#fcae91 }
+            .widget .canvas rect.bar.s2.q2-4 { fill:#fb6a4a }
+            .widget .canvas rect.bar.s2.q3-4 { fill:#cb181d }
+            /* values */
+            .widget .canvas .q0-4 text.value.on,
+            .widget .canvas .q1-4 text.value.on { fill:#555; }
+            .widget .canvas .q2-4 text.value.on,
+            .widget .canvas .q3-4 text.value.on { fill:#fff; }
+            .widget .canvas text.value.on.beyond { fill:#000; }
+            /* legend */
+            .widget .legend ul { margin:0; text-align:center; font-family:Georgia; color:#555; }
+            .widget .legend ul li { display:inline; margin:0 10px; cursor:pointer; }
+            .widget .legend ul li:before { content:" "; display:inline-block; width:10px; height:10px; margin-right:4px; opacity:1;
+                border:1px solid rgba(0, 0, 0, 0.2); border-radius:2px; }
+            .widget .legend ul li.s0:before { background:#2171b5; }
+            .widget .legend ul li.s1:before { background:#238b45; }
+            .widget .legend ul li.s2:before { background:#cb181d; }
+            .widget .legend ul li.disabled:before { opacity:0.2; }
+            /* settings */
+            .widget .settings a { margin:0 10px 5px 0; }
+        </style>
+
+        <!-- intermine api loader -->
+        <script src="http://cdn.intermine.org/api"></script>
+        <!-- widgets -->
+        <script src="js/intermine.widgets.js"></script>
+    </head>
+
+    <body>
+        <!-- menu -->
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container" style="width: auto;">
+                    <a class="brand" href="#">Widget Client (Mynd)</a>
+                    <ul class="nav pull-right">
+                        <li class="divider-vertical"></li>
+                        <li><a target="_blank" href="https://github.com/radekstepan/intermine-widget-client">Fork me on GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="row">
+                <h2>Example Widgets</h2>
+            </div>
+
+            <div class="row">
+                <div id="one" class="widget span6"></div>
+                <div id="two" class="widget span6"></div>
+            </div>
+            <div class="row">
+                <div id="three" class="widget span6"></div>
+                <div id="four" class="widget span6"></div>
+            </div>
+
+            <div id="widgets-genes" class="row"></div>
+            <div id="widgets-proteins" class="row"></div>
+
+            <script type="text/javascript">
+            (function() {
+                /* A test of having $ not be jQuery. */
+                window.$ = "I am an evil library!";
+
+                /* InterMine root URL. */
+                var mine = "http://beta.flymine.org/beta";
+
+                /* New Widgets client. */
+                var Widgets = new intermine.widgets(mine + "/service/");
+
+                Widgets.chart('bdgp', 'demo-genes', '#one');
+                Widgets.chart('flyatlas_for_gene', 'demo-genes', '#two');
+                Widgets.chart('chromosome_distribution_for_gene', 'demo-genes', '#three');
+            })();
+            </script>
+
+        </div>
+    </body>
+</html>

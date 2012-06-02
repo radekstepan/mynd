@@ -1,0 +1,4 @@
+<div class="alert alert-block">
+    <h4 class="alert-heading"><%= @title %> for <%= @name %></h4>
+    <p><%- @text %></p>
+</div>
