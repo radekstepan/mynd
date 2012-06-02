@@ -34,7 +34,7 @@ class ChartView extends Backbone.View
                     'data':      [ v[1], v[2] ]
 
             # Prep the chart.
-            chart = new Chart.Column(
+            chart = new Mynd.Chart.column(
                 'el':        $(@el).find("div.content div.chart")
                 'data':      data
                 'width':     460
@@ -46,7 +46,7 @@ class ChartView extends Backbone.View
             )
 
             # Render the chart legend.
-            legend = new Chart.Legend(
+            legend = new Mynd.Chart.legend(
                 'el':     $(@el).find("div.content div.legend")
                 'chart' : chart # link to chart
                 'series': [ @response.results[0][1], @response.results[0][2] ]
@@ -54,7 +54,7 @@ class ChartView extends Backbone.View
             legend.render()
 
             # Render the chart settings.
-            settings = new Chart.Settings(
+            settings = new Mynd.Chart.settings(
                 'el':        $(@el).find("div.content div.settings")
                 'chart':     chart # link to chart
                 'legend':    legend # link to series legend
