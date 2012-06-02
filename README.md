@@ -19,4 +19,4 @@ npm install -d
 - [uglify-js](https://github.com/mishoo/UglifyJS)
 
 ## Example:
-![image](https://raw.github.com/radekstepan/Mynd/master/example.png)
+![image](https://raw.github.com/radekstepan/mynd/master/example.png)

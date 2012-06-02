@@ -1,5 +1,5 @@
 ## Mynd/Chart means/þýðir chart/mynd in/í icelandic/íslensku
-Mynd = {}
+window.Mynd = {} 
 Mynd.Scale = {}
 Mynd.Chart = {}
 

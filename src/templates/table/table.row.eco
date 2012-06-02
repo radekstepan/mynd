@@ -1,5 +1,0 @@
-<td class="check"><input type="checkbox" <% if @row["selected"]: %>checked="checked"<% end %> /></td>
-<% for column in @row["descriptions"]: %>
-    <td><%= column %></td>
-<% end %>
-<td><%= @row["matches"] %></td>
