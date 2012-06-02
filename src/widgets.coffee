@@ -12,6 +12,9 @@ class Widgets
 
     # JavaScript libraries as resources. Will be loaded if not present already.
     resources: [
+        path:  'http://cdn.intermine.org/js/es5-shim/1.2.4/es5-shim.min.js'
+        type:  'js'
+    ,
         name:  'JSON'
         path:  'http://cdn.intermine.org/js/json3/3.2.2/json3.min.js'
         type:  'js'
