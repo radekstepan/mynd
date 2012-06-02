@@ -1,20 +1,4 @@
-Chart =
-    
-    # Will convert SVG into base64 PNG stream (through `canvg`).
-    toPNG: (svgEl, width, height) ->
-        # Create canvas.
-        canvas = $('<canvas/>',
-            'style':  'image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast'
-        )
-        .attr('width',  width)
-        .attr('height', height)
-
-        # SVG to Canvas.
-        canvg canvas[0], $(svgEl).html()
-
-        # Canvas to PNG.
-        canvas[0].toDataURL("image/png")
-
+Chart = {}
 
 # A vertical bar chart that is rendered within the browser using SVG.
 class Chart.Column
@@ -448,7 +432,7 @@ class Chart.Settings
 
         # Is the chart stacked?
         stacked = $(@el).append $('<a/>',
-            'class': "btn btn-mini stacked #{if @isStacked then 'active' else ''}"
+            'class': "btn btn-mini #{if @isStacked then 'active' else ''}"
             'text':  if @isStacked then 'Unstack' else 'Stack'
             'click': (e) =>
                 $(e.target).toggleClass 'active'
@@ -460,12 +444,4 @@ class Chart.Settings
                 # Re-render components.
                 @legend.render()
                 @chart.render()
-        )
-
-        # Download as an image?
-        $(@el).append $('<a/>',
-            'class': "btn btn-mini png"
-            'text':  'Save as a PNG'
-            'click': (e) =>
-                PlainExporter e.target, '<img src="' + @chart.toPNG() + '"/>'
         )

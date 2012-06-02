@@ -61,6 +61,25 @@ class ChartView extends Backbone.View
                 'isStacked': @response.chartType is 'BarChart'
             )
             settings.render()
+            # Push a 'Save to PNG' button into the settings.
+            $(settings.el).append $('<a/>',
+                'class': "btn btn-mini"
+                'text':  'Save as a PNG'
+                # Convert SVG into base64 PNG stream (through `canvg`).
+                'click': (e) ->
+                    # Create canvas.
+                    canvas = $('<canvas/>',
+                        'style':  'image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast'
+                    )
+                    .attr('width',  chart.width)
+                    .attr('height', chart.height)
+
+                    # SVG to Canvas.
+                    canvg canvas[0], $(chart.el).html()
+
+                    # Canvas to PNG.
+                    PlainExporter e.target, '<img src="' + canvas[0].toDataURL("image/png") + '"/>'
+            )
 
             # Determine the height of the svg canvas it should occupy.
             chart.height = $(@widget.el).height() - $(@widget.el).find('div.header').height() - $(@widget.el).find('div.content div.legend').height() - $(@widget.el).find('div.content div.settings').height()
