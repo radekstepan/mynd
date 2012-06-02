@@ -1,0 +1,230 @@
+[
+    [
+        {
+            "description": "stage 1-3 (BDGP in situ)",
+            "data": [
+                2,
+                16
+            ]
+        },
+        {
+            "description": "stage 11-12 (BDGP in situ)",
+            "data": [
+                21,
+                1
+            ]
+        },
+        {
+            "description": "stage 13-16 (BDGP in situ)",
+            "data": [
+                21,
+                1
+            ]
+        },
+        {
+            "description": "stage 4-6 (BDGP in situ)",
+            "data": [
+                20,
+                2
+            ]
+        },
+        {
+            "description": "stage 7-8 (BDGP in situ)",
+            "data": [
+                17,
+                3
+            ]
+        },
+        {
+            "description": "stage 9-10 (BDGP in situ)",
+            "data": [
+                18,
+                3
+            ]
+        }
+    ],
+    [
+        {
+            "description": "Adult carcass",
+            "data": [
+                8,
+                6
+            ]
+        },
+        {
+            "description": "Adult eye",
+            "data": [
+                7,
+                7
+            ]
+        },
+        {
+            "description": "Adult fat body",
+            "data": [
+                8,
+                6
+            ]
+        },
+        {
+            "description": "Adult heart",
+            "data": [
+                7,
+                9
+            ]
+        },
+        {
+            "description": "Brain",
+            "data": [
+                11,
+                7
+            ]
+        },
+        {
+            "description": "Crop",
+            "data": [
+                6,
+                7
+            ]
+        },
+        {
+            "description": "Head",
+            "data": [
+                8,
+                5
+            ]
+        },
+        {
+            "description": "Hindgut",
+            "data": [
+                6,
+                11
+            ]
+        },
+        {
+            "description": "Larvae hindgut",
+            "data": [
+                8,
+                10
+            ]
+        },
+        {
+            "description": "Larval CNS",
+            "data": [
+                15,
+                4
+            ]
+        },
+        {
+            "description": "Larval carcass",
+            "data": [
+                10,
+                4
+            ]
+        },
+        {
+            "description": "Larval fat body",
+            "data": [
+                9,
+                7
+            ]
+        },
+        {
+            "description": "Larval midgut",
+            "data": [
+                6,
+                11
+            ]
+        },
+        {
+            "description": "Larval salivary gland",
+            "data": [
+                4,
+                8
+            ]
+        },
+        {
+            "description": "Larval trachea",
+            "data": [
+                5,
+                8
+            ]
+        },
+        {
+            "description": "Larval tubule",
+            "data": [
+                3,
+                12
+            ]
+        },
+        {
+            "description": "Male accessory glands",
+            "data": [
+                6,
+                10
+            ]
+        },
+        {
+            "description": "Mated spermatheca",
+            "data": [
+                5,
+                6
+            ]
+        },
+        {
+            "description": "Midgut",
+            "data": [
+                6,
+                11
+            ]
+        },
+        {
+            "description": "Ovary",
+            "data": [
+                7,
+                9
+            ]
+        },
+        {
+            "description": "S2 cells",
+            "data": [
+                6,
+                8
+            ]
+        },
+        {
+            "description": "Salivary gland",
+            "data": [
+                5,
+                8
+            ]
+        },
+        {
+            "description": "Testis",
+            "data": [
+                7,
+                9
+            ]
+        },
+        {
+            "description": "Thoracicoabdominal ganglion",
+            "data": [
+                9,
+                7
+            ]
+        },
+        {
+            "description": "Tubule",
+            "data": [
+                8,
+                14
+            ]
+        },
+        {
+            "description": "Virgin spermatheca",
+            "data": [
+                5,
+                6
+            ]
+        }
+    ]
+]

@@ -5,13 +5,13 @@
         <title>Mynd</title>
 
         <!-- Twitter Bootstrap -->
-        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="bootstrap.css" rel="stylesheet">
         
         <style>
             .widget { margin:20px 10px; /*border-bottom:1px solid #EEE;*/ }
             
             .widget .canvas { shape-rendering:crispEdges; }
-            .widget .canvas rect { stroke:#FFF; cursor:pointer; }
+            .widget .canvas rect { stroke:#FFF; }
             .widget .canvas line { stroke:#CCC; }
             .widget .canvas line.dashed { stroke:#EEE; }
             .widget .canvas text { font-family:Georgia; fill:#555; font-size:11px; }
@@ -38,8 +38,8 @@
             /* legend */
             .widget .legend ul { margin:0; text-align:center; font-family:Georgia; color:#555; }
             .widget .legend ul li { display:inline; margin:0 10px; cursor:pointer; }
-            .widget .legend ul li:before { content:" "; display:inline-block; width:10px; height:10px; margin-right:4px; opacity:1;
-                border:1px solid rgba(0, 0, 0, 0.2); border-radius:2px; }
+            .widget .legend ul li:before { content:" "; display:inline-block; width:10px; height:10px; margin-right:4px;
+                opacity:1; border:1px solid rgba(0, 0, 0, 0.2); border-radius:2px; }
             .widget .legend ul li.s0:before { background:#2171b5; }
             .widget .legend ul li.s1:before { background:#238b45; }
             .widget .legend ul li.s2:before { background:#cb181d; }
@@ -48,8 +48,70 @@
             .widget .settings a { margin:0 10px 5px 0; }
         </style>
 
-        <!-- widgets -->
+        <script src="http://cdn.intermine.org/js/jquery/1.7.2/jquery.min.js"></script>
+
         <script src="js/mynd.js"></script>
+
+        <script>
+        $(function() {
+            var elements, axes, stacking, series;
+            elements = [ '#bdgp', '#flyatlas' ];
+            stacking = [ false, true ];
+            axes = [
+                {
+                    'horizontal': 'Stage',
+                    'vertical':   'Gene Count'
+                },
+                {
+                    'horizontal': 'Tissue',
+                    'vertical':   'Gene Count'
+                }
+            ];
+            series = [
+                ['Expressed', 'Not Expressed'],
+                ['Up', 'Down']
+            ]
+
+            $.getJSON('data.json', function(data) {
+                var i;
+                for (i = 0; i < 2; i++) {
+                    (function() {
+                        var chart, legend, settings;
+
+                        chart = new Mynd.Chart.column({
+                            'el':        $(elements[i] + ' div.content div.chart'),
+                            'data':      data[i],
+                            'width':     460,
+                            'isStacked': stacking[i],
+                            'axis':      axes[i]
+                        });
+                        
+                        legend = new Mynd.Chart.legend({
+                            'el':     $(elements[i] + ' div.content div.legend'),
+                            'chart':  chart,
+                            'series': series[i]
+                        });
+                        legend.render();
+                        
+                        settings = new Mynd.Chart.settings({
+                            'el':        $(elements[i] + ' div.content div.settings'),
+                            'chart':     chart,
+                            'legend':    legend,
+                            'isStacked': stacking[i]
+                        });
+                        settings.render();
+                        
+                        chart.height = $(elements[i]).height()
+                            - $(elements[i] + ' div.header').height()
+                            - $(elements[i] + ' div.legend').height()
+                            - $(elements[i] + ' div.settings').height();
+                        
+                        chart.render();
+                    })();
+                }
+            });
+        });
+        </script>
     </head>
 
     <body>
@@ -73,8 +135,28 @@
             </div>
 
             <div class="row">
-                <div id="one" class="widget span6"></div>
-                <div id="two" class="widget span6"></div>
+                <div id="bdgp" class="widget span6" style="height:572px;overflow:hidden;position:relative">
+                    <div class="header">
+                        <h3>BDGP expression patterns</h3>
+                        <p style="margin:0">Expression patterns of Drosophila mRNAs during embryogenesis - data from  <a href="http://www.fruitfly.org/cgi-bin/ex/insitu.pl" target="_new">BGDP</a>.  Note that not all genes have been assayed by <a href="http://www.fruitfly.org/cgi-bin/ex/insitu.pl" target="_new">BGDP</a>.</p>
+                    </div>
+                    <div class="content">
+                        <div class="settings"></div>
+                        <div class="legend"></div>
+                        <div class="chart"></div>
+                    </div>
+                </div>
+                <div id="flyatlas" class="widget span6" style="height:572px;overflow:hidden;position:relative">
+                    <div class="header">
+                        <h3>Gene Expression in the Adult Fly (FlyAtlas)</h3>
+                        <p style="margin:0">For each tissue in the adult fly, the number of genes from this list for which the levels of expression are significantly high (Up) or low (Down) according to <a href="http://www.flyatlas.org/" target="_new">FlyAtlas</a> AffyCall.</p>
+                    </div>
+                    <div class="content">
+                        <div class="settings"></div>
+                        <div class="legend"></div>
+                        <div class="chart"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>
