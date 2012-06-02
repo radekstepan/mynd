@@ -30,6 +30,34 @@ task "compile", "compile .coffee to .js (and minify)", (options) ->
     catch err
         console.log "#{COLORS.RED}#{err}#{COLORS.DEFAULT}"
 
+# Compile tests.
+task "tests", "compile tests to run in the browser", (options) ->
+    console.log "#{COLORS.BOLD}Compiling tests#{COLORS.DEFAULT}"
+    
+    # Compile the test runner.
+    write 'test/js/runner.js', cs.compile fs.readFileSync 'test/runner.coffee', "utf-8"
+
+    # Compile tests in test/src/ to test/js/tests/.
+    walk 'test/src/', (err, files) ->
+        if err then throw new Error('problem walking tests')
+        else
+            tests = []
+            for file in files
+                # Read in, compile.
+                source = cs.compile fs.readFileSync(file, "utf-8")
+                # Get the filename wo/ extension.
+                name = file.split('/').pop().replace '.coffee', ''
+                # Write to equivalent JS file
+                write "test/js/tests/#{name}.js", source
+                # Save the path to JSON output.
+                tests.push "\"#{name}\""
+
+            # Write JSON so we can reference all tests. 
+            write 'test/js/tests.json', "[#{tests.join(',')}]"
+
+    # That's it.
+    console.log "#{COLORS.GREEN}Done#{COLORS.DEFAULT}"
+
 # Append to existing file.
 write = (path, text, mode = "w") ->
     fs.open path, mode, 0o0666, (e, id) ->
@@ -38,3 +66,32 @@ write = (path, text, mode = "w") ->
 
 # Compress using `uglify-js`.
 uglify = (input) -> pro.gen_code pro.ast_squeeze pro.ast_mangle jsp.parse input
+
+# Traverse a directory and return a list of files (async, recursive).
+walk = (path, callback) ->
+    results = []
+    # Read directory.
+    fs.readdir path, (err, list) ->
+        # Problems?
+        return callback err if err
+        
+        # Get listing length.
+        pending = list.length
+        
+        return callback null, results unless pending # Done already?
+        
+        # Traverse.
+        list.forEach (file) ->
+            # Form path
+            file = "#{path}/#{file}"
+            fs.stat file, (err, stat) ->
+                # Subdirectory.
+                if stat and stat.isDirectory()
+                    walk file, (err, res) ->
+                        # Append result from sub.
+                        results = results.concat(res)
+                        callback null, results unless --pending # Done yet?
+                # A file.
+                else
+                    results.push file
+                    callback null, results unless --pending # Done yet?

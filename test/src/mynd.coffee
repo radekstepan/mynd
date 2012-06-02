@@ -1,7 +1,5 @@
 describe "Mynd", ->
 
-    Mynd = intermine.mynd
-
     beforeEach -> $('body').append($('<div/>', 'id': 'destroy'))
 
     afterEach -> $('#destroy').remove()
