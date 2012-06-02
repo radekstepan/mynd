@@ -29,7 +29,7 @@ npm install -d
 You can either use the InterMine API Loader to always give you the latest version of the widgets:
 
 ```html
-<script src="http://radekstepan.github.com/intermine-api-loader/intermine.api.js"></script>
+<script src="http://cdn.intermine.org/api"></script>
 ```
 
 ```javascript
@@ -42,7 +42,7 @@ Or you can include both the API Loader and Widgets JS files and use them immedia
 
 ```html
 // point to API, requirement for all InterMine client side JavaScript
-<script src="http://radekstepan.github.com/intermine-api-loader/intermine.api.js"></script>
+<script src="http://cdn.intermine.org/api"></script>
 // include Widgets library locally, is immediately available on the `intermine` namespace
 <script src="js/intermine.widgets.js"></script>
 ```
