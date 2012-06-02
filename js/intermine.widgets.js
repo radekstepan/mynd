@@ -5,14 +5,14 @@ var JST = {};
 JST["actions.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<a class="btn btn-small '),this.disabled&&__out.push("disabled"),__out.push(' view">View</a>\n<a class="btn btn-small '),this.disabled&&__out.push("disabled"),__out.push(' export">Download</a>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
 JST["error.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<div class="alert alert-block">\n    <h4 class="alert-heading">'),__out.push(__sanitize(this.title)),__out.push(" for "),__out.push(__sanitize(this.name)),__out.push("</h4>\n    <p>"),__out.push(this.text),__out.push("</p>\n</div>")}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
 JST["extra.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var v,_i,_len,_ref;__out.push('<div class="group" style="display:inline-block;margin:0 5px 10px 0;float:left">\n    <label>'),__out.push(__sanitize(this.label)),__out.push("</label>\n    ");if(this.possible.length>1){__out.push('\n        <select name="'),__out.push(__sanitize(this.label)),__out.push('" class="span2">\n            '),_ref=this.possible;for(_i=0,_len=_ref.length;_i<_len;_i++)v=_ref[_i],__out.push('\n                <option value="'),__out.push(__sanitize(v)),__out.push('" '),this.selected===v&&__out.push(__sanitize('selected="selected"')),__out.push(">\n                    "),__out.push(__sanitize(v)),__out.push("\n                </option>\n            ");__out.push("\n        </select>\n    ")}else __out.push("\n        "),__out.push(__sanitize(this.possible[0])),__out.push("\n    ");__out.push('\n</div>\n<div style="clear:both"></div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["invalidjsonkey.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<li style="vertical-align:bottom">\n    <span style="display:inline-block" class="label label-important">'),__out.push(__sanitize(this.key)),__out.push("</span> is "),__out.push(__sanitize(this.actual)),__out.push("; was expecting "),__out.push(__sanitize(this.expected)),__out.push("\n</li>")}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
 JST["loading.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<div class="loading" style="background:rgba(255,255,255,0.9);position:absolute;top:0;left:0;height:100%;width:100%;text-align:center;">\n    <p style="padding-top:50%;font-weight:bold;">Loading &hellip;</p>\n</div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
 JST["noresults.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<div class="alert alert-info">\n    <p>The Widget has no results.</p>\n</div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
-JST["invalidjsonkey.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<li style="vertical-align:bottom">\n    <span style="display:inline-block" class="label label-important">'),__out.push(__sanitize(this.key)),__out.push("</span> is "),__out.push(__sanitize(this.actual)),__out.push("; was expecting "),__out.push(__sanitize(this.expected)),__out.push("\n</li>")}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
-JST["chart.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<div class="header">\n    <h3>'),this.title&&__out.push(__sanitize(this.title)),__out.push('</h3>\n    <p style="margin:0">'),this.description&&__out.push(this.description),__out.push("</p>\n    "),this.notAnalysed&&(__out.push('\n        <p style="margin:10px 0 0 0">Number of Genes in this list not analysed in this widget: <a>'),__out.push(__sanitize(this.notAnalysed)),__out.push("</a></p>\n    ")),__out.push('\n\n    <div class="form">\n        <form style="margin:0;padding:10px 0 0 0">\n            <!-- extra.eco -->\n        </form>\n    </div>\n</div>\n<div class="content">\n    <div class="settings"></div>\n    <div class="legend"></div>\n    <div class="chart"></div>\n</div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
 JST["enrichment.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<div class="header">\n    <h3>'),this.title&&__out.push(__sanitize(this.title)),__out.push("</h3>\n    <p>"),this.description&&__out.push(this.description),__out.push("</p>\n    "),this.notAnalysed&&(__out.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),__out.push(__sanitize(this.notAnalysed)),__out.push("</a></p>\n    ")),__out.push('\n\n    <div class="form">\n        <!-- enrichment.form.eco -->\n    </div>\n\n    <div class="actions" style="padding:10px 0">\n        <!-- actions.eco -->\n    </div>\n</div>\n<div class="content">\n    <!-- enrichment.table.eco -->\n</div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
 JST["enrichment.form.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var correction,p,_i,_j,_len,_len1,_ref,_ref1;__out.push('<form style="margin:0">\n    <div class="group" style="display:inline-block;margin-right:5px;float:left">\n        <label>Test Correction</label>\n        <select name="errorCorrection" class="span2">\n            '),_ref=this.errorCorrections;for(_i=0,_len=_ref.length;_i<_len;_i++)correction=_ref[_i],__out.push('\n                <option value="'),__out.push(__sanitize(correction)),__out.push('" '),this.options.errorCorrection===correction&&__out.push(__sanitize('selected="selected"')),__out.push(">\n                    "),__out.push(__sanitize(correction)),__out.push("\n            </option>\n            ");__out.push('\n        </select>\n    </div>\n\n    <div class="group" style="display:inline-block;margin-right:5px;float:left">\n        <label>Max p-value</label>\n        <select name="pValue" class="span2">\n            '),_ref1=this.pValues;for(_j=0,_len1=_ref1.length;_j<_len1;_j++)p=_ref1[_j],__out.push('\n                <option value="'),__out.push(__sanitize(p)),__out.push('" '),this.options.pValue===p&&__out.push(__sanitize('selected="selected"')),__out.push(">\n                    "),__out.push(__sanitize(p)),__out.push("\n                </option>\n            ");__out.push('\n        </select>\n    </div>\n</form>\n<div style="clear:both"></div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
 JST["enrichment.row.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<td class="check"><input type="checkbox" '),this.row.selected&&__out.push('checked="checked"'),__out.push(' /></td>\n<td class="description">\n    '),__out.push(__sanitize(this.row.description)),__out.push("\n    "),this.row.externalLink&&(__out.push('\n        [<a href="'),__out.push(this.row.externalLink),__out.push('" target="_blank">Link</a>]\n    ')),__out.push('\n</td>\n<td class="pValue">'),__out.push(__sanitize(this.row["p-value"].toPrecision(5))),__out.push('</td>\n<td class="matches">\n    <a class="count" style="cursor:pointer">'),__out.push(__sanitize(this.row.matches)),__out.push("</a>\n</td>")}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
 JST["enrichment.table.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<!-- actual fixed head -->\n<div class="head" style="display:table">\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;"><input type="checkbox" class="check" /></div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">'),__out.push(__sanitize(this.label)),__out.push('</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">p-Value</div>\n    <div style="font-weight:bold;display:table-cell;padding:0 8px;">Matches</div>\n    <div style="clear:both"></div>\n</div>\n<div class="wrapper" style="overflow:auto;overflow-x:hidden">\n    <table class="table table-striped">\n        <!-- head for proper cell width -->\n        <thead style="visibility:hidden">\n            <tr>\n                <th></th>\n                <th>'),__out.push(__sanitize(this.label)),__out.push("</th>\n                <th>p-Value</th>\n                <th>Matches</th>\n            </tr>\n        </thead>\n        <tbody>\n            <!-- loop enrichment.row.eco -->\n        </tbody>\n    </table>\n</div>")}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
+JST["chart.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<div class="header">\n    <h3>'),this.title&&__out.push(__sanitize(this.title)),__out.push('</h3>\n    <p style="margin:0">'),this.description&&__out.push(this.description),__out.push("</p>\n    "),this.notAnalysed&&(__out.push('\n        <p style="margin:10px 0 0 0">Number of Genes in this list not analysed in this widget: <a>'),__out.push(__sanitize(this.notAnalysed)),__out.push("</a></p>\n    ")),__out.push('\n\n    <div class="form">\n        <form style="margin:0;padding:10px 0 0 0">\n            <!-- extra.eco -->\n        </form>\n    </div>\n</div>\n<div class="content">\n    <div class="settings"></div>\n    <div class="legend"></div>\n    <div class="chart"></div>\n</div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
 JST["popover.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<div class="popover" style="position:absolute;top:5px;right:0;z-index:1;display:block">\n    <div class="popover-inner" style="'),__out.push(__sanitize(this.style)),__out.push('">\n        <a style="cursor:pointer;margin:2px 5px 0 0" class="close">×</a>\n        <h3 class="popover-title">\n            '),__out.push(__sanitize(this.description.slice(0,this.descriptionLimit-1+1||9e9))),__out.push("\n            "),this.description.length>this.descriptionLimit&&__out.push("&hellip;"),__out.push('\n        </h3>\n        <div class="popover-content">\n            <div class="values">\n                <!-- popover.values.eco -->\n            </div>\n            <div style="margin-top:10px">\n                <a class="btn btn-small btn-primary results">View results</a>\n                <a class="btn btn-small list disabled">Create list</a>\n            </div>\n        </div>\n    </div>\n</div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
 JST["popover.values.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){var object,_i,_len,_ref;__out.push("<h4>"),__out.push(__sanitize(this.values.length)),__out.push(" "),__out.push(__sanitize(this.type)),this.values.length!==1&&__out.push(__sanitize("s")),__out.push(":</h4>\n\n"),_ref=this.values.slice(0,this.valuesLimit-1+1||9e9);for(_i=0,_len=_ref.length;_i<_len;_i++)object=_ref[_i],__out.push('\n    <a href="#" class="match">'),__out.push(__sanitize(object)),__out.push("</a>\n");__out.push("\n"),this.values.length>this.valuesLimit&&__out.push("&hellip;")}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
 JST["table.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=function(callback){var out=__out,result;return __out=[],callback.call(this),result=__out.join(""),__out=out,__safe(result)},__sanitize=function(value){return value&&value.ecoSafe?value:typeof value!="undefined"&&value!=null?__escape(value):""},__safe,__objSafe=__obj.safe,__escape=__obj.escape;return __safe=__obj.safe=function(value){if(value&&value.ecoSafe)return value;if(typeof value=="undefined"||value==null)value="";var result=new String(value);return result.ecoSafe=!0,result},__escape||(__escape=__obj.escape=function(value){return(""+value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}),function(){(function(){__out.push('<div class="header">\n    <h3>'),this.title&&__out.push(__sanitize(this.title)),__out.push("</h3>\n    <p>"),this.description&&__out.push(this.description),__out.push("</p>\n    "),this.notAnalysed&&(__out.push("\n        <p>Number of Genes in this list not analysed in this widget: <a>"),__out.push(__sanitize(this.notAnalysed)),__out.push("</a></p>\n    ")),__out.push('\n\n    <div class="actions" style="padding:10px 0">\n        <!-- actions.eco -->\n    </div>\n</div>\n<div class="content">\n    <!-- table.table.eco -->\n</div>')}).call(this)}.call(__obj),__obj.safe=__objSafe,__obj.escape=__escape,__out.join("")}
@@ -21,25 +21,6 @@ JST["table.table.eco"]=function(__obj){__obj||(__obj={});var __out=[],__capture=
 var Chart;
 
 Chart = {
-  expliticize: function(e) {
-    var properties, property, _i, _len, _results;
-    switch (e.node().nodeName) {
-      case 'rect':
-        properties = ['fill', 'stroke'];
-        break;
-      case 'text':
-        properties = ['fill', 'font-family', 'font-size'];
-        break;
-      case 'line':
-        properties = ['stroke'];
-    }
-    _results = [];
-    for (_i = 0, _len = properties.length; _i < _len; _i++) {
-      property = properties[_i];
-      _results.push(e.attr(property, window.getComputedStyle(e.node(), null).getPropertyValue(property)));
-    }
-    return _results;
-  },
   toPNG: function(svgEl, width, height) {
     var canvas;
     canvas = $('<canvas/>', {
@@ -132,14 +113,18 @@ Chart.Column = (function() {
       if (this.axis.horizontal != null) {
         text = labels.append("svg:text").attr("class", "horizontal").attr("text-anchor", "middle").attr("x", width / 2).attr("y", height - this.padding.axisLabels).text(this.axis.horizontal);
         height = height - text.node().getBBox().height - this.padding.axisLabels;
-        Chart.expliticize(text);
+        text.attr('fill', text.css('fill'));
+        text.attr('font-size', text.css('font-size'));
+        text.attr('font-family', text.css('font-family'));
       }
       if (this.axis.vertical != null) {
         text = labels.append("svg:text").attr("class", "vertical").attr("text-anchor", "middle").attr("x", 0).attr("y", height / 2).text(this.axis.vertical);
         verticalAxisLabelHeight = text.node().getBBox().height;
         text.attr("transform", "rotate(-90 " + verticalAxisLabelHeight + " " + (height / 2) + ")");
         width = width - verticalAxisLabelHeight - this.padding.axisLabels;
-        Chart.expliticize(text);
+        text.attr('fill', text.css('fill'));
+        text.attr('font-size', text.css('font-size'));
+        text.attr('font-family', text.css('font-family'));
       }
     }
     descriptions = canvas.append('svg:g').attr('class', 'descriptions');
@@ -156,7 +141,9 @@ Chart.Column = (function() {
         this.description.maxWidth = textWidth;
       }
       this.description.totalWidth = this.description.totalWidth + textWidth;
-      Chart.expliticize(text);
+      text.attr('fill', text.css('fill'));
+      text.attr('font-size', text.css('font-size'));
+      text.attr('font-family', text.css('font-family'));
       g.append("svg:title").text(group.description);
       if (descriptionTextHeight === 0) {
         descriptionTextHeight = text.node().getBBox().height;
@@ -187,7 +174,9 @@ Chart.Column = (function() {
       if (textWidth > this.ticks.maxWidth) {
         this.ticks.maxWidth = textWidth;
       }
-      Chart.expliticize(text);
+      text.attr('fill', text.css('fill'));
+      text.attr('font-size', text.css('font-size'));
+      text.attr('font-family', text.css('font-family'));
     }
     width = width - this.ticks.maxWidth;
     domain.x = Mynd.Scale.ordinal().setDomain((function() {
@@ -205,7 +194,7 @@ Chart.Column = (function() {
       tick = _ref7[index];
       t = grid.select(".t" + index);
       line = t.append("svg:line").attr("class", "line").attr("x1", this.ticks.maxWidth).attr("x2", width + this.ticks.maxWidth);
-      Chart.expliticize(line);
+      line.attr('stroke', line.css('stroke'));
       t.attr('transform', "translate(0," + (height - domain['y'](tick)) + ")");
     }
     chart = canvas.append("svg:g").attr("class", "chart");
@@ -245,7 +234,8 @@ Chart.Column = (function() {
         color = domain['color'](value).toFixed(0);
         bar = g.append("svg:rect").attr("class", "bar s" + series + " q" + color + "-" + this.colorbrewer).attr('x', x).attr('y', y).attr('width', barWidth).attr('height', barHeight);
         bar.attr('opacity', 1);
-        Chart.expliticize(bar);
+        bar.attr('fill', bar.css('fill'));
+        bar.attr('stroke', bar.css('stroke'));
         w = values.append("svg:g").attr('class', "g" + index + " s" + series + " q" + color + "-" + this.colorbrewer);
         text = w.append("svg:text").attr('x', x + (barWidth / 2)).attr("text-anchor", "middle").text(value);
         if (this.isStacked) {
@@ -271,7 +261,9 @@ Chart.Column = (function() {
             text.attr("class", "value above");
           }
         }
-        Chart.expliticize(text);
+        text.attr('fill', text.css('fill'));
+        text.attr('font-size', text.css('font-size'));
+        text.attr('font-family', text.css('font-family'));
         w.append("svg:title").text(value);
         if (this.onclick != null) {
           (function(bar, group, series, value) {
@@ -949,6 +941,10 @@ Selection = (function() {
     })());
   };
 
+  Selection.prototype.css = function(name) {
+    return window.getComputedStyle(this.node(), null).getPropertyValue(name);
+  };
+
   Selection.prototype.text = function(value) {
     if (value == null) {
       return this.node().textContent;
@@ -1622,6 +1618,174 @@ factory = function(Backbone) {
   })(InterMineWidget);
   
 
+  /* Core Model for Enrichment and Table Models.
+  */
+  
+  var CoreCollection, CoreModel, EnrichmentResults, EnrichmentRow, TableResults, TableRow,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  
+  CoreModel = (function(_super) {
+  
+    __extends(CoreModel, _super);
+  
+    function CoreModel() {
+      this.toggleSelected = __bind(this.toggleSelected, this);
+  
+      this.validate = __bind(this.validate, this);
+      return CoreModel.__super__.constructor.apply(this, arguments);
+    }
+  
+    CoreModel.prototype.defaults = {
+      "selected": false
+    };
+  
+    CoreModel.prototype.initialize = function(row, widget) {
+      this.widget = widget;
+      return this.validate(row);
+    };
+  
+    CoreModel.prototype.validate = function(row) {
+      return this.widget.validateType(row, this.spec);
+    };
+  
+    CoreModel.prototype.toggleSelected = function() {
+      return this.set({
+        selected: !this.get("selected")
+      });
+    };
+  
+    return CoreModel;
+  
+  })(Backbone.Model);
+  
+  CoreCollection = (function(_super) {
+  
+    __extends(CoreCollection, _super);
+  
+    function CoreCollection() {
+      return CoreCollection.__super__.constructor.apply(this, arguments);
+    }
+  
+    CoreCollection.prototype.model = CoreModel;
+  
+    CoreCollection.prototype.selected = function() {
+      return this.filter(function(row) {
+        return row.get("selected");
+      });
+    };
+  
+    CoreCollection.prototype.toggleSelected = function() {
+      var model, _i, _j, _len, _len1, _ref, _ref1, _results, _results1;
+      if (this.models.length - this.selected().length) {
+        _ref = this.models;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          model = _ref[_i];
+          _results.push(model.set({
+            "selected": true
+          }, {
+            'silent': true
+          }));
+        }
+        return _results;
+      } else {
+        _ref1 = this.models;
+        _results1 = [];
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          model = _ref1[_j];
+          _results1.push(model.set({
+            "selected": false
+          }, {
+            'silent': true
+          }));
+        }
+        return _results1;
+      }
+    };
+  
+    return CoreCollection;
+  
+  })(Backbone.Collection);
+  
+  /* Models underpinning Enrichment Widget results.
+  */
+  
+  
+  EnrichmentRow = (function(_super) {
+  
+    __extends(EnrichmentRow, _super);
+  
+    function EnrichmentRow() {
+      return EnrichmentRow.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentRow.prototype.spec = {
+      "description": type.isString,
+      "identifier": type.isString,
+      "matches": type.isInteger,
+      "p-value": type.isInteger,
+      "selected": type.isBoolean,
+      "externalLink": type.isString
+    };
+  
+    return EnrichmentRow;
+  
+  })(CoreModel);
+  
+  EnrichmentResults = (function(_super) {
+  
+    __extends(EnrichmentResults, _super);
+  
+    function EnrichmentResults() {
+      return EnrichmentResults.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentResults.prototype.model = EnrichmentRow;
+  
+    return EnrichmentResults;
+  
+  })(CoreCollection);
+  
+  /* Models underpinning Table Widget results.
+  */
+  
+  
+  TableRow = (function(_super) {
+  
+    __extends(TableRow, _super);
+  
+    function TableRow() {
+      return TableRow.__super__.constructor.apply(this, arguments);
+    }
+  
+    TableRow.prototype.spec = {
+      "matches": type.isInteger,
+      "identifier": type.isInteger,
+      "descriptions": type.isArray,
+      "selected": type.isBoolean
+    };
+  
+    return TableRow;
+  
+  })(CoreModel);
+  
+  TableResults = (function(_super) {
+  
+    __extends(TableResults, _super);
+  
+    function TableResults() {
+      return TableResults.__super__.constructor.apply(this, arguments);
+    }
+  
+    TableResults.prototype.model = TableRow;
+  
+    return TableResults;
+  
+  })(CoreCollection);
+  
+
   /* Chart Widget bar onclick box.
   */
   
@@ -1858,6 +2022,218 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
+  /* Enrichment Widget table row matches box.
+  */
+  
+  var EnrichmentPopoverView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+  
+  EnrichmentPopoverView = (function(_super) {
+  
+    __extends(EnrichmentPopoverView, _super);
+  
+    function EnrichmentPopoverView() {
+      this.listAction = __bind(this.listAction, this);
+  
+      this.resultsAction = __bind(this.resultsAction, this);
+  
+      this.matchAction = __bind(this.matchAction, this);
+  
+      this.getPq = __bind(this.getPq, this);
+  
+      this.toggle = __bind(this.toggle, this);
+  
+      this.renderValues = __bind(this.renderValues, this);
+  
+      this.render = __bind(this.render, this);
+      return EnrichmentPopoverView.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentPopoverView.prototype.descriptionLimit = 50;
+  
+    EnrichmentPopoverView.prototype.valuesLimit = 5;
+  
+    EnrichmentPopoverView.prototype.events = {
+      "click a.match": "matchAction",
+      "click a.results": "resultsAction",
+      "click a.list": "listAction",
+      "click a.close": "toggle"
+    };
+  
+    EnrichmentPopoverView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      return this.render();
+    };
+  
+    EnrichmentPopoverView.prototype.render = function() {
+      var pq, values,
+        _this = this;
+      $(this.el).css({
+        'position': 'relative'
+      });
+      $(this.el).html(this.template("popover", {
+        "description": this.description,
+        "descriptionLimit": this.descriptionLimit,
+        "style": this.style || "width:300px;margin-left:-300px"
+      }));
+      pq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(this.response['pathQueryForMatches']) : void 0;
+      pq.where.push({
+        "path": this.response.pathConstraint,
+        "op": "ONE OF",
+        "values": this.identifiers
+      });
+      values = [];
+      this.imService.query(pq, function(q) {
+        return q.rows(function(response) {
+          var object, value, _i, _len;
+          for (_i = 0, _len = response.length; _i < _len; _i++) {
+            object = response[_i];
+            value = (function(object) {
+              var column, _j, _len1, _ref;
+              _ref = object.reverse();
+              for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+                column = _ref[_j];
+                if (column.length > 0) {
+                  return column;
+                }
+              }
+            })(object);
+            if (__indexOf.call(values, value) < 0) {
+              values.push(value);
+            }
+          }
+          return _this.renderValues(values);
+        });
+      });
+      return this;
+    };
+  
+    EnrichmentPopoverView.prototype.renderValues = function(values) {
+      return $(this.el).find('div.values').html(this.template("popover.values", {
+        'values': values,
+        'type': this.response.type,
+        'valuesLimit': this.valuesLimit
+      }));
+    };
+  
+    EnrichmentPopoverView.prototype.toggle = function() {
+      return $(this.el).toggle();
+    };
+  
+    EnrichmentPopoverView.prototype.getPq = function() {
+      var pq;
+      pq = this.response.pathQuery;
+      this.pq = JSON.parse(pq);
+      return this.pq.where.push({
+        "path": this.response.pathConstraint,
+        "op": "ONE OF",
+        "values": this.identifiers
+      });
+    };
+  
+    EnrichmentPopoverView.prototype.matchAction = function(e) {
+      this.matchCb($(e.target).text(), this.response.type);
+      return e.preventDefault();
+    };
+  
+    EnrichmentPopoverView.prototype.resultsAction = function() {
+      if (this.pq == null) {
+        this.getPq();
+      }
+      return this.resultsCb(this.pq);
+    };
+  
+    EnrichmentPopoverView.prototype.listAction = function() {
+      if (this.pq == null) {
+        this.getPq();
+      }
+      return this.listCb(this.pq);
+    };
+  
+    return EnrichmentPopoverView;
+  
+  })(Backbone.View);
+  
+
+  /* Enrichment Widget table row.
+  */
+  
+  var EnrichmentRowView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  
+  EnrichmentRowView = (function(_super) {
+  
+    __extends(EnrichmentRowView, _super);
+  
+    function EnrichmentRowView() {
+      this.toggleMatchesAction = __bind(this.toggleMatchesAction, this);
+  
+      this.selectAction = __bind(this.selectAction, this);
+  
+      this.render = __bind(this.render, this);
+      return EnrichmentRowView.__super__.constructor.apply(this, arguments);
+    }
+  
+    EnrichmentRowView.prototype.tagName = "tr";
+  
+    EnrichmentRowView.prototype.events = {
+      "click td.check input": "selectAction",
+      "click td.matches a.count": "toggleMatchesAction"
+    };
+  
+    EnrichmentRowView.prototype.initialize = function(o) {
+      var k, v;
+      for (k in o) {
+        v = o[k];
+        this[k] = v;
+      }
+      this.model.bind('change', this.render);
+      return this.render();
+    };
+  
+    EnrichmentRowView.prototype.render = function() {
+      $(this.el).html(this.template("enrichment.row", {
+        "row": this.model.toJSON()
+      }));
+      return this;
+    };
+  
+    EnrichmentRowView.prototype.selectAction = function() {
+      return this.model.toggleSelected();
+    };
+  
+    EnrichmentRowView.prototype.toggleMatchesAction = function() {
+      if (!(this.popoverView != null)) {
+        return $(this.el).find('td.matches a.count').after((this.popoverView = new EnrichmentPopoverView({
+          "matches": this.model.get("matches"),
+          "identifiers": [this.model.get("identifier")],
+          "description": this.model.get("description"),
+          "template": this.template,
+          "matchCb": this.callbacks.matchCb,
+          "resultsCb": this.callbacks.resultsCb,
+          "listCb": this.callbacks.listCb,
+          "response": this.response,
+          "imService": this.imService
+        })).el);
+      } else {
+        return this.popoverView.toggle();
+      }
+    };
+  
+    return EnrichmentRowView;
+  
+  })(Backbone.View);
+  
+
   /* View maintaining Enrichment Widget.
   */
   
@@ -2073,218 +2449,6 @@ factory = function(Backbone) {
     };
   
     return EnrichmentView;
-  
-  })(Backbone.View);
-  
-
-  /* Enrichment Widget table row.
-  */
-  
-  var EnrichmentRowView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-  
-  EnrichmentRowView = (function(_super) {
-  
-    __extends(EnrichmentRowView, _super);
-  
-    function EnrichmentRowView() {
-      this.toggleMatchesAction = __bind(this.toggleMatchesAction, this);
-  
-      this.selectAction = __bind(this.selectAction, this);
-  
-      this.render = __bind(this.render, this);
-      return EnrichmentRowView.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentRowView.prototype.tagName = "tr";
-  
-    EnrichmentRowView.prototype.events = {
-      "click td.check input": "selectAction",
-      "click td.matches a.count": "toggleMatchesAction"
-    };
-  
-    EnrichmentRowView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      this.model.bind('change', this.render);
-      return this.render();
-    };
-  
-    EnrichmentRowView.prototype.render = function() {
-      $(this.el).html(this.template("enrichment.row", {
-        "row": this.model.toJSON()
-      }));
-      return this;
-    };
-  
-    EnrichmentRowView.prototype.selectAction = function() {
-      return this.model.toggleSelected();
-    };
-  
-    EnrichmentRowView.prototype.toggleMatchesAction = function() {
-      if (!(this.popoverView != null)) {
-        return $(this.el).find('td.matches a.count').after((this.popoverView = new EnrichmentPopoverView({
-          "matches": this.model.get("matches"),
-          "identifiers": [this.model.get("identifier")],
-          "description": this.model.get("description"),
-          "template": this.template,
-          "matchCb": this.callbacks.matchCb,
-          "resultsCb": this.callbacks.resultsCb,
-          "listCb": this.callbacks.listCb,
-          "response": this.response,
-          "imService": this.imService
-        })).el);
-      } else {
-        return this.popoverView.toggle();
-      }
-    };
-  
-    return EnrichmentRowView;
-  
-  })(Backbone.View);
-  
-
-  /* Enrichment Widget table row matches box.
-  */
-  
-  var EnrichmentPopoverView,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
-  
-  EnrichmentPopoverView = (function(_super) {
-  
-    __extends(EnrichmentPopoverView, _super);
-  
-    function EnrichmentPopoverView() {
-      this.listAction = __bind(this.listAction, this);
-  
-      this.resultsAction = __bind(this.resultsAction, this);
-  
-      this.matchAction = __bind(this.matchAction, this);
-  
-      this.getPq = __bind(this.getPq, this);
-  
-      this.toggle = __bind(this.toggle, this);
-  
-      this.renderValues = __bind(this.renderValues, this);
-  
-      this.render = __bind(this.render, this);
-      return EnrichmentPopoverView.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentPopoverView.prototype.descriptionLimit = 50;
-  
-    EnrichmentPopoverView.prototype.valuesLimit = 5;
-  
-    EnrichmentPopoverView.prototype.events = {
-      "click a.match": "matchAction",
-      "click a.results": "resultsAction",
-      "click a.list": "listAction",
-      "click a.close": "toggle"
-    };
-  
-    EnrichmentPopoverView.prototype.initialize = function(o) {
-      var k, v;
-      for (k in o) {
-        v = o[k];
-        this[k] = v;
-      }
-      return this.render();
-    };
-  
-    EnrichmentPopoverView.prototype.render = function() {
-      var pq, values,
-        _this = this;
-      $(this.el).css({
-        'position': 'relative'
-      });
-      $(this.el).html(this.template("popover", {
-        "description": this.description,
-        "descriptionLimit": this.descriptionLimit,
-        "style": this.style || "width:300px;margin-left:-300px"
-      }));
-      pq = typeof JSON !== "undefined" && JSON !== null ? JSON.parse(this.response['pathQueryForMatches']) : void 0;
-      pq.where.push({
-        "path": this.response.pathConstraint,
-        "op": "ONE OF",
-        "values": this.identifiers
-      });
-      values = [];
-      this.imService.query(pq, function(q) {
-        return q.rows(function(response) {
-          var object, value, _i, _len;
-          for (_i = 0, _len = response.length; _i < _len; _i++) {
-            object = response[_i];
-            value = (function(object) {
-              var column, _j, _len1, _ref;
-              _ref = object.reverse();
-              for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
-                column = _ref[_j];
-                if (column.length > 0) {
-                  return column;
-                }
-              }
-            })(object);
-            if (__indexOf.call(values, value) < 0) {
-              values.push(value);
-            }
-          }
-          return _this.renderValues(values);
-        });
-      });
-      return this;
-    };
-  
-    EnrichmentPopoverView.prototype.renderValues = function(values) {
-      return $(this.el).find('div.values').html(this.template("popover.values", {
-        'values': values,
-        'type': this.response.type,
-        'valuesLimit': this.valuesLimit
-      }));
-    };
-  
-    EnrichmentPopoverView.prototype.toggle = function() {
-      return $(this.el).toggle();
-    };
-  
-    EnrichmentPopoverView.prototype.getPq = function() {
-      var pq;
-      pq = this.response.pathQuery;
-      this.pq = JSON.parse(pq);
-      return this.pq.where.push({
-        "path": this.response.pathConstraint,
-        "op": "ONE OF",
-        "values": this.identifiers
-      });
-    };
-  
-    EnrichmentPopoverView.prototype.matchAction = function(e) {
-      this.matchCb($(e.target).text(), this.response.type);
-      return e.preventDefault();
-    };
-  
-    EnrichmentPopoverView.prototype.resultsAction = function() {
-      if (this.pq == null) {
-        this.getPq();
-      }
-      return this.resultsCb(this.pq);
-    };
-  
-    EnrichmentPopoverView.prototype.listAction = function() {
-      if (this.pq == null) {
-        this.getPq();
-      }
-      return this.listCb(this.pq);
-    };
-  
-    return EnrichmentPopoverView;
   
   })(Backbone.View);
   
@@ -2619,189 +2783,21 @@ factory = function(Backbone) {
   })(Backbone.View);
   
 
-  /* Core Model for Enrichment and Table Models.
-  */
-  
-  var CoreCollection, CoreModel, EnrichmentResults, EnrichmentRow, TableResults, TableRow,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-  
-  CoreModel = (function(_super) {
-  
-    __extends(CoreModel, _super);
-  
-    function CoreModel() {
-      this.toggleSelected = __bind(this.toggleSelected, this);
-  
-      this.validate = __bind(this.validate, this);
-      return CoreModel.__super__.constructor.apply(this, arguments);
-    }
-  
-    CoreModel.prototype.defaults = {
-      "selected": false
-    };
-  
-    CoreModel.prototype.initialize = function(row, widget) {
-      this.widget = widget;
-      return this.validate(row);
-    };
-  
-    CoreModel.prototype.validate = function(row) {
-      return this.widget.validateType(row, this.spec);
-    };
-  
-    CoreModel.prototype.toggleSelected = function() {
-      return this.set({
-        selected: !this.get("selected")
-      });
-    };
-  
-    return CoreModel;
-  
-  })(Backbone.Model);
-  
-  CoreCollection = (function(_super) {
-  
-    __extends(CoreCollection, _super);
-  
-    function CoreCollection() {
-      return CoreCollection.__super__.constructor.apply(this, arguments);
-    }
-  
-    CoreCollection.prototype.model = CoreModel;
-  
-    CoreCollection.prototype.selected = function() {
-      return this.filter(function(row) {
-        return row.get("selected");
-      });
-    };
-  
-    CoreCollection.prototype.toggleSelected = function() {
-      var model, _i, _j, _len, _len1, _ref, _ref1, _results, _results1;
-      if (this.models.length - this.selected().length) {
-        _ref = this.models;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          model = _ref[_i];
-          _results.push(model.set({
-            "selected": true
-          }, {
-            'silent': true
-          }));
-        }
-        return _results;
-      } else {
-        _ref1 = this.models;
-        _results1 = [];
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          model = _ref1[_j];
-          _results1.push(model.set({
-            "selected": false
-          }, {
-            'silent': true
-          }));
-        }
-        return _results1;
-      }
-    };
-  
-    return CoreCollection;
-  
-  })(Backbone.Collection);
-  
-  /* Models underpinning Enrichment Widget results.
-  */
-  
-  
-  EnrichmentRow = (function(_super) {
-  
-    __extends(EnrichmentRow, _super);
-  
-    function EnrichmentRow() {
-      return EnrichmentRow.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentRow.prototype.spec = {
-      "description": type.isString,
-      "identifier": type.isString,
-      "matches": type.isInteger,
-      "p-value": type.isInteger,
-      "selected": type.isBoolean,
-      "externalLink": type.isString
-    };
-  
-    return EnrichmentRow;
-  
-  })(CoreModel);
-  
-  EnrichmentResults = (function(_super) {
-  
-    __extends(EnrichmentResults, _super);
-  
-    function EnrichmentResults() {
-      return EnrichmentResults.__super__.constructor.apply(this, arguments);
-    }
-  
-    EnrichmentResults.prototype.model = EnrichmentRow;
-  
-    return EnrichmentResults;
-  
-  })(CoreCollection);
-  
-  /* Models underpinning Table Widget results.
-  */
-  
-  
-  TableRow = (function(_super) {
-  
-    __extends(TableRow, _super);
-  
-    function TableRow() {
-      return TableRow.__super__.constructor.apply(this, arguments);
-    }
-  
-    TableRow.prototype.spec = {
-      "matches": type.isInteger,
-      "identifier": type.isInteger,
-      "descriptions": type.isArray,
-      "selected": type.isBoolean
-    };
-  
-    return TableRow;
-  
-  })(CoreModel);
-  
-  TableResults = (function(_super) {
-  
-    __extends(TableResults, _super);
-  
-    function TableResults() {
-      return TableResults.__super__.constructor.apply(this, arguments);
-    }
-  
-    TableResults.prototype.model = TableRow;
-  
-    return TableResults;
-  
-  })(CoreCollection);
-  
-
   return {
 
     "ChartWidget": ChartWidget,
     "EnrichmentWidget": EnrichmentWidget,
     "InterMineWidget": InterMineWidget,
     "TableWidget": TableWidget,
+    "CoreModel": CoreModel,
     "ChartPopoverView": ChartPopoverView,
     "ChartView": ChartView,
-    "EnrichmentView": EnrichmentView,
-    "EnrichmentRowView": EnrichmentRowView,
     "EnrichmentPopoverView": EnrichmentPopoverView,
+    "EnrichmentRowView": EnrichmentRowView,
+    "EnrichmentView": EnrichmentView,
     "TablePopoverView": TablePopoverView,
     "TableRowView": TableRowView,
-    "TableView": TableView,
-    "CoreModel": CoreModel
+    "TableView": TableView
   };
 };
 /* Interface to InterMine Widgets.

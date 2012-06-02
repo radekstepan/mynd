@@ -1,15 +1,5 @@
 Chart =
-
-    # Will explicitly definy CSS properties as properties of SVG elements.
-    expliticize: (e) ->
-        switch e.node().nodeName
-            when 'rect' then properties = ['fill', 'stroke']
-            when 'text' then properties = ['fill', 'font-family', 'font-size']
-            when 'line' then properties = ['stroke']
-        
-        for property in properties
-            e.attr property, window.getComputedStyle(e.node(), null).getPropertyValue property
-
+    
     # Will convert SVG into base64 PNG stream (through `canvg`).
     toPNG: (svgEl, width, height) ->
         # Create canvas.
@@ -115,8 +105,10 @@ class Chart.Column
                 # Adjust the size of the remaining area.
                 height = height - text.node().getBBox().height - @padding.axisLabels
 
-                # Make explicit.
-                Chart.expliticize text
+                # Make properties explicit.
+                text.attr 'fill'       , text.css 'fill'
+                text.attr 'font-size'  , text.css 'font-size'
+                text.attr 'font-family', text.css 'font-family'
 
             if @axis.vertical?
                 text = labels.append("svg:text")
@@ -132,8 +124,10 @@ class Chart.Column
                 # Adjust the size of the remaining area.
                 width = width - verticalAxisLabelHeight - @padding.axisLabels
 
-                # Make explicit.
-                Chart.expliticize text
+                # Make properties explicit.
+                text.attr 'fill'       , text.css 'fill'
+                text.attr 'font-size'  , text.css 'font-size'
+                text.attr 'font-family', text.css 'font-family'
 
         # -------------------------------------------------------------------
         # Descriptions.
@@ -156,8 +150,10 @@ class Chart.Column
             # Update the total width.
             @description.totalWidth = @description.totalWidth + textWidth
 
-            # Make explicit.
-            Chart.expliticize text
+            # Make properties explicit.
+            text.attr 'fill'       , text.css 'fill'
+            text.attr 'font-size'  , text.css 'font-size'
+            text.attr 'font-family', text.css 'font-family'
 
             # Add an onhover description title.
             g.append("svg:title").text group.description
@@ -196,8 +192,10 @@ class Chart.Column
             textWidth = text.node().getComputedTextLength()
             @ticks.maxWidth = textWidth if textWidth > @ticks.maxWidth
 
-            # Make explicit.
-            Chart.expliticize text
+            # Make properties explicit.
+            text.attr 'fill'       , text.css 'fill'
+            text.attr 'font-size'  , text.css 'font-size'
+            text.attr 'font-family', text.css 'font-family'
 
         # Now that we know the width of the axis, reduce the area width.
         width = width - @ticks.maxWidth
@@ -228,8 +226,8 @@ class Chart.Column
             .attr("x1",    @ticks.maxWidth)
             .attr("x2",    width + @ticks.maxWidth)
 
-            # Make explicit.
-            Chart.expliticize line
+            # Make properties explicit.
+            line.attr 'stroke', line.css 'stroke'
 
             # Update the position of the wrapping `g` to shift both ticks and lines.
             t.attr 'transform', "translate(0,#{height - domain['y'](tick)})"
@@ -302,8 +300,9 @@ class Chart.Column
 
                 bar.attr('opacity', 1)
 
-                # Make explicit.
-                Chart.expliticize bar
+                # Make properties explicit.
+                bar.attr 'fill'  , bar.css 'fill'
+                bar.attr 'stroke', bar.css 'stroke'
 
                 # Add a text value.
                 w = values.append("svg:g").attr('class', "g#{index} s#{series} q#{color}-#{@colorbrewer}")
@@ -341,8 +340,10 @@ class Chart.Column
                         text.attr('y', ty)
                         text.attr("class", "value above")
 
-                # Make explicit.
-                Chart.expliticize text
+                # Make properties explicit.
+                text.attr 'fill'       , text.css 'fill'
+                text.attr 'font-size'  , text.css 'font-size'
+                text.attr 'font-family', text.css 'font-family'
 
                 # Add a title element for the value.
                 w.append("svg:title").text value

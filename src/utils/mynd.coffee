@@ -265,6 +265,10 @@ class Selection
                     else
                         -> @setAttribute name, value
 
+    # Gets a computed property value (defined by CSS) on an element by `name`.
+    css: (name) ->
+        window.getComputedStyle(@node(), null).getPropertyValue name
+
     # Get or set text content.
     text: (value) ->
         return @node().textContent unless value?
