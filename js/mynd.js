@@ -7,6 +7,8 @@
 
   Mynd.Chart = {};
 
+  Mynd.VERSION = '0.1.0';
+
   Mynd.select = function(selector) {
     if (typeof selector === "string") {
       return (new Selection([document])).select(selector);

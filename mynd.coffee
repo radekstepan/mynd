@@ -3,6 +3,8 @@ window.Mynd = {}
 Mynd.Scale = {}
 Mynd.Chart = {}
 
+Mynd.VERSION = '0.1.0'
+
 # Selects the first element that matches the specified selector string, returning a single-element selection. If no
 #  elements in the current document match the specified selector, returns the empty selection. If multiple elements match
 #  the selector, only the first matching element (in document traversal order) will be selected.
